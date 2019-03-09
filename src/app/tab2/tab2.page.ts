@@ -1,94 +1,211 @@
-import { Component } from '@angular/core';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { File } from '@ionic-native/file/ngx';
-import { ActionSheetController } from '@ionic/angular';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
+import { ActionSheetController, ToastController, Platform, LoadingController } from '@ionic/angular';
+import { File, FileEntry } from '@ionic-native/File/ngx';
+import { HttpClient } from '@angular/common/http';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { Storage } from '@ionic/storage';
+import { FilePath } from '@ionic-native/file-path/ngx';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ActionSheetOptions } from '@ionic/core';
+import { finalize } from 'rxjs/operators';
+import { LoadingOptions } from '@ionic/core';
+
+const STORAGE_KEY = 'my_images';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit {
   constructor(
-    private actionSheetCtrl: ActionSheetController,
-    private file: File,
     private camera: Camera,
+    private file: File,
+    private http: HttpClient,
+    private webview: WebView,
+    private actionSheetController: ActionSheetController,
+    private toastController: ToastController,
+    private storage: Storage,
+    private platform: Platform,
+    private loadingController: LoadingController,
+    private ref: ChangeDetectorRef,
+    private filePath: FilePath,
     private sanitizer: DomSanitizer) {
     }
 
     images = [];
-    edit = true;
 
-    async presentActionSheet() {
-      const options: ActionSheetOptions = {
-        buttons: [
-          {
+    async ngOnInit() {
+      await this.platform.ready();
+      this.loadStoredImages();
+    }
+
+    async loadStoredImages() {
+      const images = await this.storage.get(STORAGE_KEY);
+      if (images) {
+        const arr = JSON.parse(images);
+        this.images = arr.map((img: string) => {
+          const filePath = this.file.dataDirectory + img;
+          const resPath = this.pathForImage(filePath);
+          return { name: img, path: resPath, filePath: filePath };
+        });
+      }
+    }
+
+    pathForImage(img: string) {
+      if (img === null) {
+        return '';
+      } else {
+        const converted = this.webview.convertFileSrc(img);
+        return converted;
+      }
+    }
+
+    async presentToast(text: string) {
+      const toast = await this.toastController.create({
+          message: text,
+          position: 'bottom',
+          duration: 3000
+      });
+      toast.present();
+    }
+
+    async selectImage() {
+      const options = {
+        header: 'Select Image source',
+        buttons: [{
             text: 'Load from Library',
             handler: () => {
               this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
             }
-          },
-          {
+          }, {
             text: 'Use Camera',
             handler: () => {
-              this.takePicture(this.camera.PictureSourceType.CAMERA);
+                this.takePicture(this.camera.PictureSourceType.CAMERA);
             }
-          },
-          {
-            text: 'Cancel',
-            role: 'cancel'
-          }
-        ],
-      };
-      const actionSheet = await this.actionSheetCtrl.create(options);
-      //   {
-      //   title: 'Select Image Source',
-      // });
-      actionSheet.present();
+          }]
+        };
+        const actionSheet = await this.actionSheetController.create(options);
+        await actionSheet.present();
     }
-    async takePicture(sourceType) {
-      // Create options for the Camera Dialog
+
+    async takePicture(sourceType: PictureSourceType) {
       const options: CameraOptions = {
-        quality: 100,
-        correctOrientation: true,
-        destinationType: this.camera.DestinationType.FILE_URI,
-        encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE,
-        sourceType: sourceType
+          quality: 100,
+          sourceType: sourceType,
+          saveToPhotoAlbum: false,
+          correctOrientation: true
       };
-      // Get the picture
+      const imagePath = await this.camera.getPicture(options);
+      let currentName: string;
+      let correctPath: string;
+
+      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+        currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+        const path = await this.filePath.resolveNativePath(imagePath);
+        correctPath = path.substr(0, path.lastIndexOf('/') + 1);
+      } else {
+        currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+        correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+      }
+      this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+    }
+
+    createFileName = () => `${new Date().getTime()}.jpg`;
+
+    async copyFileToLocalDir(namePath: string, currentName: string, newFileName: string) {
       try {
-        const imageData = await this.camera.getPicture(options);
-        // let loading = this.loadingCtrl.create();
-        // loading.present();
-        const unsafefileName = 'data:image/jpeg;base64,' + imageData;
-        console.log('sunsafefileName:', unsafefileName);
-        // Resolve the picture URI to a file
-        // const oneFile = await this.file.resolveLocalFilesystemUrl(imageData)
-        // Convert the File to an ArrayBuffer for upload
-        // const realFile = await this.file.readAsArrayBuffer(this.file.tempDirectory, oneFile.name)
-        const type = 'jpg';
-        const newName = 'image-' + new Date().getTime() + '.' + type;
-        this.images.push({
-          key: newName,
-          url: // `${this.file.tempDirectory}/${oneFile.name}`
-            this.sanitize(unsafefileName), // tempfileName
-        });
-        // loading.dismiss();
-      } catch (err) {
-        console.log('err capture image: ', err);
+        await this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName);
+        this.updateStoredImages(newFileName);
+      } catch (error) {
+        console.log(error);
+        this.presentToast('Error while storing file.');
       }
     }
+
+    async updateStoredImages(name: string) {
+      const images = await this.storage.get(STORAGE_KEY);
+      const arr = JSON.parse(images);
+      if (!arr) {
+          const newImages = [name];
+          this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
+      } else {
+          arr.push(name);
+          this.storage.set(STORAGE_KEY, JSON.stringify(arr));
+      }
+
+      const filePath = this.file.dataDirectory + name;
+      const resPath = this.pathForImage(filePath);
+
+      const newEntry = {
+          name: name,
+          path: resPath,
+          filePath: filePath
+      };
+
+      this.images = [newEntry, ...this.images];
+      this.ref.detectChanges(); // trigger change detection cycle
+    }
+
     sanitize(imageUrl: string): SafeUrl {
       // return imageUrl
       const safeUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
       return safeUrl;
-  }
-
-    deleteImage(index) {
-      this.images.splice(index, 1);
     }
+
+    async deleteImage(imgEntry, position: number) {
+      this.images.splice(position, 1);
+      const images = await this.storage.get(STORAGE_KEY);
+      const arr = JSON.parse(images);
+      const filtered = arr.filter((name: string) => name !== imgEntry.name);
+      this.storage.set(STORAGE_KEY, JSON.stringify(filtered));
+      const correctPath = imgEntry.filePath.substr(0, imgEntry.filePath.lastIndexOf('/') + 1);
+      await this.file.removeFile(correctPath, imgEntry.name);
+      this.presentToast('File removed.');
+    }
+
+    async startUpload(imgEntry) {
+      try {
+        const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.filePath);
+        ( < FileEntry > entry).file(file => this.readFile(file));
+      } catch (err) {
+        this.presentToast('Error while reading file.');
+      }
+    }
+
+    readFile(file: any) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+          const formData = new FormData();
+          const imgBlob = new Blob([reader.result], {
+              type: file.type
+          });
+          formData.append('file', imgBlob, file.name);
+          this.uploadImageData(formData);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    async uploadImageData(formData: FormData) {
+      const options: LoadingOptions = {
+        message: 'Uploading image...'
+      };
+      const loading = await this.loadingController.create(options);
+      await loading.present();
+
+      // this.http.post("http://localhost:8888/upload.php", formData)
+      //     .pipe(
+      //         finalize(() => {
+                  loading.dismiss();
+      //         })
+      //     )
+      //     .subscribe(res => {
+      //         if (res['success']) {
+                   this.presentToast('File upload complete.');
+      //         } else {
+      //             this.presentToast('File upload failed.')
+      //         }
+      //     });
+  }
 
 }

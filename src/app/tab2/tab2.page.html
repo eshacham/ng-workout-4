@@ -1,33 +1,36 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Tab Two
+      Ionic Image Upload
     </ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="edit = !edit">
-          <ion-icon name="unlock" *ngIf="edit"></ion-icon>
-          <ion-icon name="lock" *ngIf="!edit"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <h3 [hidden]="images.length !== 0" text-center>No Images found!</h3>
+  <h3 *ngIf="images.length == 0" text-center>Please Select Image!</h3>
 
   <ion-list>
-    <ion-card *ngFor="let img of images; let i = index">
-      <img [src]="img.url">
-      <button ion-button full color="danger" [style.margin]="0"
-          *ngIf="edit" (click)="deleteImage(i)">
-        <ion-icon name="trash"></ion-icon>
-      </button>
-    </ion-card>
+    <ion-item *ngFor="let img of images; index as pos" text-wrap>
+      <ion-thumbnail slot="start">
+        <ion-img [src]="img.path"></ion-img>
+      </ion-thumbnail>
+      <ion-label>
+        {{ img.name }}
+      </ion-label>
+      <ion-button slot="end" fill="clear" (click)="startUpload(img)">
+        <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+      </ion-button>
+      <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
   </ion-list>
-
-  <ion-fab right bottom>
-    <button ion-fab (click)="presentActionSheet()">
-       <ion-icon name="camera"></ion-icon>
-      </button>
-  </ion-fab>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-button fill="clear" expand="full" color="light" (click)="selectImage()">
+      <ion-icon slot="start" name="camera"></ion-icon>
+      Select Image</ion-button>
+  </ion-toolbar>
+</ion-footer>
