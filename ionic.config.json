@@ -1,5 +1,7 @@
 {
   "name": "ng-workout-4",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
