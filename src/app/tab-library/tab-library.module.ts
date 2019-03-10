@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Tab2Page } from './tab2.page';
+import { TabLibraryPage } from './tab-library.page';
 import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
@@ -16,11 +16,11 @@ import { HttpClientModule } from '@angular/common/http';
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild([{ path: '', component: Tab2Page }]),
+    RouterModule.forChild([{ path: '', component: TabLibraryPage }]),
     HttpClientModule,
     IonicStorageModule.forRoot()
   ],
-  declarations: [Tab2Page],
+  declarations: [TabLibraryPage],
   providers: [
     Camera,
     File,
@@ -28,4 +28,4 @@ import { HttpClientModule } from '@angular/common/http';
     FilePath
   ]
 })
-export class Tab2PageModule {}
+export class TabLibraryPageModule {}

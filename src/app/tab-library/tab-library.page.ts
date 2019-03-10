@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
-import { ActionSheetController, ToastController, Platform, LoadingController } from '@ionic/angular';
+import { ActionSheetController, ToastController,
+         Platform, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
 import { HttpClient } from '@angular/common/http';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
@@ -13,11 +14,11 @@ import { LoadingOptions } from '@ionic/core';
 const STORAGE_KEY = 'my_images';
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  selector: 'app-tab-library',
+  templateUrl: 'tab-library.page.html',
+  styleUrls: ['tab-library.page.scss']
 })
-export class Tab2Page implements OnInit {
+export class TabLibraryPage implements OnInit {
   constructor(
     private camera: Camera,
     private file: File,
