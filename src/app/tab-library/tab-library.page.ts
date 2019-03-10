@@ -3,12 +3,12 @@ import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/n
 import { ActionSheetController, ToastController,
          Platform, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Storage } from '@ionic/storage';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { finalize } from 'rxjs/operators';
+// import { finalize } from 'rxjs/operators';
 import { LoadingOptions } from '@ionic/core';
 
 const STORAGE_KEY = 'my_images';
@@ -22,7 +22,7 @@ export class TabLibraryPage implements OnInit {
   constructor(
     private camera: Camera,
     private file: File,
-    private http: HttpClient,
+    // private http: HttpClient,
     private webview: WebView,
     private actionSheetController: ActionSheetController,
     private toastController: ToastController,
