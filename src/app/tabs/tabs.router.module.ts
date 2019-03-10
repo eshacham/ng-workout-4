@@ -8,11 +8,11 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'tab-workouts',
         children: [
           {
             path: '',
-            loadChildren: '../tab1/tab1.module#Tab1PageModule'
+            loadChildren: '../tab-workouts/tab-workouts.module#TabWorkoutsPageModule'
           }
         ]
       },
@@ -26,24 +26,24 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'tab3',
+        path: 'tab-settings',
         children: [
           {
             path: '',
-            loadChildren: '../tab3/tab3.module#Tab3PageModule'
+            loadChildren: '../tab-settings/tab-settings.module#TabSettingsPageModule'
           }
         ]
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/tab-workouts',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/tab-workouts',
     pathMatch: 'full'
   }
 ];
