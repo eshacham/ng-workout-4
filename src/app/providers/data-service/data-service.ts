@@ -1,11 +1,12 @@
 import { StateCache } from '../../models/StateCache';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DataServiceProvider {
 
-  constructor(public http: HttpClient) {
+  public storage: any;
+
+  constructor() {
     this.state = new StateCache();
   }
 
@@ -17,9 +18,5 @@ export class DataServiceProvider {
     return this.state.getLastSelectedWorkoutDay(workoutName);
    }
 
-   // future use only
-   getWorkout() {
-     return this.http.get('mock-url-for-future-use');
-   }
 
 }

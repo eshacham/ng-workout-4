@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { TabWorkoutsPage } from './tab-workouts.page';
 import { IonicStorageModule } from '@ionic/storage';
 import { WorkoutCardComponent } from '../components/workout-card/workout-card.component';
+import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 
 const routes: Routes = [
   {
@@ -28,6 +29,8 @@ const routes: Routes = [
   ],
   declarations: [
     TabWorkoutsPage,
-    WorkoutCardComponent]
+    WorkoutCardComponent
+  ],
+  providers: [DataServiceProvider]
 })
 export class TabWorkoutsPageModule {}
