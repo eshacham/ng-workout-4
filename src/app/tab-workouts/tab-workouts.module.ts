@@ -14,7 +14,7 @@ const routes: Routes = [
     component: TabWorkoutsPage
   },
   {
-    path: '/workout-days',
+    path: 'workout-days',
     loadChildren:  '../pages/workout-days/workout-days.module#WorkoutDaysPageModule'
   }
 ];

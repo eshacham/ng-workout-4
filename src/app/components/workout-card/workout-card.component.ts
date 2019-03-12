@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Workout } from '../../models/Workout';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 
 @Component({
   selector: 'app-workout-card',
@@ -14,14 +14,15 @@ export class WorkoutCardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private navCtrl: NavController) { }
+    // private route: ActivatedRoute,
+    private dataService: DataServiceProvider) { }
 
   ngOnInit() {}
 
   goToWorkoutDays () {
-    // this.navCtrl.navigateForward('/workout-days', { workout: this.workout} );
-    this.router.navigate(['workout-days', this.workout]);
+    this.dataService.storage = this.workout;
+    this.router.navigate(['/tabs/tab-workouts/workout-days']);
+    // this.router.navigate(['workout-days'], { relativeTo: this.route });
   }
 
   get daysCount(): number {
