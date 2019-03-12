@@ -1,10 +1,22 @@
 import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TabWorkoutsPage } from './tab-workouts.page';
 import { IonicStorageModule } from '@ionic/storage';
+import { WorkoutCardComponent } from '../components/workout-card/workout-card.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: TabWorkoutsPage
+  },
+  {
+    path: '/workout-days',
+    loadChildren:  '../pages/workout-days/workout-days.module#WorkoutDaysPageModule'
+  }
+];
 
 @NgModule({
   imports: [
@@ -12,8 +24,10 @@ import { IonicStorageModule } from '@ionic/storage';
     CommonModule,
     FormsModule,
     IonicStorageModule.forRoot(),
-    RouterModule.forChild([{ path: '', component: TabWorkoutsPage }])
+    RouterModule.forChild(routes)
   ],
-  declarations: [TabWorkoutsPage]
+  declarations: [
+    TabWorkoutsPage,
+    WorkoutCardComponent]
 })
 export class TabWorkoutsPageModule {}

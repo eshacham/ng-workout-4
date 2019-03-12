@@ -9,7 +9,7 @@
 <ion-content>
   <ion-list no-lines>
     <ion-item *ngFor="let workout of workouts; let index = i" id='workout-card'>
-      <!-- <workout-card [workout]="workout"></workout-card> -->
+      <app-workout-card [workout]="workout"></app-workout-card>
     </ion-item>
   </ion-list>
 </ion-content>
