@@ -22,7 +22,7 @@ const routes: Routes = [
   ],
   declarations: [
     WorkoutDaysPage,
-    WorkoutDayComponent
-  ]
+    WorkoutDayComponent,
+  ],
 })
 export class WorkoutDaysPageModule {}

@@ -108,7 +108,7 @@ export class WorkoutDayComponent implements OnInit {
   }
 
   addExercise() {
-    //c onst newExercise: Exercise = this.workoutService.getNewtWorkoutSet();
+    // const newExercise: Exercise = this.workoutService.getNewtWorkoutSet();
     // this.workoutDay.exercises.push(newExercise);
     this.saveChanges() ;
   }
@@ -152,9 +152,12 @@ export class WorkoutDayComponent implements OnInit {
         this.workoutDay.name));
   }
 
-  reorderItems(indexes) {
-    const exercise = this.workoutDay.exercises[indexes.from];
-    this.workoutDay.exercises.splice(indexes.from, 1);
-    this.workoutDay.exercises.splice(indexes.to, 0, exercise);
+  reorderItems(event) {
+    const from  = event.detail.from;
+    const to = event.detail.to;
+    console.log(`Moving item from ${from} to ${to}`);
+    const exercise = this.workoutDay.exercises[from];
+    this.workoutDay.exercises.splice(from, 1);
+    this.workoutDay.exercises.splice(to, 0, exercise);
   }
 }

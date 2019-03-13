@@ -1,3 +1,60 @@
-<p>
-  workout-day works!
-</p>
+<ion-grid >
+  <ion-row align-items-center>
+    <ion-col col-2>
+      <button ion-button icon-only clear *ngIf="IsDisplayOrWorkout"
+              (click)="startOrStopToggle()">
+        <ion-icon name="play" *ngIf="IsDisplayMode"></ion-icon>
+        <ion-icon name="pause" *ngIf="IsWorkoutMode"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col col-8>
+      <ion-label *ngIf="IsDisplayOrWorkout" no-margin>{{ workoutDay.name }}</ion-label>
+      <ion-input *ngIf="IsEditMode" type="text" no-margin text-center
+        [(ngModel)]="workoutDay.name">
+      </ion-input>
+    </ion-col>
+    <ion-col col-2>
+      <button ion-button icon-only clear *ngIf="IsDisplayOrEdit"
+              (click)="editOrCancelToggle()">
+        <ion-icon name="construct" *ngIf="IsDisplayMode"></ion-icon>
+        <ion-icon name="exit" *ngIf="IsEditMode"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col id='workout-day-list-col'>
+      <ion-list id='workout-day-list' no-lines>
+      <ion-reorder-group
+        [disabled]="!IsEditMode" (ionItemReorder)="reorderItems($event)">
+        <ion-item *ngFor="let exercise of workoutDay.exercises; let i = index"
+                  id='workout-day-list-item'>
+          <!-- <exercise-thumbnail [exercise]="exercise"
+                              [workoutDayName]=workoutDay.name
+                              [exerciseIndex]="i+1"
+                              [inWorkoutDayPublisher]="workoutDayPublisher"
+                              #exerciseComponent (click)="exerciseComponent.exerciseSelected()"
+                              (outEventEmitter)="handleExerciseActionEvent($event)">
+            </exercise-thumbnail> -->
+            <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+        </ion-reorder-group>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="IsEditMode" id='workout-day-last-row' >
+    <ion-col col-4 >
+      <button ion-button icon-only clear
+        (click)="addExercise()">
+        <ion-icon name="add"></ion-icon>
+        <ion-label>Exercise</ion-label>
+      </button>
+    </ion-col>
+    <ion-col col-4 offset-4>
+        <button ion-button icon-only clear
+          (click)="saveChanges()">
+          <ion-icon name="add"></ion-icon>
+          <ion-label>Day</ion-label>
+        </button>
+      </ion-col>
+  </ion-row>
+</ion-grid>

@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+// import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { IonSlides as Slides} from '@ionic/angular';
 import { Workout } from 'src/app/models/Workout';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { ExerciseSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
+import { ExerciseActionEvent } from 'src/app/models/ExerciseActionEvent';
+import { ExerciseAction, DisplayMode } from 'src/app/models/enums';
 
 @Component({
   selector: 'app-workout-days',
@@ -18,25 +20,21 @@ export class WorkoutDaysPage implements OnInit {
   @ViewChild('slider') slides: Slides;
 
   constructor(
-    private route: ActivatedRoute,
+    // private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
   }
 
   ngOnInit() {
     this.workout = this.dataService.storage;
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WorkoutdaysPage');
+    console.log('ngOnInit this.workout --> ', this.workout.name);
     if (this.slides) {
       const lastIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
       console.log('last index on view loaded', lastIndex);
-
-      setTimeout(() => {
-        this.slides.slideTo(lastIndex);
-    }, 300);
+      this.slides.slideTo(lastIndex, 1);
     }
   }
+
+
 
   async slideChanged() {
     if (this.slides) {
@@ -46,4 +44,30 @@ export class WorkoutDaysPage implements OnInit {
     }
   }
 
+  handleExerciseActionEvent(event: ExerciseActionEvent) {
+    const exerciseAction: ExerciseAction = event.action;
+    switch (exerciseAction) {
+      case ExerciseAction.Completed:
+        console.log('workout: receieved completed event: ', event.exerciseIndex);
+        // this.handleExersiceSetComletion(event.exerciseIndex);
+        break;
+      case ExerciseAction.Delete:
+        console.log('workout: receieved delete event: ', event.exercise);
+        // this.deleteExercise(event.exercise, event.workoutDayName);
+        break;
+      case ExerciseAction.Edit:
+        console.log('workout: receieved edit event: ', event.exercise);
+        break;
+      case ExerciseAction.Run:
+        console.log('workout: receieved run event: ', event.workoutDayName);
+        this.publishWorkoutEvent(DisplayMode.Workout, event.workoutDayName);
+        break;
+    }
+  }
+
+  publishWorkoutEvent(displayMode: DisplayMode, runningExerciseDayName: string) {
+    const workoutEvent =
+      new ExerciseSwitchModeEvent(displayMode, null, runningExerciseDayName);
+    this.workoutDaysPublisher.next(workoutEvent);
+  }
 }

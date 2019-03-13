@@ -5,15 +5,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-slides #slider [pager]='true'
+  <ion-slides #slider pager='true'
     (ionSlideDidChange)="slideChanged()">
-    <ion-slide *ngFor="let day of workout.days">{{day.name}}
+    <ion-slide *ngFor="let day of workout.days">
       <app-workout-day
         [workoutDay]="day"
         [inWorkoutDaysPublisher]="workoutDaysPublisher"
         (outEventEmitter)="handleExerciseActionEvent($event)">
       </app-workout-day>
    </ion-slide>
-
   </ion-slides>
 </ion-content>
