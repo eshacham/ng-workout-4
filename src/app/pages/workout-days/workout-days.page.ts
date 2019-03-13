@@ -23,10 +23,6 @@ export class WorkoutDaysPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.route.params.subscribe((data: Workout) => {
-    //   this.workout = data;
-    //   this.workout.days.forEach(day => console.log(day.name));
-    // });
     this.workout = this.dataService.storage;
   }
 
