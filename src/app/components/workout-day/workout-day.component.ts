@@ -5,6 +5,7 @@ import { Exercise } from '../../models/Exercise';
 import { DisplayMode, ExerciseAction  } from '../../models/enums';
 import { ExerciseSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseActionEvent } from '../../models/ExerciseActionEvent';
+import { ItemReorderEventDetail } from '@ionic/core';
 
 @Component({
   selector: 'app-workout-day',
@@ -152,12 +153,13 @@ export class WorkoutDayComponent implements OnInit {
         this.workoutDay.name));
   }
 
-  reorderItems(event) {
+  reorderItems(event: CustomEvent<ItemReorderEventDetail>) {
     const from  = event.detail.from;
     const to = event.detail.to;
     console.log(`Moving item from ${from} to ${to}`);
     const exercise = this.workoutDay.exercises[from];
     this.workoutDay.exercises.splice(from, 1);
     this.workoutDay.exercises.splice(to, 0, exercise);
+    event.detail.complete(true);
   }
 }
