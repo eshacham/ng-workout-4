@@ -27,9 +27,14 @@
       <ion-reorder-group
         [disabled]="!IsEditMode" (ionItemReorder)="reorderItems($event)">
         <ion-item *ngFor="let exercise of workoutDay.exercises; let i = index"
-                  id='workout-day-list-item'>{{exercise.id}}
+                  id='workout-day-list-item'>
           <app-exercise-thumbnail
-            >
+            [exercise]="exercise"
+            [workoutDayName]=workoutDay.name
+            [exerciseIndex]="i+1"
+            [inWorkoutDayPublisher]="workoutDayPublisher"
+            #exerciseComponent (click)="exerciseComponent.exerciseSelected()"
+            (outEventEmitter)="handleExerciseActionEvent($event)">
             </app-exercise-thumbnail>
             <ion-reorder slot="end"></ion-reorder>
         </ion-item>

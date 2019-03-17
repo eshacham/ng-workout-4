@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { WorkoutDaysPage } from './workout-days.page';
 import { WorkoutDayComponent } from 'src/app/components/workout-day/workout-day.component';
 import { ExerciseThumbnailComponent } from 'src/app/components/exercise-thumbnail/exercise-thumbnail.component';
+import { ExerciseThumbnailPopoverComponent } from 'src/app/components/exercise-thumbnail-popover/exercise-thumbnail-popover.component';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
   declarations: [
     WorkoutDaysPage,
     WorkoutDayComponent,
-    ExerciseThumbnailComponent
+    ExerciseThumbnailComponent,
+    ExerciseThumbnailPopoverComponent
   ],
 })
 export class WorkoutDaysPageModule {}
