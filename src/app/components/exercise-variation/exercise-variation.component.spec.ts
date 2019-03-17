@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExerciseThumbnailComponent } from './exercise-thumbnail.component';
+import { ExerciseVariationComponent } from './exercise-variation.component';
 
-describe('ExerciseThumbnailPage', () => {
-  let component: ExerciseThumbnailComponent;
-  let fixture: ComponentFixture<ExerciseThumbnailComponent>;
+describe('ExerciseVariationPage', () => {
+  let component: ExerciseVariationComponent;
+  let fixture: ComponentFixture<ExerciseVariationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExerciseThumbnailComponent ],
+      declarations: [ ExerciseVariationComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExerciseThumbnailComponent);
+    fixture = TestBed.createComponent(ExerciseVariationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

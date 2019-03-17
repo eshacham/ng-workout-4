@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkoutCardPage } from './workout-card.page';
+import { WorkoutCardComponent } from './workout-card.component';
 
 describe('WorkoutCardPage', () => {
-  let component: WorkoutCardPage;
-  let fixture: ComponentFixture<WorkoutCardPage>;
+  let component: WorkoutCardComponent;
+  let fixture: ComponentFixture<WorkoutCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WorkoutCardPage ],
+      declarations: [ WorkoutCardComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WorkoutCardPage);
+    fixture = TestBed.createComponent(WorkoutCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

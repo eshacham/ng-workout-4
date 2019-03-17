@@ -7,6 +7,8 @@ import { WorkoutDaysPage } from './workout-days.page';
 import { WorkoutDayComponent } from 'src/app/components/workout-day/workout-day.component';
 import { ExerciseThumbnailComponent } from 'src/app/components/exercise-thumbnail/exercise-thumbnail.component';
 import { ExerciseThumbnailPopoverComponent } from 'src/app/components/exercise-thumbnail-popover/exercise-thumbnail-popover.component';
+import { ExerciseVariationComponent } from 'src/app/components/exercise-variation/exercise-variation.component';
+import { ExerciseVariationPopoverComponent } from 'src/app/components/exercise-variation-popover/exercise-variation-popover.component';
 
 const routes: Routes = [
   {
@@ -26,7 +28,9 @@ const routes: Routes = [
     WorkoutDaysPage,
     WorkoutDayComponent,
     ExerciseThumbnailComponent,
-    ExerciseThumbnailPopoverComponent
+    ExerciseThumbnailPopoverComponent,
+    ExerciseVariationComponent,
+    ExerciseVariationPopoverComponent
   ],
 })
 export class WorkoutDaysPageModule {}

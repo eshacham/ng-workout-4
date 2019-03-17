@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkoutDayPage } from './workout-day.page';
+import { WorkoutDayComponent } from './workout-day.component';
 
 describe('WorkoutDayPage', () => {
-  let component: WorkoutDayPage;
-  let fixture: ComponentFixture<WorkoutDayPage>;
+  let component: WorkoutDayComponent;
+  let fixture: ComponentFixture<WorkoutDayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WorkoutDayPage ],
+      declarations: [ WorkoutDayComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WorkoutDayPage);
+    fixture = TestBed.createComponent(WorkoutDayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

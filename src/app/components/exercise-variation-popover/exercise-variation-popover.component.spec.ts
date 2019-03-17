@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExerciseThumbnailComponent } from './exercise-thumbnail.component';
+import { ExerciseVariationPopoverPage } from './exercise-variation-popover.page';
 
-describe('ExerciseThumbnailPage', () => {
-  let component: ExerciseThumbnailComponent;
-  let fixture: ComponentFixture<ExerciseThumbnailComponent>;
+describe('ExerciseVariationPopoverPage', () => {
+  let component: ExerciseVariationPopoverPage;
+  let fixture: ComponentFixture<ExerciseVariationPopoverPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExerciseThumbnailComponent ],
+      declarations: [ ExerciseVariationPopoverPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExerciseThumbnailComponent);
+    fixture = TestBed.createComponent(ExerciseVariationPopoverPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

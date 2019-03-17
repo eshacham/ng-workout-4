@@ -13,9 +13,9 @@
                           </ion-col>
                           <ion-col>
                               <h2 text-wrap text-start margin-bottom>{{exerciseSet.name}} </h2>
-                              <!-- <exercise-variation text-wrap
+                              <app-exercise-variation text-wrap
                                   #variationComponent [exerciseSet]="exerciseSet" >
-                              </exercise-variation> -->
+                              </app-exercise-variation>
                               <button ion-button icon-only clear float-right
                               (click)="runExercise()">
                                   <ion-icon name="play"></ion-icon>
@@ -42,8 +42,8 @@
               </ion-row>
               <ion-row>
                   <ion-col *ngFor="let exerciseSet of exercise.sets" >
-                      <!-- <exercise-variation [exerciseSet]="exerciseSet" text-wrap text-center>
-                      </exercise-variation> -->
+                      <app-exercise-variation [exerciseSet]="exerciseSet" text-wrap text-center>
+                      </app-exercise-variation>
                   </ion-col>
               </ion-row>
               <ion-row *ngFor="let exerciseSet of exercise.sets">
@@ -120,10 +120,10 @@
                       </ion-row>
                   </ion-item>
                   <ion-item>
-                      <!-- <exercise-variation text-wrap text-center
+                      <app-exercise-variation text-wrap text-center
                           [exerciseSet]="exerciseSet"
                           [inEditMode]="true">
-                      </exercise-variation> -->
+                      </app-exercise-variation>
                   </ion-item>
               </ion-col>
           </ion-row>
@@ -208,8 +208,8 @@
                   <img src={{exerciseSet.imageUrl}} />
               </ion-thumbnail>
               <h2 text-wrap>{{exerciseSet.name}}</h2>
-              <!-- <exercise-variation [exerciseSet]="exerciseSet">
-              </exercise-variation> -->
+              <app-exercise-variation [exerciseSet]="exerciseSet">
+              </app-exercise-variation>
           </ion-item>
       </ion-list>
   </div>
