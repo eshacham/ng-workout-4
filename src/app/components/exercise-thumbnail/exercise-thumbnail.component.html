@@ -1,3 +1,216 @@
-<p>
-  exercise-thumbnail works!
-</p>
+<div [ngSwitch]="DisplayMode">
+  <div *ngSwitchCase="displayMode.Workout">
+      <div [hidden]="IsRunning">
+          <ion-list id='exercise-set-list' no-lines>
+              <ion-item id='exercise-set-list-item-tight' *ngFor="let exerciseSet of exercise.sets"
+                       [ngClass]="getTopBottomMarginClass(exerciseSet)">
+                  <ion-grid>
+                      <ion-row align-items-center>
+                          <ion-col col-4>
+                              <ion-thumbnail>
+                                  <img src={{exerciseSet.imageUrl}} />
+                              </ion-thumbnail>
+                          </ion-col>
+                          <ion-col>
+                              <h2 text-wrap text-start margin-bottom>{{exerciseSet.name}} </h2>
+                              <!-- <exercise-variation text-wrap
+                                  #variationComponent [exerciseSet]="exerciseSet" >
+                              </exercise-variation> -->
+                              <button ion-button icon-only clear float-right
+                              (click)="runExercise()">
+                                  <ion-icon name="play"></ion-icon>
+                              </button>
+                          </ion-col>
+                      </ion-row>
+                  </ion-grid>
+              </ion-item>
+          </ion-list>
+      </div>
+      <div [hidden]="!IsRunning">
+          <ion-grid>
+              <ion-row>
+                  <ion-col *ngFor="let exerciseSet of exercise.sets" >
+                      <ion-label text-wrap text-center>{{exerciseSet.name}}</ion-label>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col *ngFor="let exerciseSet of exercise.sets">
+                      <ion-thumbnail >
+                          <img src={{exerciseSet.imageUrl}} />
+                      </ion-thumbnail>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col *ngFor="let exerciseSet of exercise.sets" >
+                      <!-- <exercise-variation [exerciseSet]="exerciseSet" text-wrap text-center>
+                      </exercise-variation> -->
+                  </ion-col>
+              </ion-row>
+              <ion-row *ngFor="let exerciseSet of exercise.sets">
+                  <ion-col *ngFor="let rep of exerciseSet.reps; let i = index" class="rep"
+                          [ngClass]="getRunningExerciseSetRepCellClass(i)" padding-vertical>
+                      <div *ngIf='rep.weight'>
+                          <h4 text-center>{{rep.weight}}<small>{{' ' + weightUnit[rep.weightUnit]}}</small></h4>
+                      </div>
+                      <div *ngIf='rep.times'>
+                          <h4 text-center>{{rep.times}}<small>{{' Times'}}</small>
+                              <ion-icon *ngIf='isRepCompleted(i)' name="checkmark"></ion-icon>
+                          </h4>
+                      </div>
+                      <div *ngIf='rep.seconds'>
+                          <h4 text-center>{{rep.seconds}}<small>{{' Seconds'}}</small>
+                              <ion-icon *ngIf='isRepCompleted(i)' name="checkmark"></ion-icon>
+                          </h4>
+                      </div>
+                      <h3 text-center *ngIf="isTimedRepRemaining(i)">{{timedRepRemaining}} Seconds
+                      </h3>
+                  </ion-col>
+              </ion-row>
+              <ion-row justify-content-center>
+                  <div *ngIf="isResting">
+                      <button ion-button class="btn-warning et-button btn-lg col-sm-4 col-sm-offset-4"
+                          (click)="skipRest()">
+                          Rest {{timedRestRemaining}} Seconds or Skip
+                      </button>
+                  </div>
+                  <div *ngIf="!isResting">
+                      <button ion-button icon-only clear
+                          [disabled]="!isPrevRepAvailable" (click)="prevRep()">
+                          <ion-icon name="arrow-dropleft"></ion-icon>
+                      </button>
+                      <button ion-button class="btn-success et-button btn-lg col-sm-2"
+                          (click)="nextRep(true)">
+                          Done!
+                      </button>
+                      <button ion-button icon-only clear
+                          (click)="nextRep(false)">
+                          <ion-icon name="arrow-dropright"></ion-icon>
+                      </button>
+                  </div>
+              </ion-row>
+          </ion-grid>
+      </div>
+  </div>
+  <div *ngSwitchCase="displayMode.Edit">
+      <ion-grid>
+          <ion-row >
+              <ion-col *ngFor="let exerciseSet of exercise.sets; let i = index" no-padding>
+                  <ion-item >
+                      <ion-input type="text" [(ngModel)]="exerciseSet.name"
+                          placeholder="Exercise Name">
+                      </ion-input>
+                  </ion-item>
+                  <ion-item >
+                      <ion-row align-items-center justify-content-center>
+                          <ion-thumbnail >
+                              <div>
+                                  <img src={{exerciseSet.imageUrl}}/>
+                                  <button ion-button icon-only clear bottom
+                                      (click)="deleteExerciseSet(i)">
+                                      <ion-icon name="trash"></ion-icon>
+                                  </button>
+                                  <button *ngIf="isNotLastInSet(exerciseSet)"
+                                      ion-button icon-only clear up
+                                      (click)="switchExerciseSets(i)">
+                                      <ion-icon name="repeat"></ion-icon>
+                                  </button>
+                              </div>
+                          </ion-thumbnail>
+
+                      </ion-row>
+                  </ion-item>
+                  <ion-item>
+                      <!-- <exercise-variation text-wrap text-center
+                          [exerciseSet]="exerciseSet"
+                          [inEditMode]="true">
+                      </exercise-variation> -->
+                  </ion-item>
+              </ion-col>
+          </ion-row>
+          <ion-row justify-content-center>
+              <button ion-button icon-only clear
+                  (click)="toggleOpen()">
+                  <ion-icon *ngIf="!IsOpen" name="arrow-dropdown"></ion-icon>
+                  <ion-icon *ngIf="IsOpen" name="arrow-dropup"></ion-icon>
+              </button>
+          </ion-row>
+
+          <ion-list no-lines *ngIf="IsOpen" class="noBottomMargin">
+              <ion-row *ngFor="let exerciseSet of exercise.sets" justify-content-center>
+                  <ion-col *ngFor="let rep of exerciseSet.reps; let i = index"
+                      no-padding >
+                      <ion-item class="rep nonActiveRep ">
+                          <div class="clicker"
+                              (click)="presentPopover($event, rep)">
+                              <h5 *ngIf='rep.weight' text-center>
+                                  {{rep.weight}}
+                                  <small>{{' ' + weightUnit[rep.weightUnit]}}</small>
+                              </h5>
+                              <h5 *ngIf='rep.times' text-center >
+                                  {{rep.times}}
+                                  <small>{{' Times'}}</small>
+                              </h5>
+                              <h5 *ngIf='rep.seconds' text-center >
+                                  {{rep.seconds}}<small>{{' Seconds'}}</small>
+                              </h5>
+                              <h5 *ngIf='!rep.weight && !rep.times && !rep.seconds' text-center>
+                                  ...
+                              </h5>
+                          </div>
+                          <ion-row justify-content-center class="bordered"
+                              *ngIf="isLastSet(exerciseSet)" >
+                              <button ion-button icon-only clear
+                              (click)="deleteRep(i)" [disabled]="isMinReps">
+                              <ion-icon name="trash" narrow-padding></ion-icon>
+                              </button>
+                              <button ion-button icon-only clear
+                                  (click)="addRep(i)" [disabled]="isMaxReps">
+                                  <ion-icon name="add-circle" narrow-padding></ion-icon>
+                              </button>
+                          </ion-row>
+
+                      </ion-item>
+                  </ion-col>
+              </ion-row>
+
+              <ion-row justify-content-center>
+                  <ion-col>
+                      <ion-list no-lines class="noBottomMargin">
+                          <h3 text-center>
+                              Set Rest: {{exercise.sets[0].restBetweenReps}} seconds                        </h3>
+                          <ion-item>
+                              <ion-range [(ngModel)]="exercise.sets[0].restBetweenReps">
+                                  <ion-icon range-left small name="repeat"></ion-icon>
+                                  <ion-icon range-right name="repeat"></ion-icon>
+                              </ion-range>
+                          </ion-item>
+                          <h3 text-center>
+                              Exercise Rest: {{exercise.sets[0].restAfterExercise}} seconds                        </h3>
+                              <ion-item>
+                                  <ion-range [(ngModel)]="exercise.sets[0].restAfterExercise">
+                                      <ion-icon range-left small name="body"></ion-icon>
+                                      <ion-icon range-right name="body"></ion-icon>
+                                  </ion-range>
+                              </ion-item>
+                      </ion-list>
+
+                  </ion-col>
+
+              </ion-row>
+          </ion-list>
+      </ion-grid>
+  </div>
+  <div *ngSwitchDefault>
+      <ion-list id='exercise-set-list' no-lines>
+          <ion-item *ngFor="let exerciseSet of exercise.sets"
+                  id='exercise-set-list-item'>
+              <ion-thumbnail item-start>
+                  <img src={{exerciseSet.imageUrl}} />
+              </ion-thumbnail>
+              <h2 text-wrap>{{exerciseSet.name}}</h2>
+              <!-- <exercise-variation [exerciseSet]="exerciseSet">
+              </exercise-variation> -->
+          </ion-item>
+      </ion-list>
+  </div>
+</div>
