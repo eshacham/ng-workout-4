@@ -32,5 +32,9 @@ const routes: Routes = [
     ExerciseVariationComponent,
     ExerciseVariationPopoverComponent
   ],
+  entryComponents: [
+    ExerciseThumbnailPopoverComponent,
+    ExerciseVariationPopoverComponent
+  ]
 })
 export class WorkoutDaysPageModule {}
