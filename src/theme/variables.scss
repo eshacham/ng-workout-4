@@ -75,3 +75,54 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+
+$colors: ( // ionic original
+  primary:    #488aff,
+  secondary:  #32db64,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222
+);
+
+
+$colors: (
+  primary:  #baad9a,
+  secondary:#171d13,
+  dark:     #050000,
+  light:    #aa3539,
+  danger:   #3b6235
+);
+
+$colors: (
+  primary:   #282320,
+  secondary: #eed29e,
+  dark:      #b3a189,
+  light:     #b0842b,
+  danger:    #a92b12
+);
+
+
+$colors: (
+  primary:  #24262e,
+  secondary:#677260,
+  danger:   #969997,
+  light:    #a7b1c6,
+  dark:     #debf1d
+);
+
+$colors: (
+  primary:    #827d7f,
+  secondary:  #1f1919,
+  dark:       #022b5c,
+  danger:     #9c0f18,
+  light:      #594939
+);
+
+
+$colors: (
+  primary:  #d94e01, // buttons, workout card, sets bg
+  secondary:#363636, // workout bg, text
+  dark:     #0c0c0c, // text
+  light:    #f5f2eb, // text, nac-rep
+  danger:   #c1beb9, // nav bar, ac-rep
+);

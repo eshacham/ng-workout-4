@@ -9,3 +9,122 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+
+ion-app.ios [padding-vertical]{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+ion-app.md [padding-vertical]{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.tabs .tabbar, .toolbar-background {
+    // background: color($colors, danger)
+}
+.button {
+    // color: color($colors, dark);
+}
+.button-clear,
+.toolbar-title,
+.tabs .tab-button[aria-selected=true],
+.tabs .tab-button[aria-selected=true] .tab-button-icon,
+.tabs .tab-button[aria-selected=true] .tab-button,
+.tabs .tab-button:hover:not(.disable-hover),
+.card-header,
+.bar-button-default,
+.bar-button-default.bar-button-default,
+.bar-button-clear-default {
+    // color: color($colors, primary)
+}
+
+.content {
+    // color: color($colors, danger)
+}
+.item {
+    // background-color: color($colors, primary);
+    // color: color($colors, dark)
+}
+.swiper-pagination-bullet {
+    // background: color($colors, danger)
+}
+.swiper-pagination-bullet-active {
+    // background: color($colors, danger);
+}
+.scroll-content {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+.select-popover ion-list {
+    .item {
+        // background: color($colors, danger);
+    }
+}
+.popover-ios {
+    .popover-arrow::after {
+        // background: color($colors, danger);
+    }
+    .popover-content {
+        // background: color($colors, danger);
+        width: 250px;
+    }
+    ion-list {
+        .item {
+            // background: color($colors, danger);
+            font-size: small;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+}
+.popover-md {
+    .popover-arrow::after {
+        // background: color($colors, danger);
+    }
+    .popover-content {
+        // background: color($colors, danger);
+        //width: 250px;
+    }
+    ion-list {
+        .item {
+            // background: color($colors, danger);
+            font-size: small;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+}
+.popover-viewport {
+    .label {
+        margin: 0px!important;
+    }
+}
+.slides-ios {
+    margin-top: 18px!important;
+    height: 97%;
+}
+.header-ios {
+    top: 18px!important;
+}
+.range-ios .range-knob {
+    // background: color($colors, secondary);
+}
+.range-ios .range-bar {
+    // background: color($colors, danger);
+}
+.range-ios .range-bar-active {
+    // background: color($colors, secondary);
+}
+.range-md .range-knob {
+    // background: color($colors, secondary);
+}
+.range-md .range-bar {
+    // background: color($colors, danger);
+}
+.range-md .range-bar-active {
+    // background: color($colors, secondary);
+}

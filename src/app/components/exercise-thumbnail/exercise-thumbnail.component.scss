@@ -1,0 +1,106 @@
+app-exercise-thumbnail {
+    ion-thumbnail {
+        img {
+            height: 80px!important;
+            width: 80px!important;
+
+        }
+        div {
+            display: inline-block;
+            position: relative;
+            button[bottom] {
+                position: absolute!important;
+                left: calc(50% + 5px);
+                top: calc(50% - 1px);
+            }
+            button[up] {
+                position: absolute!important;
+                left: calc(50% - 2px);
+                top: calc(50% - 53px);
+            }
+        };
+        margin: 2px 1px 2px 1px!important;
+        display: flex;
+        justify-content: center;
+    };
+
+    #exercise-set-list {
+        margin-bottom: 0px;
+    };
+    #exercise-set-list-item {
+        padding-left: 0px;
+        // color: color($colors, dark);
+    };
+    #exercise-set-list-item-tight {
+        padding-left: 0px;
+        // color: color($colors, dark);
+        .label {
+            margin: 0px -15px -15px -20px;
+        }
+    };
+    .rep {
+        margin: 2px 0px 2px 0px ;
+    }
+    .nonActiveRep {
+        // background: color($colors, light);;
+        // color: color($colors, secondary);
+    }
+    .button-clear {
+        // color: color($colors, secondary);
+    }
+    .et-button {
+        // color: color($colors, primary);
+        // background: color($colors, danger);
+    }
+    .activeRep {
+        // background: color($colors, danger);
+        // color: color($colors, primary);;
+    }
+    ion-reorder{
+        display: none!important;
+    }
+    .noTopMargin {
+        margin-top: 0px;
+    }
+    .noBottomMargin {
+        margin-bottom: 0px;
+    }
+    .imageWrap {
+        display: inline-block;
+        position: relative;
+    }
+    .clicker {
+        cursor: pointer!important;
+    }
+    .fadeOutAndIn {
+        -webkit-animation: fadeinout 4s linear infinite;
+        animation: fadeinout 4s linear infinite;
+        opacity: 1;
+    }
+    @-webkit-keyframes fadeinout {
+        0%,100% { opacity: 1; }
+        50% { opacity: 0.25; }
+    }
+    @keyframes fadeinout {
+        0%,100% { opacity: 0.25; }
+        50% { opacity: 1; }
+    }
+    h3 {
+        // color: color($colors, danger);
+    }
+    ion-input {
+        input {
+            text-align: center;
+            margin: 4px!important;
+        }
+    }
+    button {
+        ion-icon[narrow-padding] {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+    }
+    .bordered {
+        // background: color($colors, danger);
+    }
+}
