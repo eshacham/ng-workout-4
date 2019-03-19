@@ -1,16 +1,14 @@
 <ion-card >
-  <ion-card-header>
+  <ion-card-header text-center>
     {{ workout.name | uppercase }}
   </ion-card-header>
 
   <ion-card-content>
-    <p text-wrap>{{ workout.description }}</p>
 
-    <ion-item *ngIf="daysCount" (click)="goToWorkoutDays()">
-      <ion-label>
-          Workout Days...
-      </ion-label>
-      <ion-badge item-end>{{ daysCount }}</ion-badge>
+    <p text-wrap>{{ workout.description }}</p>
+    <ion-item *ngIf="daysCount" detail (click)="goToWorkoutDays()" >
+        <ion-label >Workout Days...</ion-label>
+        <ion-badge slot="end">{{ daysCount }}</ion-badge>
     </ion-item>
 
   </ion-card-content>
