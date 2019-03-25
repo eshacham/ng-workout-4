@@ -16,8 +16,8 @@
                               <app-exercise-variation text-wrap
                                   #variationComponent [exerciseSet]="exerciseSet" >
                               </app-exercise-variation>
-                              <ion-button clear float-right
-                              (click)="runExercise()">
+                              <ion-button fill="clear" float-right
+                                (click)="runExercise()">
                                   <ion-icon slot="icon-only" name="play"></ion-icon>
                               </ion-button>
                           </ion-col>
@@ -68,21 +68,21 @@
               </ion-row>
               <ion-row justify-content-center>
                   <div *ngIf="isResting">
-                      <button ion-button class="btn-warning et-button btn-lg col-sm-4 col-sm-offset-4"
+                      <ion-button size="large" class="et-button"
                           (click)="skipRest()">
                           Rest {{timedRestRemaining}} Seconds or Skip
-                      </button>
+                      </ion-button>
                   </div>
                   <div *ngIf="!isResting">
-                      <ion-button clear
+                      <ion-button fill="clear"
                           [disabled]="!isPrevRepAvailable" (click)="prevRep()">
                           <ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon>
                       </ion-button>
-                      <ion-button class="btn-success et-button btn-lg col-sm-2"
+                      <ion-button size="large" class="et-button"
                           (click)="nextRep(true)">
                           Done!
                       </ion-button>
-                      <ion-button icon-only clear
+                      <ion-button fill="clear"
                           (click)="nextRep(false)">
                           <ion-icon slot="icon-only" name="arrow-dropright"></ion-icon>
                       </ion-button>
@@ -105,11 +105,11 @@
                           <ion-thumbnail >
                               <div>
                                   <img src={{exerciseSet.imageUrl}}/>
-                                  <ion-button clear bottom
+                                  <ion-button fill="clear" bottom
                                       (click)="deleteExerciseSet(i)">
                                       <ion-icon slot="icon-only" name="trash"></ion-icon>
                                   </ion-button>
-                                  <ion-button clear up
+                                  <ion-button fill="clear" up
                                       *ngIf="isNotLastInSet(exerciseSet)"
                                       (click)="switchExerciseSets(i)">
                                       <ion-icon slot="icon-only" name="repeat"></ion-icon>
@@ -128,7 +128,7 @@
               </ion-col>
           </ion-row>
           <ion-row justify-content-center>
-              <ion-button clear
+              <ion-button fill="clear"
                   (click)="toggleOpen()">
                   <ion-icon slot="icon-only" *ngIf="!IsOpen" name="arrow-dropdown"></ion-icon>
                   <ion-icon slot="icon-only" *ngIf="IsOpen" name="arrow-dropup"></ion-icon>
@@ -159,11 +159,11 @@
                           </div>
                           <ion-row justify-content-center class="bordered"
                               *ngIf="isLastSet(exerciseSet)" >
-                              <ion-button clear
-                                (click)="deleteRep(i)" [disabled]="isMinReps">
-                              <ion-icon slot="icon-only" name="trash" narrow-padding></ion-icon>
+                              <ion-button fill="clear"
+                                  (click)="deleteRep(i)" [disabled]="isMinReps">
+                                  <ion-icon slot="icon-only" name="trash" narrow-padding></ion-icon>
                               </ion-button>
-                              <ion-button clear
+                              <ion-button fill="clear"
                                   (click)="addRep(i)" [disabled]="isMaxReps">
                                   <ion-icon slot="icon-only" name="add-circle" narrow-padding></ion-icon>
                               </ion-button>
