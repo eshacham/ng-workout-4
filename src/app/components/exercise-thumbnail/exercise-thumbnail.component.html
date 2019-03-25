@@ -16,10 +16,10 @@
                               <app-exercise-variation text-wrap
                                   #variationComponent [exerciseSet]="exerciseSet" >
                               </app-exercise-variation>
-                              <button ion-button icon-only clear float-right
+                              <ion-button clear float-right
                               (click)="runExercise()">
-                                  <ion-icon name="play"></ion-icon>
-                              </button>
+                                  <ion-icon slot="icon-only" name="play"></ion-icon>
+                              </ion-button>
                           </ion-col>
                       </ion-row>
                   </ion-grid>
@@ -74,18 +74,18 @@
                       </button>
                   </div>
                   <div *ngIf="!isResting">
-                      <button ion-button icon-only clear
+                      <ion-button clear
                           [disabled]="!isPrevRepAvailable" (click)="prevRep()">
-                          <ion-icon name="arrow-dropleft"></ion-icon>
-                      </button>
-                      <button ion-button class="btn-success et-button btn-lg col-sm-2"
+                          <ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon>
+                      </ion-button>
+                      <ion-button class="btn-success et-button btn-lg col-sm-2"
                           (click)="nextRep(true)">
                           Done!
-                      </button>
-                      <button ion-button icon-only clear
+                      </ion-button>
+                      <ion-button icon-only clear
                           (click)="nextRep(false)">
-                          <ion-icon name="arrow-dropright"></ion-icon>
-                      </button>
+                          <ion-icon slot="icon-only" name="arrow-dropright"></ion-icon>
+                      </ion-button>
                   </div>
               </ion-row>
           </ion-grid>
@@ -105,15 +105,15 @@
                           <ion-thumbnail >
                               <div>
                                   <img src={{exerciseSet.imageUrl}}/>
-                                  <button ion-button icon-only clear bottom
+                                  <ion-button clear bottom
                                       (click)="deleteExerciseSet(i)">
-                                      <ion-icon name="trash"></ion-icon>
-                                  </button>
-                                  <button *ngIf="isNotLastInSet(exerciseSet)"
-                                      ion-button icon-only clear up
+                                      <ion-icon slot="icon-only" name="trash"></ion-icon>
+                                  </ion-button>
+                                  <ion-button clear up
+                                      *ngIf="isNotLastInSet(exerciseSet)"
                                       (click)="switchExerciseSets(i)">
-                                      <ion-icon name="repeat"></ion-icon>
-                                  </button>
+                                      <ion-icon slot="icon-only" name="repeat"></ion-icon>
+                                  </ion-button>
                               </div>
                           </ion-thumbnail>
 
@@ -128,11 +128,11 @@
               </ion-col>
           </ion-row>
           <ion-row justify-content-center>
-              <button ion-button icon-only clear
+              <ion-button clear
                   (click)="toggleOpen()">
-                  <ion-icon *ngIf="!IsOpen" name="arrow-dropdown"></ion-icon>
-                  <ion-icon *ngIf="IsOpen" name="arrow-dropup"></ion-icon>
-              </button>
+                  <ion-icon slot="icon-only" *ngIf="!IsOpen" name="arrow-dropdown"></ion-icon>
+                  <ion-icon slot="icon-only" *ngIf="IsOpen" name="arrow-dropup"></ion-icon>
+              </ion-button>
           </ion-row>
 
           <ion-list no-lines *ngIf="IsOpen" class="noBottomMargin">
@@ -159,14 +159,14 @@
                           </div>
                           <ion-row justify-content-center class="bordered"
                               *ngIf="isLastSet(exerciseSet)" >
-                              <button ion-button icon-only clear
-                              (click)="deleteRep(i)" [disabled]="isMinReps">
-                              <ion-icon name="trash" narrow-padding></ion-icon>
-                              </button>
-                              <button ion-button icon-only clear
+                              <ion-button clear
+                                (click)="deleteRep(i)" [disabled]="isMinReps">
+                              <ion-icon slot="icon-only" name="trash" narrow-padding></ion-icon>
+                              </ion-button>
+                              <ion-button clear
                                   (click)="addRep(i)" [disabled]="isMaxReps">
-                                  <ion-icon name="add-circle" narrow-padding></ion-icon>
-                              </button>
+                                  <ion-icon slot="icon-only" name="add-circle" narrow-padding></ion-icon>
+                              </ion-button>
                           </ion-row>
 
                       </ion-item>
