@@ -10,15 +10,19 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
+ionlab-preview {
+    // trying to fix bug in chrom only - does not help
+    --frame-width: var(--frame-default-width)!important;
+}
 
-ion-app.ios [padding-vertical]{
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
-ion-app.md [padding-vertical]{
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
+// ion-app.ios [padding-vertical]{
+//     padding-top: 4px;
+//     padding-bottom: 4px;
+// }
+// ion-app.md [padding-vertical]{
+//     padding-top: 4px;
+//     padding-bottom: 4px;
+// }
 .tabs .tabbar, .toolbar-background {
     // background: color($colors, danger)
 }
@@ -51,14 +55,14 @@ ion-app.md [padding-vertical]{
 .swiper-pagination-bullet-active {
     // background: color($colors, danger);
 }
-.scroll-content {
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-}
+// .scroll-content {
+//     overflow-y: scroll;
+//     overflow-x: hidden;
+// }
+// ::-webkit-scrollbar {
+//     width: 0px;
+//     background: transparent;
+// }
 .select-popover ion-list {
     .item {
         // background: color($colors, danger);
@@ -70,14 +74,14 @@ ion-app.md [padding-vertical]{
     }
     .popover-content {
         // background: color($colors, danger);
-        width: 250px;
+        // width: 250px;
     }
     ion-list {
         .item {
             // background: color($colors, danger);
-            font-size: small;
-            padding-left: 10px;
-            padding-right: 10px;
+            // font-size: small;
+            // padding-left: 10px;
+            // padding-right: 10px;
         }
     }
 }
@@ -92,24 +96,24 @@ ion-app.md [padding-vertical]{
     ion-list {
         .item {
             // background: color($colors, danger);
-            font-size: small;
-            padding-left: 10px;
-            padding-right: 10px;
+            // font-size: small;
+            // padding-left: 10px;
+            // padding-right: 10px;
         }
     }
 }
 .popover-viewport {
     .label {
-        margin: 0px!important;
+        // margin: 0px!important;
     }
 }
-.slides-ios {
-    margin-top: 18px!important;
-    height: 97%;
-}
-.header-ios {
-    top: 18px!important;
-}
+// .slides-ios {
+//     margin-top: 18px!important;
+//     height: 97%;
+// }
+// .header-ios {
+//     top: 18px!important;
+// }
 .range-ios .range-knob {
     // background: color($colors, secondary);
 }

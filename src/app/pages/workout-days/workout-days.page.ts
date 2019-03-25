@@ -19,6 +19,10 @@ export class WorkoutDaysPage implements OnInit {
   workoutDaysPublisher: Subject<ExerciseSwitchModeEvent> = new Subject();
   @ViewChild('slider') slides: Slides;
 
+  slideOpts = {
+    effect: 'flip'
+  };
+
   constructor(
     // private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
