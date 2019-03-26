@@ -20,7 +20,7 @@ export class WorkoutDaysPage implements OnInit {
   @ViewChild('slider') slides: Slides;
 
   slideOpts = {
-    effect: 'flip'
+    autoHeight: true
   };
 
   constructor(
