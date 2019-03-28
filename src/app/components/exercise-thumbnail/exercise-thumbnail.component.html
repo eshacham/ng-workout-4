@@ -1,7 +1,7 @@
 <div [ngSwitch]="DisplayMode">
   <div *ngSwitchCase="displayMode.Workout">
       <div [hidden]="IsRunning">
-          <ion-list id='exercise-set-list' no-lines>
+          <ion-list id='exercise-set-list' lines="none">
               <ion-item id='exercise-set-list-item-tight' *ngFor="let exerciseSet of exercise.sets"
                        [ngClass]="getTopBottomMarginClass(exerciseSet)">
                   <ion-grid>
@@ -135,7 +135,7 @@
               </ion-button>
           </ion-row>
 
-          <ion-list no-lines *ngIf="IsOpen" class="noBottomMargin">
+          <ion-list lines="none" *ngIf="IsOpen" class="noBottomMargin">
               <ion-row *ngFor="let exerciseSet of exercise.sets" justify-content-center>
                   <ion-col *ngFor="let rep of exerciseSet.reps; let i = index"
                       no-padding >
@@ -175,7 +175,7 @@
 
               <ion-row justify-content-center>
                   <ion-col>
-                      <ion-list no-lines class="noBottomMargin">
+                      <ion-list lines="none" class="noBottomMargin">
                           <h3 text-center>
                               Set Rest: {{exercise.sets[0].restBetweenReps}} seconds                        </h3>
                           <ion-item>
@@ -201,7 +201,7 @@
       </ion-grid>
   </div>
   <div *ngSwitchDefault>
-      <ion-list id='exercise-set-list' no-lines>
+      <ion-list id='exercise-set-list' lines="none">
           <ion-item *ngFor="let exerciseSet of exercise.sets"
                   id='exercise-set-list-item'>
               <ion-thumbnail item-start>

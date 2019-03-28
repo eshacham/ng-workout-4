@@ -23,7 +23,7 @@
   </ion-row>
   <ion-row>
     <ion-col id='workout-day-list-col'>
-      <ion-list id='workout-day-list' no-lines>
+      <ion-list id='workout-day-list' lines="none">
       <ion-reorder-group
         [disabled]="!IsEditMode" (ionItemReorder)="reorderItems($event)">
         <ion-item *ngFor="let exercise of workoutDay.exercises; let i = index"
