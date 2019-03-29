@@ -1,13 +1,5 @@
-app-workout-day {
-
-    #workout-day-list-col {
-        padding-left: 0px;
-        padding-top: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-    }
-    #workout-day-list {
-        height: 69vh;
+    ion-list {
+        height: 80vh;
         width: 92vw;
         margin-left: 15px;
         overflow-y: scroll;
@@ -15,6 +7,13 @@ app-workout-day {
         margin-bottom: 0px;
         // background: color($colors, secondary)
     };
+    app-workout-day {
+    #workout-day-list-col {
+        padding-left: 0px;
+        padding-top: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+    }
     #workout-day-list-item {
         margin-bottom: 5px;
         border-radius: 5px;

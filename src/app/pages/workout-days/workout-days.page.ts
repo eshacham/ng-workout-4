@@ -30,8 +30,8 @@ export class WorkoutDaysPage implements OnInit {
 
   ngOnInit() {
     this.workout = this.dataService.storage;
-    console.log('ngOnInit this.workout --> ', this.workout.name);
-    if (this.slides) {
+    if (this.slides && this.workout) {
+      console.log('ngOnInit this.workout.name --> ', this.workout.name);
       const lastIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
       console.log('last index on view loaded', lastIndex);
       this.slides.slideTo(lastIndex, 1);
@@ -41,7 +41,7 @@ export class WorkoutDaysPage implements OnInit {
 
 
   async slideChanged() {
-    if (this.slides) {
+    if (this.slides && this.workout) {
       const lastIndex = await this.slides.getActiveIndex();
       console.log('last index on slide changes', lastIndex);
       this.dataService.setLastSelectedWorkoutDay(this.workout.name, lastIndex);

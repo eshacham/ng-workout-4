@@ -59,10 +59,10 @@ ionlab-preview {
 //     overflow-y: scroll;
 //     overflow-x: hidden;
 // }
-// ::-webkit-scrollbar {
-//     width: 0px;
-//     background: transparent;
-// }
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
 .select-popover ion-list {
     .item {
         // background: color($colors, danger);

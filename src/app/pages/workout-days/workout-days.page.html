@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ workout.name }}</ion-title>
+    <ion-title>{{ workout?.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-slides #slider pager='true' [options]="slideOpts"
     (ionSlideDidChange)="slideChanged()">
-    <ion-slide *ngFor="let day of workout.days">
+    <ion-slide *ngFor="let day of workout?.days">
       <app-workout-day
         [workoutDay]="day"
         [inWorkoutDaysPublisher]="workoutDaysPublisher"
