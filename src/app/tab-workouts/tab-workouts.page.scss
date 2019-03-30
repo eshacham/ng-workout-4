@@ -1,16 +1,21 @@
+ion-content {
+  //--overflow: scroll;
+}
+// ion-content::-webkit-scrollbar {
+//   width: 0px;
+//   background: transparent;
+// }
 ion-list {
-  padding-top: 20px;
+  padding: 0px;
+  margin: 0px;
+  //overflow-y: scroll;
 }
-.list ion-item {
-  --inner-padding-end: 0px!important;
-  --padding-bottom:	5px;
-  --padding-end:	  30px;
-  --padding-start:	30px;
-  --padding-top:	  5px;
-}
-#workout-card {
-  // background: color($colors, secondary)!important;
-}
-app-workout-card {
-  width: 100%!important;
+
+ion-item {
+//   --inner-padding-end: 0px;
+//   --padding-bottom:	5px;
+//   --padding-end:	  30px;
+//   --padding-start:	30px;
+//   --padding-top:	  5px;
+//   --ion-item-background: rgb(38, 28, 180);
 }

@@ -8,7 +8,7 @@
 
 <ion-content>
   <ion-list lines="none">
-    <ion-item *ngFor="let workout of workouts; let index = i" id='workout-card'>
+    <ion-item *ngFor="let workout of workouts; let index = i">
       <app-workout-card [workout]="workout">
       </app-workout-card>
     </ion-item>
