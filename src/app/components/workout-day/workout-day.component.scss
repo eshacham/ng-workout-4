@@ -1,30 +1,30 @@
-    ion-list {
-        height: 69vh;
-        width: 92vw;
-        //margin-left: 15px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        margin-bottom: 0px;
-        // background: color($colors, secondary)
-    };
-    app-workout-day {
-    #workout-day-list-col {
-        padding-left: 0px;
-        padding-top: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-    }
-    #workout-day-list-item {
-        margin-bottom: 5px;
-        border-radius: 5px;
-    };
-    ion-grid {
-        padding: 0px!important;
-    }
-    #workout-day-last-row {
-        margin-top: -12px;
-    }
-    .label {
-        margin: 4px;
-    }
+ion-grid {
+    padding: 0px;
+}
+ion-list {
+    height: 69vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin: 0px 15px 0px 15px;
+    padding: 0px;
+    // background: color($colors, secondary)
+};
+ion-col {
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+}
+ion-item {
+    margin-bottom: 5px;
+    border-radius: 5px;
+     --padding-start: 0px;
+     --padding-end: 0px;
+     --inner-padding-end: 0px;
+};
+ion-button {
+    margin: 0px;
+}
+app-exercise-thumbnail {
+    margin: 4px;
 }

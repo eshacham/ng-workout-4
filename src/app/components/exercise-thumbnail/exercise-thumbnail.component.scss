@@ -1,43 +1,51 @@
-app-exercise-thumbnail {
-    ion-thumbnail {
-        img {
-            height: 80px!important;
-            width: 80px!important;
+ion-list {
+    margin: 0px;
+    padding: 0px;
+    // color: color($colors, dark);
+}
+ion-item {
+    padding-left: 0px;
+    // color: color($colors, dark);
+    .label {
+        margin: 0px -15px -15px -20px;
+    }
+};
+img {
+    height: 80px;
+    width: 80px;
+    margin: 2px 1px;
+}
+ion-row {
+    margin: 0px;
+    padding: 4px;
+}
+ion-thumbnail {
+    --padding-start: 0px;
+    margin: 2px 1px 2px 1px!important;
+    display: flex;
+    justify-content: center;
 
+    div {
+        display: inline-block;
+        position: relative;
+        button[bottom] {
+            position: absolute!important;
+            left: calc(50% + 5px);
+            top: calc(50% - 1px);
         }
-        div {
-            display: inline-block;
-            position: relative;
-            button[bottom] {
-                position: absolute!important;
-                left: calc(50% + 5px);
-                top: calc(50% - 1px);
-            }
-            button[up] {
-                position: absolute!important;
-                left: calc(50% - 2px);
-                top: calc(50% - 53px);
-            }
-        };
-        margin: 2px 1px 2px 1px!important;
-        display: flex;
-        justify-content: center;
+        button[up] {
+            position: absolute!important;
+            left: calc(50% - 2px);
+            top: calc(50% - 53px);
+        }
     };
+};
+h2 {
+    margin: 0px 0px 2px 0px;
+    font-size: 16px;
+    font-weight: normal;
+}
 
-    #exercise-set-list {
-        margin-bottom: 0px;
-    };
-    #exercise-set-list-item {
-        padding-left: 0px;
-        // color: color($colors, dark);
-    };
-    #exercise-set-list-item-tight {
-        padding-left: 0px;
-        // color: color($colors, dark);
-        .label {
-            margin: 0px -15px -15px -20px;
-        }
-    };
     .rep {
         margin: 2px 0px 2px 0px ;
     }
@@ -103,4 +111,3 @@ app-exercise-thumbnail {
     .bordered {
         // background: color($colors, danger);
     }
-}

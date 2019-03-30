@@ -1,28 +1,23 @@
 <div [ngSwitch]="DisplayMode">
   <div *ngSwitchCase="displayMode.Workout">
       <div [hidden]="IsRunning">
-          <ion-list id='exercise-set-list' lines="none">
-              <ion-item id='exercise-set-list-item-tight' *ngFor="let exerciseSet of exercise.sets"
+          <ion-list lines="none">
+              <ion-item *ngFor="let exerciseSet of exercise.sets"
                        [ngClass]="getTopBottomMarginClass(exerciseSet)">
-                  <ion-grid>
-                      <ion-row align-items-center>
-                          <ion-col size="4">
-                              <ion-thumbnail>
-                                  <img src={{exerciseSet.imageUrl}} />
-                              </ion-thumbnail>
-                          </ion-col>
-                          <ion-col>
-                              <h2 text-wrap text-start margin-bottom>{{exerciseSet.name}} </h2>
-                              <app-exercise-variation text-wrap
-                                  #variationComponent [exerciseSet]="exerciseSet" >
-                              </app-exercise-variation>
-                              <ion-button fill="clear" float-right
-                                (click)="runExercise()">
-                                  <ion-icon slot="icon-only" name="play"></ion-icon>
-                              </ion-button>
-                          </ion-col>
-                      </ion-row>
-                  </ion-grid>
+
+                <img src={{exerciseSet.imageUrl}} />
+
+                <ion-row slot="end" align-items-center justify-content-center>
+                    <h2 text-wrap text-start margin-bottom>{{exerciseSet.name}} </h2>
+                    <app-exercise-variation text-wrap
+                        #variationComponent [exerciseSet]="exerciseSet" >
+                    </app-exercise-variation>
+                    <ion-button fill="clear" float-right
+                    (click)="runExercise()">
+                        <ion-icon slot="icon-only" name="play"></ion-icon>
+                    </ion-button>
+                </ion-row>
+
               </ion-item>
           </ion-list>
       </div>
@@ -140,7 +135,7 @@
                   <ion-col *ngFor="let rep of exerciseSet.reps; let i = index"
                       no-padding >
                       <ion-item class="rep nonActiveRep ">
-                          <div class="clicker"
+                          <div detail
                               (click)="presentPopover($event, rep)">
                               <h5 *ngIf='rep.weight' text-center>
                                   {{rep.weight}}
@@ -201,15 +196,16 @@
       </ion-grid>
   </div>
   <div *ngSwitchDefault>
-      <ion-list id='exercise-set-list' lines="none">
-          <ion-item *ngFor="let exerciseSet of exercise.sets"
-                  id='exercise-set-list-item'>
-              <ion-thumbnail item-start>
-                  <img src={{exerciseSet.imageUrl}} />
-              </ion-thumbnail>
-              <h2 text-wrap>{{exerciseSet.name}}</h2>
-              <app-exercise-variation [exerciseSet]="exerciseSet">
-              </app-exercise-variation>
+      <ion-list lines="none">
+          <ion-item *ngFor="let exerciseSet of exercise.sets">
+
+            <img src={{exerciseSet.imageUrl}} slot="start"/>
+
+            <ion-row slot="end" justify-content-start>
+                <h2 text-wrap>{{exerciseSet.name}}</h2>
+                <app-exercise-variation [exerciseSet]="exerciseSet">
+                </app-exercise-variation>
+            </ion-row>
           </ion-item>
       </ion-list>
   </div>
