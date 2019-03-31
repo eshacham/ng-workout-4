@@ -20,7 +20,12 @@ export class WorkoutDaysPage implements OnInit {
   @ViewChild('slider') slides: Slides;
 
   slideOpts = {
-    autoHeight: false
+    autoHeight: false,
+    pagination: {
+      type: 'bullets',
+      clickable: true,
+      el: '.swiper-pagination',
+    },
   };
 
   constructor(

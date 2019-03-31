@@ -10,17 +10,14 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
-// ionlab-preview {
-//     // trying to fix bug in chrom only - does not help!
-//     //--frame-width: var(--frame-default-width)!important;
-// }
-
-// .scroll-y, .inner-scroll { display: none; }
-
 ::-webkit-scrollbar,
 *::-webkit-scrollbar {
     display: none;
 }
+
+// .swiper-container-horizontal>.swiper-pagination-bullets {
+//     bottom: 0px;
+// }
 
 // ion-app.ios [padding-vertical]{
 //     padding-top: 4px;

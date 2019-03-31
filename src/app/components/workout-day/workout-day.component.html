@@ -1,24 +1,33 @@
-<ion-grid >
+<ion-fab vertical="top" horizontal="start">
+  <ion-fab-button size="small" (click)="startOrStopToggle()">
+    <ion-icon name="play"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="end">
+    <ion-fab-button size="small" (click)="startOrStopToggle()">
+      <ion-icon name="pause"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab>
+<ion-fab vertical="top" horizontal="end">
+    <ion-fab-button size="small" (click)="editOrCancelToggle()">
+      <ion-icon name="construct"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="bottom">
+      <ion-fab-button size="small" (click)="addExercise()">
+        <ion-icon name="calendar"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button size="small" (click)="saveChanges()">
+        <ion-icon name="walk"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+</ion-fab>
+<ion-grid>
   <ion-row align-items-center>
-    <ion-col size="2">
-      <ion-button fill="clear" *ngIf="IsDisplayOrWorkout"
-         (click)="startOrStopToggle()">
-         <ion-icon slot="icon-only" name="play" *ngIf="IsDisplayMode"></ion-icon>
-        <ion-icon slot="icon-only" name="pause" *ngIf="IsWorkoutMode"></ion-icon>
-      </ion-button>
-    </ion-col>
-    <ion-col size="8">
+    <ion-col>
       <ion-label *ngIf="IsDisplayOrWorkout" no-margin>{{ workoutDay.name }}</ion-label>
       <ion-input *ngIf="IsEditMode" type="text" no-margin text-center
         [(ngModel)]="workoutDay.name">
       </ion-input>
-    </ion-col>
-    <ion-col size="2">
-      <ion-button fill="clear" *ngIf="IsDisplayOrEdit"
-         (click)="editOrCancelToggle()">
-         <ion-icon slot="icon-only" name="construct" *ngIf="IsDisplayMode"></ion-icon>
-        <ion-icon slot="icon-only" name="exit" *ngIf="IsEditMode"></ion-icon>
-      </ion-button>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -40,21 +49,5 @@
         </ion-reorder-group>
       </ion-list>
     </ion-col>
-  </ion-row>
-  <ion-row *ngIf="IsEditMode" id='workout-day-last-row' >
-    <ion-col size="4" >
-      <ion-button fill="clear"
-        (click)="addExercise()">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-        <ion-label>Exercise</ion-label>
-      </ion-button>
-    </ion-col>
-    <ion-col size="4" offset="4">
-        <ion-button fill="clear"
-          (click)="saveChanges()">
-          <ion-icon slot="icon-only" name="add"></ion-icon>
-          <ion-label>Day</ion-label>
-        </ion-button>
-      </ion-col>
   </ion-row>
 </ion-grid>
