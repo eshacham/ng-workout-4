@@ -3,21 +3,19 @@
       <div [hidden]="IsRunning">
           <ion-list lines="none">
               <ion-item *ngFor="let exerciseSet of exercise.sets"
-                       [ngClass]="getTopBottomMarginClass(exerciseSet)">
-
-                <img src={{exerciseSet.imageUrl}} />
-
-                <ion-row slot="end" align-items-center justify-content-center>
-                    <h2 text-wrap text-start margin-bottom>{{exerciseSet.name}} </h2>
+                [ngClass]="getTopBottomMarginClass(exerciseSet)">
+                <img src={{exerciseSet.imageUrl}} slot="start"/>
+                <ion-label>
+                    <h2 text-wrap>{{exerciseSet.name}}</h2>
                     <app-exercise-variation text-wrap
-                        #variationComponent [exerciseSet]="exerciseSet" >
+                        #variationComponent
+                        [exerciseSet]="exerciseSet" >
                     </app-exercise-variation>
-                    <ion-button fill="clear" float-right
-                    (click)="runExercise()">
+                    <ion-button fill="clear" float-right *ngIf="isLastSet(exerciseSet)"
+                        (click)="runExercise()">
                         <ion-icon slot="icon-only" name="play"></ion-icon>
                     </ion-button>
-                </ion-row>
-
+                </ion-label>
               </ion-item>
           </ion-list>
       </div>
@@ -196,12 +194,11 @@
   <div *ngSwitchDefault>
       <ion-list lines="none">
           <ion-item *ngFor="let exerciseSet of exercise.sets">
-
             <img src={{exerciseSet.imageUrl}} slot="start"/>
-
             <ion-label>
                 <h2 text-wrap>{{exerciseSet.name}}</h2>
-                <app-exercise-variation [exerciseSet]="exerciseSet">
+                <app-exercise-variation text-wrap
+                    [exerciseSet]="exerciseSet">
                 </app-exercise-variation>
             </ion-label>
           </ion-item>

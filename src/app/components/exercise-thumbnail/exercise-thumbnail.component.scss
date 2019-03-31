@@ -17,6 +17,7 @@ ion-list {
 ion-item {
     padding-left: 0px;
     --inner-padding-end: 0px;
+    --padding-start: 0px;
     // color: color($colors, dark);
 };
 img {
@@ -71,24 +72,37 @@ h4 {
     // background: color($colors, light);;
     // color: color($colors, secondary);
 }
-
+.noTopMargin {
+        margin-top: 0px;
+    }
+.noBottomMargin {
+    margin-bottom: 0px;
+}
+.et-button {
+    // color: color($colors, primary);
+    // background: color($colors, danger);
+}
+.fadeOutAndIn {
+        -webkit-animation: fadeinout 4s linear infinite;
+        animation: fadeinout 4s linear infinite;
+        opacity: 1;
+    }
+@-webkit-keyframes fadeinout {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.25; }
+}
+@keyframes fadeinout {
+    0%,100% { opacity: 0.25; }
+    50% { opacity: 1; }
+}
     .button-clear {
         // color: color($colors, secondary);
     }
-    .et-button {
-        // color: color($colors, primary);
-        // background: color($colors, danger);
-    }
 
-    ion-reorder{
-        display: none!important;
-    }
-    .noTopMargin {
-        margin-top: 0px;
-    }
-    .noBottomMargin {
-        margin-bottom: 0px;
-    }
+    // ion-reorder{
+    //     display: none!important;
+    // }
+
     .imageWrap {
         display: inline-block;
         position: relative;
@@ -96,19 +110,7 @@ h4 {
     .clicker {
         cursor: pointer!important;
     }
-    .fadeOutAndIn {
-        -webkit-animation: fadeinout 4s linear infinite;
-        animation: fadeinout 4s linear infinite;
-        opacity: 1;
-    }
-    @-webkit-keyframes fadeinout {
-        0%,100% { opacity: 1; }
-        50% { opacity: 0.25; }
-    }
-    @keyframes fadeinout {
-        0%,100% { opacity: 0.25; }
-        50% { opacity: 1; }
-    }
+
     h3 {
         // color: color($colors, danger);
     }
