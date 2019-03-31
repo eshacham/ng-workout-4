@@ -1,18 +1,18 @@
-<ion-fab vertical="top" horizontal="start">
-  <ion-fab-button size="small" (click)="startOrStopToggle()">
+<ion-fab vertical="top" horizontal="start" #fabWorkout>
+  <ion-fab-button size="small" (click)="startWorkout()">
     <ion-icon name="play"></ion-icon>
   </ion-fab-button>
   <ion-fab-list side="end">
-    <ion-fab-button size="small" (click)="startOrStopToggle()">
+    <ion-fab-button size="small" (click)="stopWorkout()">
       <ion-icon name="pause"></ion-icon>
     </ion-fab-button>
   </ion-fab-list>
 </ion-fab>
-<ion-fab vertical="top" horizontal="end">
-    <ion-fab-button size="small" (click)="editOrCancelToggle()">
+<ion-fab vertical="bottom" horizontal="end" #fabEdit>
+    <ion-fab-button size="small" (click)="editWorkout()">
       <ion-icon name="construct"></ion-icon>
     </ion-fab-button>
-    <ion-fab-list side="bottom">
+    <ion-fab-list side="start">
       <ion-fab-button size="small" (click)="addExercise()">
         <ion-icon name="calendar"></ion-icon>
       </ion-fab-button>
@@ -24,9 +24,15 @@
 <ion-grid>
   <ion-row align-items-center padding-top padding-bottom>
     <ion-col>
-      <ion-label *ngIf="IsDisplayOrWorkout" no-margin>{{ workoutDay.name }}</ion-label>
+      <ion-label *ngIf="IsDisplayOrWorkout" no-margin>
+        {{ workoutDay.name }}
+        is workout: {{IsWorkoutMode}}
+        is edit: {{IsEditMode}}
+      </ion-label>
       <ion-input *ngIf="IsEditMode" type="text" no-margin text-center
         [(ngModel)]="workoutDay.name">
+        is workout: {{IsWorkoutMode}}
+        is edit: {{IsEditMode}}
       </ion-input>
     </ion-col>
   </ion-row>
@@ -44,7 +50,7 @@
             #exerciseComponent (click)="exerciseComponent.exerciseSelected()"
             (outEventEmitter)="handleExerciseActionEvent($event)">
             </app-exercise-thumbnail>
-            <ion-reorder slot="start"></ion-reorder>
+            <ion-reorder slot="end"></ion-reorder>
         </ion-item>
         </ion-reorder-group>
       </ion-list>

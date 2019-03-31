@@ -38,21 +38,20 @@ ion-thumbnail {
     margin: 2px 1px 2px 1px!important;
     display: flex;
     justify-content: center;
-
-    div {
-        display: inline-block;
-        position: relative;
-        button[bottom] {
-            position: absolute!important;
-            left: calc(50% + 5px);
-            top: calc(50% - 1px);
-        }
-        button[up] {
-            position: absolute!important;
-            left: calc(50% - 2px);
-            top: calc(50% - 53px);
-        }
-    };
+};
+div#div-with-image-and-buttons {
+    display: inline-block;
+    position: relative;
+    button[bottom] {
+        position: absolute!important;
+        left: calc(50% + 5px);
+        top: calc(50% - 1px);
+    }
+    button[up] {
+        position: absolute!important;
+        left: calc(50% - 2px);
+        top: calc(50% - 53px);
+    }
 };
 h2 {
     margin: 0px 0px 2px 0px;

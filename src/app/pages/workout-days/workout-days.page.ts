@@ -57,18 +57,18 @@ export class WorkoutDaysPage implements OnInit {
     const exerciseAction: ExerciseAction = event.action;
     switch (exerciseAction) {
       case ExerciseAction.Completed:
-        console.log('workout: receieved completed event: ', event.exerciseIndex);
+        console.log('workout: receieved completed event: ', JSON.stringify(event) );
         // this.handleExersiceSetComletion(event.exerciseIndex);
         break;
       case ExerciseAction.Delete:
-        console.log('workout: receieved delete event: ', event.exercise);
+        console.log('workout: receieved delete event: ', JSON.stringify(event));
         // this.deleteExercise(event.exercise, event.workoutDayName);
         break;
       case ExerciseAction.Edit:
-        console.log('workout: receieved edit event: ', event.exercise);
+        console.log('workout: receieved edit event: ', JSON.stringify(event));
         break;
       case ExerciseAction.Run:
-        console.log('workout: receieved run event: ', event.workoutDayName);
+        console.log('workout: receieved run event: ', JSON.stringify(event));
         this.publishWorkoutEvent(DisplayMode.Workout, event.workoutDayName);
         break;
     }

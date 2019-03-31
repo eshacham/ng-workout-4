@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import { Exercise } from '../../models/Exercise';
@@ -6,6 +6,7 @@ import { DisplayMode, ExerciseAction  } from '../../models/enums';
 import { ExerciseSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseActionEvent } from '../../models/ExerciseActionEvent';
 import { ItemReorderEventDetail } from '@ionic/core';
+import { IonFab } from '@ionic/angular';
 
 @Component({
   selector: 'app-workout-day',
@@ -13,6 +14,9 @@ import { ItemReorderEventDetail } from '@ionic/core';
   styleUrls: ['./workout-day.component.scss'],
 })
 export class WorkoutDayComponent implements OnInit {
+
+  @ViewChild('fabWorkout') fabWorkout: IonFab;
+  @ViewChild('fabEdit') fabEdit: IonFab;
 
   @Input() workoutDay: WorkoutDay;
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSwitchModeEvent>;
@@ -67,18 +71,18 @@ export class WorkoutDayComponent implements OnInit {
     const exerciseAction: ExerciseAction = event.action;
     switch (exerciseAction) {
         case ExerciseAction.Completed:
-            console.log('workout-day: receieved completed event: ', event.exerciseIndex);
+            console.log('workout-day: receieved completed event: ', JSON.stringify(event));
             this.handleExerciseSetCompletion(event.exerciseIndex);
             break;
         case ExerciseAction.Delete:
-            console.log('workout-day: receieved delete event: ', event.exercise);
+            console.log('workout-day: receieved delete event: ', JSON.stringify(event));
             this.deleteExercise(event.exercise, event.workoutDayName);
             break;
         case ExerciseAction.Edit:
-            console.log('workout-day: receieved edit event: ', event.exercise);
+            console.log('workout-day: receieved edit event: ', JSON.stringify(event));
             break;
         case ExerciseAction.Run:
-            console.log('workout-day: receieved run event: ', event.exerciseIndex);
+            console.log('workout-day: receieved run event: ', JSON.stringify(event));
             this.startExercise(event.exerciseIndex);
             break;
     }
@@ -88,23 +92,69 @@ export class WorkoutDayComponent implements OnInit {
       // this.workoutService.deleteExercise(set, this.workoutDay);
   }
 
-  startOrStopToggle() {
-    if (this.DisplayMode === DisplayMode.Display) {
-      this.DisplayMode = DisplayMode.Workout;
-      this.emitExerciseActionEvent(ExerciseAction.Run);
-    } else {
+  startWorkout() {
+    switch (this.DisplayMode) {
+      case DisplayMode.Display:
+        this.DisplayMode = DisplayMode.Workout;
+        break;
+      case DisplayMode.Workout:
       this.DisplayMode = DisplayMode.Display;
-      this.emitExerciseActionEvent(ExerciseAction.Completed);
+        break;
+      case DisplayMode.Edit:
+        this.DisplayMode = DisplayMode.Workout;
+        break;
     }
+    this.emitExerciseActionEventByStatus();
+  }
+  stopWorkout() {
+    switch (this.DisplayMode) {
+      case DisplayMode.Workout:
+        this.DisplayMode = DisplayMode.Display;
+        break;
+      case DisplayMode.Display:
+      case DisplayMode.Edit:
+        break;
+    }
+    this.emitExerciseActionEventByStatus();
+  }
+  editWorkout() {
+    switch (this.DisplayMode) {
+      case DisplayMode.Display:
+        this.DisplayMode = DisplayMode.Edit;
+        break;
+      case DisplayMode.Workout:
+      this.DisplayMode = DisplayMode.Edit;
+        break;
+      case DisplayMode.Edit:
+        this.DisplayMode = DisplayMode.Display;
+        break;
+    }
+    this.emitExerciseActionEventByStatus();
+  }
+  cancelEditWorkout() {
+    switch (this.DisplayMode) {
+      case DisplayMode.Edit:
+        this.DisplayMode = DisplayMode.Display;
+        break;
+      case DisplayMode.Display:
+      case DisplayMode.Workout:
+        break;
+    }
+    this.emitExerciseActionEventByStatus();
   }
 
-  editOrCancelToggle() {
-    if (this.DisplayMode === DisplayMode.Display) {
-      this.DisplayMode = DisplayMode.Edit;
+  emitExerciseActionEventByStatus() {
+    switch (this.DisplayMode) {
+      case DisplayMode.Display:
+        this.emitExerciseActionEvent(ExerciseAction.Completed);
+        break;
+      case DisplayMode.Workout:
+        this.fabEdit.close();
+        this.emitExerciseActionEvent(ExerciseAction.Run);
+        break;
+      case DisplayMode.Edit:
+      this.fabWorkout.close();
       this.emitExerciseActionEvent(ExerciseAction.Edit);
-    } else {
-      this.DisplayMode = DisplayMode.Display;
-      this.emitExerciseActionEvent(ExerciseAction.Completed);
     }
   }
 
@@ -115,12 +165,12 @@ export class WorkoutDayComponent implements OnInit {
   }
 
   saveChanges() {
-    this.DisplayMode = DisplayMode.Display;
+    this.cancelEditWorkout();
     // this.toastr.info('Saved!');
   }
 
   finishWorkout (notify: boolean = true) {
-      this.DisplayMode = DisplayMode.Display;
+      this.stopWorkout();
       if (notify) {
           // this.toastr.success('Good Job!');
       }

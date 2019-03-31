@@ -21,17 +21,17 @@
       </div>
       <div [hidden]="!IsRunning">
           <ion-grid>
-              <ion-row>
+              <ion-row class="ion-justify-content-around">
                   <ion-col *ngFor="let exerciseSet of exercise.sets">
                       <ion-label text-wrap text-center>{{exerciseSet.name}}</ion-label>
                   </ion-col>
               </ion-row>
-              <ion-row >
+              <ion-row class="ion-justify-content-around">
                   <ion-col *ngFor="let exerciseSet of exercise.sets" id="col-with-image">
                     <img src={{exerciseSet.imageUrl}} />
                   </ion-col>
               </ion-row>
-              <ion-row>
+              <ion-row class="ion-justify-content-around">
                   <ion-col *ngFor="let exerciseSet of exercise.sets" >
                       <app-exercise-variation [exerciseSet]="exerciseSet" text-wrap text-center>
                       </app-exercise-variation>
@@ -87,28 +87,24 @@
           <ion-row >
               <ion-col *ngFor="let exerciseSet of exercise.sets; let i = index" no-padding>
                   <ion-item >
-                      <ion-input type="text" [(ngModel)]="exerciseSet.name"
-                          placeholder="Exercise Name">
-                      </ion-input>
-                  </ion-item>
-                  <ion-item >
-                      <ion-row align-items-center justify-content-center>
-                          <ion-thumbnail >
-                              <div>
-                                  <img src={{exerciseSet.imageUrl}}/>
-                                  <ion-button fill="clear" bottom
-                                      (click)="deleteExerciseSet(i)">
-                                      <ion-icon slot="icon-only" name="trash"></ion-icon>
-                                  </ion-button>
-                                  <ion-button fill="clear" up
-                                      *ngIf="isNotLastInSet(exerciseSet)"
-                                      (click)="switchExerciseSets(i)">
-                                      <ion-icon slot="icon-only" name="repeat"></ion-icon>
-                                  </ion-button>
-                              </div>
-                          </ion-thumbnail>
+                    <ion-input type="text" [(ngModel)]="exerciseSet.name"
+                        placeholder="Exercise Name"
+                        slot="start">
+                    </ion-input>
 
-                      </ion-row>
+                    <div id="div-with-image-and-buttons">
+                        <img src={{exerciseSet.imageUrl}}/>
+                        <ion-button fill="clear" bottom
+                            (click)="deleteExerciseSet(i)">
+                            <ion-icon slot="icon-only" name="trash"></ion-icon>
+                        </ion-button>
+                        <ion-button fill="clear" up
+                            *ngIf="isNotLastInSet(exerciseSet)"
+                            (click)="switchExerciseSets(i)">
+                            <ion-icon slot="icon-only" name="repeat"></ion-icon>
+                        </ion-button>
+                    </div>
+
                   </ion-item>
                   <ion-item>
                       <app-exercise-variation text-wrap text-center
