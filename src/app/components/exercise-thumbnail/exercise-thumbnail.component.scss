@@ -1,3 +1,14 @@
+ion-grid {
+    padding: 0px;
+}
+ion-col#col-with-image {
+    height: 94px;
+    text-align: center;
+}
+ion-col#col-rep {
+    margin: 2px 0px 2px 0px;
+    padding: 4px 5px 4px 5px;
+}
 ion-list {
     margin: 0px;
     padding: 0px;
@@ -5,19 +16,21 @@ ion-list {
 }
 ion-item {
     padding-left: 0px;
+    --inner-padding-end: 0px;
     // color: color($colors, dark);
-    .label {
-        margin: 0px -15px -15px -20px;
-    }
 };
 img {
     height: 80px;
     width: 80px;
     margin: 2px 1px;
 }
-ion-row {
+ion-label {
     margin: 0px;
     padding: 4px;
+    font-size: 17px;
+}
+ion-label[text-wrap] {
+    font-size: 17px;
 }
 ion-thumbnail {
     --padding-start: 0px;
@@ -45,14 +58,20 @@ h2 {
     font-size: 16px;
     font-weight: normal;
 }
+h4 {
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+}
+.activeRep {
+    // background: color($colors, danger);
+    // color: color($colors, primary);;
+}
+.nonActiveRep {
+    // background: color($colors, light);;
+    // color: color($colors, secondary);
+}
 
-    .rep {
-        margin: 2px 0px 2px 0px ;
-    }
-    .nonActiveRep {
-        // background: color($colors, light);;
-        // color: color($colors, secondary);
-    }
     .button-clear {
         // color: color($colors, secondary);
     }
@@ -60,10 +79,7 @@ h2 {
         // color: color($colors, primary);
         // background: color($colors, danger);
     }
-    .activeRep {
-        // background: color($colors, danger);
-        // color: color($colors, primary);;
-    }
+
     ion-reorder{
         display: none!important;
     }
