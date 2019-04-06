@@ -26,13 +26,9 @@
     <ion-col>
       <ion-label *ngIf="IsDisplayOrWorkout" no-margin>
         {{ workoutDay.name }}
-        is workout: {{IsWorkoutMode}}
-        is edit: {{IsEditMode}}
       </ion-label>
       <ion-input *ngIf="IsEditMode" type="text" no-margin text-center
         [(ngModel)]="workoutDay.name">
-        is workout: {{IsWorkoutMode}}
-        is edit: {{IsEditMode}}
       </ion-input>
     </ion-col>
   </ion-row>
