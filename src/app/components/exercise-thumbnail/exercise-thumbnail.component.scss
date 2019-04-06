@@ -1,9 +1,26 @@
 ion-grid {
     padding: 0px;
 }
-ion-col[col-with-image] {
+ion-row {
+    --ion-padding: 4px;
+}
+ion-item#item-with-image-and-button {
+    display: inline-block;
+    position: relative;
+    ion-button[bottom] {
+        position: absolute;
+        left: calc(100% - 27px);
+        top: calc(100% - 29px);
+    }
+};
+ion-col[col-with-image-and-button] {
     height: 94px;
     text-align: center;
+    ion-button[up] {
+        position: absolute;
+        left: calc(100% - 18px);
+        top: 27px;
+    }
 }
 ion-col#col-rep {
     margin: 2px 0px 2px 0px;
@@ -33,34 +50,21 @@ ion-label {
 ion-label[text-wrap] {
     font-size: 17px;
 }
-ion-thumbnail {
-    --padding-start: 0px;
-    margin: 2px 1px 2px 1px!important;
-    display: flex;
-    justify-content: center;
-};
-ion-item#div-with-image-and-buttons {
-    display: inline-block;
-    position: relative;
-    ion-button[bottom] {
-        position: absolute!important;
-        left: calc(50% + 5px);
-        top: calc(50% - 1px);
-    }
-    ion-button[up] {
-        position: absolute!important;
-        left: calc(50% - 2px);
-        top: calc(50% - 53px);
-    }
-};
+
 h2 {
-    margin: 0px 0px 2px 0px;
     font-size: 16px;
+    margin: 0px 0px 2px 0px;
     font-weight: normal;
+}
+h3 {
+    // color: color($colors, danger);
+    font-size: 14px;
+    margin: 0px 0px 2px 0px;
+    padding: 0px;
 }
 h4 {
     font-size: 14px;
-    margin: 0px;
+    margin: 0px 0px 2px 0px;
     padding: 0px;
 }
 .activeRep {
@@ -98,10 +102,6 @@ h4 {
         // color: color($colors, secondary);
     }
 
-    // ion-reorder{
-    //     display: none!important;
-    // }
-
     .imageWrap {
         display: inline-block;
         position: relative;
@@ -110,21 +110,19 @@ h4 {
         cursor: pointer!important;
     }
 
-    h3 {
-        // color: color($colors, danger);
-    }
+
     ion-input {
         input {
             text-align: center;
             margin: 4px!important;
         }
     }
-    button {
-        ion-icon[narrow-padding] {
-            padding-left: 2px;
-            padding-right: 2px;
-        }
+    ion-button {
+        --padding-end: 2px;
+        --padding-start: 2px;
     }
     .bordered {
         // background: color($colors, danger);
+        margin: 2px 0px 2px 0px;
+        text-align: center;
     }

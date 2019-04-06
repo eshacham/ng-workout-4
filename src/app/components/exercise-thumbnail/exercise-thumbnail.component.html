@@ -97,19 +97,19 @@
         </ion-row>
         <ion-row class="ion-justify-content-around">
             <ion-col *ngFor="let exerciseSet of exercise.sets; let i = index"
-                no-padding col-with-image>
-                <ion-item id="div-with-image-and-buttons">
+                no-padding col-with-image-and-button>
+                <ion-item id="item-with-image-and-button">
                     <img src={{exerciseSet.imageUrl}}/>
                     <ion-button fill="clear" bottom
                         (click)="deleteExerciseSet(i)">
                         <ion-icon slot="icon-only" name="trash"></ion-icon>
                     </ion-button>
-                    <ion-button fill="clear" up
-                        *ngIf="isNotLastInSet(exerciseSet)"
-                        (click)="switchExerciseSets(i)">
-                        <ion-icon slot="icon-only" name="repeat"></ion-icon>
-                    </ion-button>
                 </ion-item>
+                <ion-button fill="clear" up
+                    *ngIf="isNotLastInSet(exerciseSet)"
+                    (click)="switchExerciseSets(i)">
+                    <ion-icon slot="icon-only" name="repeat"></ion-icon>
+                </ion-button>
             </ion-col>
         </ion-row>
         <ion-row>
@@ -129,39 +129,39 @@
         </ion-row>
 
         <div lines="none" *ngIf="IsOpen" class="noBottomMargin">
-              <ion-row *ngFor="let exerciseSet of exercise.sets" class="ion-justify-content-center">
+              <ion-row *ngFor="let exerciseSet of exercise.sets"
+                class="ion-justify-content-center" padding-bottom>
                   <ion-col *ngFor="let rep of exerciseSet.reps; let i = index"
-                      no-padding >
-                      <ion-item class="rep nonActiveRep">
-                          <div detail
+                      no-padding class="nonActiveRep">
+                          <div
                               (click)="presentPopover($event, rep)">
-                              <h5 *ngIf='rep.weight' class="ion-text-center">
+                              <h4 *ngIf='rep.weight' class="ion-text-center">
                                   {{rep.weight}}
                                   <small>{{' ' + weightUnit[rep.weightUnit]}}</small>
-                              </h5>
-                              <h5 *ngIf='rep.times' class="ion-text-center" >
+                              </h4>
+                              <h4 *ngIf='rep.times' class="ion-text-center" >
                                   {{rep.times}}
                                   <small>{{' Times'}}</small>
-                              </h5>
-                              <h5 *ngIf='rep.seconds' class="ion-text-center" >
+                              </h4>
+                              <h4 *ngIf='rep.seconds' class="ion-text-center" >
                                   {{rep.seconds}}<small>{{' Seconds'}}</small>
-                              </h5>
-                              <h5 *ngIf='!rep.weight && !rep.times && !rep.seconds' class="ion-text-center">
+                              </h4>
+                              <h4 *ngIf='!rep.weight && !rep.times && !rep.seconds' class="ion-text-center">
                                   ...
-                              </h5>
+                              </h4>
                           </div>
-                          <ion-row class="ion-justify-content-center" class="bordered"
+                          <div class="bordered"
                               *ngIf="isLastSet(exerciseSet)" >
-                              <ion-button fill="clear"
+                              <ion-button fill="clear" size="small" narrow-padding
                                   (click)="deleteRep(i)" [disabled]="isMinReps">
                                   <ion-icon slot="icon-only" name="trash" narrow-padding></ion-icon>
                               </ion-button>
-                              <ion-button fill="clear"
+                              <ion-button fill="clear" size="small" narrow-padding
                                   (click)="addRep(i)" [disabled]="isMaxReps">
                                   <ion-icon slot="icon-only" name="add-circle" narrow-padding></ion-icon>
                               </ion-button>
-                          </ion-row>
-                      </ion-item>
+                          </div>
+
                   </ion-col>
               </ion-row>
 
