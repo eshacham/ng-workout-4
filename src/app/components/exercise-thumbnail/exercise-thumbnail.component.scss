@@ -42,12 +42,12 @@ ion-thumbnail {
 div#div-with-image-and-buttons {
     display: inline-block;
     position: relative;
-    button[bottom] {
+    ion-button[bottom] {
         position: absolute!important;
         left: calc(50% + 5px);
         top: calc(50% - 1px);
     }
-    button[up] {
+    ion-button[up] {
         position: absolute!important;
         left: calc(50% - 2px);
         top: calc(50% - 53px);
