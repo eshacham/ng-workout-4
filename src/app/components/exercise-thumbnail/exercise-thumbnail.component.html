@@ -128,7 +128,7 @@
             </ion-button>
         </ion-row>
 
-        <ion-list lines="none" *ngIf="IsOpen" class="noBottomMargin">
+        <div lines="none" *ngIf="IsOpen" class="noBottomMargin">
               <ion-row *ngFor="let exerciseSet of exercise.sets" class="ion-justify-content-center">
                   <ion-col *ngFor="let rep of exerciseSet.reps; let i = index"
                       no-padding >
@@ -164,33 +164,32 @@
                       </ion-item>
                   </ion-col>
               </ion-row>
-        </ion-list>
 
-         <ion-row class="ion-justify-content-center">
-            <ion-col>
-                <ion-list lines="none" class="noBottomMargin">
-                    <h3 class="ion-text-center">
-                        Set Rest: {{exercise.sets[0].restBetweenReps}} seconds
-                    </h3>
-                    <ion-item>
-                        <ion-range [(ngModel)]="exercise.sets[0].restBetweenReps">
-                            <ion-icon range-left small name="repeat"></ion-icon>
-                            <ion-icon range-right name="repeat"></ion-icon>
-                        </ion-range>
-                    </ion-item>
-                    <h3 class="ion-text-center">
-                        Exercise Rest: {{exercise.sets[0].restAfterExercise}} seconds
-                    </h3>
-                    <ion-item>
-                        <ion-range [(ngModel)]="exercise.sets[0].restAfterExercise">
-                            <ion-icon range-left small name="body"></ion-icon>
-                            <ion-icon range-right name="body"></ion-icon>
-                        </ion-range>
-                    </ion-item>
-                </ion-list>
-            </ion-col>
-        </ion-row>
-
+            <ion-row class="ion-justify-content-center">
+                <ion-col>
+                    <ion-list lines="none" class="noBottomMargin">
+                        <h3 class="ion-text-center">
+                            Set Rest: {{exercise.sets[0].restBetweenReps}} seconds
+                        </h3>
+                        <ion-item>
+                            <ion-range [(ngModel)]="exercise.sets[0].restBetweenReps">
+                                <ion-icon range-left small name="repeat"></ion-icon>
+                                <ion-icon range-right name="repeat"></ion-icon>
+                            </ion-range>
+                        </ion-item>
+                        <h3 class="ion-text-center">
+                            Exercise Rest: {{exercise.sets[0].restAfterExercise}} seconds
+                        </h3>
+                        <ion-item>
+                            <ion-range [(ngModel)]="exercise.sets[0].restAfterExercise">
+                                <ion-icon range-left small name="body"></ion-icon>
+                                <ion-icon range-right name="body"></ion-icon>
+                            </ion-range>
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+        </div>
       </ion-grid>
   </div>
   <div *ngSwitchDefault>
