@@ -1,7 +1,7 @@
 ion-grid {
     padding: 0px;
 }
-ion-col#col-with-image {
+ion-col[col-with-image] {
     height: 94px;
     text-align: center;
 }
@@ -39,7 +39,7 @@ ion-thumbnail {
     display: flex;
     justify-content: center;
 };
-div#div-with-image-and-buttons {
+ion-item#div-with-image-and-buttons {
     display: inline-block;
     position: relative;
     ion-button[bottom] {
