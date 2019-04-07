@@ -53,6 +53,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
       this._isOpen = val;
   }
 
+  get OpenedExerciseSets(): ExerciseSet[] {
+      return this.IsOpen ? this.exercise.sets : [];
+  }
+
+
   private _isRunning = false;
   get IsRunning(): boolean { return this._isRunning; }
   set IsRunning (val: boolean) {
