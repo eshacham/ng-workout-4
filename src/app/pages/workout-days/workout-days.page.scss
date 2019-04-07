@@ -1,16 +1,8 @@
 ion-slides {
     height: 100%;
+    --bullet-background-active: var(--ion-color-danger);
 }
 app-workout-day {
     margin-bottom: 30px;
     width: 100%
 }
-ion-content {
-//    background: color($colors, secondary)!important;
-}
-// .swiper-container-horizontal>.swiper-pagination-bullets {
-//     bottom: 0px;
-// }
-// .swiper-pagination {
-//     background: red;
-// }

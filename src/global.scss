@@ -16,7 +16,7 @@
 }
 
 .swiper-container-horizontal>.swiper-pagination-bullets {
-    bottom: 6px;
+    bottom: 4px;
 }
 ion-toolbar {
     --background: var(--ion-color-danger);
@@ -25,14 +25,6 @@ ion-toolbar {
 ion-content {
     --background: var(--ion-color-success);
 }
-
-.swiper-pagination-bullet {
-    // background: color($colors, danger)
-}
-.swiper-pagination-bullet-active {
-    // background: color($colors, danger);
-}
-
 
 .select-popover ion-list {
     .item {
