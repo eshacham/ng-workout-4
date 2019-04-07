@@ -26,6 +26,7 @@ export class WorkoutDaysPage implements OnInit {
       clickable: true,
       el: '.swiper-pagination',
     },
+    noSwipingSelector: 'ion-range'
   };
 
   constructor(
@@ -54,7 +55,7 @@ export class WorkoutDaysPage implements OnInit {
   handleExerciseActionEvent(event: ExerciseActionEvent) {
     const exerciseAction: ExerciseAction = event.action;
 
-    this.slides.lockSwipes(exerciseAction === ExerciseAction.Edit);
+    //this.slides.lockSwipes(exerciseAction === ExerciseAction.Edit);
 
     switch (exerciseAction) {
       case ExerciseAction.Completed:
