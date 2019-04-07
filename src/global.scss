@@ -18,59 +18,22 @@
 .swiper-container-horizontal>.swiper-pagination-bullets {
     bottom: 6px;
 }
-
-ion-tab-bar, ion-tab-button {
-    background: var(--ion-color-danger);
-}
 ion-toolbar {
     --background: var(--ion-color-danger);
-    --color: var(--ion-color-primary);;
+    --color: var(--ion-color-primary);
 }
-ion-button {
-    color: var(--ion-color-dark);
-}
-.button-clear,
-.toolbar-title,
-.tabs .tab-button[aria-selected=true],
-.tabs .tab-button[aria-selected=true] .tab-button-icon,
-.tabs .tab-button[aria-selected=true] .tab-button,
-.tabs .tab-button:hover:not(.disable-hover),
-.card-header,
-.bar-button-default,
-.bar-button-default.bar-button-default,
-.bar-button-clear-default {
-    // color: color($colors, primary)
+ion-content {
+    --background: var(--ion-color-success);
 }
 
-.content {
-    // color: color($colors, danger)
-}
-.item {
-    // background-color: color($colors, primary);
-    // color: color($colors, dark)
-}
 .swiper-pagination-bullet {
     // background: color($colors, danger)
 }
 .swiper-pagination-bullet-active {
     // background: color($colors, danger);
 }
-// .scroll-content {
-//     overflow-y: scroll;
-//     overflow-x: hidden;
-// }
 
-// :root::-webkit-scrollbar {
-//     width: 0px;
-//     background: transparent;
-// }
-:root {
 
-}
-// ::-webkit-scrollbar {
-//     width: 0px;
-//     background: transparent;
-// }
 .select-popover ion-list {
     .item {
         // background: color($colors, danger);
@@ -115,13 +78,7 @@ ion-button {
         // margin: 0px!important;
     }
 }
-// .slides-ios {
-//     margin-top: 18px!important;
-//     height: 97%;
-// }
-// .header-ios {
-//     top: 18px!important;
-// }
+
 .range-ios .range-knob {
     // background: color($colors, secondary);
 }

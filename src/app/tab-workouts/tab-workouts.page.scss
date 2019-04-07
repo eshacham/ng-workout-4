@@ -1,21 +1,7 @@
-ion-content {
-  //--overflow: scroll;
-}
-// ion-content::-webkit-scrollbar {
-//   width: 0px;
-//   background: transparent;
-// }
 ion-list {
   padding: 0px;
   margin: 0px;
-  //overflow-y: scroll;
 }
-
 ion-item {
-//   --inner-padding-end: 0px;
-//   --padding-bottom:	5px;
-//   --padding-end:	  30px;
-//   --padding-start:	30px;
-//   --padding-top:	  5px;
-//   --ion-item-background: rgb(38, 28, 180);
+  --background: var(--ion-color-success);
 }
