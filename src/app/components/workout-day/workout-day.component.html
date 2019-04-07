@@ -1,55 +1,50 @@
-<ion-fab vertical="top" horizontal="start" #fabWorkout>
-  <ion-fab-button size="small" (click)="startWorkout()">
-    <ion-icon name="play"></ion-icon>
-  </ion-fab-button>
-  <ion-fab-list side="end">
-    <ion-fab-button size="small" (click)="stopWorkout()">
-      <ion-icon name="pause"></ion-icon>
+<div id="workout-day-comp">
+  <ion-fab vertical="top" horizontal="start" #fabWorkout>
+    <ion-fab-button size="small" (click)="startWorkout()">
+      <ion-icon name="play"></ion-icon>
     </ion-fab-button>
-  </ion-fab-list>
-</ion-fab>
-<ion-fab vertical="bottom" horizontal="end" #fabEdit>
-    <ion-fab-button size="small" (click)="editWorkout()">
-      <ion-icon name="construct"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="start">
-      <ion-fab-button size="small" (click)="addExercise()">
-        <ion-icon name="calendar"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button size="small" (click)="saveChanges()">
-        <ion-icon name="walk"></ion-icon>
+    <ion-fab-list side="end">
+      <ion-fab-button size="small" (click)="stopWorkout()">
+        <ion-icon name="pause"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
-</ion-fab>
-<ion-grid>
-  <ion-row align-items-center padding-top padding-bottom>
-    <ion-col>
+  </ion-fab>
+  <ion-fab vertical="bottom" horizontal="end" #fabEdit>
+      <ion-fab-button size="small" (click)="editWorkout()">
+        <ion-icon name="construct"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="start">
+        <ion-fab-button size="small" (click)="addExercise()">
+          <ion-icon name="calendar"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" (click)="saveChanges()">
+          <ion-icon name="walk"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+  </ion-fab>
+
+  <ion-item text-center no-padding>
       <ion-label *ngIf="IsDisplayOrWorkout" no-margin>
         {{ workoutDay.name }}
       </ion-label>
       <ion-input *ngIf="IsEditMode" type="text" no-margin class="ion-text-center"
         [(ngModel)]="workoutDay.name">
       </ion-input>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <ion-list lines="none">
-      <ion-reorder-group
-        [disabled]="!IsEditMode" (ionItemReorder)="reorderItems($event)">
-        <ion-item *ngFor="let exercise of workoutDay.exercises; let i = index">
-          <app-exercise-thumbnail
-            [exercise]="exercise"
-            [workoutDayName]=workoutDay.name
-            [exerciseIndex]="i+1"
-            [inWorkoutDayPublisher]="workoutDayPublisher"
-            #exerciseComponent (click)="exerciseComponent.exerciseSelected()"
-            (outEventEmitter)="handleExerciseActionEvent($event)">
-            </app-exercise-thumbnail>
-            <ion-reorder slot="end"></ion-reorder>
-        </ion-item>
-        </ion-reorder-group>
-      </ion-list>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+  </ion-item>
+  <ion-list lines="none">
+    <ion-reorder-group
+      [disabled]="!IsEditMode" (ionItemReorder)="reorderItems($event)">
+      <ion-item *ngFor="let exercise of workoutDay.exercises; let i = index">
+        <app-exercise-thumbnail
+          [exercise]="exercise"
+          [workoutDayName]=workoutDay.name
+          [exerciseIndex]="i+1"
+          [inWorkoutDayPublisher]="workoutDayPublisher"
+          #exerciseComponent (click)="exerciseComponent.exerciseSelected()"
+          (outEventEmitter)="handleExerciseActionEvent($event)">
+          </app-exercise-thumbnail>
+          <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+    </ion-reorder-group>
+  </ion-list>
+</div>
