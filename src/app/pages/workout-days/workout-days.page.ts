@@ -43,8 +43,6 @@ export class WorkoutDaysPage implements OnInit {
     }
   }
 
-
-
   async slideChanged() {
     if (this.slides && this.workout) {
       const lastIndex = await this.slides.getActiveIndex();
@@ -55,6 +53,9 @@ export class WorkoutDaysPage implements OnInit {
 
   handleExerciseActionEvent(event: ExerciseActionEvent) {
     const exerciseAction: ExerciseAction = event.action;
+
+    this.slides.lockSwipes(exerciseAction === ExerciseAction.Edit);
+
     switch (exerciseAction) {
       case ExerciseAction.Completed:
         console.log('workout: receieved completed event: ', JSON.stringify(event) );
@@ -65,6 +66,7 @@ export class WorkoutDaysPage implements OnInit {
         // this.deleteExercise(event.exercise, event.workoutDayName);
         break;
       case ExerciseAction.Edit:
+
         console.log('workout: receieved edit event: ', JSON.stringify(event));
         break;
       case ExerciseAction.Run:
