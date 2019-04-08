@@ -66,7 +66,7 @@
                       </ion-button>
                   </div>
                   <div *ngIf="!isResting">
-                      <ion-button fill="clear"
+                      <ion-button fill="clear" color="success"
                           [disabled]="!isPrevRepAvailable" (click)="prevRep()">
                           <ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon>
                       </ion-button>
@@ -74,7 +74,7 @@
                           (click)="nextRep(true)">
                           Done!
                       </ion-button>
-                      <ion-button fill="clear"
+                      <ion-button fill="clear" color="success"
                           (click)="nextRep(false)">
                           <ion-icon slot="icon-only" name="arrow-dropright"></ion-icon>
                       </ion-button>

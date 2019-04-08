@@ -57,7 +57,7 @@ h2 {
     font-weight: normal;
 }
 h3 {
-    // color: color($colors, danger);
+    color: var(--ion-color-danger);
     font-size: 14px;
     margin: 0px 0px 2px 0px;
     padding: 0px;
@@ -68,22 +68,22 @@ h4 {
     padding: 0px;
 }
 .activeRep {
-    // background: color($colors, danger);
-    // color: color($colors, primary);;
+    background: var(--ion-color-danger);
+    color: var(--ion-color-primary);
 }
 .nonActiveRep {
-    // background: color($colors, light);;
-    // color: color($colors, secondary);
+    background: var(--ion-color-light);
+    color: var(--ion-color-success);
 }
 .noTopMargin {
-        margin-top: 0px;
-    }
+    margin-top: 0px;
+}
 .noBottomMargin {
     margin-bottom: 0px;
 }
 .et-button {
-    // color: color($colors, primary);
-    // background: color($colors, danger);
+    --color: var(--ion-color-primary);
+    --background: var(--ion-color-danger);
 }
 .fadeOutAndIn {
         -webkit-animation: fadeinout 4s linear infinite;
@@ -98,31 +98,28 @@ h4 {
     0%,100% { opacity: 0.25; }
     50% { opacity: 1; }
 }
-    .button-clear {
-        // color: color($colors, secondary);
-    }
 
-    .imageWrap {
-        display: inline-block;
-        position: relative;
-    }
-    .clicker {
-        cursor: pointer!important;
-    }
+// .imageWrap {
+//     display: inline-block;
+//     position: relative;
+// }
+// .clicker {
+//     cursor: pointer!important;
+// }
 
 
-    ion-input {
-        input {
-            text-align: center;
-            margin: 4px!important;
-        }
-    }
-    ion-button {
-        --padding-end: 2px;
-        --padding-start: 2px;
-    }
-    .bordered {
-        // background: color($colors, danger);
-        margin: 2px 0px 2px 0px;
+ion-input {
+    input {
         text-align: center;
+        margin: 4px!important;
     }
+}
+ion-button {
+    --padding-end: 2px;
+    --padding-start: 2px;
+}
+.bordered {
+    background: var(--ion-color-danger);
+    margin: 2px 0px 2px 0px;
+    text-align: center;
+}
