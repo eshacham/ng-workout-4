@@ -23,11 +23,12 @@
       </ion-fab-list>
   </ion-fab>
 
-  <ion-item text-center no-padding lines="none" id="workout-day-header">
-      <ion-label *ngIf="IsDisplayOrWorkout" no-margin>
-        {{ workoutDay.name }}
+  <ion-item align-items-center no-padding lines="none" id="workout-day-header"
+      class="ion-align-items-center">
+      <ion-label [hidden]="IsEditMode" no-margin text-center>
+        <h2 class="ion-text-center">{{ workoutDay.name }}</h2>
       </ion-label>
-      <ion-input *ngIf="IsEditMode" type="text" no-margin class="ion-text-center"
+      <ion-input [hidden]="IsDisplayOrWorkout" type="text" no-margin class="ion-text-center"
         [(ngModel)]="workoutDay.name">
       </ion-input>
   </ion-item>

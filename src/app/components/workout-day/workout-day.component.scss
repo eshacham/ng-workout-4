@@ -2,7 +2,8 @@
     margin-bottom: 25px;
 }
 ion-item#workout-day-header {
-    --background: var(--ion-color-success)
+    --background: var(--ion-color-success);
+    --color: var(--ion-color-danger);
 }
 ion-list {
     height: var(--workout-day-ion-list-height-vh);
