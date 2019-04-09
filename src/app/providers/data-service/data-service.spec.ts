@@ -15,16 +15,6 @@ describe('Data Service Provider', () => {
         dataServiceProvider = TestBed.get(DataServiceProvider);
     });
 
-    it('should get workout data - future use only', () => {
-        const mockResponse = { workout: { name: 'dont care' }};
-        dataServiceProvider.getWorkout()
-        .subscribe(data => {
-            expect(data).toBe(mockResponse);
-        });
-
-        backend.expectOne('mock-url-for-future-use').flush(mockResponse);
-    });
-
     describe('workout data state cache', () => {
 
         let workoutName: string;
