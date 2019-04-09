@@ -99,15 +99,6 @@ h4 {
     50% { opacity: 1; }
 }
 
-// .imageWrap {
-//     display: inline-block;
-//     position: relative;
-// }
-// .clicker {
-//     cursor: pointer!important;
-// }
-
-
 ion-input {
     input {
         text-align: center;
@@ -122,4 +113,7 @@ ion-button {
     background: var(--ion-color-danger);
     margin: 2px 0px 2px 0px;
     text-align: center;
+}
+ion-range {
+    --knob-background: var(--ion-color-success);
 }

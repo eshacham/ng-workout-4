@@ -8,7 +8,7 @@
   <ion-slides #slider pager='true' [options]="slideOpts"
     (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let day of workout?.days">
-      <app-workout-day
+        <app-workout-day
         [workoutDay]="day"
         [inWorkoutDaysPublisher]="workoutDaysPublisher"
         (outEventEmitter)="handleExerciseActionEvent($event)">

@@ -26,7 +26,7 @@ export class WorkoutDaysPage implements OnInit {
       clickable: true,
       el: '.swiper-pagination',
     },
-    noSwipingSelector: 'ion-range'
+    noSwipingSelector: 'ion-range, ion-reorder, ion-fab'
   };
 
   constructor(
