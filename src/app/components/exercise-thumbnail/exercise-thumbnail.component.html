@@ -6,7 +6,7 @@
                 [ngClass]="getTopBottomMarginClass(exerciseSet)">
                 <img src={{exerciseSet.imageUrl}} slot="start"/>
                 <ion-label>
-                    <h2 class="ion-text-wrap">{{exerciseSet.name}}</h2>
+                    <h2 class="ion-text-wrap ion-text-center">{{exerciseSet.name}}</h2>
                     <app-exercise-variation class="ion-text-wrap"
                         #variationComponent
                         [exerciseSet]="exerciseSet" >
