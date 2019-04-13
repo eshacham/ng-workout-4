@@ -85,7 +85,9 @@ export class SplashScreenMock extends SplashScreen {
 
 export class MockNavParams {
   data = {
-     workout: defaultFirstWorkout
+     workout: defaultFirstWorkout,
+     rep: defaultFirstWorkout.days[0].exercises[0].sets[0].reps[0],
+     exerciseSet: defaultFirstWorkout.days[0].exercises[0].sets[0],
   };
 
   get(param: string) {
@@ -139,4 +141,14 @@ export class StorageMock {
 export class MockDataServiceProvider {
   getLastSelectedWorkoutDay (workoutName: string): number { return 1; }
   setLastSelectedWorkoutDay (workoutName: string, workout: Workout) {}
+}
+
+export class PopoverControllerMock {
+  create () {
+    return { present() {} };
+  }
+}
+
+export class MockRouter {
+  navigate(url: string) {}
 }

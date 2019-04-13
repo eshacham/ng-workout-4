@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { Storage } from '@ionic/storage';
 import { TabLibraryPage } from './tab-library.page';
 import { StorageMock } from '../test-config/mocks-ionic';
 
