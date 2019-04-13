@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "rm ./node_modules/json-typescript-mapper/libs/utils.ts"
+    "postinstall": "if [ -f ./node_modules/json-typescript-mapper/libs/utils.ts ] ; then rm ./node_modules/json-typescript-mapper/libs/utils.ts ; fi ; "
   },
   "private": true,
   "dependencies": {
