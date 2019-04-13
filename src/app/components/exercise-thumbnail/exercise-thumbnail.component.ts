@@ -44,6 +44,14 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
   timedRestTimer = null;
   get timedRestRemaining(): number { return this._timedRestRemaining; }
 
+  getDisplayTimedRepRemaining(index: number): string {
+    if (index === this.activeRepIndex) {
+        return `${this.timedRepRemaining}/${this.exercise.sets[0].reps[index].seconds}`;
+    } else {
+        return `${this.exercise.sets[0].reps[index].seconds}`;
+    }
+  }
+
   displayMode = DisplayMode;
   weightUnit = WeightUnit;
 
@@ -161,7 +169,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
           this.workoutDayName));
   }
 
-  isTimedRepRemaining(repIndex): boolean {
+  isTimedRepRemaining(repIndex: number): boolean {
     return this.activeRepIndex === repIndex &&
             this._timedRepRemaining > 0 && this.IsRunning ;
   }
@@ -214,40 +222,14 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
       }
   }
 
-  getRunningExerciseSetCellClass() {
-      let returnClass = 'col-sm-';
-      const size = this.getCellSizeFromExerciseSet();
-      returnClass += size.toString();
-      return [returnClass];
-  }
-
   getRunningExerciseSetRepCellClass(repIndex: number) {
-      const classes = []; // this.getExerciseSetRepCellClass();
+      const classes = [];
       if (this.activeRepIndex === repIndex) {
           classes.push('activeRep', 'fadeOutAndIn');
       } else {
           classes.push('nonActiveRep');
       }
       return classes;
-  }
-
-  private getExerciseSetRepCellClass() {
-      const classes = [];
-      let returnClass = 'col-sm-';
-      const size = 12 / this.exercise.sets[0].reps.length;
-      returnClass += size.toString();
-      classes.push(returnClass);
-      return classes;
-  }
-
-  getFrozenExerciseSetRepCellClass() {
-      const classes = this.getExerciseSetRepCellClass();
-      classes.push('nonActiveRep');
-      return classes;
-  }
-
-  getCellSizeFromExerciseSet() {
-      return (12 / this.exercise.sets.length);
   }
 
   startWorkout() {

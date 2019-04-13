@@ -47,17 +47,15 @@
                           <h4 class="ion-text-center">{{rep.weight}}<small>{{' ' + weightUnit[rep.weightUnit]}}</small></h4>
                       </div>
                       <div *ngIf='rep.times'>
-                          <h4 class="ion-text-center">{{rep.times}}<small>{{' Times'}}</small>
+                          <h4 class="ion-text-center">{{rep.times}}<small> Times</small>
                               <ion-icon *ngIf='isRepCompleted(i)' name="checkmark"></ion-icon>
                           </h4>
                       </div>
                       <div *ngIf='rep.seconds'>
-                          <h4 class="ion-text-center">{{rep.seconds}}<small>{{' Seconds'}}</small>
-                              <ion-icon *ngIf='isRepCompleted(i)' name="checkmark"></ion-icon>
-                          </h4>
-                      </div>
-                      <h3 class="ion-text-center" *ngIf="isTimedRepRemaining(i)">{{timedRepRemaining}} Seconds
-                      </h3>
+                        <h4 class="ion-text-center">{{getDisplayTimedRepRemaining(i)}}<small> Seconds</small>
+                            <ion-icon *ngIf='isRepCompleted(i)' name="checkmark"></ion-icon>
+                        </h4>
+                    </div>
                   </ion-col>
               </ion-row>
               <ion-row class="ion-justify-content-center">
