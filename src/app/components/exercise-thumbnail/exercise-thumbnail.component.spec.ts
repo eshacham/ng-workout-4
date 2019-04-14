@@ -25,7 +25,7 @@ describe('ExerciseThumbnailPage', () => {
     fixture = TestBed.createComponent(ExerciseThumbnailComponent);
     component = fixture.componentInstance;
     component.inWorkoutDayPublisher = new Subject();
-    component.exercise = defaultFirstWorkout.days[0].exercises[0];
+    component.exerciseSet = defaultFirstWorkout.days[0].exercises[0];
     fixture.detectChanges();
   });
 

@@ -35,15 +35,15 @@
   <ion-list lines="none">
     <ion-reorder-group
       [disabled]="!IsEditMode" (ionItemReorder)="reorderItems($event)">
-      <ion-item *ngFor="let exercise of workoutDay.exercises; let i = index"
+      <ion-item *ngFor="let exerciseSet of workoutDay.exerciseSets; let i = index"
         class="exercise-thumbnail-ion-item">
-        <app-exercise-thumbnail
-          [exercise]="exercise"
+        <app-exercise-thumbnail #exerciseSetComponent
+          [exerciseSet]="exerciseSet"
           [workoutDayName]=workoutDay.name
-          [exerciseIndex]="i+1"
+          [exerciseSetIndex]="i+1"
           [inWorkoutDayPublisher]="workoutDayPublisher"
-          #exerciseComponent (click)="exerciseComponent.exerciseSelected()"
-          (outEventEmitter)="handleExerciseActionEvent($event)">
+          (outEventEmitter)="handleExerciseSetActionEvent($event)"
+          (click)="exerciseSetComponent.exerciseSetSelected()">
           </app-exercise-thumbnail>
           <ion-reorder slot="end"></ion-reorder>
       </ion-item>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ExerciseSet } from 'src/app/models/ExerciseSet';
+import { Exercise } from 'src/app/models/Exercise';
 import { PopoverController } from '@ionic/angular';
 import { Grip } from 'src/app/models/Grip';
 import { WeightType, GripType, GripWidth, RepetitionSpeed } from 'src/app/models/enums';
@@ -12,7 +12,7 @@ import { ExerciseVariationPopoverComponent } from '../exercise-variation-popover
 })
 export class ExerciseVariationComponent implements OnInit {
 
-  @Input() exerciseSet: ExerciseSet;
+  @Input() exercise: Exercise;
   @Input() inEditMode: boolean;
 
   get InEditMode(): boolean {
@@ -23,40 +23,40 @@ export class ExerciseVariationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.exerciseSet.theGrip) {
-      this.exerciseSet.theGrip = new Grip();
+    if (!this.exercise.theGrip) {
+      this.exercise.theGrip = new Grip();
     }
-    if (!this.exerciseSet.typeOfWeight) {
-      this.exerciseSet.typeOfWeight = WeightType.NoWeight;
+    if (!this.exercise.typeOfWeight) {
+      this.exercise.typeOfWeight = WeightType.NoWeight;
     }
-    this.exerciseSet.theGrip.typeOfGrip = GripType[this.exerciseSet.theGrip.typeOfGrip] || GripType.NoGrip;
-    this.exerciseSet.theGrip.width = GripWidth[this.exerciseSet.theGrip.width] || GripWidth.NoGrip;
-    this.exerciseSet.typeOfWeight = WeightType[this.exerciseSet.typeOfWeight] || WeightType.NoWeight;
-    this.exerciseSet.repSpeed = RepetitionSpeed[this.exerciseSet.repSpeed] || RepetitionSpeed.NA;
+    this.exercise.theGrip.typeOfGrip = GripType[this.exercise.theGrip.typeOfGrip] || GripType.NoGrip;
+    this.exercise.theGrip.width = GripWidth[this.exercise.theGrip.width] || GripWidth.NoGrip;
+    this.exercise.typeOfWeight = WeightType[this.exercise.typeOfWeight] || WeightType.NoWeight;
+    this.exercise.repSpeed = RepetitionSpeed[this.exercise.repSpeed] || RepetitionSpeed.NA;
   }
 
   getWeightVariation = (): string => {
-    if (this.exerciseSet.typeOfWeight !== WeightType.NoWeight) {
-      return `${this.exerciseSet.typeOfWeight}`;
+    if (this.exercise.typeOfWeight !== WeightType.NoWeight) {
+      return `${this.exercise.typeOfWeight}`;
     }
   }
   getSpeedVariation = (): string => {
-    if (this.exerciseSet.repSpeed !== RepetitionSpeed.NA) {
-      return `${this.exerciseSet.repSpeed}`;
+    if (this.exercise.repSpeed !== RepetitionSpeed.NA) {
+      return `${this.exercise.repSpeed}`;
     }
   }
   getGripVariation = (): string => {
     let rc = '';
     let hasWidth = false;
-    if (this.exerciseSet.theGrip.width !== GripWidth.NoGrip) {
-      rc = `Grip: ${this.exerciseSet.theGrip.width}`;
+    if (this.exercise.theGrip.width !== GripWidth.NoGrip) {
+      rc = `Grip: ${this.exercise.theGrip.width}`;
       hasWidth = true;
     }
-    if (this.exerciseSet.theGrip.typeOfGrip !== GripType.NoGrip) {
+    if (this.exercise.theGrip.typeOfGrip !== GripType.NoGrip) {
       if (!hasWidth) {
-        rc += `Grip: ${this.exerciseSet.theGrip.typeOfGrip}`;
+        rc += `Grip: ${this.exercise.theGrip.typeOfGrip}`;
       } else {
-        rc += `, ${this.exerciseSet.theGrip.typeOfGrip}`;
+        rc += `, ${this.exercise.theGrip.typeOfGrip}`;
       }
     }
 
@@ -81,7 +81,7 @@ export class ExerciseVariationComponent implements OnInit {
     const popover = await this.popoverCtrl.create({
       component: ExerciseVariationPopoverComponent,
       event: event,
-      componentProps: { exerciseSet: this.exerciseSet }
+      componentProps: { exerciseSet: this.exercise }
     });
     popover.present();
   }

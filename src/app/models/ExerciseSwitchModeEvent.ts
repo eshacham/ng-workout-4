@@ -1,16 +1,16 @@
 import { DisplayMode  } from './enums';
 
-export class ExerciseSwitchModeEvent {
+export class ExerciseSetSwitchModeEvent {
 
    displayMode: DisplayMode;
-   runningExerciseIndex: number;
-   runningExerciseDayName: string;
+   runningExerciseSetIndex: number;
+   runningExerciseSetDayName: string;
 
    constructor(_displayMode: DisplayMode,
             _runningExerciseIndex: number,
             _runningExerciseDayName: string) {
                 this.displayMode = _displayMode;
-                this.runningExerciseIndex = _runningExerciseIndex;
-                this.runningExerciseDayName = _runningExerciseDayName;
+                this.runningExerciseSetIndex = _runningExerciseIndex;
+                this.runningExerciseSetDayName = _runningExerciseDayName;
    }
 }

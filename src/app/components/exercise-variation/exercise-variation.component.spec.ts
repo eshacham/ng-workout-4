@@ -24,7 +24,7 @@ describe('ExerciseVariationPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ExerciseVariationComponent);
     component = fixture.componentInstance;
-    component.exerciseSet = defaultFirstWorkout.days[0].exercises[0].sets[0];
+    component.exercise = defaultFirstWorkout.days[0].exercises[0].sets[0];
     fixture.detectChanges();
   });
 

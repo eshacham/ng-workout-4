@@ -14,10 +14,10 @@ export const json = { workouts: [{
             {
                 'id': 4,
                 'name': 'Full Body',
-                'exercises': [
+                'exerciseSets': [
                     {
                         'id': 1,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Bench Press, Wide Grip',
                                 'imageUrl': 'assets/images/BenchPressWideGrip.jpeg',
@@ -57,7 +57,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 2,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Seated Rope Cable Row',
                                 'imageUrl': 'assets/images/SeatedRopeCableRow.png',
@@ -87,7 +87,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 3,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Dumbbell Wrist Curl',
                                 'imageUrl': 'assets/images/DumbbellWristCurl.png',
@@ -122,7 +122,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 4,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cable Triceps Pushdown, Overhand Grip',
                                 'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
@@ -160,7 +160,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 5,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cable Biceps Curl, Underhand Grip',
                                 'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
@@ -198,7 +198,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 6,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Leg Raise Machine',
                                 'imageUrl': 'assets/images/LegRaiseMachine.png',
@@ -233,7 +233,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 7,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cable Leg Curl',
                                 'imageUrl': 'assets/images/CableLegCurl.png',
@@ -268,7 +268,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 8,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Crossfit Situps',
                                 'imageUrl': 'assets/images/CrossfitSitup.png',
@@ -292,7 +292,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 9,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cross Body Crunch',
                                 'imageUrl': 'assets/images/CrossBodyCrunch.png',
@@ -320,10 +320,10 @@ export const json = { workouts: [{
             {
                 'id': 2,
                 'name': 'Upper Body 1',
-                'exercises': [
+                'exerciseSets': [
                     {
                         'id': 1,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Bench Press, Narrow Grip',
                                 'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
@@ -420,7 +420,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 3,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cable Fly',
                                 'imageUrl': 'assets/images/CableFly.png',
@@ -458,7 +458,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 4,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Dumbbell Fly',
                                 'imageUrl': 'assets/images/DumbbellFly.png',
@@ -492,7 +492,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 5,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Dumbbell Horizontal Row, Inclined Prone',
                                 'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
@@ -526,7 +526,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 6,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Dumbbell Tricpes Extensions, Seated',
                                 'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
@@ -557,7 +557,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 7,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Inclined Pushup, Narrow Grip',
                                 'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
@@ -584,7 +584,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 8,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Reverse Cable Fly, On Flat Bench',
                                 'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
@@ -617,7 +617,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 9,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Situps',
                                 'imageUrl': 'assets/images/Situps.png',
@@ -641,7 +641,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 10,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Situps with Weight Above Head',
                                 'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
@@ -671,7 +671,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 11,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Russian Twist',
                                 'imageUrl': 'assets/images/RussianTwist.png',
@@ -698,10 +698,10 @@ export const json = { workouts: [{
             {
                 'id': 3,
                 'name': 'Upper Body 2',
-                'exercises': [
+                'exerciseSets': [
                     {
                         'id': 1,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                 'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
@@ -776,7 +776,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 3,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Dumbbell Arm Circles',
                                 'imageUrl': 'assets/images/DumbbellArmCircles.png',
@@ -810,7 +810,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 4,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Machine Row Medium Grip',
                                 'imageUrl': 'assets/images/MachineRowMediumGrip.png',
@@ -840,7 +840,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 5,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Dummbell Biceps Curl Standing Underhand Grip',
                                 'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
@@ -874,7 +874,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 6,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cable Shrug',
                                 'imageUrl': 'assets/images/CableShrug.png',
@@ -908,7 +908,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 7,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Dragon Flags',
                                 'imageUrl': 'assets/images/DragonFlags.png',
@@ -932,7 +932,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 8,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Decline Situps',
                                 'imageUrl': 'assets/images/DeclineSitups.png',
@@ -957,7 +957,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 9,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cross Body Crunch',
                                 'imageUrl': 'assets/images/CrossBodyCrunch.png',
@@ -982,7 +982,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 10,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Lying Scissors Kicks',
                                 'imageUrl': 'assets/images/LyingScissorsKicks.png',
@@ -1010,10 +1010,10 @@ export const json = { workouts: [{
             {
                 'id': 1,
                 'name': 'Lower Body',
-                'exercises': [
+                'exerciseSets': [
                     {
                         'id': 1,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Walking Lunge with Side Weights',
                                 'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
@@ -1044,7 +1044,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 2,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cable Abduction',
                                 'imageUrl': 'assets/images/CableAbduction.png',
@@ -1100,7 +1100,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 4,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cable Leg Curl',
                                 'imageUrl': 'assets/images/CableLegCurl.png',
@@ -1130,7 +1130,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 5,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Cable Calf Raise',
                                 'imageUrl': 'assets/images/CableCalfRaise.png',
@@ -1160,7 +1160,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 6,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Bodyweight Flutter Kicks',
                                 'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
@@ -1184,7 +1184,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 7,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Weighted Situps',
                                 'imageUrl': 'assets/images/WeightedSitups.png',
@@ -1214,7 +1214,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 8,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Plank',
                                 'imageUrl': 'assets/images/Plank.png',
@@ -1237,7 +1237,7 @@ export const json = { workouts: [{
                     },
                     {
                         'id': 9,
-                        'sets': [
+                        'exercises': [
                             {
                                 'name': 'Twist',
                                 'imageUrl': 'assets/images/Twist.png',

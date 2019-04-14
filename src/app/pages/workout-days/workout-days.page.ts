@@ -4,9 +4,9 @@ import { Subject } from 'rxjs';
 import { IonSlides as Slides} from '@ionic/angular';
 import { Workout } from 'src/app/models/Workout';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
-import { ExerciseSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
-import { ExerciseActionEvent } from 'src/app/models/ExerciseActionEvent';
-import { ExerciseAction, DisplayMode } from 'src/app/models/enums';
+import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
+import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
+import { ExerciseSetAction, DisplayMode } from 'src/app/models/enums';
 
 @Component({
   selector: 'app-workout-days',
@@ -16,7 +16,7 @@ import { ExerciseAction, DisplayMode } from 'src/app/models/enums';
 export class WorkoutDaysPage implements OnInit {
 
   workout: Workout;
-  workoutDaysPublisher: Subject<ExerciseSwitchModeEvent> = new Subject();
+  workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent> = new Subject();
   @ViewChild('slider') slides: Slides;
 
   slideOpts = {
@@ -52,25 +52,23 @@ export class WorkoutDaysPage implements OnInit {
     }
   }
 
-  handleExerciseActionEvent(event: ExerciseActionEvent) {
-    const exerciseAction: ExerciseAction = event.action;
+  handleExerciseSetActionEvent(event: ExerciseSetActionEvent) {
+    const exerciseSetAction: ExerciseSetAction = event.action;
 
-    //this.slides.lockSwipes(exerciseAction === ExerciseAction.Edit);
-
-    switch (exerciseAction) {
-      case ExerciseAction.Completed:
+    switch (exerciseSetAction) {
+      case ExerciseSetAction.Completed:
         console.log('workout: receieved completed event: ', JSON.stringify(event) );
         // this.handleExersiceSetComletion(event.exerciseIndex);
         break;
-      case ExerciseAction.Delete:
+      case ExerciseSetAction.Delete:
         console.log('workout: receieved delete event: ', JSON.stringify(event));
         // this.deleteExercise(event.exercise, event.workoutDayName);
         break;
-      case ExerciseAction.Edit:
+      case ExerciseSetAction.Edit:
 
         console.log('workout: receieved edit event: ', JSON.stringify(event));
         break;
-      case ExerciseAction.Run:
+      case ExerciseSetAction.Run:
         console.log('workout: receieved run event: ', JSON.stringify(event));
         this.publishWorkoutEvent(DisplayMode.Workout, event.workoutDayName);
         break;
@@ -79,7 +77,7 @@ export class WorkoutDaysPage implements OnInit {
 
   publishWorkoutEvent(displayMode: DisplayMode, runningExerciseDayName: string) {
     const workoutEvent =
-      new ExerciseSwitchModeEvent(displayMode, null, runningExerciseDayName);
+      new ExerciseSetSwitchModeEvent(displayMode, null, runningExerciseDayName);
     this.workoutDaysPublisher.next(workoutEvent);
   }
 }

@@ -35,7 +35,7 @@ export enum DisplayMode {
     Workout
 }
 
-export enum ExerciseAction {
+export enum ExerciseSetAction {
     Completed,
     Delete,
     Edit,

@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { WorkoutDay } from '../../models/WorkoutDay';
-import { Exercise } from '../../models/Exercise';
-import { DisplayMode, ExerciseAction } from '../../models/enums';
-import { ExerciseSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
-import { ExerciseActionEvent } from '../../models/ExerciseActionEvent';
+import { ExerciseSet } from '../../models/ExerciseSet';
+import { DisplayMode, ExerciseSetAction } from '../../models/enums';
+import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
+import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { IonFab } from '@ionic/angular';
 
@@ -19,10 +19,10 @@ export class WorkoutDayComponent implements OnInit {
   @ViewChild('fabEdit') fabEdit: IonFab;
 
   @Input() workoutDay: WorkoutDay;
-  @Input() inWorkoutDaysPublisher: Subject<ExerciseSwitchModeEvent>;
-  @Output() outEventEmitter = new EventEmitter<ExerciseActionEvent>();
+  @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
+  @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
-  workoutDayPublisher: Subject<ExerciseSwitchModeEvent> = new Subject();
+  workoutDayPublisher: Subject<ExerciseSetSwitchModeEvent> = new Subject();
   runningExerciseIndex = 0;
   displayMode = DisplayMode;
 
@@ -54,8 +54,8 @@ export class WorkoutDayComponent implements OnInit {
     this.inWorkoutDaysPublisher.subscribe(event => this.handleWorkoutEventchange(event));
   }
 
-  handleWorkoutEventchange(event: ExerciseSwitchModeEvent) {
-    if (event.runningExerciseDayName !== this.workoutDay.name) {
+  handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent) {
+    if (event.runningExerciseSetDayName !== this.workoutDay.name) {
       this.finishWorkout(false);
     }
   }
@@ -67,28 +67,28 @@ export class WorkoutDayComponent implements OnInit {
     this.inWorkoutDaysPublisher.unsubscribe();
   }
 
-  handleExerciseActionEvent(event: ExerciseActionEvent) {
-    const exerciseAction: ExerciseAction = event.action;
-    switch (exerciseAction) {
-      case ExerciseAction.Completed:
+  handleExerciseSetActionEvent(event: ExerciseSetActionEvent) {
+    const exerciseSetAction: ExerciseSetAction = event.action;
+    switch (exerciseSetAction) {
+      case ExerciseSetAction.Completed:
         console.log('workout-day: receieved completed event: ', JSON.stringify(event));
-        this.handleExerciseSetCompletion(event.exerciseIndex);
+        this.handleExerciseSetCompletion(event.exerciseSetIndex);
         break;
-      case ExerciseAction.Delete:
+      case ExerciseSetAction.Delete:
         console.log('workout-day: receieved delete event: ', JSON.stringify(event));
-        this.deleteExercise(event.exercise, event.workoutDayName);
+        this.deleteExerciseSet(event.exerciseSet, event.workoutDayName);
         break;
-      case ExerciseAction.Edit:
+      case ExerciseSetAction.Edit:
         console.log('workout-day: receieved edit event: ', JSON.stringify(event));
         break;
-      case ExerciseAction.Run:
+      case ExerciseSetAction.Run:
         console.log('workout-day: receieved run event: ', JSON.stringify(event));
-        this.startExercise(event.exerciseIndex);
+        this.startExerciseSet(event.exerciseSetIndex);
         break;
     }
   }
 
-  deleteExercise(set: Exercise, day: string) {
+  deleteExerciseSet(set: ExerciseSet, day: string) {
     // this.workoutService.deleteExercise(set, this.workoutDay);
   }
 
@@ -146,15 +146,15 @@ export class WorkoutDayComponent implements OnInit {
   emitExerciseActionEventByStatus() {
     switch (this.DisplayMode) {
       case DisplayMode.Display:
-        this.emitExerciseActionEvent(ExerciseAction.Completed);
+        this.emitExerciseSetActionEvent(ExerciseSetAction.Completed);
         break;
       case DisplayMode.Workout:
         this.fabEdit.close();
-        this.emitExerciseActionEvent(ExerciseAction.Run);
+        this.emitExerciseSetActionEvent(ExerciseSetAction.Run);
         break;
       case DisplayMode.Edit:
         this.fabWorkout.close();
-        this.emitExerciseActionEvent(ExerciseAction.Edit);
+        this.emitExerciseSetActionEvent(ExerciseSetAction.Edit);
     }
   }
 
@@ -177,26 +177,26 @@ export class WorkoutDayComponent implements OnInit {
   }
 
   handleExerciseSetCompletion(exerciseSetIndex: number) {
-    if (this.workoutDay.exercises.length > exerciseSetIndex) {
-      this.startExercise(exerciseSetIndex + 1);
+    if (this.workoutDay.exerciseSets.length > exerciseSetIndex) {
+      this.startExerciseSet(exerciseSetIndex + 1);
     } else {
       this.finishWorkout();
     }
   }
 
-  startExercise(exerciseIndex: number) {
-    this.publishWorkoutEvent(DisplayMode.Workout, exerciseIndex);
+  startExerciseSet(exerciseSetIndex: number) {
+    this.publishWorkoutEvent(DisplayMode.Workout, exerciseSetIndex);
   }
 
   publishWorkoutEvent(displayMode: DisplayMode,
     runningExerciseIndex: number) {
     const workoutEvent =
-      new ExerciseSwitchModeEvent(displayMode, runningExerciseIndex, this.workoutDay.name);
+      new ExerciseSetSwitchModeEvent(displayMode, runningExerciseIndex, this.workoutDay.name);
     this.workoutDayPublisher.next(workoutEvent);
   }
 
-  emitExerciseActionEvent(action: ExerciseAction) {
-    this.outEventEmitter.emit(new ExerciseActionEvent(
+  emitExerciseSetActionEvent(action: ExerciseSetAction) {
+    this.outEventEmitter.emit(new ExerciseSetActionEvent(
       action,
       null,
       null,
@@ -207,9 +207,9 @@ export class WorkoutDayComponent implements OnInit {
     const from = event.detail.from;
     const to = event.detail.to;
     console.log(`Moving item from ${from} to ${to}`);
-    const exercise = this.workoutDay.exercises[from];
-    this.workoutDay.exercises.splice(from, 1);
-    this.workoutDay.exercises.splice(to, 0, exercise);
+    const set = this.workoutDay.exerciseSets[from];
+    this.workoutDay.exerciseSets.splice(from, 1);
+    this.workoutDay.exerciseSets.splice(to, 0, set);
     event.detail.complete(true);
   }
 }
