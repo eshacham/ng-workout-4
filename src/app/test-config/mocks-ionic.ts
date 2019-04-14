@@ -6,7 +6,7 @@ import { deserialize } from 'json-typescript-mapper';
 import { DefaultWorkouts } from '../models/DefaultWorkouts';
 
 const defaultWorkouts = deserialize(DefaultWorkouts, json);
-const defaultFirstWorkout = defaultWorkouts.workouts[0];
+export const defaultFirstWorkout = defaultWorkouts.workouts[0];
 
 export class PlatformMock {
   public ready(): Promise<any> {

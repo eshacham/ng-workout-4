@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild } 
 import { Subject } from 'rxjs';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import { Exercise } from '../../models/Exercise';
-import { DisplayMode, ExerciseAction  } from '../../models/enums';
+import { DisplayMode, ExerciseAction } from '../../models/enums';
 import { ExerciseSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseActionEvent } from '../../models/ExerciseActionEvent';
 import { ItemReorderEventDetail } from '@ionic/core';
@@ -30,25 +30,25 @@ export class WorkoutDayComponent implements OnInit {
 
   private _displayMode: DisplayMode = DisplayMode.Display;
   get DisplayMode(): DisplayMode {
-      return this._displayMode;
+    return this._displayMode;
   }
   set DisplayMode(val: DisplayMode) {
     if (this._displayMode !== val) {
-        this._displayMode = val;
-        if (this._displayMode === DisplayMode.Workout) {
-            if (this.runningExerciseIndex === 0) {
-                this.runningExerciseIndex = 1;
-            }
+      this._displayMode = val;
+      if (this._displayMode === DisplayMode.Workout) {
+        if (this.runningExerciseIndex === 0) {
+          this.runningExerciseIndex = 1;
         }
-        this.publishWorkoutEvent(this._displayMode, this.runningExerciseIndex);
+      }
+      this.publishWorkoutEvent(this._displayMode, this.runningExerciseIndex);
     }
   }
 
-  get IsEditMode () { return this._displayMode === DisplayMode.Edit; }
-  get IsDisplayMode () { return this._displayMode === DisplayMode.Display; }
-  get IsWorkoutMode () { return this._displayMode === DisplayMode.Workout; }
-  get IsDisplayOrWorkout () { return this.IsWorkoutMode || this.IsDisplayMode; }
-  get IsDisplayOrEdit () { return this.IsEditMode || this.IsDisplayMode; }
+  get IsEditMode() { return this._displayMode === DisplayMode.Edit; }
+  get IsDisplayMode() { return this._displayMode === DisplayMode.Display; }
+  get IsWorkoutMode() { return this._displayMode === DisplayMode.Workout; }
+  get IsDisplayOrWorkout() { return this.IsWorkoutMode || this.IsDisplayMode; }
+  get IsDisplayOrEdit() { return this.IsEditMode || this.IsDisplayMode; }
 
   ngOnInit() {
     this.inWorkoutDaysPublisher.subscribe(event => this.handleWorkoutEventchange(event));
@@ -56,7 +56,7 @@ export class WorkoutDayComponent implements OnInit {
 
   handleWorkoutEventchange(event: ExerciseSwitchModeEvent) {
     if (event.runningExerciseDayName !== this.workoutDay.name) {
-        this.finishWorkout(false);
+      this.finishWorkout(false);
     }
   }
 
@@ -70,26 +70,26 @@ export class WorkoutDayComponent implements OnInit {
   handleExerciseActionEvent(event: ExerciseActionEvent) {
     const exerciseAction: ExerciseAction = event.action;
     switch (exerciseAction) {
-        case ExerciseAction.Completed:
-            console.log('workout-day: receieved completed event: ', JSON.stringify(event));
-            this.handleExerciseSetCompletion(event.exerciseIndex);
-            break;
-        case ExerciseAction.Delete:
-            console.log('workout-day: receieved delete event: ', JSON.stringify(event));
-            this.deleteExercise(event.exercise, event.workoutDayName);
-            break;
-        case ExerciseAction.Edit:
-            console.log('workout-day: receieved edit event: ', JSON.stringify(event));
-            break;
-        case ExerciseAction.Run:
-            console.log('workout-day: receieved run event: ', JSON.stringify(event));
-            this.startExercise(event.exerciseIndex);
-            break;
+      case ExerciseAction.Completed:
+        console.log('workout-day: receieved completed event: ', JSON.stringify(event));
+        this.handleExerciseSetCompletion(event.exerciseIndex);
+        break;
+      case ExerciseAction.Delete:
+        console.log('workout-day: receieved delete event: ', JSON.stringify(event));
+        this.deleteExercise(event.exercise, event.workoutDayName);
+        break;
+      case ExerciseAction.Edit:
+        console.log('workout-day: receieved edit event: ', JSON.stringify(event));
+        break;
+      case ExerciseAction.Run:
+        console.log('workout-day: receieved run event: ', JSON.stringify(event));
+        this.startExercise(event.exerciseIndex);
+        break;
     }
   }
 
   deleteExercise(set: Exercise, day: string) {
-      // this.workoutService.deleteExercise(set, this.workoutDay);
+    // this.workoutService.deleteExercise(set, this.workoutDay);
   }
 
   startWorkout() {
@@ -98,7 +98,7 @@ export class WorkoutDayComponent implements OnInit {
         this.DisplayMode = DisplayMode.Workout;
         break;
       case DisplayMode.Workout:
-      this.DisplayMode = DisplayMode.Display;
+        this.DisplayMode = DisplayMode.Display;
         break;
       case DisplayMode.Edit:
         this.DisplayMode = DisplayMode.Workout;
@@ -123,7 +123,7 @@ export class WorkoutDayComponent implements OnInit {
         this.DisplayMode = DisplayMode.Edit;
         break;
       case DisplayMode.Workout:
-      this.DisplayMode = DisplayMode.Edit;
+        this.DisplayMode = DisplayMode.Edit;
         break;
       case DisplayMode.Edit:
         this.DisplayMode = DisplayMode.Display;
@@ -153,15 +153,15 @@ export class WorkoutDayComponent implements OnInit {
         this.emitExerciseActionEvent(ExerciseAction.Run);
         break;
       case DisplayMode.Edit:
-      this.fabWorkout.close();
-      this.emitExerciseActionEvent(ExerciseAction.Edit);
+        this.fabWorkout.close();
+        this.emitExerciseActionEvent(ExerciseAction.Edit);
     }
   }
 
   addExercise() {
     // const newExercise: Exercise = this.workoutService.getNewtWorkoutSet();
     // this.workoutDay.exercises.push(newExercise);
-    this.saveChanges() ;
+    this.saveChanges();
   }
 
   saveChanges() {
@@ -169,19 +169,19 @@ export class WorkoutDayComponent implements OnInit {
     // this.toastr.info('Saved!');
   }
 
-  finishWorkout (notify: boolean = true) {
-      this.stopWorkout();
-      if (notify) {
-          // this.toastr.success('Good Job!');
-      }
+  finishWorkout(notify: boolean = true) {
+    this.stopWorkout();
+    if (notify) {
+      // this.toastr.success('Good Job!');
+    }
   }
 
   handleExerciseSetCompletion(exerciseSetIndex: number) {
-      if (this.workoutDay.exercises.length > exerciseSetIndex) {
-          this.startExercise(exerciseSetIndex + 1);
-      } else {
-          this.finishWorkout();
-      }
+    if (this.workoutDay.exercises.length > exerciseSetIndex) {
+      this.startExercise(exerciseSetIndex + 1);
+    } else {
+      this.finishWorkout();
+    }
   }
 
   startExercise(exerciseIndex: number) {
@@ -189,22 +189,22 @@ export class WorkoutDayComponent implements OnInit {
   }
 
   publishWorkoutEvent(displayMode: DisplayMode,
-    runningExerciseIndex: number)  {
+    runningExerciseIndex: number) {
     const workoutEvent =
-        new ExerciseSwitchModeEvent (displayMode, runningExerciseIndex, this.workoutDay.name);
+      new ExerciseSwitchModeEvent(displayMode, runningExerciseIndex, this.workoutDay.name);
     this.workoutDayPublisher.next(workoutEvent);
   }
 
   emitExerciseActionEvent(action: ExerciseAction) {
     this.outEventEmitter.emit(new ExerciseActionEvent(
-        action,
-        null,
-        null,
-        this.workoutDay.name));
+      action,
+      null,
+      null,
+      this.workoutDay.name));
   }
 
   reorderItems(event: CustomEvent<ItemReorderEventDetail>) {
-    const from  = event.detail.from;
+    const from = event.detail.from;
     const to = event.detail.to;
     console.log(`Moving item from ${from} to ${to}`);
     const exercise = this.workoutDay.exercises[from];
