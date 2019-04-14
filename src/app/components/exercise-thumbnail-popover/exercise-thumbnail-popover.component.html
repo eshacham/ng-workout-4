@@ -1,24 +1,24 @@
 <ion-list>
-  <ion-item>
-      <ion-label>Weight:</ion-label>
-      <ion-input type="number" [(ngModel)]="rep.weight">
-      </ion-input>
-      <ion-select interface="popover"
-          [(ngModel)]="rep.weightUnit">
-          <ion-select-option *ngFor="let weightUnit of weightUnits"
-              value={{weightUnit}}>
-              {{weightUnit}}
-          </ion-select-option>
-      </ion-select>
-  </ion-item>
-  <ion-item>
-      <ion-label>Times:</ion-label>
-      <ion-input type="number" [(ngModel)]="rep.times">
-      </ion-input>
-  </ion-item>
-  <ion-item>
-      <ion-label>Seconds:</ion-label>
-      <ion-input type="number" [(ngModel)]="rep.seconds">
-      </ion-input>
-  </ion-item>
+    <ion-item>
+        <ion-label>Weight:</ion-label>
+        <ion-input type="number" [(ngModel)]="rep.weight"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Weight Unit:</ion-label>
+        <ion-select interface="popover"
+            [(ngModel)]="rep.weightUnit">
+            <ion-select-option *ngFor="let weightUnit of weightUnits"
+                value={{weightUnit}}>
+                {{weightUnit}}
+            </ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Times:</ion-label>
+        <ion-input type="number" [(ngModel)]="rep.times"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Seconds:</ion-label>
+        <ion-input type="number" [(ngModel)]="rep.seconds"></ion-input>
+    </ion-item>
 </ion-list>
