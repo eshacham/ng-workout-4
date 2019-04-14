@@ -46,9 +46,7 @@ ion-label {
     margin: 0px;
     padding: 4px;
     font-size: 17px;
-}
-ion-label[text-wrap] {
-    font-size: 17px;
+    color: var(--ion-color-dark)!important;
 }
 
 h2 {
@@ -100,6 +98,7 @@ h4 {
 }
 
 ion-input {
+    color: var(--ion-color-dark)!important;
     input {
         text-align: center;
         margin: 4px!important;
