@@ -2,10 +2,9 @@
     margin-bottom: 25px;
 }
 ion-item#workout-day-header {
-    --background: var(--ion-color-success);
-    --color: var(--ion-color-danger);
+    --background: var(--ion-color-tertiary);
+    --color: var(--ion-color-light);
     ion-label {
-        //flex: unset;
         max-width: unset;
         width: 100%;
     }
@@ -42,11 +41,11 @@ app-exercise-thumbnail {
 ion-reorder{
     margin-left: 0px;
     margin-right: 0px;
-    color: var(--ion-color-dark);
+    color: var(--ion-color-tertiary);
 }
 ion-label {
-    --color: var(--ion-color-danger)!important;
+    --color: var(--ion-color-light)!important;
 }
 ion-input {
-    --color: var(--ion-color-danger)!important;
+    --color: var(--ion-color-light)!important;
 }

@@ -29,13 +29,11 @@ ion-col#col-rep {
 ion-list {
     margin: 0px;
     padding: 0px;
-    // color: color($colors, dark);
 }
 ion-item {
     padding-left: 0px;
     --inner-padding-end: 0px;
     --padding-start: 0px;
-    // color: color($colors, dark);
 };
 img {
     height: 80px;
@@ -55,7 +53,7 @@ h2 {
     font-weight: normal;
 }
 h3 {
-    color: var(--ion-color-danger);
+    color: var(--ion-color-dark);
     font-size: 14px;
     margin: 0px 0px 2px 0px;
     padding: 0px;
@@ -66,12 +64,12 @@ h4 {
     padding: 0px;
 }
 .activeRep {
-    background: var(--ion-color-danger);
-    color: var(--ion-color-primary);
+    background: var(--ion-color-light);
+    color: var(--ion-color-dark);
 }
 .nonActiveRep {
-    background: var(--ion-color-light);
-    color: var(--ion-color-success);
+    background: var(--ion-color-secondary);
+    color: var(--ion-color-primary);
 }
 .noTopMargin {
     margin-top: 0px;
@@ -81,7 +79,7 @@ h4 {
 }
 .et-button {
     --color: var(--ion-color-primary);
-    --background: var(--ion-color-danger);
+    --background: var(--ion-color-secondary);
 }
 .fadeOutAndIn {
         -webkit-animation: fadeinout 4s linear infinite;
@@ -109,10 +107,11 @@ ion-button {
     --padding-start: 2px;
 }
 .bordered {
-    background: var(--ion-color-danger);
+    background: var(--ion-color-secondary);
+    color: var(--ion-color-dark);
     margin: 2px 0px 2px 0px;
     text-align: center;
 }
 ion-range {
-    --knob-background: var(--ion-color-success);
+    --knob-background: var(--ion-color-tertiary);
 }

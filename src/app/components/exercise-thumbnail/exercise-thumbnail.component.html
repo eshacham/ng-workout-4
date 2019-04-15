@@ -12,7 +12,7 @@
                         [exercise]="exercise" >
                     </app-exercise-variation>
                     <ion-button fill="clear" float-right *ngIf="isLastSet(exercise)"
-                        (click)="runExercise()" color="success">
+                        (click)="runExercise()" color="danger">
                         <ion-icon slot="icon-only" name="play"></ion-icon>
                     </ion-button>
                 </ion-label>
@@ -66,7 +66,7 @@
                       </ion-button>
                   </div>
                   <div *ngIf="!isResting">
-                      <ion-button fill="clear" color="success"
+                      <ion-button fill="clear" color="tertiary"
                           [disabled]="!isPrevRepAvailable" (click)="prevRep()">
                           <ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon>
                       </ion-button>
@@ -74,7 +74,7 @@
                           (click)="nextRep(true)">
                           Done!
                       </ion-button>
-                      <ion-button fill="clear" color="success"
+                      <ion-button fill="clear" color="tertiary"
                           (click)="nextRep(false)">
                           <ion-icon slot="icon-only" name="arrow-dropright"></ion-icon>
                       </ion-button>
@@ -100,12 +100,12 @@
                 no-padding col-with-image-and-button>
                 <ion-item id="item-with-image-and-button">
                     <img src={{exercise.imageUrl}}/>
-                    <ion-button fill="clear" bottom color="success"
+                    <ion-button fill="clear" bottom color="dark"
                         (click)="deleteExercise(i)">
                         <ion-icon slot="icon-only" name="trash"></ion-icon>
                     </ion-button>
                 </ion-item>
-                <ion-button fill="clear" up color="success"
+                <ion-button fill="clear" up color="tertiary"
                     *ngIf="isNotLastInSet(exercise)"
                     (click)="switchExercises(i)">
                     <ion-icon slot="icon-only" name="repeat"></ion-icon>
@@ -121,7 +121,7 @@
             </ion-col>
         </ion-row>
         <ion-row class="ion-justify-content-center">
-            <ion-button fill="clear" color="success"
+            <ion-button fill="clear" color="tertiary"
                 (click)="toggleOpen()">
                 <ion-icon slot="icon-only" *ngIf="!IsOpen" name="arrow-dropdown"></ion-icon>
                 <ion-icon slot="icon-only" *ngIf="IsOpen" name="arrow-dropup"></ion-icon>
@@ -151,11 +151,11 @@
                     </div>
                     <div class="bordered"
                         *ngIf="isLastSet(exercise)" >
-                        <ion-button fill="clear" size="small" narrow-padding color="success"
+                        <ion-button fill="clear" size="small" narrow-padding color="dark"
                             (click)="deleteRep(i)" [disabled]="isMinReps">
                             <ion-icon slot="icon-only" name="trash" narrow-padding></ion-icon>
                         </ion-button>
-                        <ion-button fill="clear" size="small" narrow-padding color="success"
+                        <ion-button fill="clear" size="small" narrow-padding color="dark"
                             (click)="addRep(i)" [disabled]="isMaxReps">
                             <ion-icon slot="icon-only" name="add-circle" narrow-padding></ion-icon>
                         </ion-button>
@@ -170,7 +170,7 @@
                         Set Rest: {{exerciseSet.exercises[0].restBetweenReps}} seconds
                     </h3>
                     <ion-item>
-                        <ion-range [(ngModel)]="exerciseSet.exercises[0].restBetweenReps" color="success">
+                        <ion-range [(ngModel)]="exerciseSet.exercises[0].restBetweenReps" color="light">
                             <ion-icon slot="start" size="small" name="repeat" color="dark"></ion-icon>
                             <ion-icon slot="end" name="repeat" color="dark"></ion-icon>
                         </ion-range>
@@ -179,7 +179,7 @@
                         Exercise Rest: {{exerciseSet.exercises[0].restAfterExercise}} seconds
                     </h3>
                     <ion-item>
-                        <ion-range [(ngModel)]="exerciseSet.exercises[0].restAfterExercise" color="success">
+                        <ion-range [(ngModel)]="exerciseSet.exercises[0].restAfterExercise" color="light">
                             <ion-icon slot="start" size="small" name="body" color="dark"></ion-icon>
                             <ion-icon slot="end" name="body" color="dark"></ion-icon>
                         </ion-range>

@@ -7,11 +7,11 @@ ion-card {
     ion-card-content {
         padding-top: 0px;
         p {
-            color: var(--ion-color-success);
+            color: var(--ion-color-dark);
         }
         ion-item {
-            --background: var(--ion-color-success);
-            --detail-icon-color: var(--ion-color-danger);
+            --background: var(--ion-color-tertiary);
+            --detail-icon-color: var(--ion-color-warning);
             ion-label {
                 color: var(--ion-color-light);
             }
