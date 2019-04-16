@@ -69,7 +69,11 @@ h4 {
 }
 .nonActiveRep {
     background: var(--ion-color-secondary);
-    color: var(--ion-color-primary);
+    color: var(--ion-color-danger);
+}
+.editRep {
+    background: var(--ion-color-light);
+    color: var(--ion-color-danger);
 }
 .noTopMargin {
     margin-top: 0px;
@@ -78,7 +82,7 @@ h4 {
     margin-bottom: 0px;
 }
 .et-button {
-    --color: var(--ion-color-primary);
+    --color: var(--ion-color-danger);
     --background: var(--ion-color-secondary);
 }
 .fadeOutAndIn {
