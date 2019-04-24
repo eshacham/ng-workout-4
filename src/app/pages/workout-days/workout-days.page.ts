@@ -22,8 +22,8 @@ export class WorkoutDaysPage implements OnInit {
   slideOpts = {
     autoHeight: false,
     pagination: {
-      type: 'bullets',
-      clickable: true,
+      type: 'fraction',
+      clickable: false,
       el: '.swiper-pagination',
     },
     noSwipingSelector: 'ion-range, ion-reorder, ion-fab'
