@@ -118,4 +118,6 @@ ion-button {
 }
 ion-range {
     --knob-background: var(--ion-color-tertiary);
+    --bar-background: var(--ion-color-medium);
+    --bar-background-active: var(--ion-color-secondary);
 }
