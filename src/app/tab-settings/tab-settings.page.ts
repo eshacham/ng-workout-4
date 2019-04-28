@@ -16,12 +16,12 @@ export class TabSettingsPage {
   constructor(private themeService: ThemeServiceProvider) {}
 
   themes: Theme[] = [
-    { name: 'pink-skin', selected: false, image: '' },
-    { name: 'red-blue-brown', selected: false, image: '' },
-    { name: 'gray-yellow-green', selected: false, image: '' },
-    { name: 'mustard-red-cream', selected: false, image: '' },
-    { name: 'green-haki-bordo', selected: false, image: '' },
-    { name: 'gray-orange-black', selected: true, image: '' },
+    { name: 'pink-skin', selected: false, image: '/assets/images/themes/pink-skin' },
+    { name: 'red-blue-brown', selected: false, image: '/assets/images/themes/red-blue-brown' },
+    { name: 'gray-yellow-green', selected: false, image: '/assets/images/themes/gray-yellow-green' },
+    { name: 'mustard-red-cream', selected: false, image: '/assets/images/themes/mustard-red-cream' },
+    { name: 'green-haki-bordo', selected: false, image: '/assets/images/themes/green-haki-bordo' },
+    { name: 'gray-orange-black', selected: true, image: '/assets/images/themes/gray-orange-black' },
   ];
 
   themeSelected (event: any) {
@@ -30,9 +30,15 @@ export class TabSettingsPage {
     for (const theme of this.themes) {
       if (theme.name !== selectedtheme) {
         this.themeService.removeBodyClass(theme.name);
+        theme.selected = false;
       } else {
         this.themeService.addBodyClass(theme.name);
+        theme.selected = true;
       }
     }
+  }
+
+  getSelectedThemeImage(i: number): string {
+    return `${this.themes.filter(t => t.selected)[0].image}-${i}.png`;
   }
 }
