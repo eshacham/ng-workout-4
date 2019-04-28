@@ -6,4 +6,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+
+  <ion-list (ionChange)="themeSelected($event)">
+    <ion-radio-group>
+      <ion-list-header>
+        <ion-label>Theme</ion-label>
+      </ion-list-header>
+
+      <ion-item *ngFor='let theme of themes' >
+        <ion-label>{{theme.name}}</ion-label>
+        <ion-radio
+          slot="start" value={{theme.name}} [checked]='theme.selected'>
+        </ion-radio>
+      </ion-item>
+
+    </ion-radio-group>
+  </ion-list>
+
+</ion-content>
