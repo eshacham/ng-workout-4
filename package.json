@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "if [ -f ./node_modules/json-typescript-mapper/libs/utils.ts ] ; then rm ./node_modules/json-typescript-mapper/libs/utils.ts ; fi ; "
+    "postinstall": "if [ -f ./node_modules/json-typescript-mapper/libs/utils.ts ] ; then rm ./node_modules/json-typescript-mapper/libs/utils.ts ; fi ; ",
+    "build-ios": "ionic cordova build ios -- --buildFlag='-UseModernBuildSystem=0'"
   },
   "private": true,
   "dependencies": {
