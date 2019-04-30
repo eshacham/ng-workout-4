@@ -81,6 +81,9 @@ h4 {
 .noBottomMargin {
     margin-bottom: 0px;
 }
+ion-buttons {
+    width: 100%
+}
 .et-button {
     --color: var(--ion-color-danger);
     --background: var(--ion-color-secondary);

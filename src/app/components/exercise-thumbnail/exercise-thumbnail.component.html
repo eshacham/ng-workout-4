@@ -59,26 +59,32 @@
                   </ion-col>
               </ion-row>
               <ion-row class="ion-justify-content-center">
-                  <div *ngIf="isResting">
-                      <ion-button size="large" class="et-button"
+                  <ion-col *ngIf="isResting" text-center>
+                      <ion-button expand="full" class="et-button"
                           (click)="skipRest()">
                           Rest {{timedRestRemaining}} Seconds or Skip
                       </ion-button>
-                  </div>
-                  <div *ngIf="!isResting">
-                      <ion-button fill="clear" color="tertiary"
-                          [disabled]="!isPrevRepAvailable" (click)="prevRep()">
-                          <ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon>
-                      </ion-button>
-                      <ion-button size="large" class="et-button"
-                          (click)="nextRep(true)">
-                          Done!
-                      </ion-button>
-                      <ion-button fill="clear" color="tertiary"
-                          (click)="nextRep(false)">
-                          <ion-icon slot="icon-only" name="arrow-dropright"></ion-icon>
-                      </ion-button>
-                  </div>
+                  </ion-col>
+                  <ion-buttons *ngIf="!isResting">
+                       <ion-col text-center>
+                            <ion-button fill="clear" color="tertiary"
+                                [disabled]="!isPrevRepAvailable" (click)="prevRep()">
+                                <ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon>
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="6">
+                            <ion-button expand="full" class="et-button"
+                                (click)="nextRep(true)">
+                                Done!
+                            </ion-button>
+                        </ion-col>
+                        <ion-col text-center>
+                            <ion-button fill="clear" color="tertiary"
+                                (click)="nextRep(false)">
+                                <ion-icon slot="icon-only" name="arrow-dropright"></ion-icon>
+                            </ion-button>
+                        </ion-col>
+                  </ion-buttons>
               </ion-row>
           </ion-grid>
       </div>
