@@ -15,8 +15,7 @@ const STORAGE_KEY = 'my_workouts';
 export class TabWorkoutsPage implements OnInit {
   workouts: Workout[];
 
-  constructor(
-    private storage: Storage) {}
+  constructor (private storage: Storage) {}
 
   async ngOnInit () {
     await this.initStorage();

@@ -13,6 +13,7 @@ import { ExerciseVariationPopoverComponent } from 'src/app/components/exercise-v
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     component: WorkoutDaysPage
   }
 ];

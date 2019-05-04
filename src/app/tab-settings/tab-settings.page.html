@@ -8,23 +8,40 @@
 
 <ion-content>
 
-  <ion-list (ionChange)="themeSelected($event)" no-padding>
-    <ion-radio-group>
-      <ion-list-header>
-        <ion-label>Theme</ion-label>
-      </ion-list-header>
+  <ion-segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="themes" layout="icon-start" checked>
+      <ion-label>Themes</ion-label>
+      <ion-icon name="call"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="workouts" layout="icon-start">
+      <ion-label>Workouts</ion-label>
+      <ion-icon name="call"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
 
+
+  <ion-list *ngIf="selectedSegment==='workouts'" lines="none">
+    <ion-item>
+      <ion-button expand="full" (click)="resetWorkouts()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+        Reset Workouts
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="selectedSegment==='themes'"
+    (ionChange)="themeSelected($event)" no-padding>
+    <ion-radio-group>
       <ion-item *ngFor='let theme of themes' >
         <ion-label>{{theme.name}}</ion-label>
         <ion-radio
           slot="start" value={{theme.name}} [checked]='theme.selected'>
         </ion-radio>
       </ion-item>
-
     </ion-radio-group>
   </ion-list>
 
-  <ion-grid>
+  <ion-grid *ngIf="selectedSegment==='themes'">
     <ion-row >
       <ion-col text-center>
         <img src={{getSelectedThemeImage(1)}} >

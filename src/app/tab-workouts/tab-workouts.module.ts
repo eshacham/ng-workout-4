@@ -11,6 +11,7 @@ import { DataServiceProvider } from 'src/app/providers/data-service/data-service
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     component: TabWorkoutsPage
   },
   {

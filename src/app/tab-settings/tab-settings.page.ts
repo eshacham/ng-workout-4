@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
+import { Storage } from '@ionic/storage';
+import { deserialize } from 'json-typescript-mapper';
+import { json } from '../constants/defaultWorkouts';
 import { ThemeServiceProvider } from '../providers/theme-service/theme-service';
+import { DefaultWorkouts } from '../models/DefaultWorkouts';
+
+const STORAGE_KEY = 'my_workouts';
 
 interface Theme  {
   name: string;
@@ -13,7 +19,11 @@ interface Theme  {
   styleUrls: ['tab-settings.page.scss']
 })
 export class TabSettingsPage {
-  constructor(private themeService: ThemeServiceProvider) {}
+  constructor (
+    private themeService: ThemeServiceProvider,
+    private storage: Storage) {}
+
+  selectedSegment = 'themes';
 
   themes: Theme[] = [
     { name: 'pink-skin', selected: false, image: '/assets/images/themes/pink-skin' },
@@ -40,5 +50,18 @@ export class TabSettingsPage {
 
   getSelectedThemeImage(i: number): string {
     return `${this.themes.filter(t => t.selected)[0].image}-${i}.png`;
+  }
+
+  segmentChanged(event: any) {
+    this.selectedSegment = event.detail.value;
+    console.log('Segment changed', this.selectedSegment);
+  }
+
+  async resetWorkouts() {
+    await this.storage.ready();
+    let defaultWorkouts: DefaultWorkouts;
+    defaultWorkouts = deserialize(DefaultWorkouts, json);
+    await this.storage.set(STORAGE_KEY, defaultWorkouts.workouts);
+    console.log('workouts has been reset');
   }
 }
