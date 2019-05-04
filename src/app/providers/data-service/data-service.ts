@@ -54,4 +54,9 @@ export class DataServiceProvider {
     console.log('workouts have been reset');
   }
 
+  async saveWorkouts(storage: Storage) {
+    await storage.ready();
+    await storage.set(STORAGE_KEY, this.workouts);
+    console.log('workouts have been saved');
+  }
 }
