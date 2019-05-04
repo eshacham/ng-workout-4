@@ -39,5 +39,6 @@ export enum ExerciseSetAction {
     Completed,
     Delete,
     Edit,
-    Run
+    Run,
+    Save
 }

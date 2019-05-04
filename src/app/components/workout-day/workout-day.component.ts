@@ -88,10 +88,6 @@ export class WorkoutDayComponent implements OnInit {
     }
   }
 
-  deleteExerciseSet(set: ExerciseSet, day: string) {
-    // this.workoutService.deleteExercise(set, this.workoutDay);
-  }
-
   startWorkout() {
     switch (this.DisplayMode) {
       case DisplayMode.Display:
@@ -158,13 +154,23 @@ export class WorkoutDayComponent implements OnInit {
     }
   }
 
+  deleteExerciseSet(set: ExerciseSet, day: string) {
+    // this.workoutService.deleteExercise(set, this.workoutDay);
+    this.saveChanges();
+  }
   addExercise() {
-    // const newExercise: Exercise = this.workoutService.getNewtWorkoutSet();
-    // this.workoutDay.exercises.push(newExercise);
+    // TODO add exercise
+    // this.cancelEditWorkout();
     this.saveChanges();
   }
 
+  addWorkoutDay() {
+    // TODO add workout day
+    // this.cancelEditWorkout();
+    this.saveChanges();
+  }
   saveChanges() {
+    this.emitExerciseSetActionEvent(ExerciseSetAction.Save);
     this.cancelEditWorkout();
     // this.toastr.info('Saved!');
   }
@@ -188,7 +194,8 @@ export class WorkoutDayComponent implements OnInit {
     this.publishWorkoutEvent(DisplayMode.Workout, exerciseSetIndex);
   }
 
-  publishWorkoutEvent(displayMode: DisplayMode,
+  publishWorkoutEvent(
+    displayMode: DisplayMode,
     runningExerciseIndex: number) {
     const workoutEvent =
       new ExerciseSetSwitchModeEvent(displayMode, runningExerciseIndex, this.workoutDay.name);

@@ -78,6 +78,9 @@ export class WorkoutDaysPage implements OnInit {
         console.log('workout: receieved run event: ', JSON.stringify(event));
         this.publishWorkoutEvent(DisplayMode.Workout, event.workoutDayName);
         break;
+      case ExerciseSetAction.Save:
+        console.log('workout: receieved save event: ', JSON.stringify(event));
+        break;
     }
   }
 
