@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { json } from '../constants/defaultWorkouts';
 import { deserialize } from 'json-typescript-mapper';
 import { Workout } from '../models/Workout';
+import { DataServiceProvider } from '../providers/data-service/data-service';
 
 const STORAGE_KEY = 'my_workouts';
 
@@ -15,13 +16,16 @@ const STORAGE_KEY = 'my_workouts';
 export class TabWorkoutsPage implements OnInit {
   workouts: Workout[];
 
-  constructor (private storage: Storage) {}
+  constructor (
+    private storage: Storage,
+    private dataServiceProvider: DataServiceProvider) {}
 
   async ngOnInit () {
     await this.initStorage();
   }
 
   private async initStorage() {
+    console.log('initializing workouts');
     await this.storage.ready();
     this.workouts = await this.storage.get(STORAGE_KEY);
     if (!this.workouts || !this.workouts.length) {
@@ -30,6 +34,7 @@ export class TabWorkoutsPage implements OnInit {
       await this.storage.set(STORAGE_KEY, defaultWorkouts.workouts);
       this.workouts = defaultWorkouts.workouts;
     }
+    this.dataServiceProvider.setWorkouts(this.workouts);
   }
 
 }

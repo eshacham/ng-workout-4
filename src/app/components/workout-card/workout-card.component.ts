@@ -16,11 +16,11 @@ export class WorkoutCardComponent implements OnInit {
     private router: Router,
     private dataService: DataServiceProvider) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  goToWorkoutDays () {
-    this.dataService.storage = this.workout;
-    this.router.navigate(['/tabs/tab-workouts/workout-days']);
+  goToWorkoutDays() {
+    //this.dataService.storage = this.workout;
+    this.router.navigate([`/tabs/tab-workouts/workout-days/${this.workout.id}`]);
   }
 
   get daysCount(): number {

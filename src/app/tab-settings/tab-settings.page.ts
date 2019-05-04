@@ -62,6 +62,7 @@ export class TabSettingsPage {
     let defaultWorkouts: DefaultWorkouts;
     defaultWorkouts = deserialize(DefaultWorkouts, json);
     await this.storage.set(STORAGE_KEY, defaultWorkouts.workouts);
+    /// TODO reset the dataservice too
     console.log('workouts has been reset');
   }
 }

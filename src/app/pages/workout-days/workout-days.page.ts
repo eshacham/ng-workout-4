@@ -7,6 +7,7 @@ import { DataServiceProvider } from 'src/app/providers/data-service/data-service
 import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 import { ExerciseSetAction, DisplayMode } from 'src/app/models/enums';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-workout-days',
@@ -19,6 +20,8 @@ export class WorkoutDaysPage implements OnInit {
   workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent> = new Subject();
   @ViewChild('slider') slides: Slides;
 
+  workoutId: number;
+
   slideOpts = {
     autoHeight: false,
     pagination: {
@@ -29,13 +32,17 @@ export class WorkoutDaysPage implements OnInit {
     noSwipingSelector: 'ion-range, ion-reorder, ion-fab, ion-button'
   };
 
-  constructor(
-    // private route: ActivatedRoute,
+  constructor (
+    private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
+      this.route.params.subscribe(params => {
+        console.log('getting workout id from route params', params);
+        this.workoutId = +params.id;
+    });
   }
 
   ngOnInit() {
-    this.workout = this.dataService.storage;
+    this.workout = this.dataService.getWorkout(this.workoutId);
     if (this.slides && this.workout) {
       console.log('ngOnInit this.workout.name --> ', this.workout.name);
       const lastIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
