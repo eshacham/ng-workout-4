@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-// import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { IonSlides as Slides} from '@ionic/angular';
 import { Workout } from 'src/app/models/Workout';

@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { deserialize } from 'json-typescript-mapper';
-import { json } from '../constants/defaultWorkouts';
 import { ThemeServiceProvider } from '../providers/theme-service/theme-service';
-import { DefaultWorkouts } from '../models/DefaultWorkouts';
-
-const STORAGE_KEY = 'my_workouts';
+import { DataServiceProvider } from '../providers/data-service/data-service';
 
 interface Theme  {
   name: string;
@@ -21,7 +17,8 @@ interface Theme  {
 export class TabSettingsPage {
   constructor (
     private themeService: ThemeServiceProvider,
-    private storage: Storage) {}
+    private storage: Storage,
+    private dataServiceProvider: DataServiceProvider) {}
 
   selectedSegment = 'themes';
 
@@ -58,11 +55,6 @@ export class TabSettingsPage {
   }
 
   async resetWorkouts() {
-    await this.storage.ready();
-    let defaultWorkouts: DefaultWorkouts;
-    defaultWorkouts = deserialize(DefaultWorkouts, json);
-    await this.storage.set(STORAGE_KEY, defaultWorkouts.workouts);
-    /// TODO reset the dataservice too
-    console.log('workouts has been reset');
+    await this.dataServiceProvider.resetWorkouts(this.storage);
   }
 }
