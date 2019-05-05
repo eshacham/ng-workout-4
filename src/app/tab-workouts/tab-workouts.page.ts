@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 
@@ -12,11 +11,10 @@ export class TabWorkoutsPage implements OnInit {
   workouts: Workout[];
 
   constructor (
-    private storage: Storage,
     private dataServiceProvider: DataServiceProvider) {}
 
   async ngOnInit () {
-    this.workouts = await this.dataServiceProvider.initWorkouts(this.storage);
+    this.workouts = await this.dataServiceProvider.initWorkouts();
   }
 
 }

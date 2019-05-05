@@ -32,7 +32,8 @@ export class TabLibraryPage implements OnInit {
     private loadingController: LoadingController,
     private ref: ChangeDetectorRef,
     private filePath: FilePath,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private dataServiceProvider: DataServiceProvider) {
     }
 
     images: SavedImage[] = [];
@@ -47,15 +48,7 @@ export class TabLibraryPage implements OnInit {
     }
 
     async loadStoredImages() {
-      const images = await this.storage.get(STORAGE_KEY);
-      if (images) {
-        const arr = JSON.parse(images);
-        this.images = arr.map((img: string) => {
-          const filePath = this.file.dataDirectory + img;
-          const resPath = this.pathForImage(filePath);
-          return { name: img, path: resPath, filePath: filePath };
-        });
-      }
+      this.images = await this.dataServiceProvider.loadStoredImages();
     }
 
     pathForImage(img: string) {

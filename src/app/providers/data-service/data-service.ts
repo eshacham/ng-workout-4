@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { Platform } from '@ionic/angular';
 import { deserialize } from 'json-typescript-mapper';
+
 import { StateCache } from '../../models/StateCache';
 import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
@@ -23,7 +25,11 @@ export class DataServiceProvider {
   private workouts: Workout[];
   private images: SavedImage[] = [];
 
-  constructor () {
+  constructor (
+    private platform: Platform,
+    private file: File,
+    private webview: WebView,
+    private storage: Storage) {
     this.state = new StateCache();
   }
 
@@ -42,50 +48,51 @@ export class DataServiceProvider {
      return workout[0];
    }
 
-   async initWorkouts(storage: Storage) {
-    await storage.ready();
-    this.workouts = await storage.get(WORKOUTS_STORAGE_KEY);
+   async initWorkouts() {
+    await this.storage.ready();
+    this.workouts = await this.storage.get(WORKOUTS_STORAGE_KEY);
     if (!this.workouts || !this.workouts.length) {
       console.log('initializing workouts');
       let defaultWorkouts: DefaultWorkouts;
       defaultWorkouts = deserialize(DefaultWorkouts, json);
-      await storage.set(WORKOUTS_STORAGE_KEY, defaultWorkouts.workouts);
+      await this.storage.set(WORKOUTS_STORAGE_KEY, defaultWorkouts.workouts);
       this.workouts = defaultWorkouts.workouts;
     }
     console.log('cached workouts', this.workouts.map(w => w.id));
     return this.workouts;
    }
 
-   async resetWorkouts(storage: Storage) {
-    await storage.ready();
+   async resetWorkouts() {
+    await this.storage.ready();
     let defaultWorkouts: DefaultWorkouts;
     defaultWorkouts = deserialize(DefaultWorkouts, json);
-    await storage.set(WORKOUTS_STORAGE_KEY, defaultWorkouts.workouts);
+    await this.storage.set(WORKOUTS_STORAGE_KEY, defaultWorkouts.workouts);
     this.workouts = defaultWorkouts.workouts;
     console.log('workouts have been reset');
   }
 
-  async saveWorkouts(storage: Storage) {
-    await storage.ready();
-    await storage.set(WORKOUTS_STORAGE_KEY, this.workouts);
+  async saveWorkouts() {
+    await this.storage.ready();
+    await this.storage.set(WORKOUTS_STORAGE_KEY, this.workouts);
     console.log('workouts have been saved');
   }
 
-  // async loadStoredImages(storage: Storage, file: File, webview: WebView) {
-  //   const images = await storage.get(IMAGES_STORAGE_KEY);
-  //   if (images) {
-  //     const arr = JSON.parse(images);
-  //     this.images = arr.map((img: string): SavedImage => {
-  //       const filePath = file.dataDirectory + img;
-  //       const resPath = this.pathForImage(webview, filePath);
-  //       return { name: img, path: resPath, filePath: filePath };
-  //     });
-  //   }
-  // }
+  async loadStoredImages(): Promise<SavedImage[]> {
+    const images = await this.storage.get(IMAGES_STORAGE_KEY);
+    if (images) {
+      const arr = JSON.parse(images);
+      this.images = arr.map((img: string): SavedImage => {
+        const filePath = this.file.dataDirectory + img;
+        const resPath = this.pathForImage(filePath);
+        return { name: img, path: resPath, filePath: filePath };
+      });
+    }
+    return this.images;
+  }
 
-  // isWebApp() {
-  //   return !this.platform.is('ios') && !this.platform.is('android');
-  // }
+  isWebApp() {
+    return !this.platform.is('ios') && !this.platform.is('android');
+  }
 
   // getSavedImages(storage: Storage, file: File, webview: WebView): SavedImage[] {
   //   if (!this.images.length) {
@@ -95,11 +102,11 @@ export class DataServiceProvider {
 
   // }
 
-  pathForImage(webview: WebView, img: string) {
+  pathForImage(img: string) {
     if (img === null) {
       return '';
     } else {
-      const converted = webview.convertFileSrc(img);
+      const converted = this.webview.convertFileSrc(img);
       return converted;
     }
   }

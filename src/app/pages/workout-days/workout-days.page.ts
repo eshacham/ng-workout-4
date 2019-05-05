@@ -82,7 +82,7 @@ export class WorkoutDaysPage implements OnInit {
         break;
       case ExerciseSetAction.Save:
         console.log('workout: receieved save event: ', JSON.stringify(event));
-        this.dataService.saveWorkouts(this.storage);
+        this.dataService.saveWorkouts();
         break;
     }
   }
