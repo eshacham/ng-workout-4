@@ -7,6 +7,7 @@ import { TabsPageRoutingModule } from './tabs.router.module';
 
 import { TabsPage } from './tabs.page';
 import { ThemeServiceProvider } from '../providers/theme-service/theme-service';
+import { DataServiceProvider } from '../providers/data-service/data-service';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { ThemeServiceProvider } from '../providers/theme-service/theme-service';
   ],
   declarations: [TabsPage],
   providers: [
-    ThemeServiceProvider
+    ThemeServiceProvider,
+    DataServiceProvider
   ]
 })
 export class TabsPageModule {}

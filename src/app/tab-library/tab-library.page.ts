@@ -10,7 +10,7 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 // import { finalize } from 'rxjs/operators';
 import { LoadingOptions } from '@ionic/core';
-import { isWorker } from 'cluster';
+import { DataServiceProvider, SavedImage } from '../providers/data-service/data-service';
 
 const STORAGE_KEY = 'my_images';
 
@@ -35,7 +35,7 @@ export class TabLibraryPage implements OnInit {
     private sanitizer: DomSanitizer) {
     }
 
-    images = [];
+    images: SavedImage[] = [];
     platformSource: string;
     isWeb: boolean;
 
@@ -163,7 +163,7 @@ export class TabLibraryPage implements OnInit {
       return safeUrl;
     }
 
-    async deleteImage(imgEntry, position: number) {
+    async deleteImage(imgEntry: SavedImage, position: number) {
       this.images.splice(position, 1);
       const images = await this.storage.get(STORAGE_KEY);
       const arr = JSON.parse(images);
@@ -174,7 +174,7 @@ export class TabLibraryPage implements OnInit {
       this.presentToast('File removed.');
     }
 
-    async startUpload(imgEntry) {
+    async startUpload(imgEntry: SavedImage) {
       try {
         const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.filePath);
         ( < FileEntry > entry).file(file => this.readFile(file));

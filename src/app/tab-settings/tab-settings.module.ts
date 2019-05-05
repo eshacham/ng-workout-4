@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 import { TabSettingsPage } from './tab-settings.page';
-import { DataServiceProvider } from '../providers/data-service/data-service';
 
 @NgModule({
   imports: [
@@ -16,6 +15,7 @@ import { DataServiceProvider } from '../providers/data-service/data-service';
     IonicStorageModule.forRoot()
   ],
   declarations: [TabSettingsPage],
-  providers: [DataServiceProvider]
+  providers: [
+  ]
 })
 export class TabSettingsPageModule {}
