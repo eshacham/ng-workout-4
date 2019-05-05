@@ -10,6 +10,7 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 // import { finalize } from 'rxjs/operators';
 import { LoadingOptions } from '@ionic/core';
+import { isWorker } from 'cluster';
 
 const STORAGE_KEY = 'my_images';
 
@@ -35,9 +36,13 @@ export class TabLibraryPage implements OnInit {
     }
 
     images = [];
+    platformSource: string;
+    isWeb: boolean;
 
     async ngOnInit() {
-      await this.platform.ready();
+      this.platformSource = await this.platform.ready();
+      this.isWeb = !this.platform.is('ios') && !this.platform.is('android');
+      console.log(`this app runs on ${this.platformSource}. is it a web site? ${this.isWeb}`);
       this.loadStoredImages();
     }
 
@@ -72,6 +77,7 @@ export class TabLibraryPage implements OnInit {
     }
 
     async selectImage() {
+      console.log(this.platform);
       const options = {
         header: 'Select Image source',
         buttons: [{
@@ -79,15 +85,18 @@ export class TabLibraryPage implements OnInit {
             handler: () => {
               this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
             }
-          }, {
+          }]
+      };
+      if (!this.isWeb) {
+        options.buttons.push({
             text: 'Use Camera',
             handler: () => {
                 this.takePicture(this.camera.PictureSourceType.CAMERA);
             }
-          }]
-        };
-        const actionSheet = await this.actionSheetController.create(options);
-        await actionSheet.present();
+          });
+      }
+      const actionSheet = await this.actionSheetController.create(options);
+      await actionSheet.present();
     }
 
     async takePicture(sourceType: PictureSourceType) {
