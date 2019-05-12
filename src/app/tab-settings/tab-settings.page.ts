@@ -57,4 +57,8 @@ export class TabSettingsPage {
   async resetWorkouts() {
     await this.dataServiceProvider.resetWorkouts();
   }
+
+  async resetImages() {
+    await this.dataServiceProvider.resetImages();
+  }
 }

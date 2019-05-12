@@ -27,6 +27,12 @@
         Reset Workouts
       </ion-button>
     </ion-item>
+    <ion-item>
+      <ion-button expand="full" (click)="resetImages()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+        Reset Images
+      </ion-button>
+    </ion-item>
   </ion-list>
 
   <ion-list *ngIf="selectedSegment==='themes'"
