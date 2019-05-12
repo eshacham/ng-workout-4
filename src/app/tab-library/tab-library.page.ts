@@ -5,7 +5,7 @@ import { ActionSheetController, ToastController,
 import { File, FileEntry } from '@ionic-native/File/ngx';
 // import { HttpClient } from '@angular/common/http';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { Storage } from '@ionic/storage';
+// import { Storage } from '@ionic/storage';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 // import { finalize } from 'rxjs/operators';
@@ -27,10 +27,10 @@ export class TabLibraryPage implements OnInit {
     private webview: WebView,
     private actionSheetController: ActionSheetController,
     private toastController: ToastController,
-    private storage: Storage,
+    // private storage: Storage,
     private platform: Platform,
     private loadingController: LoadingController,
-    private ref: ChangeDetectorRef,
+    // private ref: ChangeDetectorRef,
     private filePath: FilePath,
     private sanitizer: DomSanitizer,
     private dataServiceProvider: DataServiceProvider) {
@@ -44,11 +44,8 @@ export class TabLibraryPage implements OnInit {
       this.platformSource = await this.platform.ready();
       this.isWeb = !this.platform.is('ios') && !this.platform.is('android');
       console.log(`this app runs on ${this.platformSource}. is it a web site? ${this.isWeb}`);
-      this.loadStoredImages();
-    }
-
-    async loadStoredImages() {
       this.images = await this.dataServiceProvider.loadStoredImages();
+      // this.ref.detectChanges(); // trigger change detection cycle
     }
 
     pathForImage(img: string) {
@@ -70,7 +67,7 @@ export class TabLibraryPage implements OnInit {
     }
 
     async selectImage() {
-      console.log(this.platform);
+      console.log('platform: ' + this.platformSource);
       const options = {
         header: 'Select Image source',
         buttons: [{
@@ -89,6 +86,7 @@ export class TabLibraryPage implements OnInit {
           });
       }
       const actionSheet = await this.actionSheetController.create(options);
+      console.log('presenting action sheet...');
       await actionSheet.present();
     }
 
@@ -100,6 +98,7 @@ export class TabLibraryPage implements OnInit {
           correctOrientation: true
       };
       const imagePath = await this.camera.getPicture(options);
+      console.log('took picture as: ', imagePath);
       let currentName: string;
       let correctPath: string;
 
@@ -111,7 +110,7 @@ export class TabLibraryPage implements OnInit {
         currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
         correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
       }
-      this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+      await this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
     }
 
     createFileName = () => `${new Date().getTime()}.jpg`;
@@ -119,36 +118,37 @@ export class TabLibraryPage implements OnInit {
     async copyFileToLocalDir(namePath: string, currentName: string, newFileName: string) {
       try {
         await this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName);
-        this.updateStoredImages(newFileName);
+        console.log('new file has been copied');
+        await this.dataServiceProvider.saveImage(newFileName);
       } catch (error) {
-        console.log(error);
-        this.presentToast('Error while storing file.');
+        console.log('Error while storing file:', error);
+        this.presentToast('Error while storing file ');
       }
     }
 
-    async updateStoredImages(name: string) {
-      const images = await this.storage.get(STORAGE_KEY);
-      const arr = JSON.parse(images);
-      if (!arr) {
-          const newImages = [name];
-          this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
-      } else {
-          arr.push(name);
-          this.storage.set(STORAGE_KEY, JSON.stringify(arr));
-      }
+    // async updateStoredImages(name: string) {
+    //   const images = await this.storage.get(STORAGE_KEY);
+    //   const arr = JSON.parse(images);
+    //   if (!arr) {
+    //       const newImages = [name];
+    //       await this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
+    //   } else {
+    //       arr.push(name);
+    //       await this.storage.set(STORAGE_KEY, JSON.stringify(arr));
+    //   }
 
-      const filePath = this.file.dataDirectory + name;
-      const resPath = this.pathForImage(filePath);
+    //   const filePath = this.file.dataDirectory + name;
+    //   const resPath = this.pathForImage(filePath);
 
-      const newEntry = {
-          name: name,
-          path: resPath,
-          filePath: filePath
-      };
+    //   const newEntry = {
+    //       name: name,
+    //       path: resPath,
+    //       filePath: filePath
+    //   };
 
-      this.images = [newEntry, ...this.images];
-      this.ref.detectChanges(); // trigger change detection cycle
-    }
+    //   this.images = [newEntry, ...this.images];
+    //   this.ref.detectChanges(); // trigger change detection cycle
+    // }
 
     sanitize(imageUrl: string): SafeUrl {
       // return imageUrl
@@ -157,13 +157,8 @@ export class TabLibraryPage implements OnInit {
     }
 
     async deleteImage(imgEntry: SavedImage, position: number) {
-      this.images.splice(position, 1);
-      const images = await this.storage.get(STORAGE_KEY);
-      const arr = JSON.parse(images);
-      const filtered = arr.filter((name: string) => name !== imgEntry.name);
-      this.storage.set(STORAGE_KEY, JSON.stringify(filtered));
-      const correctPath = imgEntry.filePath.substr(0, imgEntry.filePath.lastIndexOf('/') + 1);
-      await this.file.removeFile(correctPath, imgEntry.name);
+      await this.dataServiceProvider.deleteImage(imgEntry, position);
+      this.images = await this.dataServiceProvider.loadStoredImages();
       this.presentToast('File removed.');
     }
 
