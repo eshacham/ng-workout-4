@@ -5,6 +5,9 @@ import { Rep } from './Rep';
 import { JsonProperty } from 'json-typescript-mapper';
 
 export class Exercise {
+    @JsonProperty('guid')
+    id: string;
+
     @JsonProperty('name')
     name: string;
 
