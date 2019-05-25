@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SavedImage, DataServiceProvider } from 'src/app/providers/data-service/data-service';
 
 @Component({
   selector: 'app-select-exercise',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectExercisePage implements OnInit {
 
-  constructor() { }
+  images: SavedImage[];
 
-  ngOnInit() {
+  constructor(private dataServiceProvider: DataServiceProvider) {
+    this.images = [];
+  }
+
+  async ngOnInit() {
+    this.images = await this.dataServiceProvider.loadStoredImages();
+  }
+
+  select (image: SavedImage) {
+    console.log('adding exercise:', image);
   }
 
 }

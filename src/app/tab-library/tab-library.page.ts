@@ -37,7 +37,6 @@ export class TabLibraryPage implements OnInit {
       const platformSource = await this.platform.ready();
       console.log(`this app runs on ${platformSource}`);
       this.images = await this.dataServiceProvider.loadStoredImages();
-      // this.ref.detectChanges(); // trigger change detection cycle
     }
 
     pathForImage(img: string) {
