@@ -1,18 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController, ToastController,
          Platform, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
-// import { HttpClient } from '@angular/common/http';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
-// import { Storage } from '@ionic/storage';
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-// import { finalize } from 'rxjs/operators';
 import { LoadingOptions } from '@ionic/core';
 import { DataServiceProvider, SavedImage } from '../providers/data-service/data-service';
-
-const STORAGE_KEY = 'my_images';
 
 @Component({
   selector: 'app-tab-library',
@@ -20,30 +14,28 @@ const STORAGE_KEY = 'my_images';
   styleUrls: ['tab-library.page.scss']
 })
 export class TabLibraryPage implements OnInit {
+  images: SavedImage[];
+
   constructor(
     private camera: Camera,
     private file: File,
-    // private http: HttpClient,
     private webview: WebView,
     private actionSheetController: ActionSheetController,
     private toastController: ToastController,
-    // private storage: Storage,
     private platform: Platform,
     private loadingController: LoadingController,
-    // private ref: ChangeDetectorRef,
     private filePath: FilePath,
-    private sanitizer: DomSanitizer,
     private dataServiceProvider: DataServiceProvider) {
+      this.images = [];
     }
 
-    images: SavedImage[] = [];
-    platformSource: string;
-    isWeb: boolean;
+    get IsMobile()  {
+      return this.platform.is('ios') || this.platform.is('android');
+    }
 
     async ngOnInit() {
-      this.platformSource = await this.platform.ready();
-      this.isWeb = !this.platform.is('ios') && !this.platform.is('android');
-      console.log(`this app runs on ${this.platformSource}. is it a web site? ${this.isWeb}`);
+      const platformSource = await this.platform.ready();
+      console.log(`this app runs on ${platformSource}`);
       this.images = await this.dataServiceProvider.loadStoredImages();
       // this.ref.detectChanges(); // trigger change detection cycle
     }
@@ -67,7 +59,6 @@ export class TabLibraryPage implements OnInit {
     }
 
     async selectImage() {
-      console.log('platform: ' + this.platformSource);
       const options = {
         header: 'Select Image source',
         buttons: [{
@@ -75,16 +66,14 @@ export class TabLibraryPage implements OnInit {
             handler: () => {
               this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
             }
-          }]
+          }, {
+          text: 'Use Camera',
+          handler: () => {
+              this.takePicture(this.camera.PictureSourceType.CAMERA);
+          }
+        }]
       };
-      if (!this.isWeb) {
-        options.buttons.push({
-            text: 'Use Camera',
-            handler: () => {
-                this.takePicture(this.camera.PictureSourceType.CAMERA);
-            }
-          });
-      }
+
       const actionSheet = await this.actionSheetController.create(options);
       console.log('presenting action sheet...');
       await actionSheet.present();
@@ -124,36 +113,6 @@ export class TabLibraryPage implements OnInit {
         console.log('Error while storing file:', error);
         this.presentToast('Error while storing file ');
       }
-    }
-
-    // async updateStoredImages(name: string) {
-    //   const images = await this.storage.get(STORAGE_KEY);
-    //   const arr = JSON.parse(images);
-    //   if (!arr) {
-    //       const newImages = [name];
-    //       await this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
-    //   } else {
-    //       arr.push(name);
-    //       await this.storage.set(STORAGE_KEY, JSON.stringify(arr));
-    //   }
-
-    //   const filePath = this.file.dataDirectory + name;
-    //   const resPath = this.pathForImage(filePath);
-
-    //   const newEntry = {
-    //       name: name,
-    //       path: resPath,
-    //       filePath: filePath
-    //   };
-
-    //   this.images = [newEntry, ...this.images];
-    //   this.ref.detectChanges(); // trigger change detection cycle
-    // }
-
-    sanitize(imageUrl: string): SafeUrl {
-      // return imageUrl
-      const safeUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-      return safeUrl;
     }
 
     async deleteImage(imgEntry: SavedImage, position: number) {

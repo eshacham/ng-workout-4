@@ -9,7 +9,6 @@ import { StateCache } from '../../models/StateCache';
 import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
 import { json } from '../../constants/defaultWorkouts';
-import { saveConfig } from '@ionic/core';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -23,18 +22,20 @@ export interface SavedImage {
 @Injectable()
 export class DataServiceProvider {
 
-  private workouts: Workout[] = [];
-  private images: SavedImage[] = [];
+  private workouts: Workout[];
+  private images: SavedImage[];
   private defaultWorkouts: DefaultWorkouts;
 
-  constructor(
+  constructor (
     private platform: Platform,
     private file: File,
     private webview: WebView,
     private storage: Storage) {
-    this.state = new StateCache();
-    this.defaultWorkouts = deserialize(DefaultWorkouts, json);
-    console.log('initilized default workouts', this.defaultWorkouts.workouts.map(w => w.id));
+      this.images = [];
+      this.workouts = [];
+      this.state = new StateCache();
+      this.defaultWorkouts = deserialize(DefaultWorkouts, json);
+      console.log('initilized default workouts', this.defaultWorkouts.workouts.map(w => w.id));
   }
 
   private state: StateCache;
@@ -75,8 +76,8 @@ export class DataServiceProvider {
   async resetImages() {
     this.images = [];
     await this.storage.ready();
-    await this.storage.set(IMAGES_STORAGE_KEY, this.images);
-    await this.loadStoredImages();
+    await this.storage.remove(IMAGES_STORAGE_KEY);
+    /// TODO need to notify the client the data has been reset so it will reload it!
     console.log('images have been reset');
   }
 
@@ -88,24 +89,15 @@ export class DataServiceProvider {
 
   async loadStoredImages(): Promise<SavedImage[]> {
     await this.storage.ready();
-    this.images = await this.storage.get(IMAGES_STORAGE_KEY);
+    const images = await this.storage.get(IMAGES_STORAGE_KEY);
 
-    if (this.isWebApp) {
-      if (!this.images || !this.images.length) {
+    if (images && images.length) {
+      this.images = images;
+    } else {
+      if (this.isWebApp) {
         this.initDefaultImages();
       }
     }
-    // } else {
-    //   if (images) {
-    //     const arr = images;
-    //     this.images = arr.map((img: string): SavedImage => {
-    //       const filePath = this.file.dataDirectory + img;
-    //       const resPath = this.pathForImage(filePath);
-    //       return { name: img, path: resPath, filePath: filePath };
-    //     });
-    //   }
-    // }
-
     return this.images;
   }
 
@@ -142,7 +134,8 @@ export class DataServiceProvider {
         path: resPath,
         filePath: filePath
     };
-    console.log('this.images', this.images);
+    console.log('adding image', JSON.stringify(newEntry));
+    console.log('this.images:', JSON.stringify(this.images));
     this.images.push(newEntry);
     await this.storage.ready();
     await this.storage.set(IMAGES_STORAGE_KEY, this.images);
@@ -151,9 +144,6 @@ export class DataServiceProvider {
 
   async deleteImage(imgEntry: SavedImage, position: number) {
     this.images.splice(position, 1);
-    //const images = await this.storage.get(IMAGES_STORAGE_KEY);
-    //const arr = JSON.parse(images);
-    //const filtered = arr.filter((name: string) => name !== imgEntry.name);
     await this.storage.set(IMAGES_STORAGE_KEY, this.images);
     if (!this.isWebApp) {
       const correctPath = imgEntry.filePath.substr(0, imgEntry.filePath.lastIndexOf('/') + 1);
