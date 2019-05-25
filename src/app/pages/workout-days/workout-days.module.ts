@@ -9,12 +9,17 @@ import { ExerciseThumbnailComponent } from 'src/app/components/exercise-thumbnai
 import { ExerciseThumbnailPopoverComponent } from 'src/app/components/exercise-thumbnail-popover/exercise-thumbnail-popover.component';
 import { ExerciseVariationComponent } from 'src/app/components/exercise-variation/exercise-variation.component';
 import { ExerciseVariationPopoverComponent } from 'src/app/components/exercise-variation-popover/exercise-variation-popover.component';
+import { SelectExercisePageModule } from 'src/app/pages/select-exercise/select-exercise.module';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: WorkoutDaysPage
+    component: WorkoutDaysPage,
+  },
+  {
+    path: 'select-exercise',
+    loadChildren: '../select-exercise/select-exercise.module#SelectExercisePageModule'
   }
 ];
 
@@ -23,7 +28,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SelectExercisePageModule
   ],
   declarations: [
     WorkoutDaysPage,
@@ -38,4 +44,4 @@ const routes: Routes = [
     ExerciseVariationPopoverComponent
   ]
 })
-export class WorkoutDaysPageModule {}
+export class WorkoutDaysPageModule { }

@@ -1,12 +1,14 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Component, Input, Output, EventEmitter, OnInit,
+  OnDestroy, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { IonFab } from '@ionic/angular';
+import { ItemReorderEventDetail } from '@ionic/core';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import { ExerciseSet } from '../../models/ExerciseSet';
 import { DisplayMode, ExerciseSetAction } from '../../models/enums';
 import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
-import { ItemReorderEventDetail } from '@ionic/core';
-import { IonFab } from '@ionic/angular';
 
 @Component({
   selector: 'app-workout-day',
@@ -15,6 +17,11 @@ import { IonFab } from '@ionic/angular';
 })
 export class WorkoutDayComponent implements OnInit {
 
+  workoutDayPublisher: Subject<ExerciseSetSwitchModeEvent>;
+  runningExerciseIndex: number;
+  displayMode = DisplayMode;
+  private _displayMode: DisplayMode = DisplayMode.Display;
+
   @ViewChild('fabWorkout') fabWorkout: IonFab;
   @ViewChild('fabEdit') fabEdit: IonFab;
 
@@ -22,16 +29,15 @@ export class WorkoutDayComponent implements OnInit {
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
-  workoutDayPublisher: Subject<ExerciseSetSwitchModeEvent> = new Subject();
-  runningExerciseIndex = 0;
-  displayMode = DisplayMode;
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.workoutDayPublisher = new Subject();
+    this.runningExerciseIndex = 0;
+  }
 
-  constructor() { }
-
-  private _displayMode: DisplayMode = DisplayMode.Display;
   get DisplayMode(): DisplayMode {
     return this._displayMode;
   }
+
   set DisplayMode(val: DisplayMode) {
     if (this._displayMode !== val) {
       this._displayMode = val;
@@ -160,13 +166,12 @@ export class WorkoutDayComponent implements OnInit {
   }
   addExercise() {
     // TODO add exercise
-    // this.cancelEditWorkout();
+    this.router.navigate(['select-exercise'], {relativeTo: this.route});
     this.saveChanges();
   }
 
   addWorkoutDay() {
     // TODO add workout day
-    // this.cancelEditWorkout();
     this.saveChanges();
   }
   saveChanges() {

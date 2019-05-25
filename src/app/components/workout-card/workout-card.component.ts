@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Workout } from '../../models/Workout';
-import { Router } from '@angular/router';
-import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-workout-card',
@@ -13,14 +12,12 @@ export class WorkoutCardComponent implements OnInit {
   @Input() workout: Workout;
 
   constructor(
-    private router: Router,
-    private dataService: DataServiceProvider) { }
+    private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() { }
 
   goToWorkoutDays() {
-    //this.dataService.storage = this.workout;
-    this.router.navigate([`/tabs/tab-workouts/workout-days/${this.workout.id}`]);
+    this.router.navigate([`workout-days/${this.workout.id}`], {relativeTo: this.route});
   }
 
   get daysCount(): number {
