@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser/';
 import { Subject } from 'rxjs';
 import { PopoverController } from '@ionic/angular';
 import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
@@ -36,7 +37,9 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     private _isFrozen: boolean;
     completedReps: number[];
 
-    constructor (private popoverCtrl: PopoverController) {
+    constructor (
+        private domSanitizer: DomSanitizer,
+        private popoverCtrl: PopoverController) {
         this.completedReps = [];
     }
 
@@ -50,6 +53,10 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         return this.activeRepIndex > 0 ||
         this.timedRepRemaining > 0 ||
         this.timedRestRemaining > 0;
+    }
+
+    safeImage(index: number): SafeUrl {
+        return this.domSanitizer.bypassSecurityTrustUrl(this.exerciseSet.exercises[index].imageUrl);
     }
 
     get timedRepRemaining(): number { return this._timedRepRemaining; }
