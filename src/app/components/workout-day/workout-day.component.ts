@@ -166,7 +166,7 @@ export class WorkoutDayComponent implements OnInit {
   }
   addExercise() {
     // TODO add exercise
-    this.router.navigate(['select-exercise'], {relativeTo: this.route});
+    this.router.navigate([`select-exercise`], {relativeTo: this.route});
     this.saveChanges();
   }
 

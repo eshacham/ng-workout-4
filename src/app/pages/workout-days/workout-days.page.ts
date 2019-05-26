@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IonSlides as Slides} from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 import { Workout } from 'src/app/models/Workout';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
@@ -17,10 +16,10 @@ import { ActivatedRoute } from '@angular/router';
 export class WorkoutDaysPage implements OnInit {
 
   workout: Workout;
-  workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent> = new Subject();
-  @ViewChild('slider') slides: Slides;
-
   workoutId: number;
+  workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent> = new Subject();
+
+  @ViewChild('slider') slides: Slides;
 
   slideOpts = {
     autoHeight: false,
@@ -34,8 +33,7 @@ export class WorkoutDaysPage implements OnInit {
 
   constructor (
     private route: ActivatedRoute,
-    private dataService: DataServiceProvider,
-    private storage: Storage) {
+    private dataService: DataServiceProvider) {
       this.route.params.subscribe(params => {
         console.log('getting workout id from route params', params);
         this.workoutId = +params.id;
