@@ -94,9 +94,7 @@ export class DataServiceProvider {
     if (images && images.length) {
       this.images = images;
     } else {
-      if (this.isWebApp) {
         this.initDefaultImages();
-      }
     }
     return this.images;
   }
@@ -149,6 +147,11 @@ export class DataServiceProvider {
       const correctPath = imgEntry.filePath.substr(0, imgEntry.filePath.lastIndexOf('/') + 1);
       await this.file.removeFile(correctPath, imgEntry.name);
     }
+  }
+
+  async updateImage(imgEntry: SavedImage, position: number) {
+    await this.storage.set(IMAGES_STORAGE_KEY, this.images);
+    console.log(`updated image name ${imgEntry.name} as ${this.images[position].path}`);
   }
 
   get isWebApp(): boolean {

@@ -39,15 +39,6 @@ export class TabLibraryPage implements OnInit {
       this.images = await this.dataServiceProvider.loadStoredImages();
     }
 
-    pathForImage(img: string) {
-      if (img === null) {
-        return '';
-      } else {
-        const converted = this.webview.convertFileSrc(img);
-        return converted;
-      }
-    }
-
     async presentToast(text: string) {
       const toast = await this.toastController.create({
           message: text,
@@ -118,6 +109,12 @@ export class TabLibraryPage implements OnInit {
       await this.dataServiceProvider.deleteImage(imgEntry, position);
       this.images = await this.dataServiceProvider.loadStoredImages();
       this.presentToast('File removed.');
+    }
+
+    async updateImage(imgEntry: SavedImage, position: number) {
+      await this.dataServiceProvider.updateImage(imgEntry, position);
+      this.images = await this.dataServiceProvider.loadStoredImages();
+      this.presentToast('File updated.');
     }
 
     async startUpload(imgEntry: SavedImage) {

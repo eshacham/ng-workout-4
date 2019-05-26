@@ -14,11 +14,11 @@
       <ion-thumbnail slot="start">
         <ion-img [src]="img.path"></ion-img>
       </ion-thumbnail>
-      <ion-label>
-        {{ img.name }}
-      </ion-label>
-      <ion-button slot="end" fill="clear" (click)="startUpload(img)">
-        <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+      <ion-input type='text' [(ngModel)]="img.name"
+                 placeholder="Exercise Name">
+      </ion-input>
+      <ion-button slot="end" fill="clear" (click)="updateImage(img, pos)">
+        <ion-icon slot="icon-only" name="save"></ion-icon>
       </ion-button>
       <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
