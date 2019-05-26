@@ -8,7 +8,7 @@ import {
 
 export const json = { workouts: [{
         'id': 1,
-        'name': 'Workout Set Mo 1',
+        'name': 'Workout Set No. 1',
         'description': '4 days including upper, lower and core muscles',
         'days': [
             {
@@ -1264,7 +1264,7 @@ export const json = { workouts: [{
         ]
     }, {
        'id': 2,
-       'name': 'Workout Set Mo 2' ,
+       'name': 'Workout Set No. 2' ,
        'description': 'this is the description of the workout and should not be too long...',
        'days': [
         {
@@ -2520,7 +2520,7 @@ export const json = { workouts: [{
     ]
     }, {
         'id': 3,
-        'name': 'Workout Set Mo 3' ,
+        'name': 'Workout Set No. 3' ,
         'description': 'this is the description # 2 of the workout and it\'s shorter.',
         'days': [
             {
@@ -3776,7 +3776,7 @@ export const json = { workouts: [{
         ]
      }, {
         'id': 4,
-        'name': 'Workout Set Mo 4' ,
+        'name': 'Workout Set No. 4' ,
         'description': 'this is the description # 2 of the workout and it\'s shorter.',
         'days': [
             {
