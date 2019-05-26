@@ -9,6 +9,7 @@ import { ExerciseSet } from '../../models/ExerciseSet';
 import { DisplayMode, ExerciseSetAction } from '../../models/enums';
 import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
+import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 
 @Component({
   selector: 'app-workout-day',
@@ -29,9 +30,12 @@ export class WorkoutDayComponent implements OnInit {
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
-  constructor(private router: Router, private route: ActivatedRoute) {
-    this.workoutDayPublisher = new Subject();
-    this.runningExerciseIndex = 0;
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private dataService: DataServiceProvider) {
+      this.workoutDayPublisher = new Subject();
+      this.runningExerciseIndex = 0;
   }
 
   get DisplayMode(): DisplayMode {
@@ -129,6 +133,7 @@ export class WorkoutDayComponent implements OnInit {
         break;
       case DisplayMode.Edit:
         this.DisplayMode = DisplayMode.Display;
+        this.saveChanges();
         break;
     }
     this.emitExerciseActionEventByStatus();
@@ -164,6 +169,7 @@ export class WorkoutDayComponent implements OnInit {
     // this.workoutService.deleteExercise(set, this.workoutDay);
     this.saveChanges();
   }
+
   addExercise() {
     // TODO add exercise
     this.router.navigate([`select-exercise`], {relativeTo: this.route});
@@ -174,9 +180,11 @@ export class WorkoutDayComponent implements OnInit {
     // TODO add workout day
     this.saveChanges();
   }
-  saveChanges() {
+
+  async saveChanges() {
+    await this.dataService.saveWorkouts();
     this.emitExerciseSetActionEvent(ExerciseSetAction.Save);
-    this.cancelEditWorkout();
+    // this.cancelEditWorkout();
     // this.toastr.info('Saved!');
   }
 

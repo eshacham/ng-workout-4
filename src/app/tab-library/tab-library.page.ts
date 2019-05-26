@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
-import { ActionSheetController, ToastController,
-         Platform, LoadingController } from '@ionic/angular';
+import { ActionSheetController, Platform, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { LoadingOptions } from '@ionic/core';
 import { DataServiceProvider, SavedImage } from '../providers/data-service/data-service';
+import { ToastService } from '../providers/toast-service/toast.service';
 
 @Component({
   selector: 'app-tab-library',
@@ -19,9 +18,8 @@ export class TabLibraryPage implements OnInit {
   constructor(
     private camera: Camera,
     private file: File,
-    private webview: WebView,
     private actionSheetController: ActionSheetController,
-    private toastController: ToastController,
+    private toastService: ToastService,
     private platform: Platform,
     private loadingController: LoadingController,
     private filePath: FilePath,
@@ -40,12 +38,7 @@ export class TabLibraryPage implements OnInit {
     }
 
     async presentToast(text: string) {
-      const toast = await this.toastController.create({
-          message: text,
-          position: 'bottom',
-          duration: 3000
-      });
-      toast.present();
+      this.toastService.presentToast(text);
     }
 
     async selectImage() {
