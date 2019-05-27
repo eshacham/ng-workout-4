@@ -15,10 +15,27 @@
       <ion-label>
         {{ img.name }}
       </ion-label>
-      <ion-button slot="end" fill="clear" (click)="select(img)">
-        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
-      </ion-button>
+      <ion-checkbox slot="end" [(ngModel)]="img.isSelected"></ion-checkbox>
     </ion-item>
   </ion-list>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col>
+        <ion-button fill="clear" (click)="addExercise()" [disabled]="!hasSelecteion">
+          <ion-icon slot="start" name="add-circle"></ion-icon>
+          Add Exercises
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Superset</ion-label>
+          <ion-checkbox [(ngModel)]="isSet"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>
