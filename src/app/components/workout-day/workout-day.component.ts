@@ -168,11 +168,8 @@ export class WorkoutDayComponent implements OnInit {
   deleteExerciseSet(set: ExerciseSet, day: string) {
     const index = this.workoutDay.exerciseSets.findIndex(s => s === set);
     this.workoutDay.exerciseSets.splice(index, 1);
-    if (!this.workoutDay.exerciseSets.length) {
-      // TODO: delete the whole day!!!
-    }
-    // this.workoutService.deleteExercise(set, this.workoutDay);
     this.saveChanges();
+    this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
   }
 
   addExercise() {

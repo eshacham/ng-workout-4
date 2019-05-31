@@ -57,6 +57,9 @@ export class WorkoutDaysPage implements OnInit {
       this.dataService.setLastSelectedWorkoutDay(this.workout.name, lastIndex);
     }
   }
+  async saveChanges() {
+    await this.dataService.saveWorkouts();
+  }
 
   handleExerciseSetActionEvent(event: ExerciseSetActionEvent) {
     const exerciseSetAction: ExerciseSetAction = event.action;
@@ -68,10 +71,14 @@ export class WorkoutDaysPage implements OnInit {
         break;
       case ExerciseSetAction.Delete:
         console.log('workout-days: receieved delete event: ', JSON.stringify(event));
+        const index = this.workout.days.findIndex(w => w.name === event.workoutDayName);
+        if (!this.workout.days[index].exerciseSets.length) {
+          this.workout.days.splice(index, 1);
+          this.saveChanges();
+        }
         // this.deleteExercise(event.exercise, event.workoutDayName);
         break;
       case ExerciseSetAction.Edit:
-
         console.log('workout-days: receieved edit event: ', JSON.stringify(event));
         break;
       case ExerciseSetAction.Run:
