@@ -6,7 +6,6 @@ import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { NavController } from '@ionic/angular';
-import { setServers } from 'dns';
 
 interface SelectedSavedImage extends SavedImage {
   isSelected: boolean;
@@ -47,7 +46,11 @@ export class SelectExercisePage implements OnInit {
   async ngOnInit() {
     const images = await this.dataService.loadStoredImages();
     this.images = images.map((image) => {
-      return { isSelected: false, name: image.name, path: image.path, filePath: image.path }
+      return {
+        isSelected: false,
+        name: image.name,
+        path: image.path,
+        filePath: image.path };
     });
     this.workout = this.dataService.getWorkout(this.workoutId);
   }
