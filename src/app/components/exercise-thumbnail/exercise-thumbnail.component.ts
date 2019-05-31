@@ -154,20 +154,20 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.emitExerciseSetActionEvent(ExerciseSetAction.Run);
     }
 
-    deleteExercise() {
-        this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
-    }
-
     switchExercises(index: number) {
         const exercise = this.exerciseSet.exercises[index];
         this.exerciseSet.exercises.splice(index, 1);
         this.exerciseSet.exercises.splice(index + 1, 0, exercise);
     }
 
-    deleteExerciseSet(index: number) {
+    deleteExerciseSet() {
+        this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
+    }
+
+    deleteExercise(index: number) {
         this.exerciseSet.exercises.splice(index, 1);
         if (!this.exerciseSet.exercises.length) {
-            this.deleteExercise();
+            this.deleteExerciseSet();
         }
     }
 
