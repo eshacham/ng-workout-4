@@ -42,5 +42,7 @@ export enum ExerciseSetAction {
     Run,
     Save,
     AddDay,
-    DeleteDay
+    DeleteDay,
+    MoveDayForward,
+    MoveDayBack
 }

@@ -173,11 +173,16 @@ export class WorkoutDayComponent implements OnInit {
   }
 
   addExercise() {
-    // TODO add exercise
     this.router.navigate([`select-exercise`], {relativeTo: this.route});
     this.saveChanges();
   }
 
+  moveForwardWorkoutDay() {
+    this.emitExerciseSetActionEvent(ExerciseSetAction.MoveDayForward);
+  }
+  moveBackWorkoutDay() {
+    this.emitExerciseSetActionEvent(ExerciseSetAction.MoveDayBack);
+  }
   addWorkoutDay() {
     this.emitExerciseSetActionEvent(ExerciseSetAction.AddDay);
   }

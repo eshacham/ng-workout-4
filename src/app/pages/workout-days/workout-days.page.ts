@@ -94,6 +94,36 @@ export class WorkoutDaysPage implements OnInit {
         console.log('workout-days: receieved delete day event: ', JSON.stringify(event));
         await this.deleteWorkoutDay(event.workoutDayName);
         break;
+      case ExerciseSetAction.MoveDayForward:
+        console.log('workout-days: receieved move day forward event: ', JSON.stringify(event));
+        await this.moveForwardWorkoutDay(event.workoutDayName);
+        break;
+      case ExerciseSetAction.MoveDayBack:
+        console.log('workout-days: receieved move day back event: ', JSON.stringify(event));
+        await this.moveBackWorkoutDay(event.workoutDayName);
+        break;
+    }
+  }
+
+  private async moveForwardWorkoutDay(name: string) {
+    console.log('moving day forward');
+    const index = this.getWorkoutDayIndexByName(name);
+    if (index + 1 < this.workout.days.length) {
+      this.workout.days.splice(index, 0, this.workout.days.splice(index + 1, 1)[0]);
+      await this.slides.update();
+      await this.saveChanges();
+      await this.slides.slideNext(0);
+    }
+  }
+
+  private async moveBackWorkoutDay(name: string) {
+    console.log('moving day back');
+    const index = this.getWorkoutDayIndexByName(name);
+    if (index - 1 >= 0) {
+      this.workout.days.splice(index, 0, this.workout.days.splice(index - 1, 1)[0]);
+      await this.slides.update();
+      await this.saveChanges();
+      await this.slides.slidePrev(0);
     }
   }
 
@@ -126,7 +156,7 @@ export class WorkoutDaysPage implements OnInit {
     }
   }
 
-  getWorkoutDayIndexByName(name) {
+  getWorkoutDayIndexByName(name: string) {
     return this.workout.days.findIndex(d => d.name === name);
   }
 
