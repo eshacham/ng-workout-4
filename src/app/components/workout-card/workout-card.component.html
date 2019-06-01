@@ -1,17 +1,21 @@
 <ion-card >
   <ion-card-header class="ion-text-center">
-    <ion-label [hidden]="IsEditMode" no-margin>
-        <h2 class="ion-text-center">{{ workout?.name }}</h2>
-      </ion-label>
-      <ion-input [hidden]="IsDisplayMode" type="text" no-margin
-        class="ion-text-center"
-        [(ngModel)]="workout.name">
-      </ion-input>
+    <ion-label [hidden]="IsEditMode"
+       class="ion-text-center">{{ workout?.name }}
+    </ion-label>
+    <ion-input [hidden]="IsDisplayMode" type="text"
+      class="ion-text-center"
+      [(ngModel)]="workout.name">
+    </ion-input>
   </ion-card-header>
 
   <ion-card-content>
 
-    <p class="ion-text-wrap">{{ workout.description }}</p>
+    <p class="ion-text-wrap">
+      <ion-textarea [readonly]="IsDisplayMode"
+        [value]="workout.description">
+      </ion-textarea>
+    </p>
     <ion-item *ngIf="daysCount" detail
       (click)="goToWorkoutDays()" >
         <ion-label >Workout Days...</ion-label>
