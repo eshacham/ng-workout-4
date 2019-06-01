@@ -10,17 +10,20 @@
     </ion-fab-list>
   </ion-fab>
   <ion-fab vertical="bottom" horizontal="end" #fabEdit id="fabEdit">
-      <ion-fab-button size="small" (click)="editWorkout()" color="warning">
-        <ion-icon name="construct"></ion-icon>
+    <ion-fab-button size="small" (click)="editWorkout()" color="warning">
+      <ion-icon name="construct"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button size="small" (click)="addWorkoutDay()" color="light">
+        <ion-icon name="today"></ion-icon>
       </ion-fab-button>
-      <ion-fab-list side="start">
-        <ion-fab-button size="small" (click)="addWorkoutDay()" color="light">
-          <ion-icon name="calendar"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-button size="small" (click)="addExercise()" color="light">
-          <ion-icon name="walk"></ion-icon>
-        </ion-fab-button>
-      </ion-fab-list>
+      <ion-fab-button size="small" (click)="deleteWorkoutDay()" color="light">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button size="small" (click)="addExercise()" color="light">
+        <ion-icon name="walk"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 
   <ion-item no-padding lines="none" id="workout-day-header">

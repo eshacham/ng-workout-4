@@ -22,9 +22,10 @@ export interface SavedImage {
 @Injectable()
 export class DataServiceProvider {
 
-  private workouts: Workout[];
+  private _workouts: Workout[];
   private images: SavedImage[];
   private defaultWorkouts: DefaultWorkouts;
+  private state: StateCache;
 
   constructor (
     private platform: Platform,
@@ -32,47 +33,52 @@ export class DataServiceProvider {
     private webview: WebView,
     private storage: Storage) {
       this.images = [];
-      this.workouts = [];
+      this._workouts = [];
       this.state = new StateCache();
       this.defaultWorkouts = deserialize(DefaultWorkouts, json);
-      console.log('initilized default workouts', this.defaultWorkouts.workouts.map(w => w.id));
+      console.log('deserialized default workouts', this.defaultWorkouts.workouts.map(w => w.id));
   }
 
-  private state: StateCache;
-  setLastSelectedWorkoutDay(workoutName: string, workoutDayIndex: number) {
-    this.state.setLastSelectedWorkoutDay(workoutName, workoutDayIndex);
-  }
-  getLastSelectedWorkoutDay(workoutName: string): number {
-    return this.state.getLastSelectedWorkoutDay(workoutName);
-  }
-
-  getWorkout(id: number): Workout {
-    console.log(`servicing workout ${id} from `, this.workouts);
-    const workout = this.workouts.filter(w => w.id === id);
+  async getWorkout(id: number): Promise<Workout> {
+    if (!this._workouts.length) {
+      await this.initWorkouts();
+    }
+    console.log(`servicing workout ${id} from `, this._workouts);
+    const workout = this._workouts.find(w => w.id === id);
     console.log(`found workout ${id}`, workout);
-    return workout[0];
+    return workout;
+  }
+
+  async getWorkouts(): Promise<Workout[]> {
+    if (!this._workouts.length) {
+      await this.initWorkouts();
+    }
+    return this._workouts;
   }
 
   async initWorkouts() {
     await this.storage.ready();
-    this.workouts = await this.storage.get(WORKOUTS_STORAGE_KEY);
-    if (!this.workouts || !this.workouts.length) {
-      console.log('setting default workouts');
-      await this.storage.set(WORKOUTS_STORAGE_KEY, this.defaultWorkouts.workouts);
-      this.workouts = this.defaultWorkouts.workouts;
+    this._workouts = await this.storage.get(WORKOUTS_STORAGE_KEY);
+    if (!this._workouts || !this._workouts.length) {
+      await this.resetWorkouts();
     }
-    console.log('loaded cached workouts', this.workouts.map(w => w.id));
-    return this.workouts;
+    console.log('loaded cached workouts', this._workouts.map(w => w.id));
   }
 
-  async resetWorkouts() {
-    await this.storage.ready();
-    let defaultWorkouts: DefaultWorkouts;
-    defaultWorkouts = deserialize(DefaultWorkouts, json);
-    await this.storage.set(WORKOUTS_STORAGE_KEY, defaultWorkouts.workouts);
-    this.workouts = defaultWorkouts.workouts;
-    console.log('workouts have been reset');
+  async resetWorkouts(): Promise<Workout[]> {
+    await this.saveWorkouts(this.defaultWorkouts.workouts);
+    console.log('workouts have been reset to default workouts');
+    return this._workouts;
   }
+
+  async saveWorkouts(workouts: Workout[] = this._workouts): Promise<Workout[]> {
+    this._workouts = workouts;
+    await this.storage.ready();
+    await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
+    console.log('workouts have been saved');
+    return this._workouts;
+  }
+
   async resetImages() {
     this.images = [];
     await this.storage.ready();
@@ -80,13 +86,6 @@ export class DataServiceProvider {
     /// TODO need to notify the client the data has been reset so it will reload it!
     console.log('images have been reset');
   }
-
-  async saveWorkouts() {
-    await this.storage.ready();
-    await this.storage.set(WORKOUTS_STORAGE_KEY, this.workouts);
-    console.log('workouts have been saved');
-  }
-
   async loadStoredImages(): Promise<SavedImage[]> {
     await this.storage.ready();
     const images = await this.storage.get(IMAGES_STORAGE_KEY);
@@ -98,7 +97,6 @@ export class DataServiceProvider {
     }
     return this.images;
   }
-
   async initDefaultImages() {
     console.log('initializing saved images from assests...');
     const images: Map<string, SavedImage> = new Map();
@@ -122,7 +120,6 @@ export class DataServiceProvider {
     await this.storage.set(IMAGES_STORAGE_KEY, this.images);
     console.log(`initialized ${this.images.length} saved images from assests`);
   }
-
   async saveImage(name: string) {
     const filePath = this.file.dataDirectory + name;
     const resPath = this.pathForImage(filePath);
@@ -139,7 +136,6 @@ export class DataServiceProvider {
     await this.storage.set(IMAGES_STORAGE_KEY, this.images);
     console.log(`stored updated images list: ${name}`);
   }
-
   async deleteImage(imgEntry: SavedImage, position: number) {
     this.images.splice(position, 1);
     await this.storage.set(IMAGES_STORAGE_KEY, this.images);
@@ -148,16 +144,10 @@ export class DataServiceProvider {
       await this.file.removeFile(correctPath, imgEntry.name);
     }
   }
-
   async updateImage(imgEntry: SavedImage, position: number) {
     await this.storage.set(IMAGES_STORAGE_KEY, this.images);
     console.log(`updated image name ${imgEntry.name} as ${this.images[position].path}`);
   }
-
-  get isWebApp(): boolean {
-    return !this.platform.is('ios') && !this.platform.is('android');
-  }
-
   pathForImage(img: string) {
     if (img === null) {
       return '';
@@ -166,5 +156,14 @@ export class DataServiceProvider {
       return converted;
     }
   }
+  get isWebApp(): boolean {
+    return !this.platform.is('ios') && !this.platform.is('android');
+  }
 
+  setLastSelectedWorkoutDay(workoutName: string, workoutDayIndex: number) {
+    this.state.setLastSelectedWorkoutDay(workoutName, workoutDayIndex);
+  }
+  getLastSelectedWorkoutDay(workoutName: string): number {
+    return this.state.getLastSelectedWorkoutDay(workoutName);
+  }
 }

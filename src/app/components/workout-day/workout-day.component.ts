@@ -179,14 +179,15 @@ export class WorkoutDayComponent implements OnInit {
   }
 
   addWorkoutDay() {
-    // TODO add workout day
-    this.saveChanges();
+    this.emitExerciseSetActionEvent(ExerciseSetAction.AddDay);
+  }
+  deleteWorkoutDay() {
+    this.emitExerciseSetActionEvent(ExerciseSetAction.DeleteDay);
   }
 
   async saveChanges() {
     await this.dataService.saveWorkouts();
-    this.emitExerciseSetActionEvent(ExerciseSetAction.Save);
-    // this.cancelEditWorkout();
+    // this.emitExerciseSetActionEvent(ExerciseSetAction.Save);
     // this.toastr.info('Saved!');
   }
 

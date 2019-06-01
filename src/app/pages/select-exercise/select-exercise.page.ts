@@ -52,7 +52,7 @@ export class SelectExercisePage implements OnInit {
         path: image.path,
         filePath: image.path };
     });
-    this.workout = this.dataService.getWorkout(this.workoutId);
+    this.workout = await this.dataService.getWorkout(this.workoutId);
   }
 
   addExercise() {
