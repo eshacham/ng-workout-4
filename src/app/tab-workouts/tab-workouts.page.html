@@ -22,7 +22,8 @@
     <ion-item *ngFor="let workout of workouts; let index = i">
       <app-workout-card
         [workout]="workout"
-        [inWorkoutPublisher]="workoutPublisher">
+        [inWorkoutPublisher]="workoutPublisher"
+        (outEventEmitter)="handleWorkoutActionEvent($event)">
       </app-workout-card>
     </ion-item>
   </ion-list>

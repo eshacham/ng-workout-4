@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
-import { DisplayMode } from '../models/enums';
+import { DisplayMode, ExerciseSetAction } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
 import { Subject } from 'rxjs';
 import { ExerciseSetSwitchModeEvent } from '../models/ExerciseSwitchModeEvent';
+import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -59,7 +60,7 @@ export class TabWorkoutsPage implements OnInit {
     day.exerciseSets = [];
     newWrokout.days = [day];
     this.workouts.push(newWrokout);
-    this.dataServiceProvider.saveWorkouts();
+    this.DisplayMode = DisplayMode.Display;
   }
 
   publishWorkoutEvent(
@@ -67,5 +68,17 @@ export class TabWorkoutsPage implements OnInit {
     const workoutEvent =
       new ExerciseSetSwitchModeEvent(displayMode, null, null);
     this.workoutPublisher.next(workoutEvent);
+  }
+
+  async handleWorkoutActionEvent (event: ExerciseSetActionEvent) {
+    const exerciseSetAction: ExerciseSetAction = event.action;
+    switch (exerciseSetAction) {
+      case ExerciseSetAction.Delete:
+        if (this.workouts.length > 1) {
+          const index = this.workouts.findIndex(w => w.id === event.exerciseSetIndex);
+          this.workouts.splice(index, 1);
+          await this.dataServiceProvider.saveWorkouts();
+        }
+    }
   }
 }

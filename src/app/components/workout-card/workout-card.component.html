@@ -16,11 +16,22 @@
         [value]="workout.description">
       </ion-textarea>
     </p>
-    <ion-item *ngIf="daysCount" detail
-      (click)="goToWorkoutDays()" >
-        <ion-label >Workout Days...</ion-label>
+
+    <div *ngIf="daysCount">
+      <ion-item *ngIf="IsDisplayMode" detail (click)="goToWorkoutDays()" >
+        <ion-label>Workout Days...</ion-label>
         <ion-badge slot="end">{{ daysCount }}</ion-badge>
-    </ion-item>
+      </ion-item>
+      <ion-item *ngIf="IsEditMode">
+          <ion-label >Workout Days...</ion-label>
+          <ion-badge slot="end">{{ daysCount }}</ion-badge>
+          <ion-button
+            fill="clear" bottom color="dark" slot="end"
+              (click)="deleteWorkout()">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
+    </div>
 
   </ion-card-content>
 </ion-card>

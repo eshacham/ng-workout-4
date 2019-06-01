@@ -3,7 +3,8 @@ import { Workout } from '../../models/Workout';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
-import { DisplayMode } from 'src/app/models/enums';
+import { DisplayMode, ExerciseSetAction } from 'src/app/models/enums';
+import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 
 @Component({
   selector: 'app-workout-card',
@@ -14,6 +15,7 @@ export class WorkoutCardComponent implements OnInit {
 
   @Input() workout: Workout;
   @Input() inWorkoutPublisher: Subject<ExerciseSetSwitchModeEvent>;
+  @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
@@ -47,5 +49,12 @@ export class WorkoutCardComponent implements OnInit {
 
   get daysCount(): number {
     return (this.workout.days) ? this.workout.days.length : 0;
+  }
+  emitExerciseSetActionEvent(action: ExerciseSetAction) {
+    this.outEventEmitter.emit(new ExerciseSetActionEvent(
+        action, null, this.workout.id, null));
+}
+  deleteWorkout() {
+    this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
   }
 }
