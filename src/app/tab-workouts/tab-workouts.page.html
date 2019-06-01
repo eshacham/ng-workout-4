@@ -20,7 +20,9 @@
 <ion-content>
   <ion-list lines="none">
     <ion-item *ngFor="let workout of workouts; let index = i">
-      <app-workout-card [workout]="workout">
+      <app-workout-card
+        [workout]="workout"
+        [inWorkoutPublisher]="workoutPublisher">
       </app-workout-card>
     </ion-item>
   </ion-list>

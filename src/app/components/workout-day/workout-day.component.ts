@@ -30,7 +30,7 @@ export class WorkoutDayComponent implements OnInit {
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
-  constructor(
+  constructor (
     private router: Router,
     private route: ActivatedRoute,
     private dataService: DataServiceProvider) {

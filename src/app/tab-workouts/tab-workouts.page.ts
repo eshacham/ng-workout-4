@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { DisplayMode } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
-import { ExerciseSet } from '../models/ExerciseSet';
+import { Subject } from 'rxjs';
+import { ExerciseSetSwitchModeEvent } from '../models/ExerciseSwitchModeEvent';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -14,11 +15,14 @@ export class TabWorkoutsPage implements OnInit {
   workouts: Workout[];
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
+  workoutPublisher: Subject<ExerciseSetSwitchModeEvent>;
 
   constructor (
-    private dataServiceProvider: DataServiceProvider) {}
+    private dataServiceProvider: DataServiceProvider) {
+      this.workoutPublisher = new Subject();
+    }
 
-  async ngOnInit () {
+  async ngOnInit() {
     this.workouts = await this.dataServiceProvider.getWorkouts();
   }
 
@@ -28,10 +32,12 @@ export class TabWorkoutsPage implements OnInit {
   set DisplayMode(val: DisplayMode) {
     if (this._displayMode !== val) {
       this._displayMode = val;
+      this.publishWorkoutEvent(this._displayMode);
+      if (this.DisplayMode === DisplayMode.Display) {
+        this.dataServiceProvider.saveWorkouts();
+      }
     }
   }
-  get IsEditMode() { return this._displayMode === DisplayMode.Edit; }
-  get IsDisplayMode() { return this._displayMode === DisplayMode.Display; }
 
   editWorkouts() {
     switch (this.DisplayMode) {
@@ -54,5 +60,12 @@ export class TabWorkoutsPage implements OnInit {
     newWrokout.days = [day];
     this.workouts.push(newWrokout);
     this.dataServiceProvider.saveWorkouts();
+  }
+
+  publishWorkoutEvent(
+    displayMode: DisplayMode) {
+    const workoutEvent =
+      new ExerciseSetSwitchModeEvent(displayMode, null, null);
+    this.workoutPublisher.next(workoutEvent);
   }
 }
