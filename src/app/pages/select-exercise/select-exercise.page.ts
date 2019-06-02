@@ -48,6 +48,7 @@ export class SelectExercisePage implements OnInit {
     this.images = images.map((image) => {
       return {
         isSelected: false,
+        isDefault: image.isDefault,
         name: image.name,
         ionicPath: image.ionicPath,
         nativePath: image.nativePath };

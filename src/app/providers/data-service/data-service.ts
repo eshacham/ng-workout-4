@@ -16,6 +16,7 @@ export interface SavedImage {
   name: string;
   ionicPath: string;
   nativePath: string;
+  isDefault: boolean;
 }
 
 @Injectable()
@@ -102,13 +103,26 @@ export class DataServiceProvider {
 
     if (!this._images || !this._images.length) {
       this.initDefaultImages();
+      return;
     }
 
     if (this._images.length) {
       console.log(`loaded ${this._images.length} images from storage:`, JSON.stringify(this._images));
       if (this.isMobile) {
         console.log(`updating to device data directory ${this.file.dataDirectory}`);
-        // this.updateImagesPath();
+        this.updateImagesPath();
+      }
+    }
+  }
+
+  private updateImagesPath() {
+    for (const image of this._images.filter(i => !i.isDefault)) {
+      if (image.nativePath.indexOf(this.file.dataDirectory) < 0) {
+        const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
+        const oldPath = image.nativePath;
+        image.nativePath = this.file.dataDirectory + name;
+        image.ionicPath = this.getIonicPath(image.nativePath);
+        console.log(`update image path from ${oldPath} to ${image.nativePath}`);
       }
     }
   }
@@ -123,7 +137,7 @@ export class DataServiceProvider {
           for (const exe of set.exercises) {
             const url = exe.imageUrl;
             if (!images[url]) {
-              images.set(url, { name: url, ionicPath: url, nativePath: url });
+              images.set(url, { name: url, ionicPath: url, nativePath: url, isDefault: true });
             }
           }
         }
@@ -142,28 +156,33 @@ export class DataServiceProvider {
     await this.storage.set(IMAGES_STORAGE_KEY, this._images);
   }
 
-  async saveImage(name: string) {
+  async addImage(name: string) {
     const nativePath = this.file.dataDirectory + name;
     const ionicPath = this.getIonicPath(nativePath);
 
     const newEntry: SavedImage = {
         name: name,
         ionicPath: ionicPath,
-        nativePath: nativePath
+        nativePath: nativePath,
+        isDefault: false
     };
     console.log('adding image', JSON.stringify(newEntry));
     this._images.push(newEntry);
     await this.saveImages();
   }
 
-  async deleteImage(imgEntry: SavedImage, position: number) {
-    this._images.splice(position, 1);
+  async deleteImage(image: SavedImage, position: number) {
+    console.log(`removing image ${name} from library`);
+    const imageToRemove = this._images.splice(position, 1)[0];
     await this.saveImages();
-    if (!this.isWebApp) {
-      const correctPath = imgEntry.nativePath.substr(0, imgEntry.nativePath.lastIndexOf('/') + 1);
-      await this.file.removeFile(correctPath, imgEntry.name);
+    if (this.isMobile && !imageToRemove.isDefault) {
+      const path = image.nativePath.substr(0, image.nativePath.lastIndexOf('/') + 1);
+      const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
+      console.log(`deleting image from ${path} ${name}`);
+      await this.file.removeFile(path, name);
     }
   }
+
   async updateImage(imgEntry: SavedImage, position: number) {
     console.log(`updated image name ${imgEntry.name} as ${this._images[position].ionicPath}`);
     await this.saveImages();

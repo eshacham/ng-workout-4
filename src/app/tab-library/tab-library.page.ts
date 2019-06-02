@@ -14,6 +14,7 @@ import { ToastService } from '../providers/toast-service/toast.service';
 })
 export class TabLibraryPage implements OnInit {
   images: SavedImage[];
+  isMobile = false;
 
   constructor(
     private camera: Camera,
@@ -28,6 +29,7 @@ export class TabLibraryPage implements OnInit {
 
     async ngOnInit() {
       this.images = await this.dataServiceProvider.getImages();
+      this.isMobile = this.dataServiceProvider.isMobile;
       console.log('loaded images from storage:', JSON.stringify(this.images));
     }
 
@@ -54,6 +56,10 @@ export class TabLibraryPage implements OnInit {
       const actionSheet = await this.actionSheetController.create(options);
       console.log('presenting action sheet...');
       await actionSheet.present();
+    }
+
+    get IsMobile() {
+      return this.isMobile;
     }
 
     async takePicture(sourceType: PictureSourceType) {
@@ -85,7 +91,7 @@ export class TabLibraryPage implements OnInit {
       try {
         await this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName);
         console.log('new file has been copied');
-        await this.dataServiceProvider.saveImage(newFileName);
+        await this.dataServiceProvider.addImage(newFileName);
       } catch (error) {
         console.log('Error while storing file:', error);
         this.presentToast('Error while storing file ');
