@@ -155,8 +155,22 @@ export class DataServiceProvider {
       return converted;
     }
   }
+
+  get isAndriod(): boolean {
+    return this.platform.is('android');
+  }
+  get isIos(): boolean {
+    return this.platform.is('ios');
+  }
   get isWebApp(): boolean {
-    return !this.platform.is('ios') && !this.platform.is('android');
+    return !this.IsMobile;
+  }
+  get IsMobile()  {
+    return this.isIos || this.isAndriod;
+  }
+  async displayPlatform() {
+    const platformSource = await this.platform.ready();
+    console.log(`this app runs on ${platformSource}`);
   }
 
   setLastSelectedWorkoutDay(workoutName: string, workoutDayIndex: number) {

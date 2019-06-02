@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
-import { ActionSheetController, Platform, LoadingController } from '@ionic/angular';
+import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { LoadingOptions } from '@ionic/core';
@@ -20,20 +20,14 @@ export class TabLibraryPage implements OnInit {
     private file: File,
     private actionSheetController: ActionSheetController,
     private toastService: ToastService,
-    private platform: Platform,
     private loadingController: LoadingController,
     private filePath: FilePath,
     private dataServiceProvider: DataServiceProvider) {
       this.images = [];
     }
 
-    get IsMobile()  {
-      return this.platform.is('ios') || this.platform.is('android');
-    }
-
     async ngOnInit() {
-      const platformSource = await this.platform.ready();
-      console.log(`this app runs on ${platformSource}`);
+      await this.dataServiceProvider.displayPlatform();
       this.images = await this.dataServiceProvider.getImages();
       console.log('loaded images from storage:', JSON.stringify(this.images));
     }
@@ -75,7 +69,7 @@ export class TabLibraryPage implements OnInit {
       let currentName: string;
       let correctPath: string;
 
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+      if (this.dataServiceProvider.isAndriod && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
         currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
         const path = await this.filePath.resolveNativePath(imagePath);
         correctPath = path.substr(0, path.lastIndexOf('/') + 1);
