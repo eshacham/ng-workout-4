@@ -27,7 +27,6 @@ export class TabLibraryPage implements OnInit {
     }
 
     async ngOnInit() {
-      await this.dataServiceProvider.displayPlatform();
       this.images = await this.dataServiceProvider.getImages();
       console.log('loaded images from storage:', JSON.stringify(this.images));
     }

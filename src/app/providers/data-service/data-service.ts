@@ -83,22 +83,38 @@ export class DataServiceProvider {
     this._images = [];
     await this.storage.ready();
     await this.storage.remove(IMAGES_STORAGE_KEY);
+    await this.initImages();
     /// TODO need to notify the client the data has been reset so it will reload it!
     console.log('images have been reset');
   }
 
   async getImages(): Promise<SavedImage[]> {
-    await this.storage.ready();
-    const images = await this.storage.get(IMAGES_STORAGE_KEY);
-
-    if (images && images.length) {
-      this._images = images;
-      return this._images;
+    if (!this._images.length) {
+      await this.initImages();
     }
-    return this.initDefaultImages();
+    return this._images;
   }
 
-  async initDefaultImages(): Promise<SavedImage[]> {
+  async initImages() {
+    await this.displayPlatform();
+    await this.storage.ready();
+    this._images = await this.storage.get(IMAGES_STORAGE_KEY);
+
+    if (!this._images || !this._images.length) {
+      this.initDefaultImages();
+    }
+
+    if (this._images.length) {
+      console.log(`loaded ${this._images.length} images from storage:`, JSON.stringify(this._images));
+      if (this.isMobile) {
+        console.log(`updating to device data directory ${this.file.dataDirectory}`);
+        // this.updateImagesPath();
+      }
+    }
+  }
+
+  async initDefaultImages() {
+    this._images = [];
     console.log('initializing saved images from assests...');
     const images: Map<string, SavedImage> = new Map();
     for (const workout of this.defaultWorkouts.workouts) {
@@ -117,14 +133,18 @@ export class DataServiceProvider {
       this._images.push(image);
     });
 
+    console.log(`initialized ${this._images.length} saved images from assests`, JSON.stringify(this._images));
+    await this.saveImages();
+  }
+
+  async saveImages() {
     await this.storage.ready();
     await this.storage.set(IMAGES_STORAGE_KEY, this._images);
-    console.log(`initialized ${this._images.length} saved images from assests`, JSON.stringify(this._images));
-    return this._images;
   }
+
   async saveImage(name: string) {
     const nativePath = this.file.dataDirectory + name;
-    const ionicPath = this.pathForImage(nativePath);
+    const ionicPath = this.getIonicPath(nativePath);
 
     const newEntry: SavedImage = {
         name: name,
@@ -132,31 +152,25 @@ export class DataServiceProvider {
         nativePath: nativePath
     };
     console.log('adding image', JSON.stringify(newEntry));
-    console.log('this.images:', JSON.stringify(this._images));
     this._images.push(newEntry);
-    await this.storage.ready();
-    await this.storage.set(IMAGES_STORAGE_KEY, this._images);
-    console.log(`stored updated images list: ${name}`);
+    await this.saveImages();
   }
+
   async deleteImage(imgEntry: SavedImage, position: number) {
     this._images.splice(position, 1);
-    await this.storage.set(IMAGES_STORAGE_KEY, this._images);
+    await this.saveImages();
     if (!this.isWebApp) {
       const correctPath = imgEntry.nativePath.substr(0, imgEntry.nativePath.lastIndexOf('/') + 1);
       await this.file.removeFile(correctPath, imgEntry.name);
     }
   }
   async updateImage(imgEntry: SavedImage, position: number) {
-    await this.storage.set(IMAGES_STORAGE_KEY, this._images);
     console.log(`updated image name ${imgEntry.name} as ${this._images[position].ionicPath}`);
+    await this.saveImages();
   }
-  pathForImage(img: string) {
-    if (img === null) {
-      return '';
-    } else {
-      const converted = this.webview.convertFileSrc(img);
-      return converted;
-    }
+
+  getIonicPath(img: string) {
+    return (img === null) ? '' : this.webview.convertFileSrc(img);
   }
 
   get isAndriod(): boolean {
@@ -166,9 +180,9 @@ export class DataServiceProvider {
     return this.platform.is('ios');
   }
   get isWebApp(): boolean {
-    return !this.IsMobile;
+    return !this.isMobile;
   }
-  get IsMobile()  {
+  get isMobile()  {
     return this.isIos || this.isAndriod;
   }
   async displayPlatform() {
