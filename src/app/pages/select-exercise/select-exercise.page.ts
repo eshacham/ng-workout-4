@@ -49,8 +49,8 @@ export class SelectExercisePage implements OnInit {
       return {
         isSelected: false,
         name: image.name,
-        path: image.path,
-        filePath: image.path };
+        ionicPath: image.ionicPath,
+        nativePath: image.nativePath };
     });
     this.workout = await this.dataService.getWorkout(this.workoutId);
   }
@@ -73,7 +73,7 @@ export class SelectExercisePage implements OnInit {
       const newRep = new Rep();
       const newExercise = new Exercise();
       newExercise.name = image.name;
-      newExercise.imageUrl = image.path;
+      newExercise.imageUrl = image.ionicPath;
       newRep.times = 1;
       newExercise.reps = [newRep];
       if (!this.isSet) {

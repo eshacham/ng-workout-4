@@ -35,6 +35,7 @@ export class TabLibraryPage implements OnInit {
       const platformSource = await this.platform.ready();
       console.log(`this app runs on ${platformSource}`);
       this.images = await this.dataServiceProvider.loadStoredImages();
+      console.log('loaded images from storage:', JSON.stringify(this.images));
     }
 
     async presentToast(text: string) {
@@ -112,7 +113,7 @@ export class TabLibraryPage implements OnInit {
 
     async startUpload(imgEntry: SavedImage) {
       try {
-        const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.filePath);
+        const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.nativePath);
         ( < FileEntry > entry).file(file => this.readFile(file));
       } catch (err) {
         this.presentToast('Error while reading file.');

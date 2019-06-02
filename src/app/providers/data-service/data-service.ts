@@ -4,7 +4,6 @@ import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
 import { deserialize } from 'json-typescript-mapper';
-
 import { StateCache } from '../../models/StateCache';
 import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
@@ -15,8 +14,8 @@ const IMAGES_STORAGE_KEY = 'my_images';
 
 export interface SavedImage {
   name: string;
-  path: string;
-  filePath: string;
+  ionicPath: string;
+  nativePath: string;
 }
 
 @Injectable()
@@ -106,7 +105,7 @@ export class DataServiceProvider {
           for (const exe of set.exercises) {
             const url = exe.imageUrl;
             if (!images[url]) {
-              images.set(url, { name: url, path: url, filePath: url });
+              images.set(url, { name: url, ionicPath: url, nativePath: url });
             }
           }
         }
@@ -121,13 +120,13 @@ export class DataServiceProvider {
     console.log(`initialized ${this.images.length} saved images from assests`);
   }
   async saveImage(name: string) {
-    const filePath = this.file.dataDirectory + name;
-    const resPath = this.pathForImage(filePath);
+    const nativePath = this.file.dataDirectory + name;
+    const ionicPath = this.pathForImage(nativePath);
 
     const newEntry: SavedImage = {
         name: name,
-        path: resPath,
-        filePath: filePath
+        ionicPath: ionicPath,
+        nativePath: nativePath
     };
     console.log('adding image', JSON.stringify(newEntry));
     console.log('this.images:', JSON.stringify(this.images));
@@ -140,13 +139,13 @@ export class DataServiceProvider {
     this.images.splice(position, 1);
     await this.storage.set(IMAGES_STORAGE_KEY, this.images);
     if (!this.isWebApp) {
-      const correctPath = imgEntry.filePath.substr(0, imgEntry.filePath.lastIndexOf('/') + 1);
+      const correctPath = imgEntry.nativePath.substr(0, imgEntry.nativePath.lastIndexOf('/') + 1);
       await this.file.removeFile(correctPath, imgEntry.name);
     }
   }
   async updateImage(imgEntry: SavedImage, position: number) {
     await this.storage.set(IMAGES_STORAGE_KEY, this.images);
-    console.log(`updated image name ${imgEntry.name} as ${this.images[position].path}`);
+    console.log(`updated image name ${imgEntry.name} as ${this.images[position].ionicPath}`);
   }
   pathForImage(img: string) {
     if (img === null) {

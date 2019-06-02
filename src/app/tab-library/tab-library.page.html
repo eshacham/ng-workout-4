@@ -12,7 +12,7 @@
   <ion-list>
     <ion-item *ngFor="let img of images; index as pos" class="ion-text-wrap">
       <ion-thumbnail slot="start">
-        <ion-img [src]="img.path"></ion-img>
+        <ion-img [src]="img.ionicPath"></ion-img>
       </ion-thumbnail>
       <ion-input type='text' [(ngModel)]="img.name"
                  placeholder="Exercise Name">
