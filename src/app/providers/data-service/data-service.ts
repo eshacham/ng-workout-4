@@ -22,7 +22,7 @@ export interface SavedImage {
 export class DataServiceProvider {
 
   private _workouts: Workout[];
-  private images: SavedImage[];
+  private _images: SavedImage[];
   private defaultWorkouts: DefaultWorkouts;
   private state: StateCache;
 
@@ -31,7 +31,8 @@ export class DataServiceProvider {
     private file: File,
     private webview: WebView,
     private storage: Storage) {
-      this.images = [];
+      console.log('initializing data service');
+      this._images = [];
       this._workouts = [];
       this.state = new StateCache();
       this.defaultWorkouts = deserialize(DefaultWorkouts, json);
@@ -79,24 +80,25 @@ export class DataServiceProvider {
   }
 
   async resetImages() {
-    this.images = [];
+    this._images = [];
     await this.storage.ready();
     await this.storage.remove(IMAGES_STORAGE_KEY);
     /// TODO need to notify the client the data has been reset so it will reload it!
     console.log('images have been reset');
   }
+
   async getImages(): Promise<SavedImage[]> {
     await this.storage.ready();
     const images = await this.storage.get(IMAGES_STORAGE_KEY);
 
     if (images && images.length) {
-      this.images = images;
-    } else {
-        this.initDefaultImages();
+      this._images = images;
+      return this._images;
     }
-    return this.images;
+    return this.initDefaultImages();
   }
-  async initDefaultImages() {
+
+  async initDefaultImages(): Promise<SavedImage[]> {
     console.log('initializing saved images from assests...');
     const images: Map<string, SavedImage> = new Map();
     for (const workout of this.defaultWorkouts.workouts) {
@@ -112,12 +114,13 @@ export class DataServiceProvider {
       }
     }
     images.forEach((image: SavedImage) => {
-      this.images.push(image);
+      this._images.push(image);
     });
 
     await this.storage.ready();
-    await this.storage.set(IMAGES_STORAGE_KEY, this.images);
-    console.log(`initialized ${this.images.length} saved images from assests`);
+    await this.storage.set(IMAGES_STORAGE_KEY, this._images);
+    console.log(`initialized ${this._images.length} saved images from assests`, JSON.stringify(this._images));
+    return this._images;
   }
   async saveImage(name: string) {
     const nativePath = this.file.dataDirectory + name;
@@ -129,23 +132,23 @@ export class DataServiceProvider {
         nativePath: nativePath
     };
     console.log('adding image', JSON.stringify(newEntry));
-    console.log('this.images:', JSON.stringify(this.images));
-    this.images.push(newEntry);
+    console.log('this.images:', JSON.stringify(this._images));
+    this._images.push(newEntry);
     await this.storage.ready();
-    await this.storage.set(IMAGES_STORAGE_KEY, this.images);
+    await this.storage.set(IMAGES_STORAGE_KEY, this._images);
     console.log(`stored updated images list: ${name}`);
   }
   async deleteImage(imgEntry: SavedImage, position: number) {
-    this.images.splice(position, 1);
-    await this.storage.set(IMAGES_STORAGE_KEY, this.images);
+    this._images.splice(position, 1);
+    await this.storage.set(IMAGES_STORAGE_KEY, this._images);
     if (!this.isWebApp) {
       const correctPath = imgEntry.nativePath.substr(0, imgEntry.nativePath.lastIndexOf('/') + 1);
       await this.file.removeFile(correctPath, imgEntry.name);
     }
   }
   async updateImage(imgEntry: SavedImage, position: number) {
-    await this.storage.set(IMAGES_STORAGE_KEY, this.images);
-    console.log(`updated image name ${imgEntry.name} as ${this.images[position].ionicPath}`);
+    await this.storage.set(IMAGES_STORAGE_KEY, this._images);
+    console.log(`updated image name ${imgEntry.name} as ${this._images[position].ionicPath}`);
   }
   pathForImage(img: string) {
     if (img === null) {
