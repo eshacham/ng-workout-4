@@ -34,7 +34,7 @@ export class TabLibraryPage implements OnInit {
     async ngOnInit() {
       const platformSource = await this.platform.ready();
       console.log(`this app runs on ${platformSource}`);
-      this.images = await this.dataServiceProvider.loadStoredImages();
+      this.images = await this.dataServiceProvider.getImages();
       console.log('loaded images from storage:', JSON.stringify(this.images));
     }
 
@@ -101,13 +101,13 @@ export class TabLibraryPage implements OnInit {
 
     async deleteImage(imgEntry: SavedImage, position: number) {
       await this.dataServiceProvider.deleteImage(imgEntry, position);
-      this.images = await this.dataServiceProvider.loadStoredImages();
+      this.images = await this.dataServiceProvider.getImages();
       this.presentToast('File removed.');
     }
 
     async updateImage(imgEntry: SavedImage, position: number) {
       await this.dataServiceProvider.updateImage(imgEntry, position);
-      this.images = await this.dataServiceProvider.loadStoredImages();
+      this.images = await this.dataServiceProvider.getImages();
       this.presentToast('File updated.');
     }
 

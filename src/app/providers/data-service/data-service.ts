@@ -85,7 +85,7 @@ export class DataServiceProvider {
     /// TODO need to notify the client the data has been reset so it will reload it!
     console.log('images have been reset');
   }
-  async loadStoredImages(): Promise<SavedImage[]> {
+  async getImages(): Promise<SavedImage[]> {
     await this.storage.ready();
     const images = await this.storage.get(IMAGES_STORAGE_KEY);
 

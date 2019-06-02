@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SavedImage, DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Workout } from 'src/app/models/Workout';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
@@ -44,7 +44,7 @@ export class SelectExercisePage implements OnInit {
   }
 
   async ngOnInit() {
-    const images = await this.dataService.loadStoredImages();
+    const images = await this.dataService.getImages();
     this.images = images.map((image) => {
       return {
         isSelected: false,
