@@ -25,6 +25,11 @@ export class TabWorkoutsPage implements OnInit {
 
   async ngOnInit() {
     this.workouts = await this.dataServiceProvider.getWorkouts();
+    this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+  }
+
+  async ionViewWillEnter() {
+    console.log('workouts page - ionViewWillEnter');
   }
 
   get DisplayMode(): DisplayMode {
@@ -79,6 +84,11 @@ export class TabWorkoutsPage implements OnInit {
           this.workouts.splice(index, 1);
           await this.dataServiceProvider.saveWorkouts();
         }
+        break;
+      case ExerciseSetAction.WorkoutReset:
+          this.workouts = await this.dataServiceProvider.getWorkouts();
+          console.log('workouts page - loading reset workouts');
+          break;
     }
   }
 }

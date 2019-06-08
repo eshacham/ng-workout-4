@@ -23,19 +23,23 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-row>
+    <ion-row *ngIf="!haveWorkoutsBeenReset">
       <ion-col>
-        <ion-button fill="clear" (click)="addExercise()" [disabled]="!hasSelecteion">
+        <ion-button fill="clear"  (click)="addExercise()" [disabled]="isAddExerciseDisabled">
           <ion-icon slot="start" name="add-circle"></ion-icon>
           Add Exercises
         </ion-button>
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label>Superset</ion-label>
+          <ion-label>As a Superset</ion-label>
           <ion-checkbox [(ngModel)]="isSet"></ion-checkbox>
         </ion-item>
       </ion-col>
     </ion-row>
+    <ion-button *ngIf="haveWorkoutsBeenReset" fill="clear" routerLink="/" routerDirection="root" >
+      <ion-icon slot="start" name="back"></ion-icon>
+      workouts have been reset! go back to Workouts
+    </ion-button>
   </ion-toolbar>
 </ion-footer>

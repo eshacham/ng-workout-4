@@ -173,7 +173,7 @@ export class WorkoutDayComponent implements OnInit {
   }
 
   addExercise() {
-    this.router.navigate([`select-exercise`], {relativeTo: this.route});
+    this.router.navigate(['select-exercise'], {relativeTo: this.route});
     this.saveChanges();
   }
 

@@ -6,6 +6,8 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import { LoadingOptions } from '@ionic/core';
 import { DataServiceProvider, SavedImage } from '../providers/data-service/data-service';
 import { ToastService } from '../providers/toast-service/toast.service';
+import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
+import { ExerciseSetAction } from '../models/enums';
 
 @Component({
   selector: 'app-tab-library',
@@ -30,7 +32,17 @@ export class TabLibraryPage implements OnInit {
     async ngOnInit() {
       this.images = await this.dataServiceProvider.getImages();
       this.isMobile = this.dataServiceProvider.isMobile;
+      this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
       console.log('loaded images from storage:', JSON.stringify(this.images));
+    }
+
+    async handleWorkoutActionEvent (event: ExerciseSetActionEvent) {
+      const exerciseSetAction: ExerciseSetAction = event.action;
+      switch (exerciseSetAction) {
+        case ExerciseSetAction.ImagesReset:
+            this.images = await this.dataServiceProvider.getImages();
+            break;
+      }
     }
 
     async presentToast(text: string) {

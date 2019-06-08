@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SavedImage, DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Workout } from 'src/app/models/Workout';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
-import { NavController } from '@ionic/angular';
+import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
+import { ExerciseSetAction } from 'src/app/models/enums';
 
 interface SelectedSavedImage extends SavedImage {
   isSelected: boolean;
@@ -22,9 +23,10 @@ export class SelectExercisePage implements OnInit {
   workout: Workout;
   workoutId: number;
   isSet: boolean;
+  haveWorkoutsBeenReset = false;
 
   constructor (
-    private navCtrl: NavController,
+    private router: Router,
     private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
       this.images = [];
@@ -43,7 +45,19 @@ export class SelectExercisePage implements OnInit {
     return this.selectedImages.length > 0;
   }
 
+  get isAddExerciseDisabled(): boolean {
+    return this.haveWorkoutsBeenReset || !this.hasSelecteion;
+  }
+
   async ngOnInit() {
+    this.haveWorkoutsBeenReset = false;
+    await this.getImages();
+    this.workout = await this.dataService.getWorkout(this.workoutId);
+    this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+    console.log('on-init select-exercise');
+  }
+
+  private async getImages() {
     const images = await this.dataService.getImages();
     this.images = images.map((image) => {
       return {
@@ -51,18 +65,34 @@ export class SelectExercisePage implements OnInit {
         isDefault: image.isDefault,
         name: image.name,
         ionicPath: image.ionicPath,
-        nativePath: image.nativePath };
+        nativePath: image.nativePath
+      };
     });
-    this.workout = await this.dataService.getWorkout(this.workoutId);
+  }
+
+  async handleWorkoutActionEvent (event: ExerciseSetActionEvent) {
+    const exerciseSetAction: ExerciseSetAction = event.action;
+    switch (exerciseSetAction) {
+      case ExerciseSetAction.ImagesReset:
+          await this.getImages();
+          break;
+      case ExerciseSetAction.WorkoutReset:
+        this.haveWorkoutsBeenReset = true;
+    }
   }
 
   addExercise() {
+    if (this.haveWorkoutsBeenReset) {
+      console.log('select-exercise: Workouts have been reset! Can\'t update it now');
+      return;
+    }
     const newSets = this.getNewSets();
     const lastSelectedWorkoutDay =
       this.dataService.getLastSelectedWorkoutDay(this.workout.name);
     this.workout.days[lastSelectedWorkoutDay].exerciseSets.push(...newSets);
     this.dataService.saveWorkouts();
-    this.navCtrl.back();
+    this.router.navigate(['../'], { relativeTo: this.route });
+    // this.navCtrl.back();
   }
 
   getNewSets (): ExerciseSet[] {

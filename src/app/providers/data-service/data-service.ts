@@ -8,6 +8,10 @@ import { StateCache } from '../../models/StateCache';
 import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
 import { json } from '../../constants/defaultWorkouts';
+import { Subject } from 'rxjs';
+import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
+import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
+import { ExerciseSetAction } from 'src/app/models/enums';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -26,6 +30,7 @@ export class DataServiceProvider {
   private _images: SavedImage[];
   private defaultWorkouts: DefaultWorkouts;
   private state: StateCache;
+  workoutPublisher: Subject<ExerciseSetActionEvent>;
 
   constructor (
     private platform: Platform,
@@ -36,6 +41,7 @@ export class DataServiceProvider {
       this._images = [];
       this._workouts = [];
       this.state = new StateCache();
+      this.workoutPublisher = new Subject();
       this.defaultWorkouts = deserialize(DefaultWorkouts, json);
       console.log('deserialized default workouts', this.defaultWorkouts.workouts.map(w => w.id));
   }
@@ -69,6 +75,7 @@ export class DataServiceProvider {
   async resetWorkouts(): Promise<Workout[]> {
     await this.saveWorkouts(this.defaultWorkouts.workouts);
     console.log('workouts have been reset to default workouts');
+    this.workoutPublisher.next(new ExerciseSetActionEvent(ExerciseSetAction.WorkoutReset, null, null, null));
     return this._workouts;
   }
 
@@ -85,7 +92,7 @@ export class DataServiceProvider {
     await this.storage.ready();
     await this.storage.remove(IMAGES_STORAGE_KEY);
     await this.initImages();
-    /// TODO need to notify the client the data has been reset so it will reload it!
+    this.workoutPublisher.next(new ExerciseSetActionEvent(ExerciseSetAction.ImagesReset, null, null, null));
     console.log('images have been reset');
   }
 
