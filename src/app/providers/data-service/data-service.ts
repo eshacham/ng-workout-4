@@ -68,6 +68,9 @@ export class DataServiceProvider {
     this._workouts = await this.storage.get(WORKOUTS_STORAGE_KEY);
     if (!this._workouts || !this._workouts.length) {
       await this.resetWorkouts();
+    } else if (this.isMobile) {
+      this.UpdateImagesInWorkouts(this._workouts);
+      this.saveWorkouts();
     }
     console.log('loaded cached workouts', this._workouts.map(w => w.id));
   }
@@ -117,13 +120,18 @@ export class DataServiceProvider {
       console.log(`loaded ${this._images.length} images from storage:`, JSON.stringify(this._images));
       if (this.isMobile) {
         console.log(`updating to device data directory ${this.file.dataDirectory}`);
-        this.updateImagesPath();
+        this.upgradeImages();
       }
     }
   }
 
-  private updateImagesPath() {
-    for (const image of this._images.filter(i => !i.isDefault)) {
+  private upgradeImages() {
+    const images = this._images.filter(i => !i.isDefault);
+    this.updateImagesPath(images);
+  }
+
+  private updateImagesPath(images: SavedImage[]) {
+    for (const image of images) {
       if (image.nativePath.indexOf(this.file.dataDirectory) < 0) {
         const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
         const oldPath = image.nativePath;
@@ -134,11 +142,18 @@ export class DataServiceProvider {
     }
   }
 
-  async initDefaultImages() {
+  private async initDefaultImages() {
     this._images = [];
     console.log('initializing saved images from assests...');
+    const images: Map<string, SavedImage> = this.extractUniqueImagesFromWorkouts(this.defaultWorkouts.workouts);
+    this._images = Array.from(images.values());
+    console.log(`initialized ${this._images.length} saved images from assests`, JSON.stringify(this._images));
+    await this.saveImages();
+  }
+
+  private extractUniqueImagesFromWorkouts(workouts: Workout[]) {
     const images: Map<string, SavedImage> = new Map();
-    for (const workout of this.defaultWorkouts.workouts) {
+    for (const workout of workouts) {
       for (const day of workout.days) {
         for (const set of day.exerciseSets) {
           for (const exe of set.exercises) {
@@ -150,12 +165,26 @@ export class DataServiceProvider {
         }
       }
     }
-    images.forEach((image: SavedImage) => {
-      this._images.push(image);
-    });
+    return images;
+  }
 
-    console.log(`initialized ${this._images.length} saved images from assests`, JSON.stringify(this._images));
-    await this.saveImages();
+  private UpdateImagesInWorkouts(workouts: Workout[]) {
+    for (const workout of workouts) {
+      for (const day of workout.days) {
+        for (const set of day.exerciseSets) {
+          for (const exe of set.exercises) {
+            if (!exe.imageUrl.startsWith('assets/images') &&
+                exe.imageUrl.indexOf(this.file.dataDirectory) < 0) {
+              const oldPath = exe.imageUrl;
+              const name = exe.imageUrl.substr(exe.imageUrl.lastIndexOf('/') + 1);
+              const nativePath = this.file.dataDirectory + name;
+              exe.imageUrl = this.getIonicPath(nativePath);
+              console.log(`update exercise image path from ${oldPath} to ${exe.imageUrl}`);
+            }
+          }
+        }
+      }
+    }
   }
 
   async saveImages() {
