@@ -26,7 +26,7 @@ export class WorkoutDaysPage implements OnInit {
   slideOpts = {
     autoHeight: false,
     pagination: {
-      type: 'fraction',
+      type: 'bullets',
       clickable: false,
       el: '.swiper-pagination',
     },
@@ -41,13 +41,6 @@ export class WorkoutDaysPage implements OnInit {
         console.log('getting workout id from route params', params);
         this.workoutId = +params.id;
     });
-  }
-
-  get days(): WorkoutDay[] {
-    if (!this.workout || !this.workout.days.length) {
-      return [];
-    }
-   return this.workout.days.filter(day => day);
   }
 
   async ngOnInit() {
@@ -77,6 +70,7 @@ export class WorkoutDaysPage implements OnInit {
       this.dataService.setLastSelectedWorkoutDay(this.workout.name, this.activeDayIndex);
     }
   }
+
   async saveChanges() {
     await this.dataService.saveWorkouts();
   }
@@ -165,12 +159,12 @@ export class WorkoutDaysPage implements OnInit {
         console.log('sliding forward');
         await this.slides.slideTo(1, 0, true);
       }
-      let day = this.workout.days.splice(index, 1);
-      day = null;
-      await this.slides.update(); /// TODO: does not update the slides list
       await this.saveChanges();
-      console.log(`deleted day ${index} out of ${this.workout.days.length} days`);
-      this.cdr.detectChanges();
+      this.workout.days.splice(index, 1);
+      await new Promise(() => setTimeout(() => {
+        this.slides.update();
+        console.log(`deleted day index ${index} out of ${this.workout.days.length + 1} days`);
+      }, 1));
     }
   }
 
