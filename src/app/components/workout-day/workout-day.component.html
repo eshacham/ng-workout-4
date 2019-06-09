@@ -30,7 +30,8 @@
       <ion-fab-button size="small" (click)="addWorkoutDay()" color="light">
         <ion-icon name="today"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button size="small" (click)="deleteWorkoutDay()" color="light">
+      <ion-fab-button size="small" [disabled]="isOneDayOnly"
+        (click)="deleteWorkoutDay()" color="light">
         <ion-icon name="trash"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

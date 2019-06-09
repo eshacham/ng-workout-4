@@ -28,6 +28,7 @@ export class WorkoutDayComponent implements OnInit {
   @Input() workoutDay: WorkoutDay;
   @Input() isLastDayActive: boolean;
   @Input() isFirstDayActive: boolean;
+  @Input() isOneDayOnly: boolean;
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 

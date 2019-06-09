@@ -58,6 +58,9 @@ export class WorkoutDaysPage implements OnInit {
   get isFirstDayActive(): boolean {
     return this.activeDayIndex === 0;
   }
+  get isOneDayOnly(): boolean {
+    return this.workout.days.length === 1;
+  }
 
   async slideChanged() {
     if (this.slides && this.workout) {
