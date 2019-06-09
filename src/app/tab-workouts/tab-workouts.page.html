@@ -7,15 +7,16 @@
 </ion-header>
 
 <ion-fab vertical="bottom" horizontal="end" #fabEdit id="fabEdit">
-    <ion-fab-button size="small" (click)="editWorkouts()" color="warning">
-      <ion-icon name="construct"></ion-icon>
+  <ion-fab-button size="small" color="warning"(click)="editWorkouts()" >
+    <ion-icon name="construct"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-fab-button size="small" (click)="addWorkout($event)"
+      color="light" >
+      <ion-icon name="today"></ion-icon>
     </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button size="small" (click)="addWorkout()" color="light">
-        <ion-icon name="today"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
+  </ion-fab-list>
+</ion-fab>
 
 <ion-content>
   <ion-list lines="none">

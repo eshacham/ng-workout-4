@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { DisplayMode, ExerciseSetAction } from '../models/enums';
@@ -6,6 +6,7 @@ import { WorkoutDay } from '../models/WorkoutDay';
 import { Subject } from 'rxjs';
 import { ExerciseSetSwitchModeEvent } from '../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
+import { IonFab } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -13,6 +14,8 @@ import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
   styleUrls: ['tab-workouts.page.scss']
 })
 export class TabWorkoutsPage implements OnInit {
+
+  @ViewChild('fabEdit') fabEdit: IonFab;
   workouts: Workout[];
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
@@ -26,10 +29,6 @@ export class TabWorkoutsPage implements OnInit {
   async ngOnInit() {
     this.workouts = await this.dataServiceProvider.getWorkouts();
     this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
-  }
-
-  async ionViewWillEnter() {
-    console.log('workouts page - ionViewWillEnter');
   }
 
   get DisplayMode(): DisplayMode {
@@ -56,16 +55,22 @@ export class TabWorkoutsPage implements OnInit {
     }
   }
 
-  addWorkout() {
-    const newWrokout = new Workout();
-    newWrokout.id = Math.max(...this.workouts.map(w => w.id)) + 1;
-    newWrokout.name = 'new workout name';
-    newWrokout.description = 'new workout description';
+  async addWorkout(event: any) {
+    const newWorkout = new Workout();
+    newWorkout.id = Math.max(...this.workouts.map(w => w.id)) + 1;
+    newWorkout.name = 'new workout name';
+    newWorkout.description = 'new workout description';
     const day = new WorkoutDay();
     day.exerciseSets = [];
-    newWrokout.days = [day];
-    this.workouts.push(newWrokout);
-    this.DisplayMode = DisplayMode.Display;
+    newWorkout.days = [day];
+    this.workouts.push(newWorkout);
+    event.stopPropagation();
+    await new Promise(() => setTimeout(() => {
+      this.DisplayMode = DisplayMode.Edit;
+      this.publishWorkoutEvent(this._displayMode);
+      this.dataServiceProvider.saveWorkouts();
+    }, 1));
+
   }
 
   publishWorkoutEvent(

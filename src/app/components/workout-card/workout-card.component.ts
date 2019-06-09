@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Workout } from '../../models/Workout';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
 import { DisplayMode, ExerciseSetAction } from 'src/app/models/enums';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
@@ -19,12 +19,14 @@ export class WorkoutCardComponent implements OnInit {
 
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
+  private subs: Subscription;
 
   constructor(
     private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.inWorkoutPublisher.subscribe(event => this.handleWorkoutEventchange(event));
+    console.log('workout-card ngOnInit -> ', this);
+    this.subs = this.inWorkoutPublisher.subscribe(event => this.handleWorkoutEventchange(event));
   }
 
   get DisplayMode(): DisplayMode {
@@ -40,7 +42,7 @@ export class WorkoutCardComponent implements OnInit {
 
   handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent): void {
     this.DisplayMode = event.displayMode;
-    console.log('workout-card: receieved Switch Mode Event: ', JSON.stringify(event));
+    console.log(`workout-card: receieved ${DisplayMode[event.displayMode]} Event`);
   }
 
   goToWorkoutDays() {
@@ -56,5 +58,11 @@ export class WorkoutCardComponent implements OnInit {
 }
   deleteWorkout() {
     this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
+  }
+
+// tslint:disable-next-line: use-life-cycle-interface
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+    console.log('workout-card ngOnDestroy: unsubscribing from inWorkoutPublisher');
   }
 }
