@@ -1,6 +1,5 @@
 import { Subject } from 'rxjs';
-import { Component, Input, Output, EventEmitter, OnInit,
-  OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonFab } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
@@ -27,6 +26,8 @@ export class WorkoutDayComponent implements OnInit {
   @ViewChild('fabEdit') fabEdit: IonFab;
 
   @Input() workoutDay: WorkoutDay;
+  @Input() isLastDayActive: boolean;
+  @Input() isFirstDayActive: boolean;
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 

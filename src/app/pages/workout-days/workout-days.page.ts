@@ -19,6 +19,7 @@ export class WorkoutDaysPage implements OnInit {
   workout: Workout;
   workoutId: number;
   workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent> = new Subject();
+  activeDayIndex: number;
 
   @ViewChild('slider') slides: Slides;
 
@@ -45,17 +46,24 @@ export class WorkoutDaysPage implements OnInit {
     this.workout = await this.dataService.getWorkout(this.workoutId);
     if (this.slides && this.workout) {
       console.log('ngOnInit this.workout.name --> ', this.workout.name);
-      const lastIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
-      console.log('last index on view loaded', lastIndex);
-      await this.slides.slideTo(lastIndex, 0);
+      this.activeDayIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
+      console.log('last index on view loaded', this.activeDayIndex);
+      await this.slides.slideTo(this.activeDayIndex, 0);
     }
+  }
+
+  get isLastDayActive(): boolean {
+    return this.activeDayIndex === this.workout.days.length - 1;
+  }
+  get isFirstDayActive(): boolean {
+    return this.activeDayIndex === 0;
   }
 
   async slideChanged() {
     if (this.slides && this.workout) {
-      const lastIndex = await this.slides.getActiveIndex();
-      console.log('last index on slide changes', lastIndex);
-      this.dataService.setLastSelectedWorkoutDay(this.workout.name, lastIndex);
+      this.activeDayIndex = await this.slides.getActiveIndex();
+      console.log('last index on slide changes', this.activeDayIndex);
+      this.dataService.setLastSelectedWorkoutDay(this.workout.name, this.activeDayIndex);
     }
   }
   async saveChanges() {

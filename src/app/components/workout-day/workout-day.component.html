@@ -14,17 +14,19 @@
       <ion-icon name="construct"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="start">
-      <ion-fab-button size="small" (click)="moveForwardWorkoutDay()" color="light">
-        <ion-icon name="arrow-forward"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button size="small" (click)="moveBackWorkoutDay()" color="light">
-        <ion-icon name="arrow-back"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button size="small" (click)="addExercise()" color="light">
+     <ion-fab-button size="small" (click)="addExercise()" color="light">
         <ion-icon name="walk"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
     <ion-fab-list side="top">
+      <ion-fab-button size="small" [disabled]="isFirstDayActive"
+        (click)="moveBackWorkoutDay()" color="light">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button size="small" [disabled]="isLastDayActive"
+        (click)="moveForwardWorkoutDay()" color="light">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-fab-button>
       <ion-fab-button size="small" (click)="addWorkoutDay()" color="light">
         <ion-icon name="today"></ion-icon>
       </ion-fab-button>

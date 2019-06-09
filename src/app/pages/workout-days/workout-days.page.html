@@ -13,6 +13,8 @@
     <ion-slide *ngFor="let day of workout?.days">
         <app-workout-day
         [workoutDay]="day"
+        [isLastDayActive]="isLastDayActive"
+        [isFirstDayActive]="isFirstDayActive"
         [inWorkoutDaysPublisher]="workoutDaysPublisher"
         (outEventEmitter)="handleExerciseSetActionEvent($event)">
       </app-workout-day>
