@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
@@ -8,15 +8,18 @@ import { DataServiceProvider, SavedImage } from '../providers/data-service/data-
 import { ToastService } from '../providers/toast-service/toast.service';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
 import { ExerciseSetAction } from '../models/enums';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tab-library',
   templateUrl: 'tab-library.page.html',
   styleUrls: ['tab-library.page.scss']
 })
-export class TabLibraryPage implements OnInit {
+export class TabLibraryPage implements OnInit, OnDestroy {
+
   images: SavedImage[];
   isMobile = false;
+  subs: Subscription;
 
   constructor(
     private camera: Camera,
@@ -34,6 +37,10 @@ export class TabLibraryPage implements OnInit {
       this.isMobile = this.dataServiceProvider.isMobile;
       this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
       console.log('loaded images from storage:', JSON.stringify(this.images));
+    }
+
+    ngOnDestroy() {
+      this.subs.unsubscribe();
     }
 
     async handleWorkoutActionEvent (event: ExerciseSetActionEvent) {

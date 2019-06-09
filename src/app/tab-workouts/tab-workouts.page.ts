@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { DisplayMode, ExerciseSetAction } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { ExerciseSetSwitchModeEvent } from '../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
 import { IonFab } from '@ionic/angular';
@@ -13,13 +13,14 @@ import { IonFab } from '@ionic/angular';
   templateUrl: 'tab-workouts.page.html',
   styleUrls: ['tab-workouts.page.scss']
 })
-export class TabWorkoutsPage implements OnInit {
+export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   @ViewChild('fabEdit') fabEdit: IonFab;
   workouts: Workout[];
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
   workoutPublisher: Subject<ExerciseSetSwitchModeEvent>;
+  subs: Subscription;
 
   constructor (
     private dataServiceProvider: DataServiceProvider) {
@@ -28,7 +29,11 @@ export class TabWorkoutsPage implements OnInit {
 
   async ngOnInit() {
     this.workouts = await this.dataServiceProvider.getWorkouts();
-    this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+    this.subs = this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   get DisplayMode(): DisplayMode {

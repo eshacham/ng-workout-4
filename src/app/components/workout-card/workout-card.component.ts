@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Workout } from '../../models/Workout';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
   templateUrl: './workout-card.component.html',
   styleUrls: ['./workout-card.component.scss'],
 })
-export class WorkoutCardComponent implements OnInit {
+export class WorkoutCardComponent implements OnInit, OnDestroy {
 
   @Input() workout: Workout;
   @Input() inWorkoutPublisher: Subject<ExerciseSetSwitchModeEvent>;
@@ -55,14 +55,13 @@ export class WorkoutCardComponent implements OnInit {
   emitExerciseSetActionEvent(action: ExerciseSetAction) {
     this.outEventEmitter.emit(new ExerciseSetActionEvent(
         action, null, this.workout.id, null));
-}
+  }
+
   deleteWorkout() {
     this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
   }
 
-// tslint:disable-next-line: use-life-cycle-interface
   ngOnDestroy() {
     this.subs.unsubscribe();
-    console.log('workout-card ngOnDestroy: unsubscribing from inWorkoutPublisher');
   }
 }

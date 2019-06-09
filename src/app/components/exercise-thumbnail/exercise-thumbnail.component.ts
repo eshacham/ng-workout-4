@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser/';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { PopoverController } from '@ionic/angular';
 import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
 import { Exercise } from 'src/app/models/Exercise';
@@ -48,6 +48,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     @Input() exerciseSetIndex: number;
     @Input() inWorkoutDayPublisher: Subject<ExerciseSetSwitchModeEvent>;
     @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
+    subs: Subscription;
 
     get isPrevRepAvailable(): boolean {
         return this.activeRepIndex > 0 ||
@@ -120,7 +121,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-      this.inWorkoutDayPublisher.subscribe(event => this.handleWorkoutEventchange(event));
+      this.subs = this.inWorkoutDayPublisher.subscribe(event => this.handleWorkoutEventchange(event));
 
       this.exerciseSet.exercises.forEach(set => {
           set.reps.forEach(rep => {
@@ -139,10 +140,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        // needed if child gets re-created (eg on some model changes)
-        // note that subsequent subscriptions on the same subject will fail
-        // so the parent has to re-create parentSubject on changes
-        this.inWorkoutDayPublisher.unsubscribe();
+        this.subs.unsubscribe();
     }
 
     toggleEditExercise() {

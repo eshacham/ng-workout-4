@@ -1,5 +1,5 @@
-import { Subject } from 'rxjs';
-import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { Component, Input, Output, EventEmitter, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonFab } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
@@ -15,7 +15,7 @@ import { DataServiceProvider } from 'src/app/providers/data-service/data-service
   templateUrl: './workout-day.component.html',
   styleUrls: ['./workout-day.component.scss'],
 })
-export class WorkoutDayComponent implements OnInit {
+export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   workoutDayPublisher: Subject<ExerciseSetSwitchModeEvent>;
   runningExerciseIndex: number;
@@ -31,6 +31,7 @@ export class WorkoutDayComponent implements OnInit {
   @Input() isOneDayOnly: boolean;
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
+  subs: Subscription;
 
   constructor (
     private router: Router,
@@ -63,7 +64,7 @@ export class WorkoutDayComponent implements OnInit {
   get IsDisplayOrEdit() { return this.IsEditMode || this.IsDisplayMode; }
 
   ngOnInit() {
-    this.inWorkoutDaysPublisher.subscribe(event => this.handleWorkoutEventchange(event));
+    this.subs = this.inWorkoutDaysPublisher.subscribe(event => this.handleWorkoutEventchange(event));
   }
 
   handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent) {
@@ -72,11 +73,8 @@ export class WorkoutDayComponent implements OnInit {
     }
   }
 
-  OnDestroy() {
-    // needed if child gets re-created (eg on some model changes)
-    // note that subsequent subscriptions on the same subject will fail
-    // so the parent has to re-create parentSubject on changes
-    this.inWorkoutDaysPublisher.unsubscribe();
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   handleExerciseSetActionEvent(event: ExerciseSetActionEvent) {
