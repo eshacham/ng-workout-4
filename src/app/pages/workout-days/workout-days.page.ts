@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IonSlides as Slides} from '@ionic/angular';
 import { Workout } from 'src/app/models/Workout';
@@ -34,12 +34,20 @@ export class WorkoutDaysPage implements OnInit {
   };
 
   constructor (
+    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
       this.route.params.subscribe(params => {
         console.log('getting workout id from route params', params);
         this.workoutId = +params.id;
     });
+  }
+
+  get days(): WorkoutDay[] {
+    if (!this.workout || !this.workout.days.length) {
+      return [];
+    }
+   return this.workout.days.filter(day => day);
   }
 
   async ngOnInit() {
@@ -82,9 +90,8 @@ export class WorkoutDaysPage implements OnInit {
         break;
       case ExerciseSetAction.Delete:
         console.log('workout-days: receieved delete event: ', JSON.stringify(event));
-        const index = this.getWorkoutDayIndexByName(event.workoutDayName);
-        if (!this.workout.days[index].exerciseSets.length) {
-          await this.deleteWorkoutDay(event.workoutDayName);
+        if (!this.workout.days[this.activeDayIndex].exerciseSets.length) {
+          await this.deleteWorkoutDay(this.activeDayIndex);
         }
         break;
       case ExerciseSetAction.Edit:
@@ -103,22 +110,21 @@ export class WorkoutDaysPage implements OnInit {
         break;
       case ExerciseSetAction.DeleteDay:
         console.log('workout-days: receieved delete day event: ', JSON.stringify(event));
-        await this.deleteWorkoutDay(event.workoutDayName);
+        await this.deleteWorkoutDay(this.activeDayIndex);
         break;
       case ExerciseSetAction.MoveDayForward:
         console.log('workout-days: receieved move day forward event: ', JSON.stringify(event));
-        await this.moveForwardWorkoutDay(event.workoutDayName);
+        await this.moveForwardWorkoutDay(this.activeDayIndex);
         break;
       case ExerciseSetAction.MoveDayBack:
         console.log('workout-days: receieved move day back event: ', JSON.stringify(event));
-        await this.moveBackWorkoutDay(event.workoutDayName);
+        await this.moveBackWorkoutDay(this.activeDayIndex);
         break;
     }
   }
 
-  private async moveForwardWorkoutDay(name: string) {
+  private async moveForwardWorkoutDay(index: number) {
     console.log('moving day forward');
-    const index = this.getWorkoutDayIndexByName(name);
     if (index + 1 < this.workout.days.length) {
       this.workout.days.splice(index, 0, this.workout.days.splice(index + 1, 1)[0]);
       await this.slides.update();
@@ -127,9 +133,8 @@ export class WorkoutDaysPage implements OnInit {
     }
   }
 
-  private async moveBackWorkoutDay(name: string) {
+  private async moveBackWorkoutDay(index: number) {
     console.log('moving day back');
-    const index = this.getWorkoutDayIndexByName(name);
     if (index - 1 >= 0) {
       this.workout.days.splice(index, 0, this.workout.days.splice(index - 1, 1)[0]);
       await this.slides.update();
@@ -146,24 +151,26 @@ export class WorkoutDaysPage implements OnInit {
     this.workout.days.splice(index + 1, 0, newDay);
     await this.slides.update();
     await this.saveChanges();
+    console.log('sliding forward');
     await this.slides.slideNext(0);
-    console.log('moved next');
   }
 
-  private async deleteWorkoutDay(name: string) {
+  private async deleteWorkoutDay(index: number) {
     if (this.workout.days.length > 1) {
-      const index = this.getWorkoutDayIndexByName(name);
       console.log('splicing (delete) at ', index);
-      this.workout.days.splice(index, 1);
+      if (index > 0) {
+        console.log('sliding back');
+        await this.slides.slideTo(index - 1, 0, true);
+      } else {
+        console.log('sliding forward');
+        await this.slides.slideTo(1, 0, true);
+      }
+      let day = this.workout.days.splice(index, 1);
+      day = null;
       await this.slides.update(); /// TODO: does not update the slides list
       await this.saveChanges();
-      if (index > 0) {
-        await this.slides.slideTo(index - 1, 0, true);
-        console.log('moved prev');
-      } else {
-        await this.slides.slideTo(0, 0, true);
-        console.log('moved next');
-      }
+      console.log(`deleted day ${index} out of ${this.workout.days.length} days`);
+      this.cdr.detectChanges();
     }
   }
 
