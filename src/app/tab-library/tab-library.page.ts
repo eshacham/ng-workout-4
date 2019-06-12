@@ -35,7 +35,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     async ngOnInit() {
       this.images = await this.dataServiceProvider.getImages();
       this.isMobile = this.dataServiceProvider.isMobile;
-      this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+      this.subs = this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
       console.log('loaded images from storage:', JSON.stringify(this.images));
     }
 

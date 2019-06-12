@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IonSlides as Slides} from '@ionic/angular';
-import { Workout } from 'src/app/models/Workout';
-import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
-import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
-import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
-import { ExerciseSetAction, DisplayMode } from 'src/app/models/enums';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { WorkoutDay } from 'src/app/models/WorkoutDay';
+import { IonSlides as Slides} from '@ionic/angular';
+import { Workout } from '../../models/Workout';
+import { DataServiceProvider } from '../../providers/data-service/data-service';
+import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
+import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
+import { ExerciseSetAction, DisplayMode } from '../../models/enums';
+import { WorkoutDay } from '../../models/WorkoutDay';
 
 @Component({
   selector: 'app-workout-days',
@@ -18,7 +18,7 @@ export class WorkoutDaysPage implements OnInit {
 
   workout: Workout;
   workoutId: number;
-  workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent> = new Subject();
+  workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   activeDayIndex: number;
 
   @ViewChild('slider') slides: Slides;
@@ -34,11 +34,10 @@ export class WorkoutDaysPage implements OnInit {
   };
 
   constructor (
-    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
+      this.workoutDaysPublisher = new Subject();
       this.route.params.subscribe(params => {
-        console.log('getting workout id from route params', params);
         this.workoutId = +params.id;
     });
   }
@@ -46,7 +45,6 @@ export class WorkoutDaysPage implements OnInit {
   async ngOnInit() {
     this.workout = await this.dataService.getWorkout(this.workoutId);
     if (this.slides && this.workout) {
-      console.log('ngOnInit this.workout.name --> ', this.workout.name);
       this.activeDayIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
       console.log('last index on view loaded', this.activeDayIndex);
       await this.slides.slideTo(this.activeDayIndex, 0);
@@ -80,7 +78,7 @@ export class WorkoutDaysPage implements OnInit {
 
     switch (exerciseSetAction) {
       case ExerciseSetAction.Completed:
-        console.log('workout-days: receieved completed event: ', JSON.stringify(event) );
+        console.log('workout-days: receieved completed event: ', JSON.stringify(event));
         break;
       case ExerciseSetAction.Delete:
         console.log('workout-days: receieved delete event: ', JSON.stringify(event));

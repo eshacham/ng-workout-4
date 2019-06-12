@@ -32,7 +32,6 @@ export class SelectExercisePage implements OnInit {
       this.images = [];
       this.isSet = false;
       this.route.params.subscribe(params => {
-        console.log('getting workout id from route params', params);
         this.workoutId = +params.id;
     });
   }
@@ -54,7 +53,6 @@ export class SelectExercisePage implements OnInit {
     await this.getImages();
     this.workout = await this.dataService.getWorkout(this.workoutId);
     this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
-    console.log('on-init select-exercise');
   }
 
   private async getImages() {
@@ -87,12 +85,14 @@ export class SelectExercisePage implements OnInit {
       return;
     }
     const newSets = this.getNewSets();
-    const lastSelectedWorkoutDay =
-      this.dataService.getLastSelectedWorkoutDay(this.workout.name);
-    this.workout.days[lastSelectedWorkoutDay].exerciseSets.push(...newSets);
+    const lastSelectedWorkoutDay = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
+    newSets.forEach((set) => {
+      const id = Math.max(...this.workout.days[lastSelectedWorkoutDay].exerciseSets.map(e => e.id)) + 1;
+      set.id = id;
+      this.workout.days[lastSelectedWorkoutDay].exerciseSets.push(set);
+    });
     this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });
-    // this.navCtrl.back();
   }
 
   getNewSets (): ExerciseSet[] {

@@ -9,7 +9,6 @@ import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
 import { json } from '../../constants/defaultWorkouts';
 import { Subject } from 'rxjs';
-import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 import { ExerciseSetAction } from 'src/app/models/enums';
 

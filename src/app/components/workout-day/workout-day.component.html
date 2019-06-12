@@ -14,7 +14,7 @@
       <ion-icon name="construct"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="start">
-     <ion-fab-button size="small" (click)="addExercise()" color="light">
+     <ion-fab-button size="small" (click)="addExercise($event)" color="light">
         <ion-icon name="walk"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
@@ -55,6 +55,7 @@
           [exerciseSet]="exerciseSet"
           [workoutDayName]=workoutDay.name
           [exerciseSetIndex]="i+1"
+          [isDayInEditMode]="IsEditMode"
           [inWorkoutDayPublisher]="workoutDayPublisher"
           (outEventEmitter)="handleExerciseSetActionEvent($event)"
           (click)="exerciseSetComponent.exerciseSetSelected()">

@@ -8,7 +8,7 @@ import { ExerciseSet } from '../../models/ExerciseSet';
 import { DisplayMode, ExerciseSetAction } from '../../models/enums';
 import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
-import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
+import { DataServiceProvider } from '../../providers/data-service/data-service';
 
 @Component({
   selector: 'app-workout-day',
@@ -21,6 +21,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   runningExerciseIndex: number;
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
+  private subs: Subscription;
 
   @ViewChild('fabWorkout') fabWorkout: IonFab;
   @ViewChild('fabEdit') fabEdit: IonFab;
@@ -31,7 +32,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   @Input() isOneDayOnly: boolean;
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
-  subs: Subscription;
 
   constructor (
     private router: Router,
@@ -68,8 +68,13 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent) {
+    console.log('workout day handleWorkoutEventchange', event, this.workoutDay.name);
     if (event.runningExerciseSetDayName !== this.workoutDay.name) {
       this.finishWorkout(false);
+    } else {
+      if (event.displayMode === DisplayMode.Edit) {
+        this.publishWorkoutEvent(DisplayMode.Edit, null);
+      }
     }
   }
 
@@ -172,9 +177,9 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
   }
 
-  addExercise() {
+  async addExercise(event) {
     this.router.navigate(['select-exercise'], {relativeTo: this.route});
-    this.saveChanges();
+    event.stopPropagation();
   }
 
   moveForwardWorkoutDay() {
@@ -192,7 +197,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   async saveChanges() {
     await this.dataService.saveWorkouts();
-    // this.emitExerciseSetActionEvent(ExerciseSetAction.Save);
     // this.toastr.info('Saved!');
   }
 

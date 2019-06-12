@@ -1,7 +1,6 @@
-
 export class StateCache {
 
-    private lastSelectedWorkoutDay: Map<string, number>;
+   private lastSelectedWorkoutDay: Map<string, number>;
 
    constructor () {
     this.lastSelectedWorkoutDay = new Map<string, number>();

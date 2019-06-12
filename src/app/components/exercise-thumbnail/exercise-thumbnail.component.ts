@@ -35,20 +35,21 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     private _isEditing = false;
     private _displayMode: DisplayMode = DisplayMode.Display;
     private _isFrozen: boolean;
-    completedReps: number[];
+    private completedReps: number[];
+    private subs: Subscription;
+
+    @Input() workoutDayName: string;
+    @Input() exerciseSet: ExerciseSet;
+    @Input() exerciseSetIndex: number;
+    @Input() isDayInEditMode: boolean;
+    @Input() inWorkoutDayPublisher: Subject<ExerciseSetSwitchModeEvent>;
+    @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
     constructor (
         private domSanitizer: DomSanitizer,
         private popoverCtrl: PopoverController) {
         this.completedReps = [];
     }
-
-    @Input() workoutDayName: string;
-    @Input() exerciseSet: ExerciseSet;
-    @Input() exerciseSetIndex: number;
-    @Input() inWorkoutDayPublisher: Subject<ExerciseSetSwitchModeEvent>;
-    @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
-    subs: Subscription;
 
     get isPrevRepAvailable(): boolean {
         return this.activeRepIndex > 0 ||
@@ -96,7 +97,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     get DisplayMode(): DisplayMode {
         return this._displayMode;
     }
-
     set DisplayMode(val: DisplayMode) {
       if (this._displayMode !== val) {
           this._displayMode = val;
@@ -122,8 +122,14 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.subs = this.inWorkoutDayPublisher.subscribe(event => this.handleWorkoutEventchange(event));
+      if (this.isDayInEditMode) {
+          this.DisplayMode = DisplayMode.Edit;
+      }
+      this.initWeights();
+    }
 
-      this.exerciseSet.exercises.forEach(set => {
+    initWeights() {
+        this.exerciseSet.exercises.forEach(set => {
           set.reps.forEach(rep => {
               if (!rep.weightUnit) {
                   rep.weightUnit = WeightUnit.Lbs;
