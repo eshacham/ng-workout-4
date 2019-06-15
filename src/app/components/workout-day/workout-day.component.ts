@@ -72,7 +72,10 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
       this.DisplayMode = DisplayMode.Edit;
     }
   }
-
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
+  
   handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent) {
     console.log('workout day handleWorkoutEventchange', event, this.workoutDay.name);
     if (event.runningExerciseSetDayName !== this.workoutDay.name) {
@@ -84,9 +87,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.subs.unsubscribe();
-  }
+
 
   handleExerciseSetActionEvent(event: ExerciseSetActionEvent) {
     const exerciseSetAction: ExerciseSetAction = event.action;

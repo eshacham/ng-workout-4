@@ -29,6 +29,10 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
     this.subs = this.inWorkoutPublisher.subscribe(event => this.handleWorkoutEventchange(event));
   }
 
+  ngOnDestroy() {
+      this.subs.unsubscribe();
+  }
+  
   get DisplayMode(): DisplayMode {
     return this._displayMode;
   }
@@ -61,7 +65,5 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
     this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
   }
 
-  ngOnDestroy() {
-    this.subs.unsubscribe();
-  }
+
 }

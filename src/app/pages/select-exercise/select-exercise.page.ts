@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SavedImage, DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Workout } from 'src/app/models/Workout';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 import { ExerciseSetAction } from 'src/app/models/enums';
+import { Subscription } from 'rxjs';
 
 interface SelectedSavedImage extends SavedImage {
   isSelected: boolean;
@@ -17,13 +18,14 @@ interface SelectedSavedImage extends SavedImage {
   templateUrl: './select-exercise.page.html',
   styleUrls: ['./select-exercise.page.scss'],
 })
-export class SelectExercisePage implements OnInit {
+export class SelectExercisePage implements OnInit, OnDestroy {
 
   images: SelectedSavedImage[];
   workout: Workout;
   workoutId: number;
   isSet: boolean;
   haveWorkoutsBeenReset = false;
+  private subs: Subscription;
 
   constructor (
     private router: Router,
@@ -52,7 +54,11 @@ export class SelectExercisePage implements OnInit {
     this.haveWorkoutsBeenReset = false;
     await this.getImages();
     this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+    this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   private async getImages() {

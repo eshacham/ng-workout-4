@@ -128,6 +128,10 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
       this.initWeights();
     }
 
+    ngOnDestroy() {
+        this.subs.unsubscribe();
+    }
+
     initWeights() {
         this.exerciseSet.exercises.forEach(set => {
           set.reps.forEach(rep => {
@@ -143,10 +147,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             (event.runningExerciseSetIndex === this.exerciseSetIndex &&
             event.runningExerciseSetDayName === this.workoutDayName);
         this.DisplayMode = event.displayMode;
-    }
-
-    ngOnDestroy() {
-        this.subs.unsubscribe();
     }
 
     toggleEditExercise() {

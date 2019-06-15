@@ -1,7 +1,7 @@
-import { Subject } from 'rxjs';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { IonSlides as Slides} from '@ionic/angular';
+import { Subject, Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonSlides as Slides, NavController} from '@ionic/angular';
 import { Workout } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
@@ -14,13 +14,14 @@ import { WorkoutDay } from '../../models/WorkoutDay';
   templateUrl: './workout-days.page.html',
   styleUrls: ['./workout-days.page.scss'],
 })
-export class WorkoutDaysPage implements OnInit {
+export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   workout: Workout;
   workoutId: number;
   workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   activeDayIndex: number;
   isNewDayAdded: boolean;
+  private subs: Subscription;
 
   @ViewChild('slider') slides: Slides;
 
@@ -36,6 +37,7 @@ export class WorkoutDaysPage implements OnInit {
 
   constructor (
     private route: ActivatedRoute,
+    private navCtrl: NavController,
     private dataService: DataServiceProvider) {
       this.isNewDayAdded = false;
       this.workoutDaysPublisher = new Subject();
@@ -45,12 +47,17 @@ export class WorkoutDaysPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleExerciseSetActionEvent(event));
     this.workout = await this.dataService.getWorkout(this.workoutId);
     if (this.slides && this.workout) {
       this.activeDayIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
       console.log('last index on view loaded', this.activeDayIndex);
       await this.slides.slideTo(this.activeDayIndex, 0);
     }
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   get isLastDayActive(): boolean {
@@ -113,6 +120,10 @@ export class WorkoutDaysPage implements OnInit {
       case ExerciseSetAction.MoveDayBack:
         console.log('workout-days: receieved move day back event: ', JSON.stringify(event));
         await this.moveBackWorkoutDay(this.activeDayIndex);
+        break;
+      case ExerciseSetAction.WorkoutReset:
+        console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
+        await this.navCtrl.navigateBack("/tabs/tab-workouts");//navigate(['../'], { relativeTo: this.route });
         break;
     }
   }
