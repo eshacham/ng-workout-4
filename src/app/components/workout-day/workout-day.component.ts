@@ -75,7 +75,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-  
+
   handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent) {
     console.log('workout day handleWorkoutEventchange', event, this.workoutDay.name);
     if (event.runningExerciseSetDayName !== this.workoutDay.name) {
@@ -87,9 +87,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-  handleExerciseSetActionEvent(event: ExerciseSetActionEvent) {
+  async handleExerciseSetActionEvent(event: ExerciseSetActionEvent) {
     const exerciseSetAction: ExerciseSetAction = event.action;
     switch (exerciseSetAction) {
       case ExerciseSetAction.Completed:
@@ -98,7 +96,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         break;
       case ExerciseSetAction.Delete:
         console.log('workout-day: receieved delete event: ', JSON.stringify(event));
-        this.deleteExerciseSet(event.exerciseSet, event.workoutDayName);
+        await this.deleteExerciseSet(event.exerciseSet, event.workoutDayName);
         break;
       case ExerciseSetAction.Edit:
         console.log('workout-day: receieved edit event: ', JSON.stringify(event));
@@ -135,7 +133,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     }
     this.emitExerciseActionEventByStatus();
   }
-  editWorkout() {
+  async editWorkout() {
     switch (this.DisplayMode) {
       case DisplayMode.Display:
         this.DisplayMode = DisplayMode.Edit;
@@ -145,7 +143,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         break;
       case DisplayMode.Edit:
         this.DisplayMode = DisplayMode.Display;
-        this.saveChanges();
+        await this.saveChanges();
         break;
     }
     this.emitExerciseActionEventByStatus();
@@ -177,10 +175,10 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteExerciseSet(set: ExerciseSet, day: string) {
+  async deleteExerciseSet(set: ExerciseSet, day: string) {
     const index = this.workoutDay.exerciseSets.findIndex(s => s === set);
     this.workoutDay.exerciseSets.splice(index, 1);
-    this.saveChanges();
+    await this.saveChanges();
     this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
   }
 
@@ -207,6 +205,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   async saveChanges() {
+    // console.log(this.workoutDay)
     await this.dataService.saveWorkouts();
     // this.toastr.info('Saved!');
   }

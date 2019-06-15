@@ -63,7 +63,7 @@ export class DataServiceProvider {
       await this.resetWorkouts();
     } else if (this.isMobile) {
       this.UpdateImagesInWorkouts(this._workouts);
-      this.saveWorkouts();
+      await this.saveWorkouts();
     }
     console.log('loaded cached workouts', this._workouts.map(w => w.id));
   }
