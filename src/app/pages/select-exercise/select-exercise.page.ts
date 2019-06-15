@@ -1,13 +1,14 @@
+import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SavedImage, DataServiceProvider } from 'src/app/providers/data-service/data-service';
-import { Workout } from 'src/app/models/Workout';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
+import { SavedImage } from 'src/app/models/SavedImage';
+import { Workout } from 'src/app/models/Workout';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 import { ExerciseSetAction } from 'src/app/models/enums';
-import { Subscription } from 'rxjs';
 
 interface SelectedSavedImage extends SavedImage {
   isSelected: boolean;

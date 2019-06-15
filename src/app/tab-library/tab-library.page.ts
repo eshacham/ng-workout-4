@@ -1,14 +1,15 @@
+import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { LoadingOptions } from '@ionic/core';
-import { DataServiceProvider, SavedImage } from '../providers/data-service/data-service';
+import { DataServiceProvider } from '../providers/data-service/data-service';
+import { SavedImage } from '../models/SavedImage';
 import { ToastService } from '../providers/toast-service/toast.service';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
 import { ExerciseSetAction } from '../models/enums';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tab-library',

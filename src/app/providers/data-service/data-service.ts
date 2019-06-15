@@ -1,26 +1,20 @@
+import { Subject } from 'rxjs';
+import { deserialize } from 'json-typescript-mapper';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
-import { deserialize } from 'json-typescript-mapper';
 import { StateCache } from '../../models/StateCache';
 import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
 import { json } from '../../constants/defaultWorkouts';
-import { Subject } from 'rxjs';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 import { ExerciseSetAction } from 'src/app/models/enums';
+import { SavedImage } from '../../models/SavedImage';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
-
-export interface SavedImage {
-  name: string;
-  ionicPath: string;
-  nativePath: string;
-  isDefault: boolean;
-}
 
 @Injectable()
 export class DataServiceProvider {
