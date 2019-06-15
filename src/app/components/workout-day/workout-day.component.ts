@@ -30,6 +30,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   @Input() isLastDayActive: boolean;
   @Input() isFirstDayActive: boolean;
   @Input() isOneDayOnly: boolean;
+  @Input() isNewDayAdded: boolean;
   @Input() inWorkoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
@@ -65,6 +66,11 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs = this.inWorkoutDaysPublisher.subscribe(event => this.handleWorkoutEventchange(event));
+    console.log('workout-day ngOnInit - this.isNewDayAdded', this.isNewDayAdded);
+    if (this.isNewDayAdded) {
+      this.fabEdit.activated = true;
+      this.DisplayMode = DisplayMode.Edit;
+    }
   }
 
   handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent) {
@@ -182,17 +188,21 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  moveForwardWorkoutDay() {
+  moveForwardWorkoutDay(event) {
     this.emitExerciseSetActionEvent(ExerciseSetAction.MoveDayForward);
+    event.stopPropagation();
   }
-  moveBackWorkoutDay() {
+  moveBackWorkoutDay(event) {
     this.emitExerciseSetActionEvent(ExerciseSetAction.MoveDayBack);
+    event.stopPropagation();
   }
-  addWorkoutDay() {
+  addWorkoutDay(event) {
     this.emitExerciseSetActionEvent(ExerciseSetAction.AddDay);
+    event.stopPropagation();
   }
-  deleteWorkoutDay() {
+  deleteWorkoutDay(event) {
     this.emitExerciseSetActionEvent(ExerciseSetAction.DeleteDay);
+    event.stopPropagation();
   }
 
   async saveChanges() {

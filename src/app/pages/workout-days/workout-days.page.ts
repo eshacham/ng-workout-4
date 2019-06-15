@@ -20,6 +20,7 @@ export class WorkoutDaysPage implements OnInit {
   workoutId: number;
   workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   activeDayIndex: number;
+  isNewDayAdded: boolean;
 
   @ViewChild('slider') slides: Slides;
 
@@ -36,6 +37,7 @@ export class WorkoutDaysPage implements OnInit {
   constructor (
     private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
+      this.isNewDayAdded = false;
       this.workoutDaysPublisher = new Subject();
       this.route.params.subscribe(params => {
         this.workoutId = +params.id;
@@ -140,6 +142,7 @@ export class WorkoutDaysPage implements OnInit {
     newDay.exerciseSets = [];
     const index = this.getWorkoutDayIndexByName(name);
     console.log('splicing (insert) at ', index);
+    this.isNewDayAdded = true;
     this.workout.days.splice(index + 1, 0, newDay);
     await this.slides.update();
     await this.saveChanges();
