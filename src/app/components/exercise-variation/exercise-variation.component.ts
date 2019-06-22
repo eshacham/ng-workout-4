@@ -29,10 +29,10 @@ export class ExerciseVariationComponent implements OnInit {
     if (!this.exercise.typeOfWeight) {
       this.exercise.typeOfWeight = WeightType.NoWeight;
     }
-    this.exercise.theGrip.typeOfGrip = GripType[this.exercise.theGrip.typeOfGrip] || GripType.NoGrip;
-    this.exercise.theGrip.width = GripWidth[this.exercise.theGrip.width] || GripWidth.NoGrip;
-    this.exercise.typeOfWeight = WeightType[this.exercise.typeOfWeight] || WeightType.NoWeight;
-    this.exercise.repSpeed = RepetitionSpeed[this.exercise.repSpeed] || RepetitionSpeed.NA;
+    this.exercise.theGrip.typeOfGrip = this.exercise.theGrip.typeOfGrip || GripType.NoGrip;
+    this.exercise.theGrip.width = this.exercise.theGrip.width || GripWidth.NoGrip;
+    this.exercise.typeOfWeight = this.exercise.typeOfWeight || WeightType.NoWeight;
+    this.exercise.repSpeed = this.exercise.repSpeed || RepetitionSpeed.NA;
   }
 
   getWeightVariation = (): string => {
@@ -81,10 +81,8 @@ export class ExerciseVariationComponent implements OnInit {
     const popover = await this.popoverCtrl.create({
       component: ExerciseVariationPopoverComponent,
       event: event,
-      componentProps: { exerciseSet: this.exercise }
+      componentProps: { exercise: this.exercise }
     });
     popover.present();
   }
-
-
 }

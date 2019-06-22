@@ -8,9 +8,10 @@
 </ion-header>
 
 <ion-content>
-  <ion-slides #slider pager='true' [options]="slideOpts"
+  <ion-slides #slider pager='true' *ngIf="workout"
+    [options]="slideOpts"
     (ionSlideDidChange)="slideChanged()">
-    <ion-slide *ngFor="let day of workout?.days">
+    <ion-slide *ngFor="let day of workout.days">
         <app-workout-day
         [workoutDay]="day"
         [isLastDayActive]="isLastDayActive"

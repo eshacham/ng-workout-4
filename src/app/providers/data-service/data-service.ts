@@ -9,8 +9,8 @@ import { StateCache } from '../../models/StateCache';
 import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
 import { json } from '../../constants/defaultWorkouts';
-import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
-import { ExerciseSetAction } from 'src/app/models/enums';
+import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
+import { ExerciseSetAction } from '../../models/enums';
 import { SavedImage } from '../../models/SavedImage';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
@@ -21,7 +21,7 @@ export class DataServiceProvider {
 
   private _workouts: Workout[];
   private _images: SavedImage[];
-  private defaultWorkouts: DefaultWorkouts;
+  private _defaultWorkouts: DefaultWorkouts;
   private state: StateCache;
   workoutPublisher: Subject<ExerciseSetActionEvent>;
 
@@ -35,8 +35,22 @@ export class DataServiceProvider {
       this._workouts = [];
       this.state = new StateCache();
       this.workoutPublisher = new Subject();
-      this.defaultWorkouts = deserialize(DefaultWorkouts, json);
-      console.log('deserialized default workouts', this.defaultWorkouts.workouts.map(w => w.id));
+    }
+
+  get defaultWorkouts(): DefaultWorkouts {
+    if (!this._defaultWorkouts) {
+      this.buildDefaultWorkouts();
+    }
+    return this._defaultWorkouts;
+  }
+
+  set defaultWorkouts(defaultWorkouts: DefaultWorkouts) {
+    this._defaultWorkouts = defaultWorkouts;
+  }
+
+  buildDefaultWorkouts() {
+    this.defaultWorkouts = deserialize(DefaultWorkouts, json);
+    console.log('deserialized default workouts', this.defaultWorkouts.workouts.map(w => w.id));
   }
 
   async getWorkout(id: number): Promise<Workout> {
@@ -68,19 +82,17 @@ export class DataServiceProvider {
     console.log('loaded cached workouts', this._workouts.map(w => w.id));
   }
 
-  async resetWorkouts(): Promise<Workout[]> {
-    await this.saveWorkouts(this.defaultWorkouts.workouts);
+  async resetWorkouts() {
+    this._workouts = this.defaultWorkouts.workouts.map(x => Object.assign({}, x)); // deep clone of objects in an array
+    await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
     console.log('workouts have been reset to default workouts');
     this.workoutPublisher.next(new ExerciseSetActionEvent(ExerciseSetAction.WorkoutReset, null, null, null));
-    return this._workouts;
   }
 
-  async saveWorkouts(workouts: Workout[] = this._workouts): Promise<Workout[]> {
-    this._workouts = workouts;
+  async saveWorkouts() {
     await this.storage.ready();
     await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
     console.log('workouts have been saved');
-    return this._workouts;
   }
 
   async resetImages() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { NavParams } from '@ionic/angular';
 import { GripType, WeightType, GripWidth, RepetitionSpeed } from 'src/app/models/enums';
+import { Exercise } from 'src/app/models/Exercise';
 
 @Component({
   selector: 'app-exercise-variation-popover',
@@ -10,7 +10,7 @@ import { GripType, WeightType, GripWidth, RepetitionSpeed } from 'src/app/models
 })
 export class ExerciseVariationPopoverComponent implements OnInit {
 
-  exerciseSet: ExerciseSet;
+  exercise: Exercise;
 
   weightTypes: string[];
   gripTypes: string[];
@@ -21,7 +21,7 @@ export class ExerciseVariationPopoverComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.exerciseSet = this.navParams.data.exerciseSet;
+    this.exercise = this.navParams.data.exercise;
 
     this.gripTypes = Object.keys(GripType).map(key => GripType[key]);
     this.weightTypes = Object.keys(WeightType).map(key => WeightType[key]);
