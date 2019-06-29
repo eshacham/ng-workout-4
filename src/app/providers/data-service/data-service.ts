@@ -10,7 +10,7 @@ import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
 import { json } from '../../constants/defaultWorkouts';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
-import { ExerciseSetAction } from '../../models/enums';
+import { ExerciseSetAction, Muscles } from '../../models/enums';
 import { SavedImage } from '../../models/SavedImage';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
@@ -255,5 +255,9 @@ export class DataServiceProvider {
   }
   getLastSelectedWorkoutDay(workoutName: string): number {
     return this.state.getLastSelectedWorkoutDay(workoutName);
+  }
+
+  get muscleFilter(): Set<Muscles> {
+    return this.state.muscleFilter;
   }
 }

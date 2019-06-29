@@ -10,6 +10,7 @@ import { ExerciseThumbnailPopoverComponent } from 'src/app/components/exercise-t
 import { ExerciseVariationComponent } from 'src/app/components/exercise-variation/exercise-variation.component';
 import { ExerciseVariationPopoverComponent } from 'src/app/components/exercise-variation-popover/exercise-variation-popover.component';
 import { SelectExercisePageModule } from 'src/app/pages/select-exercise/select-exercise.module';
+import { SelectMusclePageModule } from 'src/app/pages/select-muscle/select-muscle.module';
 
 const routes: Routes = [
   {
@@ -20,7 +21,11 @@ const routes: Routes = [
   {
     path: 'select-exercise',
     loadChildren: '../select-exercise/select-exercise.module#SelectExercisePageModule'
-  }
+  },
+  {
+    path: 'select-muscle',
+    loadChildren: '../select-muscle/select-muscle.module#SelectMusclePageModule'
+  },
 ];
 
 @NgModule({
@@ -29,7 +34,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    SelectExercisePageModule
+    SelectExercisePageModule,
+    SelectMusclePageModule,
   ],
   declarations: [
     WorkoutDaysPage,

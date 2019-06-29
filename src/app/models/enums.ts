@@ -48,3 +48,25 @@ export enum ExerciseSetAction {
     WorkoutReset,
     ImagesReset
 }
+export enum Muscles {
+    Chest = 'Chest',
+    Triceps = 'Triceps',
+    Shoulders = 'Shoulders',
+    Lats = 'Lats',
+    Biceps = 'Biceps',
+    Traps = 'Traps',
+    Quads = 'Quads',
+    Obliques = 'Obliques',
+    Glutes = 'Glutes',
+    Hamstrings = 'Hamstrings',
+    Forearms = 'Forearms',
+    Abs = 'Abs',
+    Calves = 'Calves',
+    Cardio = 'Cardio',
+    Adductors = 'Adductors',
+    Abductors = 'Abductors',
+    LowerBack = 'Lower Back',
+    MiddleBack = 'Middle Back',
+    Neck = 'Neck',
+    Core = 'Core',
+}
