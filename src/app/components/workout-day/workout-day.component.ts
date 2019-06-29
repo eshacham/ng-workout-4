@@ -183,8 +183,8 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   async addExercise(event) {
-    // this.router.navigate(['select-exercise'], {relativeTo: this.route});
-    this.router.navigate(['select-muscle'], {relativeTo: this.route});
+    this.router.navigate(['select-exercise'], {relativeTo: this.route});
+    // this.router.navigate(['select-muscle'], {relativeTo: this.route});
     event.stopPropagation();
   }
 

@@ -5,7 +5,13 @@
 </ion-header>
 
 <ion-content>
-  <h3 *ngIf="images.length" class="ion-text-center">Please Select an Exercise!</h3>
+    <ion-item *ngIf="images.length">
+        <ion-label>Select an Exercise</ion-label>
+      <ion-button fill="clear" (click)="selectMuscle()">
+        Select by Muscles
+          <ion-icon slot="end" name="body"></ion-icon>
+      </ion-button>
+    </ion-item>
 
   <ion-list>
     <ion-item *ngFor="let img of images; index as pos" class="ion-text-wrap">

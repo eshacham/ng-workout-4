@@ -124,4 +124,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
     return this.isSet ? [superset] : sets;
   }
+
+  selectMuscle() {
+    this.router.navigate(['../select-muscle'], {relativeTo: this.route});
+  }
 }

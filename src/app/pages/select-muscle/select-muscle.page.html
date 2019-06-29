@@ -1,20 +1,22 @@
 <ion-header>
   <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
     <ion-title>select-muscle</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <!-- <div class="svg-container"> -->
-      <svg version="1.1" viewBox="0 0 555 781" preserveAspectRatio="xMinYMin meet" class="svg-content">
-        <image style="width: 100%; height: auto;" xlink:href="/assets//images/muscles/muscle-man.jpg" >
-        </image>
-        <a *ngFor="let muscle of muscleElements | keyvalue"
-          (click)="toggleMuscle(muscle.key)">
-            <path [attr.id]="muscle.key" fill="#fff" opacity="0" [attr.d]="muscle.value"/>
-          </a>
-      </svg>
-    <!-- </div> -->
+
+    <svg version="1.1" viewBox="0 0 555 781" preserveAspectRatio="xMinYMin meet" class="svg-content">
+      <image style="width: 100%; height: auto;" xlink:href="/assets//images/muscles/muscle-man.jpg" >
+      </image>
+      <a *ngFor="let muscle of muscleElements | keyvalue"
+        (click)="toggleMuscle(muscle.key)">
+          <path [attr.id]="muscle.key" fill="#fff" opacity="0" [attr.d]="muscle.value"/>
+        </a>
+    </svg>
 
 </ion-content>
 
