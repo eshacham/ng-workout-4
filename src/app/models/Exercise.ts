@@ -1,5 +1,5 @@
 
-import { RepetitionSpeed, WeightType } from './enums';
+import { RepetitionSpeed, WeightType, Muscles } from './enums';
 import { Grip } from './Grip';
 import { Rep } from './Rep';
 import { JsonProperty } from 'json-typescript-mapper';
@@ -32,6 +32,9 @@ export class Exercise {
     @JsonProperty('restAfterExercise')
     restAfterExercise: number;
 
+    @JsonProperty({clazz: Rep, name: 'muscles'})
+    muscles: Muscles[];
+
     constructor () {
         this.name = void 0;
         this.imageUrl = void 0;
@@ -42,5 +45,6 @@ export class Exercise {
         this.restBetweenReps = void 0;
         this.restAfterExercise = void 0;
         this.reps = void 0;
+        this.muscles = void 0;
     }
 }

@@ -8,7 +8,7 @@ import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
-import { ExerciseSetAction } from 'src/app/models/enums';
+import { ExerciseSetAction, Muscles } from 'src/app/models/enums';
 
 interface SelectedSavedImage extends SavedImage {
   isSelected: boolean;
@@ -21,26 +21,49 @@ interface SelectedSavedImage extends SavedImage {
 })
 export class SelectExercisePage implements OnInit, OnDestroy {
 
-  images: SelectedSavedImage[];
+  _images: SelectedSavedImage[];
   workout: Workout;
   workoutId: number;
-  isSet: boolean;
+  isSet = false;
   haveWorkoutsBeenReset = false;
+  _useFilter = false;
   private subs: Subscription;
 
-  constructor (
+  constructor(
     private router: Router,
     private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
-      this.images = [];
-      this.isSet = false;
-      this.route.params.subscribe(params => {
-        this.workoutId = +params.id;
+    this._images = [];
+    this.route.params.subscribe(params => {
+      this.workoutId = +params.id;
     });
   }
 
+  get images(): SelectedSavedImage[] {
+    if (this.useFilter) {
+      return this.filterImagesByMuscles(this.dataService.muscleFilter);
+    } else {
+      return this._images;
+    }
+  }
+  set images(images: SelectedSavedImage[]) {
+    this._images = images;
+  }
+
+  get useFilter(): boolean {
+    return this._useFilter;
+  }
+  set useFilter(use: boolean) {
+    if (this._useFilter !== use) {
+      this._useFilter = use;
+      // if (this._useFilter) {
+      //   this.filterImagesByMuscles(this.dataService.muscleFilter);
+      // }
+    }
+  }
+
   get selectedImages(): SelectedSavedImage[] {
-    return this.images.filter(i => i.isSelected);
+    return this._images.filter(i => i.isSelected);
   }
 
   get hasSelecteion(): boolean {
@@ -53,7 +76,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.haveWorkoutsBeenReset = false;
-    await this.getImages();
+    this.images = await this.getImages();
     this.workout = await this.dataService.getWorkout(this.workoutId);
     this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
   }
@@ -62,29 +85,43 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  ionViewWillEnter() {
-    console.log('select-execrcise: muscleFilter', this.dataService.muscleFilter);
-  }
+  // async ionViewWillEnter() {
+  //   if (this._useFilter) {
+  //     const muscles = this.dataService.muscleFilter;
+  //     this.filterImagesByMuscles(muscles);
+  //   }
+  // }
 
-  private async getImages() {
+  private async getImages(): Promise<SelectedSavedImage[]> {
     const images = await this.dataService.getImages();
-    this.images = images.map((image) => {
+    return images.map((image) => {
       return {
         isSelected: false,
         isDefault: image.isDefault,
         name: image.name,
         ionicPath: image.ionicPath,
-        nativePath: image.nativePath
+        nativePath: image.nativePath,
+        muscles: image.muscles,
       };
     });
   }
 
-  async handleWorkoutActionEvent (event: ExerciseSetActionEvent) {
+  filterImagesByMuscles(muscles: Set<Muscles>): SelectedSavedImage[] {
+    console.log('select-execrcise: filtering by muscles', muscles);
+    const images = this._images.filter((image) => {
+      const intersection =
+        new Set(Array.from(image.muscles).filter(x => muscles.has(x)));
+      return (intersection.size > 0);
+    });
+    return images;
+  }
+
+  async handleWorkoutActionEvent(event: ExerciseSetActionEvent) {
     const exerciseSetAction: ExerciseSetAction = event.action;
     switch (exerciseSetAction) {
       case ExerciseSetAction.ImagesReset:
-          await this.getImages();
-          break;
+        this.images = await this.getImages();
+        break;
       case ExerciseSetAction.WorkoutReset:
         this.haveWorkoutsBeenReset = true;
     }
@@ -106,11 +143,11 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  getNewSets (): ExerciseSet[] {
+  getNewSets(): ExerciseSet[] {
     const superset = new ExerciseSet();
     superset.exercises = [];
     const sets: ExerciseSet[] = [];
-    for (const image of this.selectedImages ) {
+    for (const image of this.selectedImages) {
       console.log(`adding exercise ${image.name}`);
       const newRep = new Rep();
       const newExercise = new Exercise();
@@ -130,6 +167,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   }
 
   selectMuscle() {
-    this.router.navigate(['../select-muscle'], {relativeTo: this.route});
+    this.router.navigate(['../select-muscle'], { relativeTo: this.route });
   }
 }

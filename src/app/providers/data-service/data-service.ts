@@ -25,17 +25,17 @@ export class DataServiceProvider {
   private state: StateCache;
   workoutPublisher: Subject<ExerciseSetActionEvent>;
 
-  constructor (
+  constructor(
     private platform: Platform,
     private file: File,
     private webview: WebView,
     private storage: Storage) {
-      console.log('initializing data service');
-      this._images = [];
-      this._workouts = [];
-      this.state = new StateCache();
-      this.workoutPublisher = new Subject();
-    }
+    console.log('initializing data service');
+    this._images = [];
+    this._workouts = [];
+    this.state = new StateCache();
+    this.workoutPublisher = new Subject();
+  }
 
   get defaultWorkouts(): DefaultWorkouts {
     if (!this._defaultWorkouts) {
@@ -164,7 +164,14 @@ export class DataServiceProvider {
           for (const exe of set.exercises) {
             const url = exe.imageUrl;
             if (!images[url]) {
-              images.set(url, { name: url, ionicPath: url, nativePath: url, isDefault: true });
+              images.set(url,
+                {
+                  name: url,
+                  ionicPath: url,
+                  nativePath: url,
+                  isDefault: true,
+                  muscles: new Set(exe.muscles),
+                });
             }
           }
         }
@@ -179,7 +186,7 @@ export class DataServiceProvider {
         for (const set of day.exerciseSets) {
           for (const exe of set.exercises) {
             if (!exe.imageUrl.startsWith('assets/images') &&
-                exe.imageUrl.indexOf(this.file.dataDirectory) < 0) {
+              exe.imageUrl.indexOf(this.file.dataDirectory) < 0) {
               const oldPath = exe.imageUrl;
               const name = exe.imageUrl.substr(exe.imageUrl.lastIndexOf('/') + 1);
               const nativePath = this.file.dataDirectory + name;
@@ -202,10 +209,11 @@ export class DataServiceProvider {
     const ionicPath = this.getIonicPath(nativePath);
 
     const newEntry: SavedImage = {
-        name: name,
-        ionicPath: ionicPath,
-        nativePath: nativePath,
-        isDefault: false
+      name: name,
+      ionicPath: ionicPath,
+      nativePath: nativePath,
+      isDefault: false,
+      muscles: new Set(),
     };
     console.log('adding image', JSON.stringify(newEntry));
     this._images.push(newEntry);
@@ -242,7 +250,7 @@ export class DataServiceProvider {
   get isWebApp(): boolean {
     return !this.isMobile;
   }
-  get isMobile()  {
+  get isMobile() {
     return this.isIos || this.isAndriod;
   }
   async displayPlatform() {
