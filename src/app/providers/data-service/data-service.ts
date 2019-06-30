@@ -50,7 +50,7 @@ export class DataServiceProvider {
 
   buildDefaultWorkouts() {
     this.defaultWorkouts = deserialize(DefaultWorkouts, json);
-    console.log('deserialized default workouts', this.defaultWorkouts.workouts.map(w => w.id));
+    console.log('deserialized default workouts', this.defaultWorkouts.workouts);
   }
 
   async getWorkout(id: number): Promise<Workout> {
@@ -152,7 +152,7 @@ export class DataServiceProvider {
     console.log('initializing saved images from assests...');
     const images: Map<string, SavedImage> = this.extractUniqueImagesFromWorkouts(this.defaultWorkouts.workouts);
     this._images = Array.from(images.values());
-    console.log(`initialized ${this._images.length} saved images from assests`, JSON.stringify(this._images));
+    console.log(`initialized ${this._images.length} saved images from assests`, this._images);
     await this.saveImages();
   }
 
@@ -164,14 +164,9 @@ export class DataServiceProvider {
           for (const exe of set.exercises) {
             const url = exe.imageUrl;
             if (!images[url]) {
-              images.set(url,
-                {
-                  name: url,
-                  ionicPath: url,
-                  nativePath: url,
-                  isDefault: true,
-                  muscles: new Set(exe.muscles),
-                });
+              const muscles = new Set<Muscles>(exe.muscles);
+              const image = SavedImage.buildDefaultSavedImage(url, muscles);
+              images.set(url, image);
             }
           }
         }

@@ -8,6 +8,10 @@ export class SavedImage {
   public isDefault: boolean,
   public muscles: Set<Muscles>,
   ) {
-    this.muscles = new Set();
+    this.muscles = muscles;
+  }
+  static buildDefaultSavedImage(url: string, muscles: Set<Muscles>): SavedImage {
+    const image = new SavedImage(url, url, url, true, muscles);
+    return image;
   }
 }

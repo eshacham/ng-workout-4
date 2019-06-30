@@ -11,7 +11,7 @@ export class Exercise {
     @JsonProperty('imageUrl')
     imageUrl: string;
 
-    @JsonProperty({clazz: Grip, name: 'grip'})
+    @JsonProperty({clazz: Grip, name: 'grip' })
     theGrip: Grip;
 
     @JsonProperty('repetition')
@@ -23,7 +23,7 @@ export class Exercise {
     @JsonProperty('isFavorite')
     isFavorite: Boolean;
 
-    @JsonProperty({clazz: Rep, name: 'reps'})
+    @JsonProperty({clazz: Rep, name: 'reps' })
     reps: Rep[];
 
     @JsonProperty('restBetweenReps')
@@ -32,10 +32,10 @@ export class Exercise {
     @JsonProperty('restAfterExercise')
     restAfterExercise: number;
 
-    @JsonProperty({clazz: Rep, name: 'muscles'})
+    @JsonProperty('muscles')
     muscles: Muscles[];
 
-    constructor () {
+    constructor() {
         this.name = void 0;
         this.imageUrl = void 0;
         this.theGrip = void 0;

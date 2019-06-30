@@ -4,9 +4,10 @@ import {
     GripWidth,
     RepetitionSpeed,
     WeightType,
-    WeightUnit } from '../models/enums';
+    WeightUnit,
+    Muscles } from '../models/enums';
 
-export const json = { workouts: [{
+export const json = { 'workouts': [{
         'id': 1,
         'name': 'Workout Set No. 1',
         'description': '4 days including upper, lower and core muscles',
@@ -28,7 +29,7 @@ export const json = { workouts: [{
                                 'repetition': RepetitionSpeed.OneOne,
                                 'weightType': WeightType.Barbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -51,7 +52,7 @@ export const json = { workouts: [{
                                     }
                                 ],
                                 'restBetweenReps': 20,
-                                'restAfterExercise': 20
+                                'restAfterExercise': 20,
                             }
                         ]
                     },
@@ -63,7 +64,7 @@ export const json = { workouts: [{
                                 'imageUrl': 'assets/images/SeatedRopeCableRow.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -91,14 +92,14 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Wrist Curl',
                                 'imageUrl': 'assets/images/DumbbellWristCurl.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -126,12 +127,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Triceps Pushdown, Overhand Grip',
                                 'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 70,
                                         'weightUnit': WeightUnit.Lbs,
@@ -164,12 +165,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Biceps Curl, Underhand Grip',
                                 'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -204,7 +205,7 @@ export const json = { workouts: [{
                                 'imageUrl': 'assets/images/LegRaiseMachine.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 80,
                                         'weightUnit': WeightUnit.Lbs,
@@ -239,7 +240,7 @@ export const json = { workouts: [{
                                 'imageUrl': 'assets/images/CableLegCurl.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 60,
                                         'weightUnit': WeightUnit.Lbs,
@@ -274,7 +275,7 @@ export const json = { workouts: [{
                                 'imageUrl': 'assets/images/CrossfitSitup.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -297,9 +298,9 @@ export const json = { workouts: [{
                                 'name': 'Cross Body Crunch',
                                 'imageUrl': 'assets/images/CrossBodyCrunch.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -327,14 +328,14 @@ export const json = { workouts: [{
                             {
                                 'name': 'Bench Press, Narrow Grip',
                                 'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Narrow,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Narrow,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Barbell,
+                                'weightType': WeightType.Barbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 85,
                                         'weightUnit': WeightUnit.Lbs,
@@ -358,14 +359,14 @@ export const json = { workouts: [{
                                 'id': 2,
                                 'name': 'Dumbbell Bench Press, Rotating Grip',
                                 'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                grip: {
-                                    type: GripType.Neutral,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Neutral,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -389,14 +390,14 @@ export const json = { workouts: [{
                                 'id': 3,
                                 'name': 'Dumbbell Bench Press, Rotating Grip',
                                 'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                grip: {
-                                    type: GripType.Neutral,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Neutral,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -424,12 +425,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Fly',
                                 'imageUrl': 'assets/images/CableFly.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 60,
                                         'weightUnit': WeightUnit.Lbs,
@@ -462,13 +463,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Fly',
                                 'imageUrl': 'assets/images/DumbbellFly.png',
-                                grip: {
-                                    type: GripType.Neutral,
+                                'grip': {
+                                    'type': GripType.Neutral,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -496,13 +497,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Horizontal Row, Inclined Prone',
                                   'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 10,
                                         'weightUnit': WeightUnit.Lbs,
@@ -531,9 +532,9 @@ export const json = { workouts: [{
                                 'name': 'Dumbbell Tricpes Extensions, Seated',
                                 'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -562,11 +563,11 @@ export const json = { workouts: [{
                                 'name': 'Inclined Pushup, Narrow Grip',
                                   'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
                                 'repetition': RepetitionSpeed.OneOne,
-                                grip: {
-                                    width: GripWidth.Narrow,
+                                'grip': {
+                                    'width': GripWidth.Narrow,
                                 },
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 10
                                     },
@@ -588,12 +589,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Reverse Cable Fly, On Flat Bench',
                                 'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 55,
                                         'weightUnit': WeightUnit.Lbs,
@@ -623,7 +624,7 @@ export const json = { workouts: [{
                                 'imageUrl': 'assets/images/Situps.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -647,7 +648,7 @@ export const json = { workouts: [{
                                 'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -677,7 +678,7 @@ export const json = { workouts: [{
                                 'imageUrl': 'assets/images/RussianTwist.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -705,13 +706,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                 'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Wide,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Wide,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -740,14 +741,14 @@ export const json = { workouts: [{
                                 'id': 2,
                                 'name': 'Decline Dumbbell Pullover',
                                 'imageUrl': 'assets/images/DeclineDumbbellPullover.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Wide,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Wide,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -780,13 +781,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Arm Circles',
                                 'imageUrl': 'assets/images/DumbbellArmCircles.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 10,
                                         'weightUnit': WeightUnit.Lbs,
@@ -816,7 +817,7 @@ export const json = { workouts: [{
                                 'imageUrl': 'assets/images/MachineRowMediumGrip.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 85,
                                         'weightUnit': WeightUnit.Lbs,
@@ -844,13 +845,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dummbell Biceps Curl Standing Underhand Grip',
                                 'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -878,13 +879,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Shrug',
                                 'imageUrl': 'assets/images/CableShrug.png',
-                                grip: {
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'width': GripWidth.Normal,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -914,7 +915,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/DragonFlags.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -937,9 +938,9 @@ export const json = { workouts: [{
                                 'name': 'Decline Situps',
                                   'imageUrl': 'assets/images/DeclineSitups.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -962,9 +963,9 @@ export const json = { workouts: [{
                                 'name': 'Cross Body Crunch',
                                   'imageUrl': 'assets/images/CrossBodyCrunch.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -987,9 +988,9 @@ export const json = { workouts: [{
                                 'name': 'Lying Scissors Kicks',
                                   'imageUrl': 'assets/images/LyingScissorsKicks.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -1018,9 +1019,9 @@ export const json = { workouts: [{
                                 'name': 'Walking Lunge with Side Weights',
                                   'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -1050,7 +1051,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableAbduction.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -1076,7 +1077,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableAdduction.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -1106,7 +1107,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableLegCurl.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -1136,7 +1137,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableCalfRaise.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 70,
                                         'weightUnit': WeightUnit.Lbs,
@@ -1166,7 +1167,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -1190,7 +1191,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/WeightedSitups.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -1219,7 +1220,7 @@ export const json = { workouts: [{
                                 'name': 'Plank',
                                   'imageUrl': 'assets/images/Plank.png',
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         seconds: 10
                                     },
@@ -1243,7 +1244,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/Twist.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -1284,7 +1285,7 @@ export const json = { workouts: [{
                             'repetition': RepetitionSpeed.OneOne,
                             'weightType': WeightType.Barbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 95,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1319,7 +1320,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/SeatedRopeCableRow.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 95,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1347,14 +1348,14 @@ export const json = { workouts: [{
                         {
                             'name': 'Dumbbell Wrist Curl',
                               'imageUrl': 'assets/images/DumbbellWristCurl.png',
-                            grip: {
-                                type: GripType.Overhand,
-                                width: GripWidth.Normal,
+                            'grip': {
+                                'type': GripType.Overhand,
+                                'width': GripWidth.Normal,
                             },
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 15,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1382,12 +1383,12 @@ export const json = { workouts: [{
                         {
                             'name': 'Cable Triceps Pushdown, Overhand Grip',
                               'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
-                            grip: {
-                                type: GripType.Overhand,
+                            'grip': {
+                                'type': GripType.Overhand,
                             },
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 70,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1420,12 +1421,12 @@ export const json = { workouts: [{
                         {
                             'name': 'Cable Biceps Curl, Underhand Grip',
                               'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
-                            grip: {
-                                type: GripType.Underhand,
+                            'grip': {
+                                'type': GripType.Underhand,
                             },
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 50,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1460,7 +1461,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/LegRaiseMachine.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 80,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1495,7 +1496,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/CableLegCurl.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 60,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1530,7 +1531,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/CrossfitSitup.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 12
                                 },
@@ -1553,9 +1554,9 @@ export const json = { workouts: [{
                             'name': 'Cross Body Crunch',
                               'imageUrl': 'assets/images/CrossBodyCrunch.png',
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.NoWeight,
+                            'weightType': WeightType.NoWeight,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 15
                                 },
@@ -1583,14 +1584,14 @@ export const json = { workouts: [{
                         {
                             'name': 'Bench Press, Narrow Grip',
                               'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
-                            grip: {
-                                type: GripType.Overhand,
-                                width: GripWidth.Narrow,
+                            'grip': {
+                                'type': GripType.Overhand,
+                                'width': GripWidth.Narrow,
                             },
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.Barbell,
+                            'weightType': WeightType.Barbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 85,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1614,14 +1615,14 @@ export const json = { workouts: [{
                             'id': 2,
                             'name': 'Dumbbell Bench Press, Rotating Grip',
                               'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                            grip: {
-                                type: GripType.Neutral,
-                                width: GripWidth.Normal,
+                            'grip': {
+                                'type': GripType.Neutral,
+                                'width': GripWidth.Normal,
                             },
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 90,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1645,14 +1646,14 @@ export const json = { workouts: [{
                             'id': 3,
                             'name': 'Dumbbell Bench Press, Rotating Grip',
                               'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                            grip: {
-                                type: GripType.Neutral,
-                                width: GripWidth.Normal,
+                            'grip': {
+                                'type': GripType.Neutral,
+                                'width': GripWidth.Normal,
                             },
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 90,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1680,12 +1681,12 @@ export const json = { workouts: [{
                         {
                             'name': 'Cable Fly',
                               'imageUrl': 'assets/images/CableFly.png',
-                            grip: {
-                                type: GripType.Underhand,
+                            'grip': {
+                                'type': GripType.Underhand,
                             },
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 60,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1718,13 +1719,13 @@ export const json = { workouts: [{
                         {
                             'name': 'Dumbbell Fly',
                               'imageUrl': 'assets/images/DumbbellFly.png',
-                            grip: {
-                                type: GripType.Neutral,
+                            'grip': {
+                                'type': GripType.Neutral,
                             },
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 15,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1752,13 +1753,13 @@ export const json = { workouts: [{
                         {
                             'name': 'Dumbbell Horizontal Row, Inclined Prone',
                               'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
-                            grip: {
-                                type: GripType.Overhand,
+                            'grip': {
+                                'type': GripType.Overhand,
                             },
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 10,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1787,9 +1788,9 @@ export const json = { workouts: [{
                             'name': 'Dumbbell Tricpes Extensions, Seated',
                               'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 25,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1818,11 +1819,11 @@ export const json = { workouts: [{
                             'name': 'Inclined Pushup, Narrow Grip',
                               'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
                             'repetition': RepetitionSpeed.OneOne,
-                            grip: {
-                                width: GripWidth.Narrow,
+                            'grip': {
+                                'width': GripWidth.Narrow,
                             },
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 10
                                 },
@@ -1844,12 +1845,12 @@ export const json = { workouts: [{
                         {
                             'name': 'Reverse Cable Fly, On Flat Bench',
                               'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
-                            grip: {
-                                type: GripType.Overhand,
+                            'grip': {
+                                'type': GripType.Overhand,
                             },
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 55,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1879,7 +1880,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/Situps.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 12
                                 },
@@ -1903,7 +1904,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 15,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1933,7 +1934,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/RussianTwist.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 12
                                 },
@@ -1961,13 +1962,13 @@ export const json = { workouts: [{
                         {
                             'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                               'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
-                            grip: {
-                                type: GripType.Overhand,
-                                width: GripWidth.Wide,
+                            'grip': {
+                                'type': GripType.Overhand,
+                                'width': GripWidth.Wide,
                             },
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 90,
                                     'weightUnit': WeightUnit.Lbs,
@@ -1996,14 +1997,14 @@ export const json = { workouts: [{
                             'id': 2,
                             'name': 'Decline Dumbbell Pullover',
                               'imageUrl': 'assets/images/DeclineDumbbellPullover.png',
-                            grip: {
-                                type: GripType.Overhand,
-                                width: GripWidth.Wide,
+                            'grip': {
+                                'type': GripType.Overhand,
+                                'width': GripWidth.Wide,
                             },
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 25,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2036,13 +2037,13 @@ export const json = { workouts: [{
                         {
                             'name': 'Dumbbell Arm Circles',
                               'imageUrl': 'assets/images/DumbbellArmCircles.png',
-                            grip: {
-                                type: GripType.Overhand,
+                            'grip': {
+                                'type': GripType.Overhand,
                             },
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 10,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2072,7 +2073,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/MachineRowMediumGrip.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 85,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2100,13 +2101,13 @@ export const json = { workouts: [{
                         {
                             'name': 'Dummbell Biceps Curl Standing Underhand Grip',
                               'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
-                            grip: {
-                                type: GripType.Underhand,
+                            'grip': {
+                                'type': GripType.Underhand,
                             },
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 15,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2134,13 +2135,13 @@ export const json = { workouts: [{
                         {
                             'name': 'Cable Shrug',
                               'imageUrl': 'assets/images/CableShrug.png',
-                            grip: {
-                                width: GripWidth.Normal,
+                            'grip': {
+                                'width': GripWidth.Normal,
                             },
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 95,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2170,7 +2171,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/DragonFlags.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 12
                                 },
@@ -2193,9 +2194,9 @@ export const json = { workouts: [{
                             'name': 'Decline Situps',
                               'imageUrl': 'assets/images/DeclineSitups.png',
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.NoWeight,
+                            'weightType': WeightType.NoWeight,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 12
                                 },
@@ -2218,9 +2219,9 @@ export const json = { workouts: [{
                             'name': 'Cross Body Crunch',
                               'imageUrl': 'assets/images/CrossBodyCrunch.png',
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.NoWeight,
+                            'weightType': WeightType.NoWeight,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 15
                                 },
@@ -2243,9 +2244,9 @@ export const json = { workouts: [{
                             'name': 'Lying Scissors Kicks',
                               'imageUrl': 'assets/images/LyingScissorsKicks.png',
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.NoWeight,
+                            'weightType': WeightType.NoWeight,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 15
                                 },
@@ -2274,9 +2275,9 @@ export const json = { workouts: [{
                             'name': 'Walking Lunge with Side Weights',
                               'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
                             'repetition': RepetitionSpeed.OneOne,
-                            weightType: WeightType.Dumbbell,
+                            'weightType': WeightType.Dumbbell,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 25,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2306,7 +2307,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/CableAbduction.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 50,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2332,7 +2333,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/CableAdduction.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 50,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2362,7 +2363,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/CableLegCurl.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 50,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2392,7 +2393,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/CableCalfRaise.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 70,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2422,7 +2423,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 12
                                 },
@@ -2446,7 +2447,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/WeightedSitups.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'weight': 25,
                                     'weightUnit': WeightUnit.Lbs,
@@ -2475,7 +2476,7 @@ export const json = { workouts: [{
                             'name': 'Plank',
                               'imageUrl': 'assets/images/Plank.png',
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     seconds: 10
                                 },
@@ -2499,7 +2500,7 @@ export const json = { workouts: [{
                               'imageUrl': 'assets/images/Twist.png',
                             'repetition': RepetitionSpeed.OneOne,
                             'isFavorite': false,
-                            'reps': [
+                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                 {
                                     'times': 12
                                 },
@@ -2540,7 +2541,7 @@ export const json = { workouts: [{
                                 'repetition': RepetitionSpeed.OneOne,
                                 'weightType': WeightType.Barbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2575,7 +2576,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/SeatedRopeCableRow.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2603,14 +2604,14 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Wrist Curl',
                                   'imageUrl': 'assets/images/DumbbellWristCurl.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2638,12 +2639,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Triceps Pushdown, Overhand Grip',
                                   'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 70,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2676,12 +2677,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Biceps Curl, Underhand Grip',
                                   'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2716,7 +2717,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/LegRaiseMachine.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 80,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2751,7 +2752,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableLegCurl.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 60,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2786,7 +2787,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CrossfitSitup.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -2809,9 +2810,9 @@ export const json = { workouts: [{
                                 'name': 'Cross Body Crunch',
                                   'imageUrl': 'assets/images/CrossBodyCrunch.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -2839,14 +2840,14 @@ export const json = { workouts: [{
                             {
                                 'name': 'Bench Press, Narrow Grip',
                                   'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Narrow,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Narrow,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Barbell,
+                                'weightType': WeightType.Barbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 85,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2870,14 +2871,14 @@ export const json = { workouts: [{
                                 'id': 2,
                                 'name': 'Dumbbell Bench Press, Rotating Grip',
                                   'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                grip: {
-                                    type: GripType.Neutral,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Neutral,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2901,14 +2902,14 @@ export const json = { workouts: [{
                                 'id': 3,
                                 'name': 'Dumbbell Bench Press, Rotating Grip',
                                   'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                grip: {
-                                    type: GripType.Neutral,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Neutral,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2936,12 +2937,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Fly',
                                   'imageUrl': 'assets/images/CableFly.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 60,
                                         'weightUnit': WeightUnit.Lbs,
@@ -2974,13 +2975,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Fly',
                                   'imageUrl': 'assets/images/DumbbellFly.png',
-                                grip: {
-                                    type: GripType.Neutral,
+                                'grip': {
+                                    'type': GripType.Neutral,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3008,13 +3009,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Horizontal Row, Inclined Prone',
                                   'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 10,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3043,9 +3044,9 @@ export const json = { workouts: [{
                                 'name': 'Dumbbell Tricpes Extensions, Seated',
                                   'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3074,11 +3075,11 @@ export const json = { workouts: [{
                                 'name': 'Inclined Pushup, Narrow Grip',
                                   'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
                                 'repetition': RepetitionSpeed.OneOne,
-                                grip: {
-                                    width: GripWidth.Narrow,
+                                'grip': {
+                                    'width': GripWidth.Narrow,
                                 },
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 10
                                     },
@@ -3100,12 +3101,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Reverse Cable Fly, On Flat Bench',
                                   'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 55,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3135,7 +3136,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/Situps.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -3159,7 +3160,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3189,7 +3190,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/RussianTwist.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -3217,13 +3218,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                   'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Wide,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Wide,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3252,14 +3253,14 @@ export const json = { workouts: [{
                                 'id': 2,
                                 'name': 'Decline Dumbbell Pullover',
                                   'imageUrl': 'assets/images/DeclineDumbbellPullover.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Wide,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Wide,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3292,13 +3293,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Arm Circles',
                                   'imageUrl': 'assets/images/DumbbellArmCircles.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 10,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3328,7 +3329,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/MachineRowMediumGrip.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 85,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3356,13 +3357,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dummbell Biceps Curl Standing Underhand Grip',
                                   'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3390,13 +3391,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Shrug',
                                   'imageUrl': 'assets/images/CableShrug.png',
-                                grip: {
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'width': GripWidth.Normal,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3426,7 +3427,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/DragonFlags.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -3449,9 +3450,9 @@ export const json = { workouts: [{
                                 'name': 'Decline Situps',
                                   'imageUrl': 'assets/images/DeclineSitups.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -3474,9 +3475,9 @@ export const json = { workouts: [{
                                 'name': 'Cross Body Crunch',
                                   'imageUrl': 'assets/images/CrossBodyCrunch.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -3499,9 +3500,9 @@ export const json = { workouts: [{
                                 'name': 'Lying Scissors Kicks',
                                   'imageUrl': 'assets/images/LyingScissorsKicks.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -3530,9 +3531,9 @@ export const json = { workouts: [{
                                 'name': 'Walking Lunge with Side Weights',
                                   'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3562,7 +3563,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableAbduction.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3588,7 +3589,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableAdduction.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3618,7 +3619,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableLegCurl.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3648,7 +3649,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableCalfRaise.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 70,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3678,7 +3679,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -3702,7 +3703,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/WeightedSitups.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3731,7 +3732,7 @@ export const json = { workouts: [{
                                 'name': 'Plank',
                                   'imageUrl': 'assets/images/Plank.png',
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         seconds: 10
                                     },
@@ -3755,7 +3756,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/Twist.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -3796,7 +3797,7 @@ export const json = { workouts: [{
                                 'repetition': RepetitionSpeed.OneOne,
                                 'weightType': WeightType.Barbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3831,7 +3832,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/SeatedRopeCableRow.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3859,14 +3860,14 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Wrist Curl',
                                   'imageUrl': 'assets/images/DumbbellWristCurl.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3894,12 +3895,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Triceps Pushdown, Overhand Grip',
                                   'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 70,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3932,12 +3933,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Biceps Curl, Underhand Grip',
                                   'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -3972,7 +3973,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/LegRaiseMachine.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 80,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4007,7 +4008,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableLegCurl.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 60,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4042,7 +4043,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CrossfitSitup.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -4065,9 +4066,9 @@ export const json = { workouts: [{
                                 'name': 'Cross Body Crunch',
                                   'imageUrl': 'assets/images/CrossBodyCrunch.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -4095,14 +4096,14 @@ export const json = { workouts: [{
                             {
                                 'name': 'Bench Press, Narrow Grip',
                                   'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Narrow,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Narrow,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Barbell,
+                                'weightType': WeightType.Barbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 85,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4126,14 +4127,14 @@ export const json = { workouts: [{
                                 'id': 2,
                                 'name': 'Dumbbell Bench Press, Rotating Grip',
                                   'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                grip: {
-                                    type: GripType.Neutral,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Neutral,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4157,14 +4158,14 @@ export const json = { workouts: [{
                                 'id': 3,
                                 'name': 'Dumbbell Bench Press, Rotating Grip',
                                   'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                grip: {
-                                    type: GripType.Neutral,
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'type': GripType.Neutral,
+                                    'width': GripWidth.Normal,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4192,12 +4193,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Fly',
                                   'imageUrl': 'assets/images/CableFly.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 60,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4230,13 +4231,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Fly',
                                   'imageUrl': 'assets/images/DumbbellFly.png',
-                                grip: {
-                                    type: GripType.Neutral,
+                                'grip': {
+                                    'type': GripType.Neutral,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4264,13 +4265,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Horizontal Row, Inclined Prone',
                                   'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 10,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4299,9 +4300,9 @@ export const json = { workouts: [{
                                 'name': 'Dumbbell Tricpes Extensions, Seated',
                                   'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4330,11 +4331,11 @@ export const json = { workouts: [{
                                 'name': 'Inclined Pushup, Narrow Grip',
                                   'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
                                 'repetition': RepetitionSpeed.OneOne,
-                                grip: {
-                                    width: GripWidth.Narrow,
+                                'grip': {
+                                    'width': GripWidth.Narrow,
                                 },
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 10
                                     },
@@ -4356,12 +4357,12 @@ export const json = { workouts: [{
                             {
                                 'name': 'Reverse Cable Fly, On Flat Bench',
                                   'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 55,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4391,7 +4392,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/Situps.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -4415,7 +4416,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4445,7 +4446,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/RussianTwist.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -4473,13 +4474,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                   'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Wide,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Wide,
                                 },
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 90,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4508,14 +4509,14 @@ export const json = { workouts: [{
                                 'id': 2,
                                 'name': 'Decline Dumbbell Pullover',
                                   'imageUrl': 'assets/images/DeclineDumbbellPullover.png',
-                                grip: {
-                                    type: GripType.Overhand,
-                                    width: GripWidth.Wide,
+                                'grip': {
+                                    'type': GripType.Overhand,
+                                    'width': GripWidth.Wide,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4548,13 +4549,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dumbbell Arm Circles',
                                   'imageUrl': 'assets/images/DumbbellArmCircles.png',
-                                grip: {
-                                    type: GripType.Overhand,
+                                'grip': {
+                                    'type': GripType.Overhand,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 10,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4584,7 +4585,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/MachineRowMediumGrip.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 85,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4612,13 +4613,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Dummbell Biceps Curl Standing Underhand Grip',
                                   'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
-                                grip: {
-                                    type: GripType.Underhand,
+                                'grip': {
+                                    'type': GripType.Underhand,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 15,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4646,13 +4647,13 @@ export const json = { workouts: [{
                             {
                                 'name': 'Cable Shrug',
                                   'imageUrl': 'assets/images/CableShrug.png',
-                                grip: {
-                                    width: GripWidth.Normal,
+                                'grip': {
+                                    'width': GripWidth.Normal,
                                 },
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 95,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4682,7 +4683,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/DragonFlags.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -4705,9 +4706,9 @@ export const json = { workouts: [{
                                 'name': 'Decline Situps',
                                   'imageUrl': 'assets/images/DeclineSitups.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -4730,9 +4731,9 @@ export const json = { workouts: [{
                                 'name': 'Cross Body Crunch',
                                   'imageUrl': 'assets/images/CrossBodyCrunch.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -4755,9 +4756,9 @@ export const json = { workouts: [{
                                 'name': 'Lying Scissors Kicks',
                                   'imageUrl': 'assets/images/LyingScissorsKicks.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.NoWeight,
+                                'weightType': WeightType.NoWeight,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 15
                                     },
@@ -4786,9 +4787,9 @@ export const json = { workouts: [{
                                 'name': 'Walking Lunge with Side Weights',
                                   'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
                                 'repetition': RepetitionSpeed.OneOne,
-                                weightType: WeightType.Dumbbell,
+                                'weightType': WeightType.Dumbbell,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4818,7 +4819,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableAbduction.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4844,7 +4845,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableAdduction.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4874,7 +4875,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableLegCurl.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 50,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4904,7 +4905,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/CableCalfRaise.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 70,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4934,7 +4935,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
@@ -4958,7 +4959,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/WeightedSitups.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'weight': 25,
                                         'weightUnit': WeightUnit.Lbs,
@@ -4987,7 +4988,7 @@ export const json = { workouts: [{
                                 'name': 'Plank',
                                   'imageUrl': 'assets/images/Plank.png',
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         seconds: 10
                                     },
@@ -5011,7 +5012,7 @@ export const json = { workouts: [{
                                   'imageUrl': 'assets/images/Twist.png',
                                 'repetition': RepetitionSpeed.OneOne,
                                 'isFavorite': false,
-                                'reps': [
+                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
                                     {
                                         'times': 12
                                     },
