@@ -28,14 +28,21 @@ export class SelectMusclePage implements OnInit {
    }
 
   ngOnInit() {
-    this.SelectedMuscles = this.dataService.muscleFilter;
+  }
+
+  ionViewWillEnter() {
+    this._selectedMuscles = this.dataService.muscleFilter;
+    console.log('select-muscle: muscleFilter', this._selectedMuscles);
+    this._selectedMuscles.forEach(muscle => {
+      this.showMuscle(muscle);
+    });
   }
 
   toggleMuscle(muscle: Muscles) {
     if (this._selectedMuscles.has(muscle)) {
-      this.hideMuscle(muscle);
+      this.removeMuscle(muscle);
     } else {
-      this.showMuscle(muscle);
+      this.addMuscle(muscle);
     }
   }
 
@@ -43,14 +50,22 @@ export class SelectMusclePage implements OnInit {
     return document.querySelector(`path#${Muscles[muscle]}`);
   }
 
-  showMuscle(muscle: Muscles) {
+  addMuscle(muscle: Muscles) {
     this._selectedMuscles.add(muscle);
+    this.showMuscle(muscle);
+  }
+
+  private showMuscle(muscle: Muscles) {
     this.renderer.setStyle(this.getMuscleElement(muscle), 'fill', '000');
     this.renderer.setStyle(this.getMuscleElement(muscle), 'opacity', '.3');
   }
 
-  hideMuscle(muscle: Muscles) {
+  removeMuscle(muscle: Muscles) {
     this._selectedMuscles.delete(muscle);
+    this.hideMuscle(muscle);
+  }
+
+  private hideMuscle(muscle: Muscles) {
     this.renderer.setStyle(this.getMuscleElement(muscle), 'fill', 'fff');
     this.renderer.setStyle(this.getMuscleElement(muscle), 'opacity', '0');
   }

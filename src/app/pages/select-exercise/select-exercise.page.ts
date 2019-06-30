@@ -62,6 +62,10 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
+  ionViewWillEnter() {
+    console.log('select-execrcise: muscleFilter', this.dataService.muscleFilter);
+  }
+
   private async getImages() {
     const images = await this.dataService.getImages();
     this.images = images.map((image) => {
