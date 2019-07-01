@@ -49,6 +49,9 @@ export enum ExerciseSetAction {
     ImagesReset
 }
 export enum Muscles {
+    Longus = 'Longus',
+    Fingers = 'Fingers',
+    Anterior = 'Anterior',
     Chest = 'Chest',
     Triceps = 'Triceps',
     Shoulders = 'Shoulders',
@@ -65,8 +68,7 @@ export enum Muscles {
     Cardio = 'Cardio',
     Adductors = 'Adductors',
     Abductors = 'Abductors',
-    LowerBack = 'Lower Back',
-    MiddleBack = 'Middle Back',
+    Back = 'Back',
     Neck = 'Neck',
     Core = 'Core',
 }
