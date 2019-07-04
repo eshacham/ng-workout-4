@@ -104,7 +104,7 @@ export class DataServiceProvider {
     }
 
     if (this._images.length) {
-      console.log(`loaded ${this._images.length} images from storage:`, JSON.stringify(this._images));
+      console.log(`DS - loaded ${this._images.length} images from storage:`, JSON.stringify(this._images));
       if (this.isMobile) {
         console.log(`updating to device data directory ${this.file.dataDirectory}`);
         this.upgradeImages();

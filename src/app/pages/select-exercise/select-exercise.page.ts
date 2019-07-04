@@ -101,11 +101,17 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   }
 
   filterImagesByMuscles(muscles: Set<Muscles>): SelectedExerciseMedia[] {
-    console.log('select-execrcise: filtering by muscles', muscles);
+    console.log('select-execrcise: filtering by muscles', Array.from(muscles));
     const images = this._images.filter((image) => {
-      const intersection =
+      if (muscles.size) {
+        const intersection =
         new Set(Array.from(image.muscles).filter(x => muscles.has(x)));
+        console.log(`intersecting image ${image.name} muscles ${Array.from(image.muscles)} with selected muscles ${Array.from(muscles)}`);
       return (intersection.size > 0);
+      } else {
+        console.log('no muscle group is selected');
+        return false;
+      }
     });
     return images;
   }

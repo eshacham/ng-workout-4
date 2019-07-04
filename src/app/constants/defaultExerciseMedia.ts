@@ -12,7 +12,6 @@ const mediaUrl = (name: string): string => {
 
 const addMedia = (map: Map<string, ExerciseMedia>, name: string, muscles: Muscles[]) => {
     const url = mediaUrl(name);
-    console.log('building default exercide media from', map, name, muscles);
     const media = ExerciseMedia.buildDefaultExerciseMedia(url, new Set(muscles));
     map.set(url, media);
 };
