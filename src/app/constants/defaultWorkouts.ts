@@ -1,5035 +1,6436 @@
 
-import {
-    GripType,
-    GripWidth,
-    RepetitionSpeed,
-    WeightType,
-    WeightUnit,
-    Muscles } from '../models/enums';
+import { GripType, GripWidth, RepetitionSpeed, WeightType, WeightUnit, Muscles } from '../models/enums';
+import { DefaultWorkouts } from '../models/DefaultWorkouts';
+import { Workout } from '../models/Workout';
+import { WorkoutDay } from '../models/WorkoutDay';
+import { ExerciseSet } from '../models/ExerciseSet';
+import { Exercise } from '../models/Exercise';
+import { Grip } from '../models/Grip';
+import { Rep } from '../models/Rep';
+import { getMedia } from './defaultExerciseMedia';
 
-export const json = { 'workouts': [{
-        'id': 1,
-        'name': 'Workout Set No. 1',
-        'description': '4 days including upper, lower and core muscles',
-        'days': [
-            {
-                'id': 4,
-                'name': 'Full Body',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Bench Press, Wide Grip',
-                                'imageUrl': 'assets/images/BenchPressWideGrip.jpeg',
-                                'grip': {
-                                    'type': 'N/A',
-                                    'width': GripWidth.Wide,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Barbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20,
-                            }
-                        ]
-                    },
-                    {
-                        'id': 2,
-                        'exercises': [
-                            {
-                                'name': 'Seated Rope Cable Row',
-                                'imageUrl': 'assets/images/SeatedRopeCableRow.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Wrist Curl',
-                                'imageUrl': 'assets/images/DumbbellWristCurl.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Cable Triceps Pushdown, Overhand Grip',
-                                'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Cable Biceps Curl, Underhand Grip',
-                                'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Leg Raise Machine',
-                                'imageUrl': 'assets/images/LegRaiseMachine.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Cable Leg Curl',
-                                'imageUrl': 'assets/images/CableLegCurl.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Crossfit Situps',
-                                'imageUrl': 'assets/images/CrossfitSitup.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Cross Body Crunch',
-                                'imageUrl': 'assets/images/CrossBodyCrunch.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            },
-            {
-                'id': 2,
-                'name': 'Upper Body 1',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Bench Press, Narrow Grip',
-                                'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Narrow,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Barbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 2,
-                                'name': 'Dumbbell Bench Press, Rotating Grip',
-                                'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 3,
-                                'name': 'Dumbbell Bench Press, Rotating Grip',
-                                'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Cable Fly',
-                                'imageUrl': 'assets/images/CableFly.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Fly',
-                                'imageUrl': 'assets/images/DumbbellFly.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Horizontal Row, Inclined Prone',
-                                  'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Tricpes Extensions, Seated',
-                                'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Inclined Pushup, Narrow Grip',
-                                  'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'grip': {
-                                    'width': GripWidth.Narrow,
-                                },
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 10
-                                    },
-                                    {
-                                        'times': 10
-                                    },
-                                    {
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Reverse Cable Fly, On Flat Bench',
-                                'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Situps',
-                                'imageUrl': 'assets/images/Situps.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 10,
-                        'exercises': [
-                            {
-                                'name': 'Situps with Weight Above Head',
-                                'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 11,
-                        'exercises': [
-                            {
-                                'name': 'Russian Twist',
-                                'imageUrl': 'assets/images/RussianTwist.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            },
-            {
-                'id': 3,
-                'name': 'Upper Body 2',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
-                                'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Wide,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 2,
-                                'name': 'Decline Dumbbell Pullover',
-                                'imageUrl': 'assets/images/DeclineDumbbellPullover.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Wide,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Arm Circles',
-                                'imageUrl': 'assets/images/DumbbellArmCircles.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Machine Row Medium Grip',
-                                'imageUrl': 'assets/images/MachineRowMediumGrip.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Dummbell Biceps Curl Standing Underhand Grip',
-                                'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Cable Shrug',
-                                'imageUrl': 'assets/images/CableShrug.png',
-                                'grip': {
-                                    'width': GripWidth.Normal,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Dragon Flags',
-                                  'imageUrl': 'assets/images/DragonFlags.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Decline Situps',
-                                  'imageUrl': 'assets/images/DeclineSitups.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Cross Body Crunch',
-                                  'imageUrl': 'assets/images/CrossBodyCrunch.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 10,
-                        'exercises': [
-                            {
-                                'name': 'Lying Scissors Kicks',
-                                  'imageUrl': 'assets/images/LyingScissorsKicks.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
+export const defaultWorkouts = new DefaultWorkouts(
+    new DefaultWorkouts({
+        workouts: [
+            new Workout({
+                id: 1,
+                name: 'Workout Set No. 1',
+                description: '4 days including upper, lower and core muscles',
+                days: [
+                    new WorkoutDay({
+                        id: 4,
+                        name: 'Full Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Wide Grip',
+                                        media: getMedia('BenchPressWideGrip.jpeg'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Seated Rope Cable Row',
+                                        media: getMedia('SeatedRopeCableRow.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Wrist Curl',
+                                        media: getMedia('DumbbellWristCurl.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Triceps Pushdown, Overhand Grip',
+                                        media: getMedia('CableTricepsPushdownOverheadGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Biceps Curl, Underhand Grip',
+                                        media: getMedia('CableBicepsCurlUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            })
+                                        ],
+                                        'restBetweenReps': 20,
+                                        'restAfterExercise': 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Leg Raise Machine',
+                                        media: getMedia('LegRaiseMachine.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                                new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Crossfit Situps',
+                                        media: getMedia('CrossfitSitup.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
                         ],
-                    }
-                ]
-            },
-            {
-                'id': 1,
-                'name': 'Lower Body',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Walking Lunge with Side Weights',
-                                  'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 2,
-                        'exercises': [
-                            {
-                                'name': 'Cable Abduction',
-                                  'imageUrl': 'assets/images/CableAbduction.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 3,
-                                'name': 'Cable Adduction',
-                                  'imageUrl': 'assets/images/CableAdduction.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Cable Leg Curl',
-                                  'imageUrl': 'assets/images/CableLegCurl.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Cable Calf Raise',
-                                  'imageUrl': 'assets/images/CableCalfRaise.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Bodyweight Flutter Kicks',
-                                  'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Weighted Situps',
-                                  'imageUrl': 'assets/images/WeightedSitups.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Plank',
-                                  'imageUrl': 'assets/images/Plank.png',
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        seconds: 10
-                                    },
-                                    {
-                                        seconds: 10
-                                    },
-                                    {
-                                        seconds: 10
-                                    },
-                                ],
-                                'restBetweenReps': 5,
-                                'restAfterExercise': 10
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Twist',
-                                  'imageUrl': 'assets/images/Twist.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            }
-        ]
-    }, {
-       'id': 2,
-       'name': 'Workout Set No. 2' ,
-       'description': 'this is the description of the workout and should not be too long...',
-       'days': [
-        {
-            'id': 4,
-            'name': 'Full Body',
-            'exerciseSets': [
-                {
-                    'id': 1,
-                    'exercises': [
-                        {
-                            'name': 'Bench Press, Wide Grip',
-                              'imageUrl': 'assets/images/BenchPressWideGrip.jpeg',
-                            'grip': {
-                                'type': 'N/A',
-                                'width': GripWidth.Wide,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Barbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 2,
-                    'exercises': [
-                        {
-                            'name': 'Seated Rope Cable Row',
-                              'imageUrl': 'assets/images/SeatedRopeCableRow.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 3,
-                    'exercises': [
-                        {
-                            'name': 'Dumbbell Wrist Curl',
-                              'imageUrl': 'assets/images/DumbbellWristCurl.png',
-                            'grip': {
-                                'type': GripType.Overhand,
-                                'width': GripWidth.Normal,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Dumbbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 15
-                                },
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 15
-                                },
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 15
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 4,
-                    'exercises': [
-                        {
-                            'name': 'Cable Triceps Pushdown, Overhand Grip',
-                              'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
-                            'grip': {
-                                'type': GripType.Overhand,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 70,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 70,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 70,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 70,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 5,
-                    'exercises': [
-                        {
-                            'name': 'Cable Biceps Curl, Underhand Grip',
-                              'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
-                            'grip': {
-                                'type': GripType.Underhand,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 6,
-                    'exercises': [
-                        {
-                            'name': 'Leg Raise Machine',
-                              'imageUrl': 'assets/images/LegRaiseMachine.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 80,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 80,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 80,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 80,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 7,
-                    'exercises': [
-                        {
-                            'name': 'Cable Leg Curl',
-                              'imageUrl': 'assets/images/CableLegCurl.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 60,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 60,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 60,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 60,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 8,
-                    'exercises': [
-                        {
-                            'name': 'Crossfit Situps',
-                              'imageUrl': 'assets/images/CrossfitSitup.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 9,
-                    'exercises': [
-                        {
-                            'name': 'Cross Body Crunch',
-                              'imageUrl': 'assets/images/CrossBodyCrunch.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.NoWeight,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 15
-                                },
-                                {
-                                    'times': 15
-                                },
-                                {
-                                    'times': 15
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                }
-            ],
-        },
-        {
-            'id': 2,
-            'name': 'Upper Body 1',
-            'exerciseSets': [
-                {
-                    'id': 1,
-                    'exercises': [
-                        {
-                            'name': 'Bench Press, Narrow Grip',
-                              'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
-                            'grip': {
-                                'type': GripType.Overhand,
-                                'width': GripWidth.Narrow,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Barbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 85,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 85,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 85,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        },
-                        {
-                            'id': 2,
-                            'name': 'Dumbbell Bench Press, Rotating Grip',
-                              'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                            'grip': {
-                                'type': GripType.Neutral,
-                                'width': GripWidth.Normal,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Dumbbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 10
-                                },
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 10
-                                },
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 10
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        },
-                        {
-                            'id': 3,
-                            'name': 'Dumbbell Bench Press, Rotating Grip',
-                              'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                            'grip': {
-                                'type': GripType.Neutral,
-                                'width': GripWidth.Normal,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Dumbbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 10
-                                },
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 10
-                                },
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 10
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 3,
-                    'exercises': [
-                        {
-                            'name': 'Cable Fly',
-                              'imageUrl': 'assets/images/CableFly.png',
-                            'grip': {
-                                'type': GripType.Underhand,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 60,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 60,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 60,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 60,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 4,
-                    'exercises': [
-                        {
-                            'name': 'Dumbbell Fly',
-                              'imageUrl': 'assets/images/DumbbellFly.png',
-                            'grip': {
-                                'type': GripType.Neutral,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Dumbbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 5,
-                    'exercises': [
-                        {
-                            'name': 'Dumbbell Horizontal Row, Inclined Prone',
-                              'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
-                            'grip': {
-                                'type': GripType.Overhand,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Dumbbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 10,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 10,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 10,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 6,
-                    'exercises': [
-                        {
-                            'name': 'Dumbbell Tricpes Extensions, Seated',
-                              'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Dumbbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 7,
-                    'exercises': [
-                        {
-                            'name': 'Inclined Pushup, Narrow Grip',
-                              'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'grip': {
-                                'width': GripWidth.Narrow,
-                            },
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 10
-                                },
-                                {
-                                    'times': 10
-                                },
-                                {
-                                    'times': 10
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 8,
-                    'exercises': [
-                        {
-                            'name': 'Reverse Cable Fly, On Flat Bench',
-                              'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
-                            'grip': {
-                                'type': GripType.Overhand,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 55,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 55,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 55,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 9,
-                    'exercises': [
-                        {
-                            'name': 'Situps',
-                              'imageUrl': 'assets/images/Situps.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 10,
-                    'exercises': [
-                        {
-                            'name': 'Situps with Weight Above Head',
-                              'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 11,
-                    'exercises': [
-                        {
-                            'name': 'Russian Twist',
-                              'imageUrl': 'assets/images/RussianTwist.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                }
-            ],
-        },
-        {
-            'id': 3,
-            'name': 'Upper Body 2',
-            'exerciseSets': [
-                {
-                    'id': 1,
-                    'exercises': [
-                        {
-                            'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
-                              'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
-                            'grip': {
-                                'type': GripType.Overhand,
-                                'width': GripWidth.Wide,
-                            },
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 90,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        },
-                        {
-                            'id': 2,
-                            'name': 'Decline Dumbbell Pullover',
-                              'imageUrl': 'assets/images/DeclineDumbbellPullover.png',
-                            'grip': {
-                                'type': GripType.Overhand,
-                                'width': GripWidth.Wide,
-                            },
-                            'weightType': WeightType.Dumbbell,
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 3,
-                    'exercises': [
-                        {
-                            'name': 'Dumbbell Arm Circles',
-                              'imageUrl': 'assets/images/DumbbellArmCircles.png',
-                            'grip': {
-                                'type': GripType.Overhand,
-                            },
-                            'weightType': WeightType.Dumbbell,
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 10,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 10,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 10,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 4,
-                    'exercises': [
-                        {
-                            'name': 'Machine Row Medium Grip',
-                              'imageUrl': 'assets/images/MachineRowMediumGrip.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 85,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 85,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 85,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 5,
-                    'exercises': [
-                        {
-                            'name': 'Dummbell Biceps Curl Standing Underhand Grip',
-                              'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
-                            'grip': {
-                                'type': GripType.Underhand,
-                            },
-                            'weightType': WeightType.Dumbbell,
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 15,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 6,
-                    'exercises': [
-                        {
-                            'name': 'Cable Shrug',
-                              'imageUrl': 'assets/images/CableShrug.png',
-                            'grip': {
-                                'width': GripWidth.Normal,
-                            },
-                            'weightType': WeightType.Dumbbell,
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 95,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 7,
-                    'exercises': [
-                        {
-                            'name': 'Dragon Flags',
-                              'imageUrl': 'assets/images/DragonFlags.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 8,
-                    'exercises': [
-                        {
-                            'name': 'Decline Situps',
-                              'imageUrl': 'assets/images/DeclineSitups.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.NoWeight,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 9,
-                    'exercises': [
-                        {
-                            'name': 'Cross Body Crunch',
-                              'imageUrl': 'assets/images/CrossBodyCrunch.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.NoWeight,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 15
-                                },
-                                {
-                                    'times': 15
-                                },
-                                {
-                                    'times': 15
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 10,
-                    'exercises': [
-                        {
-                            'name': 'Lying Scissors Kicks',
-                              'imageUrl': 'assets/images/LyingScissorsKicks.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.NoWeight,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 15
-                                },
-                                {
-                                    'times': 15
-                                },
-                                {
-                                    'times': 15
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ],
-                }
-            ]
-        },
-        {
-            'id': 1,
-            'name': 'Lower Body',
-            'exerciseSets': [
-                {
-                    'id': 1,
-                    'exercises': [
-                        {
-                            'name': 'Walking Lunge with Side Weights',
-                              'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'weightType': WeightType.Dumbbell,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 2,
-                    'exercises': [
-                        {
-                            'name': 'Cable Abduction',
-                              'imageUrl': 'assets/images/CableAbduction.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        },
-                        {
-                            'id': 3,
-                            'name': 'Cable Adduction',
-                              'imageUrl': 'assets/images/CableAdduction.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 4,
-                    'exercises': [
-                        {
-                            'name': 'Cable Leg Curl',
-                              'imageUrl': 'assets/images/CableLegCurl.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 50,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 5,
-                    'exercises': [
-                        {
-                            'name': 'Cable Calf Raise',
-                              'imageUrl': 'assets/images/CableCalfRaise.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 70,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 70,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 70,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 6,
-                    'exercises': [
-                        {
-                            'name': 'Bodyweight Flutter Kicks',
-                              'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 7,
-                    'exercises': [
-                        {
-                            'name': 'Weighted Situps',
-                              'imageUrl': 'assets/images/WeightedSitups.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                },
-                                {
-                                    'weight': 25,
-                                    'weightUnit': WeightUnit.Lbs,
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                },
-                {
-                    'id': 8,
-                    'exercises': [
-                        {
-                            'name': 'Plank',
-                              'imageUrl': 'assets/images/Plank.png',
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    seconds: 10
-                                },
-                                {
-                                    seconds: 10
-                                },
-                                {
-                                    seconds: 10
-                                },
-                            ],
-                            'restBetweenReps': 5,
-                            'restAfterExercise': 10
-                        }
-                    ]
-                },
-                {
-                    'id': 9,
-                    'exercises': [
-                        {
-                            'name': 'Twist',
-                              'imageUrl': 'assets/images/Twist.png',
-                            'repetition': RepetitionSpeed.OneOne,
-                            'isFavorite': false,
-                            'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                },
-                                {
-                                    'times': 12
-                                }
-                            ],
-                            'restBetweenReps': 20,
-                            'restAfterExercise': 20
-                        }
-                    ]
-                }
-            ],
-        }
-    ]
-    }, {
-        'id': 3,
-        'name': 'Workout Set No. 3' ,
-        'description': 'this is the description # 2 of the workout and it\'s shorter.',
-        'days': [
-            {
-                'id': 4,
-                'name': 'Full Body',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Bench Press, Wide Grip',
-                                  'imageUrl': 'assets/images/BenchPressWideGrip.jpeg',
-                                'grip': {
-                                    'type': 'N/A',
-                                    'width': GripWidth.Wide,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Barbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 2,
-                        'exercises': [
-                            {
-                                'name': 'Seated Rope Cable Row',
-                                  'imageUrl': 'assets/images/SeatedRopeCableRow.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Wrist Curl',
-                                  'imageUrl': 'assets/images/DumbbellWristCurl.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Cable Triceps Pushdown, Overhand Grip',
-                                  'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Cable Biceps Curl, Underhand Grip',
-                                  'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Leg Raise Machine',
-                                  'imageUrl': 'assets/images/LegRaiseMachine.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Cable Leg Curl',
-                                  'imageUrl': 'assets/images/CableLegCurl.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Crossfit Situps',
-                                  'imageUrl': 'assets/images/CrossfitSitup.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Cross Body Crunch',
-                                  'imageUrl': 'assets/images/CrossBodyCrunch.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            },
-            {
-                'id': 2,
-                'name': 'Upper Body 1',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Bench Press, Narrow Grip',
-                                  'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Narrow,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Barbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 2,
-                                'name': 'Dumbbell Bench Press, Rotating Grip',
-                                  'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 3,
-                                'name': 'Dumbbell Bench Press, Rotating Grip',
-                                  'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Cable Fly',
-                                  'imageUrl': 'assets/images/CableFly.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Fly',
-                                  'imageUrl': 'assets/images/DumbbellFly.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Horizontal Row, Inclined Prone',
-                                  'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Tricpes Extensions, Seated',
-                                  'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Inclined Pushup, Narrow Grip',
-                                  'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'grip': {
-                                    'width': GripWidth.Narrow,
-                                },
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 10
-                                    },
-                                    {
-                                        'times': 10
-                                    },
-                                    {
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Reverse Cable Fly, On Flat Bench',
-                                  'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Situps',
-                                  'imageUrl': 'assets/images/Situps.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 10,
-                        'exercises': [
-                            {
-                                'name': 'Situps with Weight Above Head',
-                                  'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 11,
-                        'exercises': [
-                            {
-                                'name': 'Russian Twist',
-                                  'imageUrl': 'assets/images/RussianTwist.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            },
-            {
-                'id': 3,
-                'name': 'Upper Body 2',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
-                                  'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Wide,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 2,
-                                'name': 'Decline Dumbbell Pullover',
-                                  'imageUrl': 'assets/images/DeclineDumbbellPullover.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Wide,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Arm Circles',
-                                  'imageUrl': 'assets/images/DumbbellArmCircles.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Machine Row Medium Grip',
-                                  'imageUrl': 'assets/images/MachineRowMediumGrip.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Dummbell Biceps Curl Standing Underhand Grip',
-                                  'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Cable Shrug',
-                                  'imageUrl': 'assets/images/CableShrug.png',
-                                'grip': {
-                                    'width': GripWidth.Normal,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Dragon Flags',
-                                  'imageUrl': 'assets/images/DragonFlags.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Decline Situps',
-                                  'imageUrl': 'assets/images/DeclineSitups.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Cross Body Crunch',
-                                  'imageUrl': 'assets/images/CrossBodyCrunch.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 10,
-                        'exercises': [
-                            {
-                                'name': 'Lying Scissors Kicks',
-                                  'imageUrl': 'assets/images/LyingScissorsKicks.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
+                    }),
+                    new WorkoutDay({
+                        id: 2,
+                        name: 'Upper Body 1',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Narrow Grip',
+                                        media: getMedia('BenchPressNarrowGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Narrow
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Fly',
+                                        media: getMedia('CableFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Fly',
+                                        media: getMedia('DumbbellFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Horizontal Row, Inclined Prone',
+                                        media: getMedia('DumbbellHorizontalRowInclineProne.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Tricpes Extensions, Seated',
+                                        media: getMedia('DumbbellTricepsExtensionSeated.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Inclined Pushup, Narrow Grip',
+                                        media: getMedia('InclinePushupNarrowGrip.jpg'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Narrow,
+                                        ),
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Reverse Cable Fly, On Flat Bench',
+                                        media: getMedia('ReverseCableFlyOnFlatBench.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps',
+                                        media: getMedia('Situps.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps with Weight Above Head',
+                                        media: getMedia('SitupsWithWeightAboveHead.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 11,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Russian Twist',
+                                        media: getMedia('RussianTwist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
                         ],
-                    }
-                ]
-            },
-            {
-                'id': 1,
-                'name': 'Lower Body',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Walking Lunge with Side Weights',
-                                  'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
+                    }),
+                    new WorkoutDay({
+                        id: 3,
+                        name: 'Upper Body 2',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
+                                        media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Decline Dumbbell Pullover',
+                                        media: getMedia('DeclineDumbbellPullover.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Arm Circles',
+                                        media: getMedia('DumbbellArmCircles.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Machine Row Medium Grip',
+                                        media: getMedia('MachineRowMediumGrip.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dummbell Biceps Curl Standing Underhand Grip',
+                                        media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Shrug',
+                                        media: getMedia('CableShrug.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dragon Flags',
+                                        media: getMedia('DragonFlags.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Decline Situps',
+                                        media: getMedia('DeclineSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Lying Scissors Kicks',
+                                        media: getMedia('LyingScissorsKicks.png'),
+                                        theGrip: new Grip(),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
                                 ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
+                            })
                         ]
-                    },
-                    {
-                        'id': 2,
-                        'exercises': [
-                            {
-                                'name': 'Cable Abduction',
-                                  'imageUrl': 'assets/images/CableAbduction.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 3,
-                                'name': 'Cable Adduction',
-                                  'imageUrl': 'assets/images/CableAdduction.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Cable Leg Curl',
-                                  'imageUrl': 'assets/images/CableLegCurl.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Cable Calf Raise',
-                                  'imageUrl': 'assets/images/CableCalfRaise.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Bodyweight Flutter Kicks',
-                                  'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Weighted Situps',
-                                  'imageUrl': 'assets/images/WeightedSitups.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Plank',
-                                  'imageUrl': 'assets/images/Plank.png',
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        seconds: 10
-                                    },
-                                    {
-                                        seconds: 10
-                                    },
-                                    {
-                                        seconds: 10
-                                    },
-                                ],
-                                'restBetweenReps': 5,
-                                'restAfterExercise': 10
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Twist',
-                                  'imageUrl': 'assets/images/Twist.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            }
-        ]
-     }, {
-        'id': 4,
-        'name': 'Workout Set No. 4' ,
-        'description': 'this is the description # 2 of the workout and it\'s shorter.',
-        'days': [
-            {
-                'id': 4,
-                'name': 'Full Body',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Bench Press, Wide Grip',
-                                  'imageUrl': 'assets/images/BenchPressWideGrip.jpeg',
-                                'grip': {
-                                    'type': 'N/A',
-                                    'width': GripWidth.Wide,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Barbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 2,
-                        'exercises': [
-                            {
-                                'name': 'Seated Rope Cable Row',
-                                  'imageUrl': 'assets/images/SeatedRopeCableRow.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Wrist Curl',
-                                  'imageUrl': 'assets/images/DumbbellWristCurl.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 15
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Cable Triceps Pushdown, Overhand Grip',
-                                  'imageUrl': 'assets/images/CableTricepsPushdownOverheadGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Cable Biceps Curl, Underhand Grip',
-                                  'imageUrl': 'assets/images/CableBicepsCurlUnderhandGrip.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Leg Raise Machine',
-                                  'imageUrl': 'assets/images/LegRaiseMachine.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 80,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Cable Leg Curl',
-                                  'imageUrl': 'assets/images/CableLegCurl.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Crossfit Situps',
-                                  'imageUrl': 'assets/images/CrossfitSitup.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Cross Body Crunch',
-                                  'imageUrl': 'assets/images/CrossBodyCrunch.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            },
-            {
-                'id': 2,
-                'name': 'Upper Body 1',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Bench Press, Narrow Grip',
-                                  'imageUrl': 'assets/images/BenchPressNarrowGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Narrow,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Barbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 2,
-                                'name': 'Dumbbell Bench Press, Rotating Grip',
-                                  'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 3,
-                                'name': 'Dumbbell Bench Press, Rotating Grip',
-                                  'imageUrl': 'assets/images/DumbbellBenshPressRotatingGrip.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                    'width': GripWidth.Normal,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Cable Fly',
-                                  'imageUrl': 'assets/images/CableFly.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 60,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Fly',
-                                  'imageUrl': 'assets/images/DumbbellFly.png',
-                                'grip': {
-                                    'type': GripType.Neutral,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Horizontal Row, Inclined Prone',
-                                  'imageUrl': 'assets/images/DumbbellHorizontalRowInclineProne.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Tricpes Extensions, Seated',
-                                  'imageUrl': 'assets/images/DumbbellTricepsExtensionSeated.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Inclined Pushup, Narrow Grip',
-                                  'imageUrl': 'assets/images/InclinePushupNarrowGrip.jpg',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'grip': {
-                                    'width': GripWidth.Narrow,
-                                },
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 10
-                                    },
-                                    {
-                                        'times': 10
-                                    },
-                                    {
-                                        'times': 10
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Reverse Cable Fly, On Flat Bench',
-                                  'imageUrl': 'assets/images/ReverseCableFlyOnFlatBench.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 55,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Situps',
-                                  'imageUrl': 'assets/images/Situps.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 10,
-                        'exercises': [
-                            {
-                                'name': 'Situps with Weight Above Head',
-                                  'imageUrl': 'assets/images/SitupsWithWeightAboveHead.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 11,
-                        'exercises': [
-                            {
-                                'name': 'Russian Twist',
-                                  'imageUrl': 'assets/images/RussianTwist.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            },
-            {
-                'id': 3,
-                'name': 'Upper Body 2',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Cabel Lat Pulldown, Behind Neck Wide Grip',
-                                  'imageUrl': 'assets/images/CabelLatPulldownBehindNeckWideGrip.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Wide,
-                                },
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 90,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 2,
-                                'name': 'Decline Dumbbell Pullover',
-                                  'imageUrl': 'assets/images/DeclineDumbbellPullover.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                    'width': GripWidth.Wide,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 3,
-                        'exercises': [
-                            {
-                                'name': 'Dumbbell Arm Circles',
-                                  'imageUrl': 'assets/images/DumbbellArmCircles.png',
-                                'grip': {
-                                    'type': GripType.Overhand,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 10,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Machine Row Medium Grip',
-                                  'imageUrl': 'assets/images/MachineRowMediumGrip.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 85,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Dummbell Biceps Curl Standing Underhand Grip',
-                                  'imageUrl': 'assets/images/DummbellBicepsCurlStandingUnderhandGrip.png',
-                                'grip': {
-                                    'type': GripType.Underhand,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 15,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Cable Shrug',
-                                  'imageUrl': 'assets/images/CableShrug.png',
-                                'grip': {
-                                    'width': GripWidth.Normal,
-                                },
-                                'weightType': WeightType.Dumbbell,
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 95,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Dragon Flags',
-                                  'imageUrl': 'assets/images/DragonFlags.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Decline Situps',
-                                  'imageUrl': 'assets/images/DeclineSitups.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Cross Body Crunch',
-                                  'imageUrl': 'assets/images/CrossBodyCrunch.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 10,
-                        'exercises': [
-                            {
-                                'name': 'Lying Scissors Kicks',
-                                  'imageUrl': 'assets/images/LyingScissorsKicks.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.NoWeight,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    },
-                                    {
-                                        'times': 15
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
+                    }),
+                    new WorkoutDay({
+                        id: 1,
+                        name: 'Lower Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Walking Lunge with Side Weights',
+                                        media: getMedia('WalkingLungeWithSideWeights.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Abduction',
+                                        media: getMedia('CableAbduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Cable Adduction',
+                                        media: getMedia('CableAdduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Calf Raise',
+                                        media: getMedia('CableCalfRaise.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bodyweight Flutter Kicks',
+                                        media: getMedia('BodyweightFlutterKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Weighted Situps',
+                                        media: getMedia('WeightedSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Plank',
+                                        media: getMedia('Plank.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 5,
+                                        restAfterExercise: 10
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Twist',
+                                        media: getMedia('Twist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
                         ],
-                    }
+                    })
                 ]
-            },
-            {
-                'id': 1,
-                'name': 'Lower Body',
-                'exerciseSets': [
-                    {
-                        'id': 1,
-                        'exercises': [
-                            {
-                                'name': 'Walking Lunge with Side Weights',
-                                  'imageUrl': 'assets/images/WalkingLungeWithSideWeights.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'weightType': WeightType.Dumbbell,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
+            }),
+            new Workout({
+                id: 1,
+                name: 'Workout Set No. 1',
+                description: '4 days including upper, lower and core muscles',
+                days: [
+                    new WorkoutDay({
+                        id: 4,
+                        name: 'Full Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Wide Grip',
+                                        media: getMedia('BenchPressWideGrip.jpeg'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Seated Rope Cable Row',
+                                        media: getMedia('SeatedRopeCableRow.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Wrist Curl',
+                                        media: getMedia('DumbbellWristCurl.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Triceps Pushdown, Overhand Grip',
+                                        media: getMedia('CableTricepsPushdownOverheadGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Biceps Curl, Underhand Grip',
+                                        media: getMedia('CableBicepsCurlUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            })
+                                        ],
+                                        'restBetweenReps': 20,
+                                        'restAfterExercise': 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Leg Raise Machine',
+                                        media: getMedia('LegRaiseMachine.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Crossfit Situps',
+                                        media: getMedia('CrossfitSitup.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    }),
+                    new WorkoutDay({
+                        id: 2,
+                        name: 'Upper Body 1',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Narrow Grip',
+                                        media: getMedia('BenchPressNarrowGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Narrow
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Fly',
+                                        media: getMedia('CableFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Fly',
+                                        media: getMedia('DumbbellFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Horizontal Row, Inclined Prone',
+                                        media: getMedia('DumbbellHorizontalRowInclineProne.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Tricpes Extensions, Seated',
+                                        media: getMedia('DumbbellTricepsExtensionSeated.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Inclined Pushup, Narrow Grip',
+                                        media: getMedia('InclinePushupNarrowGrip.jpg'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Narrow,
+                                        ),
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Reverse Cable Fly, On Flat Bench',
+                                        media: getMedia('ReverseCableFlyOnFlatBench.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps',
+                                        media: getMedia('Situps.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps with Weight Above Head',
+                                        media: getMedia('SitupsWithWeightAboveHead.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 11,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Russian Twist',
+                                        media: getMedia('RussianTwist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    }),
+                    new WorkoutDay({
+                        id: 3,
+                        name: 'Upper Body 2',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
+                                        media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Decline Dumbbell Pullover',
+                                        media: getMedia('DeclineDumbbellPullover.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Arm Circles',
+                                        media: getMedia('DumbbellArmCircles.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Machine Row Medium Grip',
+                                        media: getMedia('MachineRowMediumGrip.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dummbell Biceps Curl Standing Underhand Grip',
+                                        media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Shrug',
+                                        media: getMedia('CableShrug.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dragon Flags',
+                                        media: getMedia('DragonFlags.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Decline Situps',
+                                        media: getMedia('DeclineSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Lying Scissors Kicks',
+                                        media: getMedia('LyingScissorsKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
                                 ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
+                            })
                         ]
-                    },
-                    {
-                        'id': 2,
-                        'exercises': [
-                            {
-                                'name': 'Cable Abduction',
-                                  'imageUrl': 'assets/images/CableAbduction.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
+                    }),
+                    new WorkoutDay({
+                        id: 1,
+                        name: 'Lower Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Walking Lunge with Side Weights',
+                                        media: getMedia('WalkingLungeWithSideWeights.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Abduction',
+                                        media: getMedia('CableAbduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Cable Adduction',
+                                        media: getMedia('CableAdduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Calf Raise',
+                                        media: getMedia('CableCalfRaise.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bodyweight Flutter Kicks',
+                                        media: getMedia('BodyweightFlutterKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Weighted Situps',
+                                        media: getMedia('WeightedSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Plank',
+                                        media: getMedia('Plank.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 5,
+                                        restAfterExercise: 10
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Twist',
+                                        media: getMedia('Twist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    })
+                ]
+            }),
+            new Workout({
+                id: 2,
+                name: 'Workout Set No. 2',
+                description: '4 days including upper, lower and core muscles',
+                days: [
+                    new WorkoutDay({
+                        id: 4,
+                        name: 'Full Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Wide Grip',
+                                        media: getMedia('BenchPressWideGrip.jpeg'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Seated Rope Cable Row',
+                                        media: getMedia('SeatedRopeCableRow.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Wrist Curl',
+                                        media: getMedia('DumbbellWristCurl.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Triceps Pushdown, Overhand Grip',
+                                        media: getMedia('CableTricepsPushdownOverheadGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Biceps Curl, Underhand Grip',
+                                        media: getMedia('CableBicepsCurlUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            })
+                                        ],
+                                        'restBetweenReps': 20,
+                                        'restAfterExercise': 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Leg Raise Machine',
+                                        media: getMedia('LegRaiseMachine.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Crossfit Situps',
+                                        media: getMedia('CrossfitSitup.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    }),
+                    new WorkoutDay({
+                        id: 2,
+                        name: 'Upper Body 1',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Narrow Grip',
+                                        media: getMedia('BenchPressNarrowGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Narrow
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Fly',
+                                        media: getMedia('CableFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Fly',
+                                        media: getMedia('DumbbellFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Horizontal Row, Inclined Prone',
+                                        media: getMedia('DumbbellHorizontalRowInclineProne.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Tricpes Extensions, Seated',
+                                        media: getMedia('DumbbellTricepsExtensionSeated.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Inclined Pushup, Narrow Grip',
+                                        media: getMedia('InclinePushupNarrowGrip.jpg'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Narrow,
+                                        ),
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Reverse Cable Fly, On Flat Bench',
+                                        media: getMedia('ReverseCableFlyOnFlatBench.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps',
+                                        media: getMedia('Situps.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps with Weight Above Head',
+                                        media: getMedia('SitupsWithWeightAboveHead.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 11,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Russian Twist',
+                                        media: getMedia('RussianTwist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    }),
+                    new WorkoutDay({
+                        id: 3,
+                        name: 'Upper Body 2',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
+                                        media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Decline Dumbbell Pullover',
+                                        media: getMedia('DeclineDumbbellPullover.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Arm Circles',
+                                        media: getMedia('DumbbellArmCircles.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Machine Row Medium Grip',
+                                        media: getMedia('MachineRowMediumGrip.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dummbell Biceps Curl Standing Underhand Grip',
+                                        media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Shrug',
+                                        media: getMedia('CableShrug.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dragon Flags',
+                                        media: getMedia('DragonFlags.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Decline Situps',
+                                        media: getMedia('DeclineSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Lying Scissors Kicks',
+                                        media: getMedia('LyingScissorsKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
                                 ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            },
-                            {
-                                'id': 3,
-                                'name': 'Cable Adduction',
-                                  'imageUrl': 'assets/images/CableAdduction.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
+                            })
                         ]
-                    },
-                    {
-                        'id': 4,
-                        'exercises': [
-                            {
-                                'name': 'Cable Leg Curl',
-                                  'imageUrl': 'assets/images/CableLegCurl.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 50,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
+                    }),
+                    new WorkoutDay({
+                        id: 1,
+                        name: 'Lower Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Walking Lunge with Side Weights',
+                                        media: getMedia('WalkingLungeWithSideWeights.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Abduction',
+                                        media: getMedia('CableAbduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Cable Adduction',
+                                        media: getMedia('CableAdduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Calf Raise',
+                                        media: getMedia('CableCalfRaise.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bodyweight Flutter Kicks',
+                                        media: getMedia('BodyweightFlutterKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Weighted Situps',
+                                        media: getMedia('WeightedSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Plank',
+                                        media: getMedia('Plank.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 5,
+                                        restAfterExercise: 10
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Twist',
+                                        media: getMedia('Twist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    })
+                ]
+            }),
+            new Workout({
+                id: 3,
+                name: 'Workout Set No. 3',
+                description: '4 days including upper, lower and core muscles',
+                days: [
+                    new WorkoutDay({
+                        id: 4,
+                        name: 'Full Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Wide Grip',
+                                        media: getMedia('BenchPressWideGrip.jpeg'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Seated Rope Cable Row',
+                                        media: getMedia('SeatedRopeCableRow.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Wrist Curl',
+                                        media: getMedia('DumbbellWristCurl.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Triceps Pushdown, Overhand Grip',
+                                        media: getMedia('CableTricepsPushdownOverheadGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Biceps Curl, Underhand Grip',
+                                        media: getMedia('CableBicepsCurlUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            })
+                                        ],
+                                        'restBetweenReps': 20,
+                                        'restAfterExercise': 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Leg Raise Machine',
+                                        media: getMedia('LegRaiseMachine.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Crossfit Situps',
+                                        media: getMedia('CrossfitSitup.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    }),
+                    new WorkoutDay({
+                        id: 2,
+                        name: 'Upper Body 1',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Narrow Grip',
+                                        media: getMedia('BenchPressNarrowGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Narrow
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Fly',
+                                        media: getMedia('CableFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Fly',
+                                        media: getMedia('DumbbellFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Horizontal Row, Inclined Prone',
+                                        media: getMedia('DumbbellHorizontalRowInclineProne.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Tricpes Extensions, Seated',
+                                        media: getMedia('DumbbellTricepsExtensionSeated.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Inclined Pushup, Narrow Grip',
+                                        media: getMedia('InclinePushupNarrowGrip.jpg'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Narrow,
+                                        ),
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Reverse Cable Fly, On Flat Bench',
+                                        media: getMedia('ReverseCableFlyOnFlatBench.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps',
+                                        media: getMedia('Situps.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps with Weight Above Head',
+                                        media: getMedia('SitupsWithWeightAboveHead.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 11,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Russian Twist',
+                                        media: getMedia('RussianTwist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    }),
+                    new WorkoutDay({
+                        id: 3,
+                        name: 'Upper Body 2',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
+                                        media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Decline Dumbbell Pullover',
+                                        media: getMedia('DeclineDumbbellPullover.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Arm Circles',
+                                        media: getMedia('DumbbellArmCircles.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Machine Row Medium Grip',
+                                        media: getMedia('MachineRowMediumGrip.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dummbell Biceps Curl Standing Underhand Grip',
+                                        media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Shrug',
+                                        media: getMedia('CableShrug.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dragon Flags',
+                                        media: getMedia('DragonFlags.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Decline Situps',
+                                        media: getMedia('DeclineSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Lying Scissors Kicks',
+                                        media: getMedia('LyingScissorsKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
                                 ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
+                            })
                         ]
-                    },
-                    {
-                        'id': 5,
-                        'exercises': [
-                            {
-                                'name': 'Cable Calf Raise',
-                                  'imageUrl': 'assets/images/CableCalfRaise.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 70,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
+                    }),
+                    new WorkoutDay({
+                        id: 1,
+                        name: 'Lower Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Walking Lunge with Side Weights',
+                                        media: getMedia('WalkingLungeWithSideWeights.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Abduction',
+                                        media: getMedia('CableAbduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Cable Adduction',
+                                        media: getMedia('CableAdduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Calf Raise',
+                                        media: getMedia('CableCalfRaise.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bodyweight Flutter Kicks',
+                                        media: getMedia('BodyweightFlutterKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Weighted Situps',
+                                        media: getMedia('WeightedSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Plank',
+                                        media: getMedia('Plank.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 5,
+                                        restAfterExercise: 10
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Twist',
+                                        media: getMedia('Twist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    })
+                ]
+            }),
+            new Workout({
+                id: 4,
+                name: 'Workout Set No. 4',
+                description: '4 days including upper, lower and core muscles',
+                days: [
+                    new WorkoutDay({
+                        id: 4,
+                        name: 'Full Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Wide Grip',
+                                        media: getMedia('BenchPressWideGrip.jpeg'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Seated Rope Cable Row',
+                                        media: getMedia('SeatedRopeCableRow.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Wrist Curl',
+                                        media: getMedia('DumbbellWristCurl.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Triceps Pushdown, Overhand Grip',
+                                        media: getMedia('CableTricepsPushdownOverheadGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Biceps Curl, Underhand Grip',
+                                        media: getMedia('CableBicepsCurlUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            }),
+                                            new Rep({
+                                                'weight': 50,
+                                                'weightUnit': WeightUnit.Lbs,
+                                                'times': 12
+                                            })
+                                        ],
+                                        'restBetweenReps': 20,
+                                        'restAfterExercise': 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Leg Raise Machine',
+                                        media: getMedia('LegRaiseMachine.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 80,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Crossfit Situps',
+                                        media: getMedia('CrossfitSitup.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    }),
+                    new WorkoutDay({
+                        id: 2,
+                        name: 'Upper Body 1',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bench Press, Narrow Grip',
+                                        media: getMedia('BenchPressNarrowGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Narrow
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Barbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Dumbbell Bench Press, Rotating Grip',
+                                        media: getMedia('DumbbellBenshPressRotatingGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Fly',
+                                        media: getMedia('CableFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 60,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Fly',
+                                        media: getMedia('DumbbellFly.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Horizontal Row, Inclined Prone',
+                                        media: getMedia('DumbbellHorizontalRowInclineProne.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Tricpes Extensions, Seated',
+                                        media: getMedia('DumbbellTricepsExtensionSeated.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Inclined Pushup, Narrow Grip',
+                                        media: getMedia('InclinePushupNarrowGrip.jpg'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Narrow,
+                                        ),
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                            new Rep({
+                                                times: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Reverse Cable Fly, On Flat Bench',
+                                        media: getMedia('ReverseCableFlyOnFlatBench.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 55,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps',
+                                        media: getMedia('Situps.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Situps with Weight Above Head',
+                                        media: getMedia('SitupsWithWeightAboveHead.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 11,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Russian Twist',
+                                        media: getMedia('RussianTwist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    }),
+                    new WorkoutDay({
+                        id: 3,
+                        name: 'Upper Body 2',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
+                                        media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 90,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Decline Dumbbell Pullover',
+                                        media: getMedia('DeclineDumbbellPullover.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                            GripWidth.Wide,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 3,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dumbbell Arm Circles',
+                                        media: getMedia('DumbbellArmCircles.png'),
+                                        theGrip: new Grip(
+                                            GripType.Overhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 10,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Machine Row Medium Grip',
+                                        media: getMedia('MachineRowMediumGrip.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 85,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dummbell Biceps Curl Standing Underhand Grip',
+                                        media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
+                                        theGrip: new Grip(
+                                            GripType.Underhand,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 15,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Shrug',
+                                        media: getMedia('CableShrug.png'),
+                                        theGrip: new Grip(
+                                            GripType.Neutral,
+                                            GripWidth.Normal,
+                                        ),
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 95,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Dragon Flags',
+                                        media: getMedia('DragonFlags.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Decline Situps',
+                                        media: getMedia('DeclineSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cross Body Crunch',
+                                        media: getMedia('CrossBodyCrunch.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 10,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Lying Scissors Kicks',
+                                        media: getMedia('LyingScissorsKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.NoWeight,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            }),
+                                            new Rep({
+                                                times: 15
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
                                 ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
+                            })
                         ]
-                    },
-                    {
-                        'id': 6,
-                        'exercises': [
-                            {
-                                'name': 'Bodyweight Flutter Kicks',
-                                  'imageUrl': 'assets/images/BodyweightFlutterKicks.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 7,
-                        'exercises': [
-                            {
-                                'name': 'Weighted Situps',
-                                  'imageUrl': 'assets/images/WeightedSitups.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    },
-                                    {
-                                        'weight': 25,
-                                        'weightUnit': WeightUnit.Lbs,
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    },
-                    {
-                        'id': 8,
-                        'exercises': [
-                            {
-                                'name': 'Plank',
-                                  'imageUrl': 'assets/images/Plank.png',
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        seconds: 10
-                                    },
-                                    {
-                                        seconds: 10
-                                    },
-                                    {
-                                        seconds: 10
-                                    },
-                                ],
-                                'restBetweenReps': 5,
-                                'restAfterExercise': 10
-                            }
-                        ]
-                    },
-                    {
-                        'id': 9,
-                        'exercises': [
-                            {
-                                'name': 'Twist',
-                                  'imageUrl': 'assets/images/Twist.png',
-                                'repetition': RepetitionSpeed.OneOne,
-                                'isFavorite': false,
-                                'muscles' : [ Muscles.Chest, Muscles.Core],   'reps': [
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    },
-                                    {
-                                        'times': 12
-                                    }
-                                ],
-                                'restBetweenReps': 20,
-                                'restAfterExercise': 20
-                            }
-                        ]
-                    }
-                ],
-            }
+                    }),
+                    new WorkoutDay({
+                        id: 1,
+                        name: 'Lower Body',
+                        exerciseSets: [
+                            new ExerciseSet({
+                                id: 1,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Walking Lunge with Side Weights',
+                                        media: getMedia('WalkingLungeWithSideWeights.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        typeOfWeight: WeightType.Dumbbell,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 2,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Abduction',
+                                        media: getMedia('CableAbduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    }),
+                                    new Exercise({
+                                        name: 'Cable Adduction',
+                                        media: getMedia('CableAdduction.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 4,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Leg Curl',
+                                        media: getMedia('CableLegCurl.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 50,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 5,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Cable Calf Raise',
+                                        media: getMedia('CableCalfRaise.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 70,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 6,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Bodyweight Flutter Kicks',
+                                        media: getMedia('BodyweightFlutterKicks.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 7,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Weighted Situps',
+                                        media: getMedia('WeightedSitups.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                weight: 25,
+                                                weightUnit: WeightUnit.Lbs,
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 8,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Plank',
+                                        media: getMedia('Plank.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+
+                                        reps: [
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                            new Rep({
+                                                seconds: 10
+                                            }),
+                                        ],
+                                        restBetweenReps: 5,
+                                        restAfterExercise: 10
+                                    })
+                                ]
+                            }),
+                            new ExerciseSet({
+                                id: 9,
+                                exercises: [
+                                    new Exercise({
+                                        name: 'Twist',
+                                        media: getMedia('Twist.png'),
+                                        repSpeed: RepetitionSpeed.OneOne,
+                                        isFavorite: false,
+                                        reps: [
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            }),
+                                            new Rep({
+                                                times: 12
+                                            })
+                                        ],
+                                        restBetweenReps: 20,
+                                        restAfterExercise: 20
+                                    })
+                                ]
+                            })
+                        ],
+                    })
+                ]
+            })
         ]
-     }]
-};
+    })
+);

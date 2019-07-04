@@ -12,6 +12,7 @@ const mediaUrl = (name: string): string => {
 
 const addMedia = (map: Map<string, ExerciseMedia>, name: string, muscles: Muscles[]) => {
     const url = mediaUrl(name);
+    console.log('building default exercide media from', map, name, muscles);
     const media = ExerciseMedia.buildDefaultExerciseMedia(url, new Set(muscles));
     map.set(url, media);
 };
@@ -19,6 +20,7 @@ const addMedia = (map: Map<string, ExerciseMedia>, name: string, muscles: Muscle
 const init = (): Map<string, ExerciseMedia> => {
     const exercises = new Map<string, ExerciseMedia>();
     addMedia(exercises, 'BenchPressWideGrip.jpeg', [Muscles.Chest]);
+    addMedia(exercises, 'BenchPressNarrowGrip.png', [Muscles.Chest]);
     addMedia(exercises, 'BodyweightFlutterKicks.png', [Muscles.Glutes, Muscles.Hamstrings]);
     addMedia(exercises, 'CabelLatPulldownBehindNeckWideGrip.png', [Muscles.Shoulders, Muscles.Forearms]);
     addMedia(exercises, 'CableAbduction.png', [Muscles.Abductors]);
@@ -61,5 +63,5 @@ const init = (): Map<string, ExerciseMedia> => {
 export const defaultExerciseMedia = init();
 
 export const getMedia = (name: string): ExerciseMedia => {
-    return defaultExerciseMedia.get(name);
+    return defaultExerciseMedia.get(mediaUrl(name));
 };

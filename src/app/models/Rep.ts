@@ -1,24 +1,18 @@
 import { WeightUnit } from './enums';
-import { JsonProperty } from 'json-typescript-mapper';
 
 export class Rep {
 
-    @JsonProperty('weight')
-    weight: number;
-
+    public weightUnit: WeightUnit;
     get HasWeight() {
         return this.weight || this.weight === 0;
     }
+
+    public weight: number;
     set HasWeight(value) {
         this.weight = value ? 0 : null;
     }
 
-    @JsonProperty('weightUnit')
-    weightUnit: WeightUnit;
-
-    @JsonProperty('times')
-    times: number;
-
+    public times: number;
     get HasTimes() {
         return this.times || this.times === 0;
     }
@@ -26,9 +20,7 @@ export class Rep {
         this.times = value ? 0 : null;
     }
 
-    @JsonProperty('seconds')
-    seconds: number;
-
+    public seconds: number;
     get HasSeconds() {
         return this.seconds || this.seconds === 0;
     }
@@ -36,10 +28,15 @@ export class Rep {
         this.seconds = value ? 0 : null;
     }
 
-    constructor () {
-        this.weight = undefined;
-        this.weightUnit = undefined;
-        this.times = undefined;
-        this.seconds = undefined;
+    constructor (options: {
+        weight?: number,
+        weightUnit?: WeightUnit,
+        times?: number,
+        seconds?: number}
+    ) {
+        this.weight = options.weight;
+        this.weightUnit = options.weightUnit || WeightUnit.Lbs;
+        this.times = options.times;
+        this.seconds = options.seconds;
     }
 }

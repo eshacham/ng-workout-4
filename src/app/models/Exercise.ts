@@ -2,49 +2,43 @@
 import { RepetitionSpeed, WeightType, Muscles } from './enums';
 import { Grip } from './Grip';
 import { Rep } from './Rep';
-import { JsonProperty } from 'json-typescript-mapper';
+import { ExerciseMedia } from './ExerciseMedia';
 
 export class Exercise {
-    @JsonProperty('name')
-    name: string;
 
-    @JsonProperty('imageUrl')
-    imageUrl: string;
+    public name: string;
+    public media: ExerciseMedia;
+    public theGrip: Grip = new Grip();
+    public repSpeed: RepetitionSpeed;
+    public typeOfWeight: WeightType;
+    public isFavorite: Boolean;
+    public reps: Rep[];
+    public restBetweenReps: number;
+    public restAfterExercise: number;
 
-    @JsonProperty({clazz: Grip, name: 'grip' })
-    theGrip: Grip;
+    get muscles() {
+        return this.media.muscles;
+    }
 
-    @JsonProperty('repetition')
-    repSpeed: RepetitionSpeed;
-
-    @JsonProperty('weightType')
-    typeOfWeight: WeightType;
-
-    @JsonProperty('isFavorite')
-    isFavorite: Boolean;
-
-    @JsonProperty({clazz: Rep, name: 'reps' })
-    reps: Rep[];
-
-    @JsonProperty('restBetweenReps')
-    restBetweenReps: number;
-
-    @JsonProperty('restAfterExercise')
-    restAfterExercise: number;
-
-    @JsonProperty('muscles')
-    muscles: Muscles[];
-
-    constructor() {
-        this.name = void 0;
-        this.imageUrl = void 0;
-        this.theGrip = void 0;
-        this.repSpeed = void 0;
-        this.typeOfWeight = void 0;
-        this.isFavorite = void 0;
-        this.restBetweenReps = void 0;
-        this.restAfterExercise = void 0;
-        this.reps = void 0;
-        this.muscles = void 0;
+    constructor(options: {
+         name: string,
+         media: ExerciseMedia,
+         theGrip?: Grip,
+         repSpeed: RepetitionSpeed,
+         typeOfWeight?: WeightType,
+         isFavorite: Boolean,
+         reps: Rep[],
+         restBetweenReps: number,
+         restAfterExercise: number}
+        ) {
+        this.name = options.name;
+        this.media = options.media;
+        this.theGrip = options.theGrip || new Grip();
+        this.repSpeed = options.repSpeed;
+        this.typeOfWeight = options.typeOfWeight || WeightType.NoWeight;
+        this.isFavorite = options.isFavorite;
+        this.restBetweenReps = options.restBetweenReps;
+        this.restAfterExercise = options.restAfterExercise;
+        this.reps = options.reps;
     }
 }

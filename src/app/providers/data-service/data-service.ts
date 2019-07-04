@@ -1,5 +1,4 @@
 import { Subject } from 'rxjs';
-import { deserialize } from 'json-typescript-mapper';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/File/ngx';
@@ -7,8 +6,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
 import { StateCache } from '../../models/StateCache';
 import { Workout } from '../../models/Workout';
-import { DefaultWorkouts } from '../../models/DefaultWorkouts';
-import { json } from '../../constants/defaultWorkouts';
+import { defaultWorkouts } from '../../constants/defaultWorkouts';
 import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction, Muscles } from '../../models/enums';
@@ -22,7 +20,6 @@ export class DataServiceProvider {
 
   private _workouts: Workout[];
   private _images: ExerciseMedia[];
-  private _defaultWorkouts: DefaultWorkouts;
   private state: StateCache;
   workoutPublisher: Subject<ExerciseSetActionEvent>;
 
@@ -36,22 +33,6 @@ export class DataServiceProvider {
     this._workouts = [];
     this.state = new StateCache();
     this.workoutPublisher = new Subject();
-  }
-
-  get defaultWorkouts(): DefaultWorkouts {
-    if (!this._defaultWorkouts) {
-      this.buildDefaultWorkouts();
-    }
-    return this._defaultWorkouts;
-  }
-
-  set defaultWorkouts(defaultWorkouts: DefaultWorkouts) {
-    this._defaultWorkouts = defaultWorkouts;
-  }
-
-  buildDefaultWorkouts() {
-    this.defaultWorkouts = deserialize(DefaultWorkouts, json);
-    console.log('deserialized default workouts', this.defaultWorkouts.workouts);
   }
 
   async getWorkout(id: number): Promise<Workout> {
@@ -84,7 +65,7 @@ export class DataServiceProvider {
   }
 
   async resetWorkouts() {
-    this._workouts = this.defaultWorkouts.workouts.map(x => Object.assign({}, x)); // deep clone of objects in an array
+    this._workouts = defaultWorkouts.workouts.map(x => Object.assign({}, x)); // deep clone of objects in an array
     await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
     console.log('workouts have been reset to default workouts');
     this.workoutPublisher.next(new ExerciseSetActionEvent(ExerciseSetAction.WorkoutReset, null, null, null));
@@ -151,7 +132,7 @@ export class DataServiceProvider {
   private async initDefaultImages() {
     this._images = [];
     console.log('initializing saved images from assests...');
-    const images: Map<string, ExerciseMedia> = this.extractUniqueImagesFromWorkouts(this.defaultWorkouts.workouts);
+    const images: Map<string, ExerciseMedia> = this.extractUniqueImagesFromWorkouts(defaultWorkouts.workouts);
     this._images = Array.from(images.values());
     console.log(`initialized ${this._images.length} saved images from assests`, this._images);
     await this.saveImages();
@@ -166,13 +147,13 @@ export class DataServiceProvider {
       for (const day of workout.days) {
         for (const set of day.exerciseSets) {
           for (const exe of set.exercises) {
-            if (!exe.imageUrl.startsWith('assets/images') &&
-              exe.imageUrl.indexOf(this.file.dataDirectory) < 0) {
-              const oldPath = exe.imageUrl;
-              const name = exe.imageUrl.substr(exe.imageUrl.lastIndexOf('/') + 1);
-              const nativePath = this.file.dataDirectory + name;
-              exe.imageUrl = this.getIonicPath(nativePath);
-              console.log(`update exercise image path from ${oldPath} to ${exe.imageUrl}`);
+            if (!exe.media.isDefault &&
+                exe.media.nativePath.indexOf(this.file.dataDirectory) < 0) {
+              const oldPath = exe.media.nativePath;
+              const name = exe.media.nativePath.substr(exe.media.nativePath.lastIndexOf('/') + 1);
+              exe.media.nativePath = this.file.dataDirectory + name;
+              exe.media.ionicPath = this.getIonicPath(exe.media.nativePath);
+              console.log(`update exercise image path from ${oldPath} to ${exe.media.nativePath}`);
             }
           }
         }
@@ -185,13 +166,14 @@ export class DataServiceProvider {
     await this.storage.set(IMAGES_STORAGE_KEY, this._images);
   }
 
-  async addImage(name: string) {
-    const nativePath = this.file.dataDirectory + name;
-    const ionicPath = this.getIonicPath(nativePath);
+  async addImage(origImagePath: string, origImageName: string, newImageName: string) {
+    await this.file.copyFile(origImagePath, origImageName, this.file.dataDirectory, newImageName);
+    const nativePath = this.file.dataDirectory + newImageName;
+    console.log(`new image ${origImagePath}/${origImageName} has been copied to ${nativePath}`);
 
     const newEntry: ExerciseMedia = {
-      name: name,
-      ionicPath: ionicPath,
+      name: newImageName,
+      ionicPath: this.getIonicPath(nativePath),
       nativePath: nativePath,
       isDefault: false,
       muscles: new Set(),

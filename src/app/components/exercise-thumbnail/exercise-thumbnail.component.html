@@ -2,9 +2,9 @@
   <div *ngSwitchCase="displayMode.Workout">
       <div [hidden]="IsRunning">
           <ion-list lines="none">
-              <ion-item *ngFor="let exercise of exerciseSet.exercises; let i=index"
+              <ion-item *ngFor="let exercise of exerciseSet.exercises"
                 [ngClass]="getTopBottomMarginClass(exercise)">
-                <img [src]="safeImage(i)" slot="start"/>
+                <img [src]="safeImage(exercise.media)" slot="start"/>
                 <ion-label>
                     <h2 class="ion-text-wrap">{{exercise.name}}</h2>
                     <app-exercise-variation class="ion-text-wrap"
@@ -29,8 +29,8 @@
                   </ion-col>
               </ion-row>
               <ion-row class="ion-justify-content-around">
-                  <ion-col *ngFor="let exercise of exerciseSet.exercises; let i=index" text-center>
-                    <img [src]="safeImage(i)" />
+                  <ion-col *ngFor="let exercise of exerciseSet.exercises" text-center>
+                    <img [src]="safeImage(exercise.media)" />
                   </ion-col>
               </ion-row>
               <ion-row class="ion-justify-content-around">
@@ -105,7 +105,7 @@
             <ion-col *ngFor="let exercise of exerciseSet.exercises; let i = index"
                 no-padding col-with-image-and-button>
                 <ion-item id="item-with-image-and-button">
-                    <img [src]="safeImage(i)"/>
+                    <img [src]="safeImage(exercise.media)"/>
                     <ion-button fill="clear" bottom color="dark"
                         (click)="deleteExercise(i)">
                         <ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -198,8 +198,8 @@
   </div>
   <div *ngSwitchDefault>
       <ion-list lines="none">
-          <ion-item *ngFor="let exercise of exerciseSet.exercises; let i=index;">
-            <img [src]="safeImage(i)" slot="start"/>
+          <ion-item *ngFor="let exercise of exerciseSet.exercises">
+            <img [src]="safeImage(exercise.media)" slot="start"/>
             <ion-label>
                 <h2 class="ion-text-wrap">{{exercise.name}}</h2>
                 <app-exercise-variation class="ion-text-wrap"

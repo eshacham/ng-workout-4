@@ -1,11 +1,8 @@
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { Workout } from '../models/Workout';
-import { json } from '../constants/defaultWorkouts';
-import { deserialize } from 'json-typescript-mapper';
-import { DefaultWorkouts } from '../models/DefaultWorkouts';
+import { defaultWorkouts } from '../constants/defaultWorkouts';
 
-const defaultWorkouts = deserialize(DefaultWorkouts, json);
 export const defaultFirstWorkout = defaultWorkouts.workouts[0];
 
 export class PlatformMock {

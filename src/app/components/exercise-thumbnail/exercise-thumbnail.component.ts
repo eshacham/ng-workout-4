@@ -9,6 +9,7 @@ import { DisplayMode, WeightUnit, ExerciseSetAction } from 'src/app/models/enums
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover/exercise-thumbnail-popover.component';
+import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -57,8 +58,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.timedRestRemaining > 0;
     }
 
-    safeImage(index: number): SafeUrl {
-        return this.domSanitizer.bypassSecurityTrustUrl(this.exerciseSet.exercises[index].imageUrl);
+    safeImage(media: ExerciseMedia): SafeUrl {
+        // console.log('getting safe image url from ', media);
+        if (media) {
+            return this.domSanitizer.bypassSecurityTrustUrl(media.ionicPath);
+        }
     }
 
     get timedRepRemaining(): number { return this._timedRepRemaining; }
@@ -354,11 +358,12 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     addRep(index: number) {
         if (!this.isMaxReps) {
             this.exerciseSet.exercises.forEach(set => {
-                const newRep: Rep = new Rep();
-                newRep.weight = set.reps[index].weight;
-                newRep.weightUnit = set.reps[index].weightUnit,
-                newRep.times = set.reps[index].times,
-                newRep.seconds = set.reps[index].seconds;
+                const newRep: Rep = new Rep({
+                    weight: set.reps[index].weight,
+                    weightUnit: set.reps[index].weightUnit,
+                    times: set.reps[index].times,
+                    seconds: set.reps[index].seconds
+                });
                 set.reps.splice(index, 0, newRep );
             });
         }

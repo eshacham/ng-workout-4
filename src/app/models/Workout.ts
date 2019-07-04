@@ -1,23 +1,19 @@
 import { WorkoutDay } from './WorkoutDay';
-import { JsonProperty } from 'json-typescript-mapper';
 
 export class Workout {
-    @JsonProperty('id')
-    id: number;
 
-    @JsonProperty('name')
-    name: string;
-
-    @JsonProperty('description')
-    description: string;
-
-    @JsonProperty({clazz: WorkoutDay, name: 'days'})
-    days: WorkoutDay[];
-
-    constructor() {
-        this.id = void 0;
-        this.name = void 0;
-        this.description = void 0
-        this.days = void 0;
+    public id: number;
+    public name: string;
+    public description: string;
+    public days: WorkoutDay[];
+    constructor (options: {
+        id: number,
+        name: string,
+        description: string,
+        days: WorkoutDay[]}) {
+        this.id = options.id;
+        this.name = options.name;
+        this.description = options.description;
+        this.days = options.days;
     }
 }

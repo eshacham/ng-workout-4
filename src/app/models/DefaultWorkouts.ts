@@ -1,12 +1,10 @@
 import { Workout } from './Workout';
-import { JsonProperty } from 'json-typescript-mapper';
 
 export class DefaultWorkouts {
 
-    @JsonProperty({clazz: Workout, name: 'workouts'})
-    workouts: Workout[];
+public workouts: Workout[];
 
-    constructor() {
-        this.workouts = void 0;
+    constructor(options: {workouts: Workout[]}) {
+        this.workouts = options.workouts;
     }
 }

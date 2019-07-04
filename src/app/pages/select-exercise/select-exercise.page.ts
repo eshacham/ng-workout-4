@@ -8,7 +8,7 @@ import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
-import { ExerciseSetAction, Muscles } from 'src/app/models/enums';
+import { ExerciseSetAction, Muscles, RepetitionSpeed } from 'src/app/models/enums';
 
 interface SelectedExerciseMedia extends ExerciseMedia {
   isSelected: boolean;
@@ -85,12 +85,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  // async ionViewWillEnter() {
-  //   if (this._useFilter) {
-  //     const muscles = this.dataService.muscleFilter;
-  //     this.filterImagesByMuscles(muscles);
-  //   }
-  // }
 
   private async getImages(): Promise<SelectedExerciseMedia[]> {
     const images = await this.dataService.getImages();
@@ -135,35 +129,45 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     const newSets = this.getNewSets();
     const lastSelectedWorkoutDay = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
     newSets.forEach((set) => {
-      const id = Math.max(...this.workout.days[lastSelectedWorkoutDay].exerciseSets.map(e => e.id)) + 1;
-      set.id = id;
       this.workout.days[lastSelectedWorkoutDay].exerciseSets.push(set);
     });
     this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
+  getMaxIdForWorkoutSets(): number {
+    const lastSelectedWorkoutDay = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
+    const maxSetId = Math.max(...this.workout.days[lastSelectedWorkoutDay].exerciseSets.map(e => e.id));
+    return maxSetId;
+  }
+
   getNewSets(): ExerciseSet[] {
-    const superset = new ExerciseSet();
-    superset.exercises = [];
-    const sets: ExerciseSet[] = [];
+    let newSets: ExerciseSet[];
+    const newExercises: Exercise[] = [];
     for (const image of this.selectedImages) {
       console.log(`adding exercise ${image.name}`);
-      const newRep = new Rep();
-      const newExercise = new Exercise();
-      newExercise.name = image.name;
-      newExercise.imageUrl = image.ionicPath;
-      newRep.times = 1;
-      newExercise.reps = [newRep];
-      if (!this.isSet) {
-        const set = new ExerciseSet();
-        set.exercises = [newExercise];
-        sets.push(set);
-      } else {
-        superset.exercises.push(newExercise);
-      }
+      const newRep = new Rep({
+        times: 1
+      });
+      const newExercise = new Exercise({
+        name: image.name,
+        media: image,
+        reps: [newRep],
+        repSpeed: RepetitionSpeed.OneOne,
+        isFavorite: false,
+        restBetweenReps: 20,
+        restAfterExercise: 20
+      });
+      newExercises.push(newExercise);
     }
-    return this.isSet ? [superset] : sets;
+
+    let maxId = this.getMaxIdForWorkoutSets();
+    if (this.isSet) {
+      newSets = [new ExerciseSet({id: ++maxId, exercises: newExercises })];
+    } else {
+      newSets = newExercises.map((exe) => new ExerciseSet({id: ++maxId, exercises: [exe] }));
+    }
+    return newSets;
   }
 
   selectMuscle() {

@@ -91,30 +91,26 @@ export class TabLibraryPage implements OnInit, OnDestroy {
       };
       const imagePath = await this.camera.getPicture(options);
       console.log('took picture as: ', imagePath);
-      let currentName: string;
-      let correctPath: string;
+      let imageName: string;
+      let ImagePath: string;
 
       if (this.dataServiceProvider.isAndriod && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-        const path = await this.filePath.resolveNativePath(imagePath);
-        correctPath = path.substr(0, path.lastIndexOf('/') + 1);
+        imageName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+        const tempPath = await this.filePath.resolveNativePath(imagePath);
+        ImagePath = tempPath.substr(0, tempPath.lastIndexOf('/') + 1);
       } else {
-        currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+        imageName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+        ImagePath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
       }
-      await this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+      await this.copyFileToLocalDir(ImagePath, imageName, `${new Date().getTime()}.jpg`);
     }
 
-    createFileName = () => `${new Date().getTime()}.jpg`;
-
-    async copyFileToLocalDir(namePath: string, currentName: string, newFileName: string) {
+    async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
       try {
-        await this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName);
-        console.log('new file has been copied');
-        await this.dataServiceProvider.addImage(newFileName);
+        await this.dataServiceProvider.addImage(imagePath, imageName, newImageName);
       } catch (error) {
-        console.log('Error while storing file:', error);
-        this.presentToast('Error while storing file ');
+        console.log('Error storing new image:', error);
+        this.presentToast('Error storing new image');
       }
     }
 

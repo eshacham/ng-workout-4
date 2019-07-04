@@ -148,10 +148,15 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     }
   }
 
-  private async addWorkoutDay(name: string) {
-    const newDay = new WorkoutDay();
-    newDay.exerciseSets = [];
-    const index = this.getWorkoutDayIndexByName(name);
+  getMaxIdForWorkoutDays(): number {
+    const maxDayId = Math.max(...this.workout.days.map(d => d.id));
+    return maxDayId;
+  }
+
+  private async addWorkoutDay(currentWorkoutDayname: string) {
+    let maxId = this.getMaxIdForWorkoutDays();
+    const newDay = new WorkoutDay({id: ++maxId, name: 'new workout day', exerciseSets: []});
+    const index = this.getWorkoutDayIndexByName(currentWorkoutDayname);
     console.log('splicing (insert) at ', index);
     this.isNewDayAdded = true;
     this.workout.days.splice(index + 1, 0, newDay);

@@ -61,13 +61,14 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   }
 
   async addWorkout(event: any) {
-    const newWorkout = new Workout();
-    newWorkout.id = Math.max(...this.workouts.map(w => w.id)) + 1;
-    newWorkout.name = 'new workout name';
-    newWorkout.description = 'new workout description';
-    const day = new WorkoutDay();
-    day.exerciseSets = [];
-    newWorkout.days = [day];
+    const newWorkout = new Workout({
+      id: Math.max(...this.workouts.map(w => w.id)) + 1,
+      name: 'new workout',
+      description: 'describe the workout',
+      days: [
+        new WorkoutDay({id: 1, name: 'workout day name', exerciseSets: []})
+      ]
+    });
     this.workouts.push(newWorkout);
     event.stopPropagation();
     await new Promise(() => setTimeout(() => {
