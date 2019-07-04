@@ -11,7 +11,7 @@ import { DefaultWorkouts } from '../../models/DefaultWorkouts';
 import { json } from '../../constants/defaultWorkouts';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction, Muscles } from '../../models/enums';
-import { SavedImage } from '../../models/SavedImage';
+import { ExerciseMedia } from '../../models/ExerciseMedia';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -20,7 +20,7 @@ const IMAGES_STORAGE_KEY = 'my_images';
 export class DataServiceProvider {
 
   private _workouts: Workout[];
-  private _images: SavedImage[];
+  private _images: ExerciseMedia[];
   private _defaultWorkouts: DefaultWorkouts;
   private state: StateCache;
   workoutPublisher: Subject<ExerciseSetActionEvent>;
@@ -104,7 +104,7 @@ export class DataServiceProvider {
     console.log('images have been reset');
   }
 
-  async getImages(): Promise<SavedImage[]> {
+  async getImages(): Promise<ExerciseMedia[]> {
     if (!this._images.length) {
       await this.initImages();
     }
@@ -135,7 +135,7 @@ export class DataServiceProvider {
     this.updateImagesPath(images);
   }
 
-  private updateImagesPath(images: SavedImage[]) {
+  private updateImagesPath(images: ExerciseMedia[]) {
     for (const image of images) {
       if (image.nativePath.indexOf(this.file.dataDirectory) < 0) {
         const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
@@ -150,14 +150,14 @@ export class DataServiceProvider {
   private async initDefaultImages() {
     this._images = [];
     console.log('initializing saved images from assests...');
-    const images: Map<string, SavedImage> = this.extractUniqueImagesFromWorkouts(this.defaultWorkouts.workouts);
+    const images: Map<string, ExerciseMedia> = this.extractUniqueImagesFromWorkouts(this.defaultWorkouts.workouts);
     this._images = Array.from(images.values());
     console.log(`initialized ${this._images.length} saved images from assests`, this._images);
     await this.saveImages();
   }
 
   private extractUniqueImagesFromWorkouts(workouts: Workout[]) {
-    const images: Map<string, SavedImage> = new Map();
+    const images: Map<string, ExerciseMedia> = new Map();
     for (const workout of workouts) {
       for (const day of workout.days) {
         for (const set of day.exerciseSets) {
@@ -165,7 +165,7 @@ export class DataServiceProvider {
             const url = exe.imageUrl;
             if (!images[url]) {
               const muscles = new Set<Muscles>(exe.muscles);
-              const image = SavedImage.buildDefaultSavedImage(url, muscles);
+              const image = ExerciseMedia.buildDefaultExerciseMedia(url, muscles);
               images.set(url, image);
             }
           }
@@ -203,7 +203,7 @@ export class DataServiceProvider {
     const nativePath = this.file.dataDirectory + name;
     const ionicPath = this.getIonicPath(nativePath);
 
-    const newEntry: SavedImage = {
+    const newEntry: ExerciseMedia = {
       name: name,
       ionicPath: ionicPath,
       nativePath: nativePath,
@@ -215,7 +215,7 @@ export class DataServiceProvider {
     await this.saveImages();
   }
 
-  async deleteImage(image: SavedImage, position: number) {
+  async deleteImage(image: ExerciseMedia, position: number) {
     console.log(`removing image ${name} from library`);
     const imageToRemove = this._images.splice(position, 1)[0];
     await this.saveImages();
@@ -227,7 +227,7 @@ export class DataServiceProvider {
     }
   }
 
-  async updateImage(imgEntry: SavedImage, position: number) {
+  async updateImage(imgEntry: ExerciseMedia, position: number) {
     console.log(`updated image name ${imgEntry.name} as ${this._images[position].ionicPath}`);
     await this.saveImages();
   }

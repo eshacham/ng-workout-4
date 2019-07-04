@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
-import { SavedImage } from 'src/app/models/SavedImage';
+import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 import { Workout } from 'src/app/models/Workout';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
@@ -10,7 +10,7 @@ import { Rep } from 'src/app/models/Rep';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 import { ExerciseSetAction, Muscles } from 'src/app/models/enums';
 
-interface SelectedSavedImage extends SavedImage {
+interface SelectedExerciseMedia extends ExerciseMedia {
   isSelected: boolean;
 }
 
@@ -21,7 +21,7 @@ interface SelectedSavedImage extends SavedImage {
 })
 export class SelectExercisePage implements OnInit, OnDestroy {
 
-  _images: SelectedSavedImage[];
+  _images: SelectedExerciseMedia[];
   workout: Workout;
   workoutId: number;
   isSet = false;
@@ -39,14 +39,14 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     });
   }
 
-  get images(): SelectedSavedImage[] {
+  get images(): SelectedExerciseMedia[] {
     if (this.useFilter) {
       return this.filterImagesByMuscles(this.dataService.muscleFilter);
     } else {
       return this._images;
     }
   }
-  set images(images: SelectedSavedImage[]) {
+  set images(images: SelectedExerciseMedia[]) {
     this._images = images;
   }
 
@@ -62,7 +62,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
   }
 
-  get selectedImages(): SelectedSavedImage[] {
+  get selectedImages(): SelectedExerciseMedia[] {
     return this._images.filter(i => i.isSelected);
   }
 
@@ -92,7 +92,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   //   }
   // }
 
-  private async getImages(): Promise<SelectedSavedImage[]> {
+  private async getImages(): Promise<SelectedExerciseMedia[]> {
     const images = await this.dataService.getImages();
     return images.map((image) => {
       return {
@@ -106,7 +106,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     });
   }
 
-  filterImagesByMuscles(muscles: Set<Muscles>): SelectedSavedImage[] {
+  filterImagesByMuscles(muscles: Set<Muscles>): SelectedExerciseMedia[] {
     console.log('select-execrcise: filtering by muscles', muscles);
     const images = this._images.filter((image) => {
       const intersection =

@@ -6,7 +6,7 @@ import { File, FileEntry } from '@ionic-native/File/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { LoadingOptions } from '@ionic/core';
 import { DataServiceProvider } from '../providers/data-service/data-service';
-import { SavedImage } from '../models/SavedImage';
+import { ExerciseMedia } from '../models/ExerciseMedia';
 import { ToastService } from '../providers/toast-service/toast.service';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
 import { ExerciseSetAction } from '../models/enums';
@@ -18,7 +18,7 @@ import { ExerciseSetAction } from '../models/enums';
 })
 export class TabLibraryPage implements OnInit, OnDestroy {
 
-  images: SavedImage[];
+  images: ExerciseMedia[];
   isMobile = false;
   subs: Subscription;
 
@@ -118,19 +118,19 @@ export class TabLibraryPage implements OnInit, OnDestroy {
       }
     }
 
-    async deleteImage(imgEntry: SavedImage, position: number) {
+    async deleteImage(imgEntry: ExerciseMedia, position: number) {
       await this.dataServiceProvider.deleteImage(imgEntry, position);
       this.images = await this.dataServiceProvider.getImages();
       this.presentToast('File removed.');
     }
 
-    async updateImage(imgEntry: SavedImage, position: number) {
+    async updateImage(imgEntry: ExerciseMedia, position: number) {
       await this.dataServiceProvider.updateImage(imgEntry, position);
       this.images = await this.dataServiceProvider.getImages();
       this.presentToast('File updated.');
     }
 
-    async startUpload(imgEntry: SavedImage) {
+    async startUpload(imgEntry: ExerciseMedia) {
       try {
         const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.nativePath);
         ( < FileEntry > entry).file(file => this.readFile(file));

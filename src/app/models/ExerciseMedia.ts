@@ -1,6 +1,6 @@
 import { Muscles } from './enums';
 
-export class SavedImage {
+export class ExerciseMedia {
   constructor (
   public name: string,
   public ionicPath: string,
@@ -10,8 +10,8 @@ export class SavedImage {
   ) {
     this.muscles = muscles;
   }
-  static buildDefaultSavedImage(url: string, muscles: Set<Muscles>): SavedImage {
-    const image = new SavedImage(url, url, url, true, muscles);
+  static buildDefaultExerciseMedia(url: string, muscles: Set<Muscles>): ExerciseMedia {
+    const image = new ExerciseMedia(url, url, url, true, muscles);
     return image;
   }
 }
