@@ -9,6 +9,7 @@ import { StateCache } from '../../models/StateCache';
 import { Workout } from '../../models/Workout';
 import { DefaultWorkouts } from '../../models/DefaultWorkouts';
 import { json } from '../../constants/defaultWorkouts';
+import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction, Muscles } from '../../models/enums';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
@@ -157,22 +158,7 @@ export class DataServiceProvider {
   }
 
   private extractUniqueImagesFromWorkouts(workouts: Workout[]) {
-    const images: Map<string, ExerciseMedia> = new Map();
-    for (const workout of workouts) {
-      for (const day of workout.days) {
-        for (const set of day.exerciseSets) {
-          for (const exe of set.exercises) {
-            const url = exe.imageUrl;
-            if (!images[url]) {
-              const muscles = new Set<Muscles>(exe.muscles);
-              const image = ExerciseMedia.buildDefaultExerciseMedia(url, muscles);
-              images.set(url, image);
-            }
-          }
-        }
-      }
-    }
-    return images;
+    return defaultExerciseMedia;
   }
 
   private UpdateImagesInWorkouts(workouts: Workout[]) {
