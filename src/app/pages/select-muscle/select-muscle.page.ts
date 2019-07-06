@@ -6,7 +6,10 @@ interface MuscleElements {
   muscle: Muscles;
   paths: string[];
 }
-
+interface SelectedMuscle {
+  muscle: Muscles;
+  isSelected: boolean;
+}
 @Component({
   selector: 'app-select-muscle',
   templateUrl: './select-muscle.page.html',
@@ -16,20 +19,17 @@ export class SelectMusclePage implements OnInit {
 
   muscleGroupElements: MuscleElements[];
 
-  private _selectedMuscles: Set<Muscles>;
-  get SelectedMusclesList(): string {
-    return Array.from(this._selectedMuscles.keys())
-      .map(muscle => Muscles[muscle]).join(', ');
+  private _selectedMuscles: SelectedMuscle[];
+  get selectedMuscles(): SelectedMuscle[] {
+    return this._selectedMuscles;
   }
-  set SelectedMuscles(muscles: Set<Muscles>) {
+  set SelectedMuscles(muscles: SelectedMuscle[]) {
     this._selectedMuscles = muscles;
   }
 
   constructor(
     private renderer: Renderer2,
     private dataService: DataServiceProvider) {
-    this._selectedMuscles = new Set();
-    this.muscleGroupElements = [];
     this.init();
   }
 
@@ -37,18 +37,29 @@ export class SelectMusclePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this._selectedMuscles = this.dataService.muscleFilter;
-    console.log('select-muscle: muscleFilter', this._selectedMuscles);
-    this._selectedMuscles.forEach(muscle => {
-      this.showMuscle(muscle);
+    const muscleFilter = this.dataService.muscleFilter;
+    this.SelectedMuscles = Object.values(Muscles).map(muscle => {
+      const selectedMuscle: SelectedMuscle = {
+        muscle: muscle,
+        isSelected: muscleFilter.has(muscle)
+      };
+      if (selectedMuscle.isSelected) {
+        this.showMuscle(muscle);
+      }
+      return selectedMuscle;
     });
+    console.log('select-muscle: muscleFilter', this.selectedMuscles);
   }
 
-  toggleMuscle(muscle: Muscles) {
-    if (this._selectedMuscles.has(muscle)) {
-      this.removeMuscle(muscle);
+  toggleMuscle(clickedMuscle: Muscles) {
+    const muscle = this.selectedMuscles.filter(selectedMuscle => selectedMuscle.muscle ===  clickedMuscle)[0];
+    muscle.isSelected = !muscle.isSelected;
+    if (muscle.isSelected) {
+      this.dataService.addMuscleToFilter(clickedMuscle);
+      this.showMuscle(clickedMuscle);
     } else {
-      this.addMuscle(muscle);
+      this.dataService.deleteMuscleFromFilter(clickedMuscle);
+      this.hideMuscle(clickedMuscle);
     }
   }
 
@@ -57,15 +68,6 @@ export class SelectMusclePage implements OnInit {
     const elements = document.querySelectorAll(query);
     console.log('muscles found: ', elements);
     return elements;
-  }
-
-  addMuscle(muscle: Muscles) {
-    this._selectedMuscles.add(muscle);
-    this.showMuscle(muscle);
-  }
-  removeMuscle(muscle: Muscles) {
-    this._selectedMuscles.delete(muscle);
-    this.hideMuscle(muscle);
   }
 
   private showMuscle(muscle: Muscles) {
@@ -83,7 +85,12 @@ export class SelectMusclePage implements OnInit {
     });
   }
 
+  getButtonFill(selectedMuscle: SelectedMuscle): string {
+    return selectedMuscle.isSelected ? 'outline' : 'clear';
+  }
+
   init() {
+    this.muscleGroupElements = [];
     // tslint:disable: max-line-length
     this.muscleGroupElements = [
       {

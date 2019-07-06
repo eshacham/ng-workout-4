@@ -231,4 +231,11 @@ export class DataServiceProvider {
   get muscleFilter(): Set<Muscles> {
     return this.state.muscleFilter;
   }
+
+  addMuscleToFilter(muscle: Muscles) {
+    this.state.addMuscleToFilter(muscle);
+  }
+  deleteMuscleFromFilter(muscle: Muscles) {
+      this.state.deleteMuscleFromFilter(muscle);
+  }
 }

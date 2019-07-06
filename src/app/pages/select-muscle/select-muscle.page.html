@@ -34,9 +34,11 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-      <ion-item >
-          {{SelectedMusclesList}}
-      </ion-item>
-  </ion-toolbar>
+  <p>
+    <ion-button *ngFor="let selectedMuscle of selectedMuscles"
+                [fill]="getButtonFill(selectedMuscle)" size="small"
+                (click)="toggleMuscle(selectedMuscle.muscle)">
+        {{selectedMuscle.muscle}}
+    </ion-button>
+  </p>
 </ion-footer>

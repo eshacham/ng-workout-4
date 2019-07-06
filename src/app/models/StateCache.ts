@@ -13,12 +13,12 @@ export class StateCache {
         return this._muscleFilter;
     }
 
-    // addMuscleToFilter(muscle: Muscles) {
-    //     this._muscleFilter.add(muscle);
-    // }
-    // deleteMuscleFromFilter(muscle: Muscles) {
-    //     this._muscleFilter.delete(muscle);
-    // }
+    addMuscleToFilter(muscle: Muscles) {
+        this._muscleFilter.add(muscle);
+    }
+    deleteMuscleFromFilter(muscle: Muscles) {
+        this._muscleFilter.delete(muscle);
+    }
 
     getLastSelectedWorkoutDay(workoutName: string): number {
         if (this.lastSelectedWorkoutDay.has(workoutName)) {
