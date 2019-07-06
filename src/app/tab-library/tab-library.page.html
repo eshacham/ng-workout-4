@@ -15,10 +15,11 @@
         <ion-img [src]="img.ionicPath"></ion-img>
       </ion-thumbnail>
       <ion-input type='text' [(ngModel)]="img.name"
-                 placeholder="Exercise Name">
+                 placeholder="Exercise Name"
+                 (ionChange)="updateImage(img, pos)">
       </ion-input>
       <ion-button slot="end" fill="clear" (click)="updateImage(img, pos)">
-        <ion-icon slot="icon-only" name="save"></ion-icon>
+        <ion-icon slot="icon-only" name="body"></ion-icon>
       </ion-button>
       <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
         <ion-icon slot="icon-only" name="trash"></ion-icon>

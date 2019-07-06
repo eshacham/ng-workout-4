@@ -1,5 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
@@ -29,6 +30,8 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     private toastService: ToastService,
     private loadingController: LoadingController,
     private filePath: FilePath,
+    private router: Router,
+    private route: ActivatedRoute,
     private dataServiceProvider: DataServiceProvider) {
       this.images = [];
     }
@@ -103,6 +106,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
         ImagePath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
       }
       await this.copyFileToLocalDir(ImagePath, imageName, `${new Date().getTime()}.jpg`);
+      // this.router.navigate(['select-muscle'], {relativeTo: this.route});
     }
 
     async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
