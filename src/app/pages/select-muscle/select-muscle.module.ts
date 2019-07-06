@@ -7,7 +7,7 @@ import { SelectMusclePage } from './select-muscle.page';
 
 const routes: Routes = [
   {
-    path: 'select-muscle',
+    path: '',
     pathMatch: 'full',
     component: SelectMusclePage
   }

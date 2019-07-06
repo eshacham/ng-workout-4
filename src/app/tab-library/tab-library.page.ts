@@ -106,7 +106,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
         ImagePath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
       }
       await this.copyFileToLocalDir(ImagePath, imageName, `${new Date().getTime()}.jpg`);
-      // this.router.navigate(['select-muscle'], {relativeTo: this.route});
     }
 
     async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
@@ -128,6 +127,10 @@ export class TabLibraryPage implements OnInit, OnDestroy {
       await this.dataServiceProvider.updateImage(imgEntry, position);
       this.images = await this.dataServiceProvider.getImages();
       this.presentToast('File updated.');
+    }
+
+    async setMuscle(imgEntry: ExerciseMedia) {
+      this.router.navigate([`select-muscle/${imgEntry.name}`], {relativeTo: this.route});
     }
 
     async startUpload(imgEntry: ExerciseMedia) {
