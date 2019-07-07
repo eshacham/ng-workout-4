@@ -93,6 +93,20 @@ export class DataServiceProvider {
     return this._images;
   }
 
+ setImageMuscles(name: string) {
+   console.log(`data service - setImageMuscles for ${name}`);
+    const imageToSet = this._images.filter(image => image.name === name)[0];
+    if (imageToSet) {
+      const selectedMusclesCopy: Set<Muscles> = new Set();
+      this.muscleFilter.forEach(muscle => {
+        selectedMusclesCopy.add(muscle);
+      });
+      console.log(`data service - setImageMuscles found ${name}`, selectedMusclesCopy);
+      imageToSet.muscles = selectedMusclesCopy;
+      this.saveImages();
+    }
+  }
+
   async initImages() {
     await this.displayPlatform();
     await this.storage.ready();

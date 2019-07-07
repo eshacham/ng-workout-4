@@ -21,7 +21,7 @@ export class SelectMusclePage implements OnInit {
 
   muscleGroupElements: MuscleElements[];
   isSettingMedia = false;
-  mediaToSet: ExerciseMedia;
+  mediaToSet: string;
   private _selectedMuscles: SelectedMuscle[];
   get selectedMuscles(): SelectedMuscle[] {
     return this._selectedMuscles;
@@ -65,6 +65,13 @@ export class SelectMusclePage implements OnInit {
       }
     });
     console.log('select-muscle - setting media:', this.mediaToSet);
+  }
+
+  ionViewWillLeave() {
+    if (this.isSettingMedia) {
+      this.dataService.setImageMuscles(this.mediaToSet);
+      console.log('select-muscle - leaving view - media has been set:', this.mediaToSet);
+    }
   }
 
   toggleMuscle(clickedMuscle: Muscles) {
