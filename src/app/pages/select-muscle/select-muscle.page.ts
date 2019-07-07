@@ -1,6 +1,8 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Muscles } from 'src/app/models/enums';
+import { ActivatedRoute } from '@angular/router';
+import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 
 interface MuscleElements {
   muscle: Muscles;
@@ -18,7 +20,8 @@ interface SelectedMuscle {
 export class SelectMusclePage implements OnInit {
 
   muscleGroupElements: MuscleElements[];
-
+  isSettingMedia = false;
+  mediaToSet: ExerciseMedia;
   private _selectedMuscles: SelectedMuscle[];
   get selectedMuscles(): SelectedMuscle[] {
     return this._selectedMuscles;
@@ -29,8 +32,10 @@ export class SelectMusclePage implements OnInit {
 
   constructor(
     private renderer: Renderer2,
+    private route: ActivatedRoute,
     private dataService: DataServiceProvider) {
     this.init();
+
   }
 
   ngOnInit() {
@@ -49,6 +54,17 @@ export class SelectMusclePage implements OnInit {
       return selectedMuscle;
     });
     console.log('select-muscle: muscleFilter', this.selectedMuscles);
+
+    this.route.params.subscribe(params => {
+      if (params.mediaName) {
+        this.mediaToSet = params.mediaName;
+        this.isSettingMedia = true;
+      } else {
+        this.mediaToSet = null;
+        this.isSettingMedia = false;
+      }
+    });
+    console.log('select-muscle - setting media:', this.mediaToSet);
   }
 
   toggleMuscle(clickedMuscle: Muscles) {
