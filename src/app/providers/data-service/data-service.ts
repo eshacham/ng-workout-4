@@ -94,7 +94,7 @@ export class DataServiceProvider {
   }
 
  setImageMuscles(name: string) {
-   console.log(`data service - setImageMuscles for ${name}`);
+    console.log(`data service - setImageMuscles for ${name}`);
     const imageToSet = this._images.filter(image => image.name === name)[0];
     if (imageToSet) {
       const selectedMusclesCopy: Set<Muscles> = new Set();
@@ -104,6 +104,14 @@ export class DataServiceProvider {
       console.log(`data service - setImageMuscles found ${name}`, selectedMusclesCopy);
       imageToSet.muscles = selectedMusclesCopy;
       this.saveImages();
+    }
+  }
+
+  setMusclesFilterFromImage(name: string) {
+    console.log(`data service - setSelectedMusclesFilterFromImage for ${name}`);
+    const imageToSet = this._images.filter(image => image.name === name)[0];
+    if (imageToSet) {
+      this.state.muscleFilter = imageToSet.muscles;
     }
   }
 
@@ -244,6 +252,9 @@ export class DataServiceProvider {
 
   get muscleFilter(): Set<Muscles> {
     return this.state.muscleFilter;
+  }
+  set muscleFilter(value: Set<Muscles>) {
+    this.state.muscleFilter = value;
   }
 
   addMuscleToFilter(muscle: Muscles) {

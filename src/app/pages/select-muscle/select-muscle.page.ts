@@ -42,6 +42,20 @@ export class SelectMusclePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.route.params.subscribe(params => {
+      if (params.mediaName) {
+        this.mediaToSet = params.mediaName;
+        this.isSettingMedia = true;
+      } else {
+        this.mediaToSet = null;
+        this.isSettingMedia = false;
+      }
+    });
+    if (this.isSettingMedia) {
+      this.dataService.setMusclesFilterFromImage(this.mediaToSet);
+    }
+    console.log('select-muscle - setting media:', this.mediaToSet);
+
     const muscleFilter = this.dataService.muscleFilter;
     this.SelectedMuscles = Object.values(Muscles).map(muscle => {
       const selectedMuscle: SelectedMuscle = {
@@ -54,17 +68,6 @@ export class SelectMusclePage implements OnInit {
       return selectedMuscle;
     });
     console.log('select-muscle: muscleFilter', this.selectedMuscles);
-
-    this.route.params.subscribe(params => {
-      if (params.mediaName) {
-        this.mediaToSet = params.mediaName;
-        this.isSettingMedia = true;
-      } else {
-        this.mediaToSet = null;
-        this.isSettingMedia = false;
-      }
-    });
-    console.log('select-muscle - setting media:', this.mediaToSet);
   }
 
   ionViewWillLeave() {
@@ -75,7 +78,7 @@ export class SelectMusclePage implements OnInit {
   }
 
   toggleMuscle(clickedMuscle: Muscles) {
-    const muscle = this.selectedMuscles.filter(selectedMuscle => selectedMuscle.muscle ===  clickedMuscle)[0];
+    const muscle = this.selectedMuscles.filter(selectedMuscle => selectedMuscle.muscle === clickedMuscle)[0];
     muscle.isSelected = !muscle.isSelected;
     if (muscle.isSelected) {
       this.dataService.addMuscleToFilter(clickedMuscle);

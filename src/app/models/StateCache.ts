@@ -6,18 +6,21 @@ export class StateCache {
 
     constructor() {
         this.lastSelectedWorkoutDay = new Map<string, number>();
-        this._muscleFilter = new Set();
+        this.muscleFilter = new Set();
     }
 
     get muscleFilter(): Set<Muscles> {
         return this._muscleFilter;
     }
+    set muscleFilter(value: Set<Muscles>) {
+        this._muscleFilter = value;
+    }
 
     addMuscleToFilter(muscle: Muscles) {
-        this._muscleFilter.add(muscle);
+        this.muscleFilter.add(muscle);
     }
     deleteMuscleFromFilter(muscle: Muscles) {
-        this._muscleFilter.delete(muscle);
+        this.muscleFilter.delete(muscle);
     }
 
     getLastSelectedWorkoutDay(workoutName: string): number {
