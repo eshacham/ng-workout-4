@@ -56,9 +56,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   set useFilter(use: boolean) {
     if (this._useFilter !== use) {
       this._useFilter = use;
-      // if (this._useFilter) {
-      //   this.filterImagesByMuscles(this.dataService.muscleFilter);
-      // }
     }
   }
 
@@ -151,7 +148,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     let newSets: ExerciseSet[];
     const newExercises: Exercise[] = [];
     for (const image of this.selectedImages) {
-      console.log(`adding exercise ${image.name}`);
+      console.log('adding exercise media', image);
       const newRep = new Rep({
         times: 1
       });

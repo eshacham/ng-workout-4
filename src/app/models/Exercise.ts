@@ -40,5 +40,6 @@ export class Exercise {
         this.restBetweenReps = options.restBetweenReps;
         this.restAfterExercise = options.restAfterExercise;
         this.reps = options.reps;
+        this.media.mediaUsageCounter++;
     }
 }

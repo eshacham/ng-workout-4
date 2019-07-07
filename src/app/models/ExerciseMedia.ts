@@ -6,6 +6,7 @@ export class ExerciseMedia {
   public nativePath: string;
   public isDefault: boolean;
   public muscles: Set<Muscles>;
+  public mediaUsageCounter?: number;
 
   constructor (option: {
     name: string,
@@ -19,6 +20,8 @@ export class ExerciseMedia {
     this.nativePath = option.nativePath;
     this.isDefault = option.isDefault;
     this.muscles = option.muscles;
+    this.mediaUsageCounter = 0;
+    console.log('constructed exercise media as', this.name);
   }
   static buildDefaultExerciseMedia(url: string, muscles: Set<Muscles>): ExerciseMedia {
     const image = new ExerciseMedia({

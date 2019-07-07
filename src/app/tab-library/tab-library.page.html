@@ -24,6 +24,7 @@
       </ion-button>
       <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
+        <ion-badge>{{img.mediaUsageCounter}}</ion-badge>
       </ion-button>
     </ion-item>
   </ion-list>

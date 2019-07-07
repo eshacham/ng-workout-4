@@ -28,7 +28,7 @@ export class DataServiceProvider {
     private file: File,
     private webview: WebView,
     private storage: Storage) {
-    console.log('initializing data service');
+    // console.log('initializing data service');
     this._images = [];
     this._workouts = [];
     this.state = new StateCache();
@@ -93,8 +93,8 @@ export class DataServiceProvider {
     return this._images;
   }
 
- setImageMuscles(name: string) {
-    console.log(`data service - setImageMuscles for ${name}`);
+  async setImageMuscles(name: string) {
+    // console.log(`data service - setImageMuscles for ${name}`);
     const imageToSet = this._images.filter(image => image.name === name)[0];
     if (imageToSet) {
       const selectedMusclesCopy: Set<Muscles> = new Set();
@@ -103,7 +103,7 @@ export class DataServiceProvider {
       });
       console.log(`data service - setImageMuscles found ${name}`, selectedMusclesCopy);
       imageToSet.muscles = selectedMusclesCopy;
-      this.saveImages();
+      await this.saveImages();
     }
   }
 
@@ -154,15 +154,15 @@ export class DataServiceProvider {
   private async initDefaultImages() {
     this._images = [];
     console.log('initializing saved images from assests...');
-    const images: Map<string, ExerciseMedia> = this.extractUniqueImagesFromWorkouts(defaultWorkouts.workouts);
-    this._images = Array.from(images.values());
+    // const images: Map<string, ExerciseMedia> = this.extractUniqueImagesFromWorkouts(defaultWorkouts.workouts);
+    this._images = Array.from(defaultExerciseMedia.values());
     console.log(`initialized ${this._images.length} saved images from assests`, this._images);
     await this.saveImages();
   }
 
-  private extractUniqueImagesFromWorkouts(workouts: Workout[]) {
-    return defaultExerciseMedia;
-  }
+  // private extractUniqueImagesFromWorkouts(workouts: Workout[]) {
+  //   return defaultExerciseMedia;
+  // }
 
   private UpdateImagesInWorkouts(workouts: Workout[]) {
     for (const workout of workouts) {
