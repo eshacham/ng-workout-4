@@ -10,8 +10,9 @@ import { Rep } from 'src/app/models/Rep';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 import { ExerciseSetAction, Muscles, RepetitionSpeed } from 'src/app/models/enums';
 
-interface SelectedExerciseMedia extends ExerciseMedia {
+interface SelectedExerciseMedia {
   isSelected: boolean;
+  media: ExerciseMedia;
 }
 
 @Component({
@@ -88,11 +89,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     return images.map((image) => {
       return {
         isSelected: false,
-        isDefault: image.isDefault,
-        name: image.name,
-        ionicPath: image.ionicPath,
-        nativePath: image.nativePath,
-        muscles: image.muscles,
+        media: image,
       };
     });
   }
@@ -102,8 +99,9 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     const images = this._images.filter((image) => {
       if (muscles.size) {
         const intersection =
-        new Set(Array.from(image.muscles).filter(x => muscles.has(x)));
-        console.log(`intersecting image ${image.name} muscles ${Array.from(image.muscles)} with selected muscles ${Array.from(muscles)}`);
+        new Set(Array.from(image.media.muscles).filter(x => muscles.has(x)));
+// tslint:disable-next-line: max-line-length
+        console.log(`intersecting image ${image.media.name} muscles ${Array.from(image.media.muscles)} with selected muscles ${Array.from(muscles)}`);
       return (intersection.size > 0);
       } else {
         console.log('no muscle group is selected');
@@ -153,8 +151,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
         times: 1
       });
       const newExercise = new Exercise({
-        name: image.name,
-        media: image,
+        name: image.media.name,
+        media: image.media,
         reps: [newRep],
         repSpeed: RepetitionSpeed.OneOne,
         isFavorite: false,
