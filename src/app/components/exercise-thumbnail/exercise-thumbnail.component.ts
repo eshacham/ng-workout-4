@@ -173,7 +173,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     deleteExercise(index: number) {
-        this.exerciseSet.exercises.splice(index, 1);
+        Exercise.delete(this.exerciseSet.exercises, index);
         if (!this.exerciseSet.exercises.length) {
             this.deleteExerciseSet();
         }

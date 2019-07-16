@@ -16,9 +16,9 @@ export class Exercise {
     public restBetweenReps: number;
     public restAfterExercise: number;
 
-    get muscles() {
-        return this.media.muscles;
-    }
+    // get muscles() {
+    //     return this.media.muscles;
+    // }
 
     constructor(options: {
          name: string,
@@ -41,5 +41,10 @@ export class Exercise {
         this.restAfterExercise = options.restAfterExercise;
         this.reps = options.reps;
         this.media.mediaUsageCounter++;
+    }
+
+    static delete(exercises: Exercise[], index: number) {
+        exercises[index].media.mediaUsageCounter--;
+        exercises.splice(index, 1);
     }
 }

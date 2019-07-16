@@ -14,4 +14,14 @@ export class WorkoutDay {
         this.name = options.name;
         this.exerciseSets = options.exerciseSets;
     }
+
+    static delete(days: WorkoutDay[], index: number) {
+        const day = days[index];
+        if (day.exerciseSets.length) {
+            day.exerciseSets.forEach((set, idx) =>  {
+                ExerciseSet.delete(day.exerciseSets, idx);
+            });
+        }
+        days.splice(index, 1);
+    }
 }

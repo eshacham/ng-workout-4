@@ -96,7 +96,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         break;
       case ExerciseSetAction.Delete:
         console.log('workout-day: receieved delete event: ', JSON.stringify(event));
-        await this.deleteExerciseSet(event.exerciseSet, event.workoutDayName);
+        await this.deleteExerciseSet(event.exerciseSet);
         break;
       case ExerciseSetAction.Edit:
         console.log('workout-day: receieved edit event: ', JSON.stringify(event));
@@ -175,9 +175,9 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     }
   }
 
-  async deleteExerciseSet(set: ExerciseSet, day: string) {
+  async deleteExerciseSet(set: ExerciseSet) {
     const index = this.workoutDay.exerciseSets.findIndex(s => s === set);
-    this.workoutDay.exerciseSets.splice(index, 1);
+    ExerciseSet.delete(this.workoutDay.exerciseSets, index);
     await this.saveChanges();
     this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
   }

@@ -40,6 +40,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private dataService: DataServiceProvider) {
       this.isNewDayAdded = false;
+      this.activeDayIndex = 0;
       this.workoutDaysPublisher = new Subject();
       this.route.params.subscribe(params => {
         this.workoutId = +params.id;
@@ -91,6 +92,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         break;
       case ExerciseSetAction.Delete:
         console.log('workout-days: receieved delete event: ', JSON.stringify(event));
+        console.log('workout-days: this.activeDayIndex: ', this.activeDayIndex);
+        console.log('workout-days: this.workout.days: ', this.workout.days);
         if (!this.workout.days[this.activeDayIndex].exerciseSets.length) {
           await this.deleteWorkoutDay(this.activeDayIndex);
         }
@@ -123,7 +126,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         break;
       case ExerciseSetAction.WorkoutReset:
         console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
-        await this.navCtrl.navigateBack("/tabs/tab-workouts");//navigate(['../'], { relativeTo: this.route });
+        await this.navCtrl.navigateBack('/tabs/tab-workouts');
         break;
     }
   }
@@ -176,8 +179,9 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         console.log('sliding forward');
         await this.slides.slideTo(1, 0, true);
       }
+      /// TODO was reversed - very wiered!
+      WorkoutDay.delete(this.workout.days, index);
       await this.saveChanges();
-      this.workout.days.splice(index, 1);
       await new Promise(() => setTimeout(() => {
         this.slides.update();
         console.log(`deleted day index ${index} out of ${this.workout.days.length + 1} days`);

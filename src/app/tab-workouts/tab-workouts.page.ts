@@ -92,6 +92,12 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
       case ExerciseSetAction.Delete:
         if (this.workouts.length > 1) {
           const index = this.workouts.findIndex(w => w.id === event.exerciseSetIndex);
+          const workout = this.workouts[index];
+          if (workout.days.length) {
+            workout.days.forEach((day, idx) => {
+              WorkoutDay.delete(workout.days, idx);
+            });
+          }
           this.workouts.splice(index, 1);
           await this.dataServiceProvider.saveWorkouts();
         }

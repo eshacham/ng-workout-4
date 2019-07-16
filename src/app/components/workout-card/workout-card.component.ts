@@ -32,7 +32,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
       this.subs.unsubscribe();
   }
-  
+
   get DisplayMode(): DisplayMode {
     return this._displayMode;
   }
