@@ -97,12 +97,11 @@ export class DataServiceProvider {
     // console.log(`data service - setImageMuscles for ${name}`);
     const imageToSet = this._images.filter(image => image.name === name)[0];
     if (imageToSet) {
-      const selectedMusclesCopy: Set<Muscles> = new Set();
+      imageToSet.muscles = [];
       this.muscleFilter.forEach(muscle => {
-        selectedMusclesCopy.add(muscle);
+        imageToSet.muscles.push(muscle);
       });
-      console.log(`data service - setImageMuscles found ${name}`, selectedMusclesCopy);
-      imageToSet.muscles = selectedMusclesCopy;
+      console.log(`data service - setImageMuscles found ${name}`, imageToSet.muscles);
       await this.saveImages();
     }
   }
@@ -111,7 +110,8 @@ export class DataServiceProvider {
     console.log(`data service - setSelectedMusclesFilterFromImage for ${name}`);
     const imageToSet = this._images.filter(image => image.name === name)[0];
     if (imageToSet) {
-      this.state.muscleFilter = imageToSet.muscles;
+      console.log(`data service - setSelectedMusclesFilterFromImage for ${imageToSet}`);
+      this.state.muscleFilter = new Set(imageToSet.muscles);
     }
   }
 
@@ -126,7 +126,10 @@ export class DataServiceProvider {
     }
 
     if (this._images.length) {
-      console.log(`DS - loaded ${this._images.length} images from storage:`, JSON.stringify(this._images));
+      console.log(`DS - loaded ${this._images.length} images from storage:`, this._images);
+      for (const img of this._images) {
+        console.log('DS: loaded images from storage:', img.name, img.muscles);
+      }
       if (this.isMobile) {
         console.log(`updating to device data directory ${this.file.dataDirectory}`);
         this.upgradeImages();
@@ -193,14 +196,14 @@ export class DataServiceProvider {
     const nativePath = this.file.dataDirectory + newImageName;
     console.log(`new image ${origImagePath}/${origImageName} has been copied to ${nativePath}`);
 
-    const newEntry: ExerciseMedia = {
+    const newEntry: ExerciseMedia = new ExerciseMedia ({
       name: newImageName,
       ionicPath: this.getIonicPath(nativePath),
       nativePath: nativePath,
       isDefault: false,
       muscles: new Set(),
-    };
-    console.log('adding image', JSON.stringify(newEntry));
+    });
+    console.log('adding image', newEntry);
     this._images.push(newEntry);
     await this.saveImages();
   }

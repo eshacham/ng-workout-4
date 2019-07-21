@@ -5,7 +5,7 @@ export class ExerciseMedia {
   public ionicPath: string;
   public nativePath: string;
   public isDefault: boolean;
-  public muscles: Set<Muscles>;
+  public muscles: Array<Muscles>;
   public mediaUsageCounter?: number;
 
   constructor (option: {
@@ -19,7 +19,7 @@ export class ExerciseMedia {
     this.ionicPath = option.ionicPath;
     this.nativePath = option.nativePath;
     this.isDefault = option.isDefault;
-    this.muscles = option.muscles;
+    this.muscles = Array.from(option.muscles.values());
     this.mediaUsageCounter = 0;
     console.log('constructed exercise media as', this.name);
   }

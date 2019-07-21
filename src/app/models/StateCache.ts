@@ -6,10 +6,12 @@ export class StateCache {
 
     constructor() {
         this.lastSelectedWorkoutDay = new Map<string, number>();
-        this.muscleFilter = new Set();
     }
 
     get muscleFilter(): Set<Muscles> {
+        if (!this._muscleFilter) {
+            this._muscleFilter = new Set();
+        }
         return this._muscleFilter;
     }
     set muscleFilter(value: Set<Muscles>) {

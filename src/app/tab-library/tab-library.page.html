@@ -20,7 +20,7 @@
       </ion-input>
       <ion-button slot="end" fill="clear" (click)="setMuscle(img)">
         <ion-icon slot="icon-only" name="body"></ion-icon>
-        <ion-badge [color]="img.muscles.size ? 'primary' : 'danger'">{{img.muscles.size}}</ion-badge>
+        <ion-badge [color]="img.muscles.length ? 'primary' : 'danger'">{{img.muscles.length}}</ion-badge>
       </ion-button>
       <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
