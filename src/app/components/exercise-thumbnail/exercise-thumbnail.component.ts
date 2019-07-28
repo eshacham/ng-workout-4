@@ -15,12 +15,13 @@ const MAXREPS = 5;
 const MINREPS = 1;
 
 @Component({
-  selector: 'app-exercise-thumbnail',
-  templateUrl: './exercise-thumbnail.component.html',
-  styleUrls: ['./exercise-thumbnail.component.scss'],
+    selector: 'app-exercise-thumbnail',
+    templateUrl: './exercise-thumbnail.component.html',
+    styleUrls: ['./exercise-thumbnail.component.scss'],
 })
 export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     activeRepIndex = 0;
+    activeSetExerciseIndex = 0;
 
     _timedRepRemaining = 0;
     timedRepTimer = null;
@@ -35,8 +36,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     private _isRunning = false;
     private _isEditing = false;
     private _displayMode: DisplayMode = DisplayMode.Display;
-    private _isFrozen: boolean;
-    private completedReps: number[];
+    // private _isFrozen: boolean;
     private subs: Subscription;
 
     @Input() workoutDayName: string;
@@ -46,16 +46,22 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     @Input() inWorkoutDayPublisher: Subject<ExerciseSetSwitchModeEvent>;
     @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
-    constructor (
+    get activeExercise(): Exercise {
+        return this.exerciseSet.exercises[this.activeSetExerciseIndex];
+    }
+
+    constructor(
         private domSanitizer: DomSanitizer,
         private popoverCtrl: PopoverController) {
-        this.completedReps = [];
     }
 
     get isPrevRepAvailable(): boolean {
-        return this.activeRepIndex > 0 ||
-        this.timedRepRemaining > 0 ||
-        this.timedRestRemaining > 0;
+        const isPrevAvail =
+            this.activeRepIndex > 0 ||
+            this.activeSetExerciseIndex > 0 ||
+            this.timedRepRemaining > 0 ||
+            this.timedRestRemaining > 0;
+        return isPrevAvail;
     }
 
     safeImage(media: ExerciseMedia): SafeUrl {
@@ -71,16 +77,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     get timedRestRemaining(): number { return this._timedRestRemaining; }
 
-    getDisplayTimedRepRemaining(index: number): string {
-        if (index === this.activeRepIndex) {
-            return `${this.timedRepRemaining}/${this.exerciseSet.exercises[0].reps[index].seconds}`;
-        } else {
-            return `${this.exerciseSet.exercises[0].reps[index].seconds}`;
-        }
-    }
-
     get IsOpen(): boolean { return this._isOpen; }
-    set IsOpen (val: boolean) {
+    set IsOpen(val: boolean) {
         this._isOpen = val;
     }
 
@@ -89,12 +87,12 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     get IsRunning(): boolean { return this._isRunning; }
-    set IsRunning (val: boolean) {
+    set IsRunning(val: boolean) {
         this._isRunning = val;
     }
 
     get IsEditing(): boolean { return this._isEditing; }
-    set IsEditing (val: boolean) {
+    set IsEditing(val: boolean) {
         this._isEditing = val;
     }
 
@@ -102,34 +100,44 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         return this._displayMode;
     }
     set DisplayMode(val: DisplayMode) {
-      if (this._displayMode !== val) {
-          this._displayMode = val;
-      }
-      if (this._displayMode === DisplayMode.Workout && this.IsRunning) {
-          this.startWorkout();
-      } else {
-          this.stopRepTimer();
-          this.stopRestTimer();
-      }
+        if (this._displayMode !== val) {
+            this._displayMode = val;
+        }
+        if (this._displayMode === DisplayMode.Workout && this.IsRunning) {
+            this.startWorkout();
+        } else {
+            this.stopRepTimer();
+            this.stopRestTimer();
+        }
     }
 
     get isEditMode(): boolean {
-      return this._displayMode === DisplayMode.Edit;
+        return this._displayMode === DisplayMode.Edit;
     }
 
-    get IsFrozen(): boolean { return this._isFrozen; }
-    set IsFrozen(val: boolean) {this._isFrozen = val; }
+    // get IsFrozen(): boolean { return this._isFrozen; }
+    // set IsFrozen(val: boolean) { this._isFrozen = val; }
 
     toggleOpen() {
         this.IsOpen = !this.IsOpen;
     }
 
     ngOnInit() {
-      this.subs = this.inWorkoutDayPublisher.subscribe(event => this.handleWorkoutEventchange(event));
-      if (this.isDayInEditMode) {
-          this.DisplayMode = DisplayMode.Edit;
-      }
-      this.initWeights();
+        this.exerciseSet.exercises.forEach((exercise) => {
+            exercise.reps.forEach((rep) => {
+                rep = new Rep({
+                    weight: rep.weight,
+                    weightUnit: rep.weightUnit,
+                    times: rep.times,
+                    seconds: rep.seconds
+                });
+            });
+        });
+        this.subs = this.inWorkoutDayPublisher.subscribe(event => this.handleWorkoutEventchange(event));
+        if (this.isDayInEditMode) {
+            this.DisplayMode = DisplayMode.Edit;
+        }
+        this.initWeights();
     }
 
     ngOnDestroy() {
@@ -138,18 +146,21 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     initWeights() {
         this.exerciseSet.exercises.forEach(set => {
-          set.reps.forEach(rep => {
-              if (!rep.weightUnit) {
-                  rep.weightUnit = WeightUnit.Lbs;
-              }
-          });
-      });
+            set.reps.forEach(rep => {
+                if (!rep.weightUnit) {
+                    rep.weightUnit = WeightUnit.Lbs;
+                }
+            });
+        });
     }
 
     handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent) {
         this.IsRunning =
-            (event.runningExerciseSetIndex === this.exerciseSetIndex &&
-            event.runningExerciseSetDayName === this.workoutDayName);
+            (event.runningExerciseSetDayName === this.workoutDayName &&
+                event.runningExerciseSetIndex === this.exerciseSetIndex &&
+                event.displayMode === DisplayMode.Workout);
+        // tslint:disable-next-line: max-line-length
+        console.log(`exercise-thumb: changing display mode ${DisplayMode[this.DisplayMode]} to ${DisplayMode[event.displayMode]} and running is ${this.IsRunning}`);
         this.DisplayMode = event.displayMode;
     }
 
@@ -179,7 +190,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         }
     }
 
-    completeExercise () {
+    completeExercise() {
         this.emitExerciseSetActionEvent(ExerciseSetAction.Completed);
     }
 
@@ -193,11 +204,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     isTimedRepRemaining(repIndex: number): boolean {
         return this.activeRepIndex === repIndex &&
-                this._timedRepRemaining > 0 && this.IsRunning ;
+            this._timedRepRemaining > 0 && this.IsRunning;
     }
 
     get isResting(): boolean {
-        return this._timedRestRemaining > 0 && this.IsRunning ;
+        return this._timedRestRemaining > 0 && this.IsRunning;
     }
 
     get hasSet(): boolean {
@@ -205,19 +216,19 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     exerciseSetSelected() {
-        if (this.DisplayMode === DisplayMode.Workout) {
-            if (!this.IsRunning && !this.IsFrozen) {
-                console.log(`Display Exercise ${this.exerciseSet.exercises[0].name} and freezing`);
-                this.IsFrozen = true;
-            } else {
-                console.log(`Collapse Exercise ${this.exerciseSet.exercises[0].name} and unfreezing`);
-                this.IsFrozen = false;
-            }
-        }
-    }
+    //     if (this.DisplayMode === DisplayMode.Workout) {
+    //         if (!this.IsRunning && !this.IsFrozen) {
+    //             console.log(`Display Exercise ${this.activeExercise.name} and freezing`);
+    //             this.IsFrozen = true;
+    //         } else {
+    //             console.log(`Collapse Exercise ${this.activeExercise.name} and unfreezing`);
+    //             this.IsFrozen = false;
+    //         }
+    //     }
+     }
 
     isFirstInSet(exercise: Exercise): boolean {
-        return this.hasSet && this.exerciseSet.exercises[0] === exercise;
+        return this.hasSet && this.activeExercise === exercise;
     }
 
     isLastInSet(exercise: Exercise): boolean {
@@ -244,34 +255,97 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         }
     }
 
-    getRunningExerciseSetRepCellClass(repIndex: number) {
-        const classes = [];
-        if (this.activeRepIndex === repIndex) {
-            classes.push('activeRep', 'fadeOutAndIn');
-        } else {
-            classes.push('nonActiveRep');
+    get hasTimedRep(): boolean {
+        return this.exerciseSet.exercises.some((exe) => {
+            return exe.reps.some((rep) => {
+                return rep.seconds > 0;
+            });
+        });
+    }
+    get hasIncompleteTimedRepInActiveRep(): boolean {
+        return this.exerciseSet.exercises.some((exe) => {
+            const rep = exe.reps[this.activeRepIndex];
+            return rep.seconds > 0 && !rep.isCompleted;
+        });
+    }
+    get hasCompleteTimedRepInActiveRep(): boolean {
+        return this.exerciseSet.exercises.some((exe) => {
+            const rep = exe.reps[this.activeRepIndex];
+            return rep.seconds > 0 && rep.isCompleted;
+        });
+    }
+    isExecrciseSetActive(exerciseIndex: number): boolean {
+        return exerciseIndex === this.activeSetExerciseIndex;
+    }
+
+    getRepClass(rep: Rep, exercise: Exercise) {
+        const classes: string[] = ['nonActiveRep'];
+        if (this.IsRunning) {
+            if (rep.isActive) {
+                // classes.push('activeRep');
+                classes.push('fadeOutAndIn');
+            } else { // non active rep
+                if (!this.hasTimedRep &&
+                    this.activeRepIndex === exercise.reps.indexOf(rep)) {
+                    classes.push('fadeOutAndIn');
+                }
+            }
         }
+
+
         return classes;
     }
 
+    getSecondsStateText(rep: Rep) {
+        if (rep.isActive) {
+            return `${this.timedRepRemaining}/${rep.seconds}`;
+        } else {
+            return `${rep.seconds}`;
+        }
+    }
+
     startWorkout() {
-        this.IsFrozen = false;
-        this.resetCompletedReps();
+        // this.IsFrozen = false;
+        this.activeSetExerciseIndex = 0;
+        this.resetReps();
         this.startTimedRep();
     }
 
-    private resetCompletedReps() {
-        this.completedReps.length = 0;
+    private resetReps() {
+        this.exerciseSet.exercises.forEach((exercise) => this.resetRepsState(exercise));
         this.activeRepIndex = 0;
+        this.setExecrciseRepsActiveState(this.activeExercise, this.activeRepIndex);
+    }
+
+    private resetRepsState(exercise: Exercise) {
+        exercise
+            .reps.forEach((rep) => {
+                rep.isActive = false;
+                rep.isCompleted = false;
+            });
+    }
+
+    private setExecrciseRepsActiveState(exercise: Exercise, index: number) {
+        exercise
+            .reps.forEach((rep, i) => {
+                rep.isActive = (i === index);
+            });
+    }
+
+    private InactiveExerciseReps(exercise: Exercise) {
+        exercise
+            .reps.forEach((rep, i) => {
+                rep.isActive = false;
+            });
     }
 
     private startTimedRep() {
         // this.audioService.playStartWorkout();
         this.stopRepTimer();
-        this._timedRepRemaining = this.exerciseSet.exercises[0].reps[this.activeRepIndex].seconds;
+        this._timedRepRemaining = this.activeRep.seconds;
         if (this._timedRepRemaining) {
             this.timedRepTimer = setInterval(() => {
-                this._timedRepRemaining --;
+                this._timedRepRemaining--;
                 if (this._timedRepRemaining <= 0) {
                     this.stopRepTimer();
                     this.nextRep(true);
@@ -292,7 +366,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this._timedRestRemaining = this._timedToRestAfterCurrentRep;
         if (this._timedRestRemaining) {
             this.timedRestTimer = setInterval(() => {
-                this._timedRestRemaining --;
+                this._timedRestRemaining--;
                 if (this._timedRestRemaining <= 0) {
                     this.stopRestTimer();
                     callbackAction();
@@ -307,52 +381,99 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         }
     }
 
-    prevRep () {
-        if (this.activeRepIndex > 0) {
-            this.completedReps.pop();
-            this.activeRepIndex--;
-        }
+    prevRep() {
         this.stopRepTimer();
+        this._timedRepRemaining = 0;
+        if (this.activeSetExerciseIndex > 0 &&
+            (this.hasCompleteTimedRepInActiveRep || this.hasIncompleteTimedRepInActiveRep)) {
+            this.exerciseSet.exercises[this.activeSetExerciseIndex - 1].reps[this.activeRepIndex].isCompleted = false;
+            this.activatePrevExercise();
+        } else {
+            if (this.activeRepIndex > 0) {
+                this.exerciseSet.exercises.forEach(exercise => exercise.reps[this.activeRepIndex - 1].isCompleted = false);
+            }
+            this.activatePrevRep();
+        }
         this.stopRestTimer();
+        this.stopRepTimer();
         this.startTimedRep();
     }
 
     skipRest() {
         this._timedRestRemaining = 0;
     }
-
-    private activateNextRep() {
-        this.activeRepIndex++;
+    private activateNextExercise() {
+        this.InactiveExerciseReps(this.activeExercise);
+        this.activeSetExerciseIndex++;
+        this.setExecrciseRepsActiveState(this.activeExercise, this.activeRepIndex);
+        this.startTimedRep();
+    }
+    private activatePrevExercise() {
+        this.InactiveExerciseReps(this.activeExercise);
+        this.activeSetExerciseIndex--;
+        this.setExecrciseRepsActiveState(this.activeExercise, this.activeRepIndex);
         this.startTimedRep();
     }
 
-    nextRep (shouldRest: boolean) {
-        if (!this.isRepCompleted (this.activeRepIndex)) {
-            this.completedReps.push(this.activeRepIndex);
+    private activateNextRep() {
+        this.InactiveExerciseReps(this.activeExercise);
+        this.activeSetExerciseIndex = 0;
+        this.setExecrciseRepsActiveState(this.activeExercise, ++this.activeRepIndex);
+        this.startTimedRep();
+    }
+    private activatePrevRep() {
+        if (this.activeRepIndex > 0) {
+            this.InactiveExerciseReps(this.activeExercise);
+            this.activeSetExerciseIndex = this.exerciseSet.exercises.length - 1;
+            this.setExecrciseRepsActiveState(this.activeExercise, --this.activeRepIndex);
         }
+        this.startTimedRep();
+    }
+
+    nextRep(shouldRest: boolean) {
         this.stopRepTimer();
         this._timedRepRemaining = 0;
-        if (this.exerciseSet.exercises[0].reps.length - 1 > this.activeRepIndex) {
+        if (this.exerciseSet.exercises.length > this.activeSetExerciseIndex + 1 &&
+            this.hasIncompleteTimedRepInActiveRep) {
+            this.activeRep.isCompleted = true;
+            // need to go to the next exercise with current rep
             if (shouldRest) {
-                this._timedToRestAfterCurrentRep = this.exerciseSet.exercises[0].restBetweenReps;
-                this.startTimedRest(() => this.activateNextRep());
+                this._timedToRestAfterCurrentRep = this.activeExercise.restBetweenReps;
+                this.startTimedRest(() => this.activateNextExercise());
             } else {
                 this.skipRest();
-                this.activateNextRep();
+                this.activateNextExercise();
             }
         } else {
-            this.stopRepTimer();
-            if (shouldRest) {
-                this._timedToRestAfterCurrentRep = this.exerciseSet.exercises[0].restAfterExercise;
-                this.startTimedRest(() => this.completeExercise());
+            this.exerciseSet.exercises.forEach((exercise) => exercise.reps[this.activeRepIndex].isCompleted = true);
+            this.activeRep.isCompleted = true;
+            // if there are more reps, need to go to the next rep on the first exercise
+            if (this.activeExercise.reps.length > this.activeRepIndex + 1) {
+                if (shouldRest) {
+                    this._timedToRestAfterCurrentRep = this.activeExercise.restBetweenReps;
+                    this.startTimedRest(() => this.activateNextRep());
+                } else {
+                    this.skipRest();
+                    this.activateNextRep();
+                }
             } else {
-                this.completeExercise();
+                this.stopRepTimer();
+                if (shouldRest) {
+                    this._timedToRestAfterCurrentRep = this.activeExercise.restAfterExercise;
+                    this.startTimedRest(() => this.completeExercise());
+                } else {
+                    this.completeExercise();
+                }
             }
         }
     }
 
-    isRepCompleted (index) {
-        return this.completedReps.includes(index);
+    get isActiveRepCompleted(): boolean {
+        return this.activeRep.isCompleted;
+    }
+
+    get activeRep(): Rep {
+        return this.activeExercise.reps[this.activeRepIndex];
     }
 
     addRep(index: number) {
@@ -364,7 +485,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                     times: set.reps[index].times,
                     seconds: set.reps[index].seconds
                 });
-                set.reps.splice(index, 0, newRep );
+                set.reps.splice(index, 0, newRep);
             });
         }
     }
@@ -387,9 +508,9 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     async presentPopover(event: Event, rep: Rep) {
         const popover = await this.popoverCtrl.create({
-        component: ExerciseThumbnailPopoverComponent,
-        event: event,
-        componentProps: { rep: rep }
+            component: ExerciseThumbnailPopoverComponent,
+            event: event,
+            componentProps: { rep: rep }
         });
         popover.present();
     }

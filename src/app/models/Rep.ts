@@ -3,31 +3,28 @@ import { WeightUnit } from './enums';
 export class Rep {
 
     public weightUnit: WeightUnit;
-    get HasWeight() {
-        return this.weight || this.weight === 0;
-    }
 
     public weight: number;
-    set HasWeight(value) {
-        this.weight = value ? 0 : null;
-    }
 
     public times: number;
-    get HasTimes() {
-        return this.times || this.times === 0;
-    }
-    set HasTimes(value) {
-        this.times = value ? 0 : null;
-    }
 
     public seconds: number;
-    get HasSeconds() {
-        return this.seconds || this.seconds === 0;
+
+    private _isCompleted: boolean;
+    get isCompleted(): boolean {
+        return this._isCompleted;
     }
-    set HasSeconds(value) {
-        this.seconds = value ? 0 : null;
+    set isCompleted(value: boolean)  {
+        this._isCompleted = value;
     }
 
+    private _isActive: boolean;
+    get isActive(): boolean {
+        return this._isActive;
+    }
+    set isActive(value: boolean)  {
+        this._isActive = value;
+    }
     constructor (options: {
         weight?: number,
         weightUnit?: WeightUnit,
@@ -39,4 +36,6 @@ export class Rep {
         this.times = options.times;
         this.seconds = options.seconds;
     }
+
+
 }

@@ -41,19 +41,19 @@
                   </ion-col>
               </ion-row>
               <ion-row *ngFor="let exercise of exerciseSet.exercises">
-                  <ion-col *ngFor="let rep of exercise.reps; let i = index" id="col-rep"
-                          [ngClass]="getRunningExerciseSetRepCellClass(i)" >
+                  <ion-col *ngFor="let rep of exercise.reps" id="col-rep"
+                          [ngClass]="getRepClass(rep, exercise)" >
                       <div *ngIf='rep.weight'>
                           <h4 class="ion-text-center">{{rep.weight}}<small>{{' ' + weightUnit[rep.weightUnit]}}</small></h4>
                       </div>
                       <div *ngIf='rep.times'>
                           <h4 class="ion-text-center">{{rep.times}}<small> Times</small>
-                              <ion-icon *ngIf='isRepCompleted(i)' name="checkmark"></ion-icon>
+                              <ion-icon *ngIf='rep.isCompleted' name="checkmark"></ion-icon>
                           </h4>
                       </div>
                       <div *ngIf='rep.seconds'>
-                        <h4 class="ion-text-center">{{getDisplayTimedRepRemaining(i)}}<small> Seconds</small>
-                            <ion-icon *ngIf='isRepCompleted(i)' name="checkmark"></ion-icon>
+                        <h4 class="ion-text-center">{{getSecondsStateText(rep)}}<small> Seconds</small>
+                            <ion-icon *ngIf='rep.isCompleted' name="checkmark"></ion-icon>
                         </h4>
                     </div>
                   </ion-col>
