@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'select-muscle/:mediaName',
     loadChildren:  '../pages/select-muscle/select-muscle.module#SelectMusclePageModule'
+  },
+  {
+    path: 'select-muscle',
+    loadChildren:  '../pages/select-muscle/select-muscle.module#SelectMusclePageModule'
   }
 ];
 @NgModule({

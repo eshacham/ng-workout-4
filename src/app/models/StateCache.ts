@@ -1,28 +1,46 @@
 import { Muscles } from './enums';
 
 export class StateCache {
-    private _muscleFilter: Set<Muscles>;
+    private _exerciseMuscleFilter: Set<Muscles>;
+    private _libraryMuscleFilter: Set<Muscles>;
     private lastSelectedWorkoutDay: Map<string, number>;
 
     constructor() {
         this.lastSelectedWorkoutDay = new Map<string, number>();
     }
 
-    get muscleFilter(): Set<Muscles> {
-        if (!this._muscleFilter) {
-            this._muscleFilter = new Set();
+    get exerciseMuscleFilter(): Set<Muscles> {
+        if (!this._exerciseMuscleFilter) {
+            this._exerciseMuscleFilter = new Set();
         }
-        return this._muscleFilter;
-    }
-    set muscleFilter(value: Set<Muscles>) {
-        this._muscleFilter = value;
+        return this._exerciseMuscleFilter;
     }
 
-    addMuscleToFilter(muscle: Muscles) {
-        this.muscleFilter.add(muscle);
+    set exerciseMuscleFilter(value: Set<Muscles>) {
+        this._exerciseMuscleFilter = value;
     }
-    deleteMuscleFromFilter(muscle: Muscles) {
-        this.muscleFilter.delete(muscle);
+    get libraryMuscleFilter(): Set<Muscles> {
+        if (!this._libraryMuscleFilter) {
+            this._libraryMuscleFilter = new Set();
+        }
+        return this._libraryMuscleFilter;
+    }
+    set libraryMuscleFilter(value: Set<Muscles>) {
+        this._libraryMuscleFilter = value;
+    }
+
+    addMuscleToExerciseMuscleFilter(muscle: Muscles) {
+        this.exerciseMuscleFilter.add(muscle);
+    }
+    deleteMuscleFromExerciseMuscleFilter(muscle: Muscles) {
+        this.exerciseMuscleFilter.delete(muscle);
+    }
+
+    addMuscleToLibraryMuscleFilter(muscle: Muscles) {
+        this.libraryMuscleFilter.add(muscle);
+    }
+    deleteMuscleFromLibraryMuscleFilter(muscle: Muscles) {
+        this.libraryMuscleFilter.delete(muscle);
     }
 
     getLastSelectedWorkoutDay(workoutName: string): number {

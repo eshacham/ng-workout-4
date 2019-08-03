@@ -10,7 +10,7 @@ import { DataServiceProvider } from '../providers/data-service/data-service';
 import { ExerciseMedia } from '../models/ExerciseMedia';
 import { ToastService } from '../providers/toast-service/toast.service';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
-import { ExerciseSetAction } from '../models/enums';
+import { ExerciseSetAction, Muscles } from '../models/enums';
 
 @Component({
   selector: 'app-tab-library',
@@ -19,9 +19,10 @@ import { ExerciseSetAction } from '../models/enums';
 })
 export class TabLibraryPage implements OnInit, OnDestroy {
 
-  images: ExerciseMedia[];
+  _images: ExerciseMedia[];
   isMobile = false;
   subs: Subscription;
+  _useFilter = false;
 
   constructor(
     private camera: Camera,
@@ -32,151 +33,189 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     private filePath: FilePath,
     private router: Router,
     private route: ActivatedRoute,
-    private dataServiceProvider: DataServiceProvider) {
-      this.images = [];
+    private dataService: DataServiceProvider) {
+    this._images = [];
+  }
+
+  get images(): ExerciseMedia[] {
+    if (this.useFilter) {
+      return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
+    } else {
+      return this._images;
     }
+  }
+  set images(images: ExerciseMedia[]) {
+    this._images = images;
+  }
 
-    async ngOnInit() {
-      this.images = await this.dataServiceProvider.getImages();
-      this.isMobile = this.dataServiceProvider.isMobile;
-      this.subs = this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
-      for (const img of this.images) {
-        console.log('tab-library-page: loaded images from storage:', img.name, img.muscles);
-      }
+  get useFilter(): boolean {
+    return this._useFilter;
+  }
+  set useFilter(use: boolean) {
+    if (this._useFilter !== use) {
+      this._useFilter = use;
     }
+  }
 
-    ngOnDestroy() {
-      this.subs.unsubscribe();
+  async ngOnInit() {
+    this._images = await this.dataService.getImages();
+    this.isMobile = this.dataService.isMobile;
+    this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+    for (const img of this._images) {
+      console.log('tab-library-page: loaded images from storage:', img.name, img.muscles);
     }
+  }
 
-    async handleWorkoutActionEvent (event: ExerciseSetActionEvent) {
-      const exerciseSetAction: ExerciseSetAction = event.action;
-      switch (exerciseSetAction) {
-        case ExerciseSetAction.ImagesReset:
-            this.images = await this.dataServiceProvider.getImages();
-            break;
-      }
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
+
+  async handleWorkoutActionEvent(event: ExerciseSetActionEvent) {
+    const exerciseSetAction: ExerciseSetAction = event.action;
+    switch (exerciseSetAction) {
+      case ExerciseSetAction.ImagesReset:
+        this.images = await this.dataService.getImages();
+        break;
     }
+  }
 
-    async presentToast(text: string) {
-      this.toastService.presentToast(text);
+  async presentToast(text: string) {
+    this.toastService.presentToast(text);
+  }
+
+  async selectImage() {
+    const options = {
+      header: 'Select Image source',
+      buttons: [{
+        text: 'Load from Library',
+        handler: () => {
+          this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+        }
+      }, {
+        text: 'Use Camera',
+        handler: () => {
+          this.takePicture(this.camera.PictureSourceType.CAMERA);
+        }
+      }]
+    };
+
+    const actionSheet = await this.actionSheetController.create(options);
+    console.log('presenting action sheet...');
+    await actionSheet.present();
+  }
+
+  get IsMobile() {
+    return this.isMobile;
+  }
+
+  async takePicture(sourceType: PictureSourceType) {
+    const options: CameraOptions = {
+      quality: 100,
+      sourceType: sourceType,
+      saveToPhotoAlbum: false,
+      correctOrientation: true
+    };
+    const imagePath = await this.camera.getPicture(options);
+    console.log('took picture as: ', imagePath);
+    let imageName: string;
+    let ImagePath: string;
+
+    if (this.dataService.isAndriod && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+      imageName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+      const tempPath = await this.filePath.resolveNativePath(imagePath);
+      ImagePath = tempPath.substr(0, tempPath.lastIndexOf('/') + 1);
+    } else {
+      imageName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+      ImagePath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
     }
+    await this.copyFileToLocalDir(ImagePath, imageName, `${new Date().getTime()}.jpg`);
+  }
 
-    async selectImage() {
-      const options = {
-        header: 'Select Image source',
-        buttons: [{
-            text: 'Load from Library',
-            handler: () => {
-              this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
-            }
-          }, {
-          text: 'Use Camera',
-          handler: () => {
-              this.takePicture(this.camera.PictureSourceType.CAMERA);
-          }
-        }]
-      };
-
-      const actionSheet = await this.actionSheetController.create(options);
-      console.log('presenting action sheet...');
-      await actionSheet.present();
+  async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
+    try {
+      await this.dataService.addImage(imagePath, imageName, newImageName);
+    } catch (error) {
+      console.log('Error storing new image:', error);
+      this.presentToast('Error storing new image');
     }
+  }
 
-    get IsMobile() {
-      return this.isMobile;
+  async deleteImage(imgEntry: ExerciseMedia, position: number) {
+    await this.dataService.deleteImage(imgEntry, position);
+    this.images = await this.dataService.getImages();
+    this.presentToast('File removed.');
+  }
+
+  async updateImage(imgEntry: ExerciseMedia, position: number) {
+    await this.dataService.updateImage(imgEntry, position);
+    this.images = await this.dataService.getImages();
+    this.presentToast('File updated.');
+  }
+
+  async setMuscle(imgEntry: ExerciseMedia) {
+    this.router.navigate([`select-muscle/${imgEntry.name}`], { relativeTo: this.route });
+  }
+
+  selectMuscle() {
+    this.router.navigate(['select-muscle'], { relativeTo: this.route });
+  }
+
+  filterImagesByMuscles(muscles: Set<Muscles>): ExerciseMedia[] {
+    console.log('tab-library: filtering by muscles', Array.from(muscles));
+    if (!muscles.size) {
+      console.log('no muscle group is selected');
+      return [];
     }
+    const images = this._images.filter((image) => {
+      const intersection =
+        new Set(Array.from(image.muscles).filter(x => muscles.has(x)));
+      return (intersection.size > 0);
+    });
+    return images;
+  }
 
-    async takePicture(sourceType: PictureSourceType) {
-      const options: CameraOptions = {
-          quality: 100,
-          sourceType: sourceType,
-          saveToPhotoAlbum: false,
-          correctOrientation: true
-      };
-      const imagePath = await this.camera.getPicture(options);
-      console.log('took picture as: ', imagePath);
-      let imageName: string;
-      let ImagePath: string;
-
-      if (this.dataServiceProvider.isAndriod && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        imageName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-        const tempPath = await this.filePath.resolveNativePath(imagePath);
-        ImagePath = tempPath.substr(0, tempPath.lastIndexOf('/') + 1);
-      } else {
-        imageName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        ImagePath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-      }
-      await this.copyFileToLocalDir(ImagePath, imageName, `${new Date().getTime()}.jpg`);
+  async startUpload(imgEntry: ExerciseMedia) {
+    try {
+      const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.nativePath);
+      (<FileEntry>entry).file(file => this.readFile(file));
+    } catch (err) {
+      this.presentToast('Error while reading file.');
     }
+  }
 
-    async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
-      try {
-        await this.dataServiceProvider.addImage(imagePath, imageName, newImageName);
-      } catch (error) {
-        console.log('Error storing new image:', error);
-        this.presentToast('Error storing new image');
-      }
-    }
+  readFile(file: any) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const formData = new FormData();
+      const imgBlob = new Blob([reader.result], {
+        type: file.type
+      });
+      formData.append('file', imgBlob, file.name);
+      this.uploadImageData(formData);
+    };
+    reader.readAsArrayBuffer(file);
+  }
 
-    async deleteImage(imgEntry: ExerciseMedia, position: number) {
-      await this.dataServiceProvider.deleteImage(imgEntry, position);
-      this.images = await this.dataServiceProvider.getImages();
-      this.presentToast('File removed.');
-    }
+  async uploadImageData(formData: FormData) {
+    const options: LoadingOptions = {
+      message: 'Uploading image...'
+    };
+    const loading = await this.loadingController.create(options);
+    await loading.present();
 
-    async updateImage(imgEntry: ExerciseMedia, position: number) {
-      await this.dataServiceProvider.updateImage(imgEntry, position);
-      this.images = await this.dataServiceProvider.getImages();
-      this.presentToast('File updated.');
-    }
-
-    async setMuscle(imgEntry: ExerciseMedia) {
-      this.router.navigate([`select-muscle/${imgEntry.name}`], {relativeTo: this.route});
-    }
-
-    async startUpload(imgEntry: ExerciseMedia) {
-      try {
-        const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.nativePath);
-        ( < FileEntry > entry).file(file => this.readFile(file));
-      } catch (err) {
-        this.presentToast('Error while reading file.');
-      }
-    }
-
-    readFile(file: any) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-          const formData = new FormData();
-          const imgBlob = new Blob([reader.result], {
-              type: file.type
-          });
-          formData.append('file', imgBlob, file.name);
-          this.uploadImageData(formData);
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    async uploadImageData(formData: FormData) {
-      const options: LoadingOptions = {
-        message: 'Uploading image...'
-      };
-      const loading = await this.loadingController.create(options);
-      await loading.present();
-
-      // this.http.post("http://localhost:8888/upload.php", formData)
-      //     .pipe(
-      //         finalize(() => {
-                  loading.dismiss();
-      //         })
-      //     )
-      //     .subscribe(res => {
-      //         if (res['success']) {
-                   this.presentToast('File upload complete.');
-      //         } else {
-      //             this.presentToast('File upload failed.')
-      //         }
-      //     });
+    // this.http.post("http://localhost:8888/upload.php", formData)
+    //     .pipe(
+    //         finalize(() => {
+    loading.dismiss();
+    //         })
+    //     )
+    //     .subscribe(res => {
+    //         if (res['success']) {
+    this.presentToast('File upload complete.');
+    //         } else {
+    //             this.presentToast('File upload failed.')
+    //         }
+    //     });
   }
 
 }

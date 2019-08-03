@@ -42,7 +42,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
   get images(): SelectedExerciseMedia[] {
     if (this.useFilter) {
-      return this.filterImagesByMuscles(this.dataService.muscleFilter);
+      return this.filterImagesByMuscles(this.dataService.exerciseMuscleFilter);
     } else {
       return this._images;
     }
@@ -96,17 +96,14 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
   filterImagesByMuscles(muscles: Set<Muscles>): SelectedExerciseMedia[] {
     console.log('select-execrcise: filtering by muscles', Array.from(muscles));
+    if (!muscles.size) {
+      console.log('no muscle group is selected');
+      return [];
+    }
     const images = this._images.filter((image) => {
-      if (muscles.size) {
         const intersection =
         new Set(Array.from(image.media.muscles).filter(x => muscles.has(x)));
-// tslint:disable-next-line: max-line-length
-        console.log(`intersecting image ${image.media.name} muscles ${Array.from(image.media.muscles)} with selected muscles ${Array.from(muscles)}`);
       return (intersection.size > 0);
-      } else {
-        console.log('no muscle group is selected');
-        return false;
-      }
     });
     return images;
   }

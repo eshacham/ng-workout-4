@@ -2,7 +2,6 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Muscles } from 'src/app/models/enums';
 import { ActivatedRoute } from '@angular/router';
-import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 
 interface MuscleElements {
   muscle: Muscles;
@@ -52,11 +51,14 @@ export class SelectMusclePage implements OnInit {
       }
     });
     if (this.isSettingMedia) {
-      this.dataService.setMusclesFilterFromImage(this.mediaToSet);
+      this.dataService.setExerciseMusclesFilterFromImage(this.mediaToSet);
     }
     console.log('select-muscle - setting media:', this.mediaToSet);
 
-    const muscleFilter = this.dataService.muscleFilter;
+    const muscleFilter = this.isSettingMedia ?
+      this.dataService.exerciseMuscleFilter :
+      this.dataService.libraryMuscleFilter;
+
     this.SelectedMuscles = Object.values(Muscles).map(muscle => {
       const selectedMuscle: SelectedMuscle = {
         muscle: muscle,
@@ -81,11 +83,26 @@ export class SelectMusclePage implements OnInit {
     const muscle = this.selectedMuscles.filter(selectedMuscle => selectedMuscle.muscle === clickedMuscle)[0];
     muscle.isSelected = !muscle.isSelected;
     if (muscle.isSelected) {
-      this.dataService.addMuscleToFilter(clickedMuscle);
+      this.addMuscleToFilter(clickedMuscle);
       this.showMuscle(clickedMuscle);
     } else {
-      this.dataService.deleteMuscleFromFilter(clickedMuscle);
+      this.deleteMuscleFromFilter(clickedMuscle);
       this.hideMuscle(clickedMuscle);
+    }
+  }
+
+  addMuscleToFilter(muscle: Muscles) {
+    if (this.isSettingMedia) {
+      this.dataService.addMuscleToExerciseMuscleFilter(muscle);
+    } else {
+      this.dataService.addMuscleToLibraryMuscleFilter(muscle);
+    }
+  }
+  deleteMuscleFromFilter(muscle: Muscles) {
+    if (this.isSettingMedia) {
+      this.dataService.deleteMuscleFromExerciseMuscleFilter(muscle);
+    } else {
+      this.dataService.deleteMuscleFromLibraryMuscleFilter(muscle);
     }
   }
 

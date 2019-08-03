@@ -4,11 +4,26 @@
       Library
     </ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-item>
+          <ion-label>Filter by Muscles</ion-label>
+          <ion-checkbox [(ngModel)]="useFilter"></ion-checkbox>
+        </ion-item>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+        <ion-button [disabled]="!useFilter" fill="clear"
+          (click)="selectMuscle()" >
+          <ion-icon slot="end" name="body"></ion-icon>
+          Select Muscles
+        </ion-button>
+    </ion-buttons>
+
+</ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <h3 *ngIf="images.length === 0" class="ion-text-center">Please Select Image!</h3>
-
   <ion-list>
     <ion-item *ngFor="let img of images; index as pos" class="ion-text-wrap">
       <ion-thumbnail slot="start">
