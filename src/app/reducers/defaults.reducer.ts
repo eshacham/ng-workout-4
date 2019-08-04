@@ -21,6 +21,12 @@ export function reducer(
                 hasDefaultWorkoutsBeenReset: true
             };
         }
+        case fromDefaults.ActionTypes.UpdatedDefaultWorkouts: {
+            return {
+                ...state,
+                hasDefaultWorkoutsBeenReset: false
+            };
+        }
         case fromDefaults.ActionTypes.ResetDefaultImages: {
             return {
                 ...state,

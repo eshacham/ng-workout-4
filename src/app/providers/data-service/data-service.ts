@@ -95,6 +95,7 @@ export class DataServiceProvider {
     await this.storage.ready();
     await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
     console.log('workouts have been saved');
+    this.store.dispatch(new DefeaultsActions.UpdatedDefaultWorkouts());
   }
 
   async resetImages() {
