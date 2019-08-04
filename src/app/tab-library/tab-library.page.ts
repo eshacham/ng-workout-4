@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { File, FileEntry } from '@ionic-native/File/ngx';
@@ -11,6 +11,7 @@ import { ExerciseMedia } from '../models/ExerciseMedia';
 import { ToastService } from '../providers/toast-service/toast.service';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
 import { ExerciseSetAction, Muscles } from '../models/enums';
+import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 
 @Component({
   selector: 'app-tab-library',
@@ -38,7 +39,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   get images(): ExerciseMedia[] {
-    if (this.useFilter) {
+    if (this.useFilter && this.dataService.libraryMuscleFilter.size) {
       return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
     } else {
       return this._images;
@@ -64,6 +65,11 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     for (const img of this._images) {
       console.log('tab-library-page: loaded images from storage:', img.name, img.muscles);
     }
+  }
+
+  ionViewWillEnter() {
+    console.log('tab-library-ionViewWillEnter', this.dataService.exerciseMuscleFilter);
+
   }
 
   ngOnDestroy() {
@@ -153,19 +159,32 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   async setMuscle(imgEntry: ExerciseMedia) {
-    this.router.navigate([`select-muscle/${imgEntry.name}`], { relativeTo: this.route });
+    const extra: NavigationExtras = {
+      relativeTo: this.route,
+      state: {
+        muscleFilterUsage: {
+          for: MuscleFilterFor.SetExerciseMedia,
+          mediaName: imgEntry.name
+        }
+      }
+    };
+    this.router.navigate(['select-muscle'], extra);
   }
 
-  selectMuscle() {
-    this.router.navigate(['select-muscle'], { relativeTo: this.route });
+  async selectMuscle() {
+    const extra: NavigationExtras = {
+      relativeTo: this.route,
+      state: {
+        muscleFilterUsage: {
+          for: MuscleFilterFor.FilterLibraryImages
+        }
+      }
+    };
+    this.router.navigate(['select-muscle'], extra);
   }
 
   filterImagesByMuscles(muscles: Set<Muscles>): ExerciseMedia[] {
     console.log('tab-library: filtering by muscles', Array.from(muscles));
-    if (!muscles.size) {
-      console.log('no muscle group is selected');
-      return [];
-    }
     const images = this._images.filter((image) => {
       const intersection =
         new Set(Array.from(image.muscles).filter(x => muscles.has(x)));

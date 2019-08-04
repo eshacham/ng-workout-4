@@ -16,10 +16,6 @@ const routes: Routes = [
     component: TabLibraryPage
   },
   {
-    path: 'select-muscle/:mediaName',
-    loadChildren:  '../pages/select-muscle/select-muscle.module#SelectMusclePageModule'
-  },
-  {
     path: 'select-muscle',
     loadChildren:  '../pages/select-muscle/select-muscle.module#SelectMusclePageModule'
   }

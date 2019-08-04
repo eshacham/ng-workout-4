@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 import { Workout } from 'src/app/models/Workout';
@@ -9,6 +9,7 @@ import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 import { ExerciseSetAction, Muscles, RepetitionSpeed } from 'src/app/models/enums';
+import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -41,8 +42,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   }
 
   get images(): SelectedExerciseMedia[] {
-    if (this.useFilter) {
-      return this.filterImagesByMuscles(this.dataService.exerciseMuscleFilter);
+    if (this.useFilter && this.dataService.libraryMuscleFilter.size) {
+      return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
     } else {
       return this._images;
     }
@@ -83,7 +84,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-
   private async getImages(): Promise<SelectedExerciseMedia[]> {
     const images = await this.dataService.getImages();
     return images.map((image) => {
@@ -96,10 +96,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
   filterImagesByMuscles(muscles: Set<Muscles>): SelectedExerciseMedia[] {
     console.log('select-execrcise: filtering by muscles', Array.from(muscles));
-    if (!muscles.size) {
-      console.log('no muscle group is selected');
-      return [];
-    }
     const images = this._images.filter((image) => {
         const intersection =
         new Set(Array.from(image.media.muscles).filter(x => muscles.has(x)));
@@ -168,7 +164,15 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     return newSets;
   }
 
-  selectMuscle() {
-    this.router.navigate(['../select-muscle'], { relativeTo: this.route });
+  async selectMuscle() {
+    const extra: NavigationExtras = {
+      relativeTo: this.route,
+      state: {
+        muscleFilterUsage: {
+          for: MuscleFilterFor.SelectExercise
+        }
+      }
+    };
+    this.router.navigate(['select-muscle'], extra);
   }
 }
