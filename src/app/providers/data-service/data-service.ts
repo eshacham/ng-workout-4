@@ -1,4 +1,5 @@
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/File/ngx';
@@ -11,6 +12,13 @@ import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction, Muscles } from '../../models/enums';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
+import * as DefeaultsActions from '../../actions/defaults.actions';
+import {
+  AppState,
+  getHasDefaultWorkoutsBeenReset,
+  getHasDefaultImagesBeenReset
+} from '../../reducers';
+
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -22,16 +30,28 @@ export class DataServiceProvider {
   private _images: ExerciseMedia[];
   private state: StateCache;
   workoutPublisher: Subject<ExerciseSetActionEvent>;
+  // hasDefaultWorkoutsBeenReset: Observable<boolean>;
+  // hasDefaultImagesBeenReset: Observable<boolean>;
 
   constructor(
     private platform: Platform,
     private file: File,
     private webview: WebView,
-    private storage: Storage) {
+    private storage: Storage,
+    private store: Store<AppState>) {
     this._images = [];
     this._workouts = [];
     this.state = new StateCache();
     this.workoutPublisher = new Subject();
+    // this.hasDefaultWorkoutsBeenReset = this.store.select(getHasDefaultWorkoutsBeenReset);
+    // this.hasDefaultImagesBeenReset = this.store.select(getHasDefaultImagesBeenReset);
+  }
+
+  getHasDefaultWorkoutsBeenReset(): Observable<boolean> {
+    return this.store.select(getHasDefaultWorkoutsBeenReset);
+  }
+  getHasDefaultImagesBeenReset(): Observable<boolean> {
+    return this.store.select(getHasDefaultImagesBeenReset);
   }
 
   async getWorkout(id: number): Promise<Workout> {
@@ -67,6 +87,7 @@ export class DataServiceProvider {
     this._workouts = defaultWorkouts.workouts.map(x => Object.assign({}, x)); // deep clone of objects in an array
     await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
     console.log('workouts have been reset to default workouts');
+    this.store.dispatch(new DefeaultsActions.ResetDefaultWorkouts());
     this.workoutPublisher.next(new ExerciseSetActionEvent(ExerciseSetAction.WorkoutReset, null, null, null));
   }
 
@@ -81,6 +102,7 @@ export class DataServiceProvider {
     await this.storage.ready();
     await this.storage.remove(IMAGES_STORAGE_KEY);
     await this.initImages();
+    this.store.dispatch(new DefeaultsActions.ResetDefaultImages());
     this.workoutPublisher.next(new ExerciseSetActionEvent(ExerciseSetAction.ImagesReset, null, null, null));
     console.log('images have been reset');
   }
@@ -170,7 +192,7 @@ export class DataServiceProvider {
         for (const set of day.exerciseSets) {
           for (const exe of set.exercises) {
             if (!exe.media.isDefault &&
-                exe.media.nativePath.indexOf(this.file.dataDirectory) < 0) {
+              exe.media.nativePath.indexOf(this.file.dataDirectory) < 0) {
               const oldPath = exe.media.nativePath;
               const name = exe.media.nativePath.substr(exe.media.nativePath.lastIndexOf('/') + 1);
               exe.media.nativePath = this.file.dataDirectory + name;
@@ -193,7 +215,7 @@ export class DataServiceProvider {
     const nativePath = this.file.dataDirectory + newImageName;
     console.log(`new image ${origImagePath}/${origImageName} has been copied to ${nativePath}`);
 
-    const newEntry: ExerciseMedia = new ExerciseMedia ({
+    const newEntry: ExerciseMedia = new ExerciseMedia({
       name: newImageName,
       ionicPath: this.getIonicPath(nativePath),
       nativePath: nativePath,
@@ -268,13 +290,13 @@ export class DataServiceProvider {
     this.state.addMuscleToExerciseMuscleFilter(muscle);
   }
   deleteMuscleFromExerciseMuscleFilter(muscle: Muscles) {
-      this.state.deleteMuscleFromExerciseMuscleFilter(muscle);
+    this.state.deleteMuscleFromExerciseMuscleFilter(muscle);
   }
 
   addMuscleToLibraryMuscleFilter(muscle: Muscles) {
     this.state.addMuscleToLibraryMuscleFilter(muscle);
   }
   deleteMuscleFromLibraryMuscleFilter(muscle: Muscles) {
-      this.state.deleteMuscleFromLibraryMuscleFilter(muscle);
+    this.state.deleteMuscleFromLibraryMuscleFilter(muscle);
   }
 }
