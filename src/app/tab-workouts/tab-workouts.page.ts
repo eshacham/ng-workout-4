@@ -22,14 +22,18 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   workoutPublisher: Subject<ExerciseSetSwitchModeEvent>;
   subs: Subscription;
 
-  constructor (
+  constructor(
     private dataServiceProvider: DataServiceProvider) {
-      this.workoutPublisher = new Subject();
-    }
+    this.workoutPublisher = new Subject();
+  }
 
   async ngOnInit() {
     this.workouts = await this.dataServiceProvider.getWorkouts();
     this.subs = this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+
+    this.dataServiceProvider.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
+      console.log('tab-workouts redux - HasDefaultWorkoutsBeenReset:', reset);
+    });
   }
 
   ngOnDestroy() {
@@ -66,7 +70,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
       name: 'new workout',
       description: 'describe the workout',
       days: [
-        new WorkoutDay({id: 1, name: 'workout day name', exerciseSets: []})
+        new WorkoutDay({ id: 1, name: 'workout day name', exerciseSets: [] })
       ]
     });
     this.workouts.push(newWorkout);
@@ -86,7 +90,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     this.workoutPublisher.next(workoutEvent);
   }
 
-  async handleWorkoutActionEvent (event: ExerciseSetActionEvent) {
+  async handleWorkoutActionEvent(event: ExerciseSetActionEvent) {
     const exerciseSetAction: ExerciseSetAction = event.action;
     switch (exerciseSetAction) {
       case ExerciseSetAction.Delete:
@@ -103,9 +107,9 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
         }
         break;
       case ExerciseSetAction.WorkoutReset:
-          this.workouts = await this.dataServiceProvider.getWorkouts();
-          console.log('workouts page - loading reset workouts');
-          break;
+        this.workouts = await this.dataServiceProvider.getWorkouts();
+        console.log('workouts page - loading reset workouts');
+        break;
     }
   }
 }
