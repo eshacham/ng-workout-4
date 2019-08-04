@@ -30,6 +30,10 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.workouts = await this.dataServiceProvider.getWorkouts();
     this.subs = this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+
+    this.dataServiceProvider.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
+      console.log('tab-workouts redux - HasDefaultWorkoutsBeenReset:', reset);
+    });
   }
 
   ngOnDestroy() {
