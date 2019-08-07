@@ -1,15 +1,16 @@
-import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 import { Workout } from 'src/app/models/Workout';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
-import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
-import { ExerciseSetAction, Muscles, RepetitionSpeed } from 'src/app/models/enums';
+import { Muscles, RepetitionSpeed } from 'src/app/models/enums';
 import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
+import { AppState } from '../../reducers';
+import * as DefeaultsActions from '../../actions/defaults.actions';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -29,12 +30,12 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   isSet = false;
   haveWorkoutsBeenReset = false;
   _useFilter = false;
-  private subs: Subscription;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private dataService: DataServiceProvider) {
+    private dataService: DataServiceProvider,
+    private store: Store<AppState>) {
     this._images = [];
     this.route.params.subscribe(params => {
       this.workoutId = +params.id;
@@ -77,7 +78,13 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.haveWorkoutsBeenReset = false;
     this.images = await this.getImages();
     this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+    this.dataService.getHasDefaultImagesBeenReset().subscribe(async (reset) => {
+      console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
+      if (reset) {
+        this.images = await this.getImages();
+        this.store.dispatch(new DefeaultsActions.LoadedDefaultImages());
+      }
+    });
     this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
       console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
       this.haveWorkoutsBeenReset = reset;
@@ -85,7 +92,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 
   private async getImages(): Promise<SelectedExerciseMedia[]> {
@@ -109,15 +115,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       return (intersection.size > 0);
     });
     return images;
-  }
-
-  async handleWorkoutActionEvent(event: ExerciseSetActionEvent) {
-    const exerciseSetAction: ExerciseSetAction = event.action;
-    switch (exerciseSetAction) {
-      case ExerciseSetAction.ImagesReset:
-        this.images = await this.getImages();
-        break;
-    }
   }
 
   addExercise() {

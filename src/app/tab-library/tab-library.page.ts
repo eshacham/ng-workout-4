@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
@@ -9,10 +10,10 @@ import { LoadingOptions } from '@ionic/core';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { ExerciseMedia } from '../models/ExerciseMedia';
 import { ToastService } from '../providers/toast-service/toast.service';
-import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
-import { ExerciseSetAction, Muscles } from '../models/enums';
+import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
-
+import { AppState } from '../reducers';
+import * as DefeaultsActions from '../actions/defaults.actions';
 @Component({
   selector: 'app-tab-library',
   templateUrl: 'tab-library.page.html',
@@ -34,7 +35,8 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     private filePath: FilePath,
     private router: Router,
     private route: ActivatedRoute,
-    private dataService: DataServiceProvider) {
+    private dataService: DataServiceProvider,
+    private store: Store<AppState>) {
     this._images = [];
   }
 
@@ -61,7 +63,13 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   async ngOnInit() {
     this._images = await this.dataService.getImages();
     this.isMobile = this.dataService.isMobile;
-    this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+    this.dataService.getHasDefaultImagesBeenReset().subscribe(async (reset) => {
+      console.log('tab-library redux - HasDefaultImagesBeenReset:', reset);
+      if (reset) {
+        this.images = await this.dataService.getImages();
+        this.store.dispatch(new DefeaultsActions.LoadedDefaultImages());
+      }
+    });
     for (const img of this._images) {
       console.log('tab-library-page: loaded images from storage:', img.name, img.muscles);
     }
@@ -74,15 +82,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
-  }
-
-  async handleWorkoutActionEvent(event: ExerciseSetActionEvent) {
-    const exerciseSetAction: ExerciseSetAction = event.action;
-    switch (exerciseSetAction) {
-      case ExerciseSetAction.ImagesReset:
-        this.images = await this.dataService.getImages();
-        break;
-    }
   }
 
   async presentToast(text: string) {

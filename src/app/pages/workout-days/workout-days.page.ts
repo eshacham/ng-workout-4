@@ -1,6 +1,6 @@
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { IonSlides as Slides, NavController} from '@ionic/angular';
 import { Workout } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
@@ -21,7 +21,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   activeDayIndex: number;
   isNewDayAdded: boolean;
-  private subs: Subscription;
 
   @ViewChild('slider') slides: Slides;
 
@@ -48,7 +47,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleExerciseSetActionEvent(event));
     this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(async (reset) => {
       console.log('workout days redux - HasDefaultWorkoutsBeenReset:', reset);
       console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
@@ -65,7 +63,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 
   get isLastDayActive(): boolean {
@@ -90,7 +87,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     await this.dataService.saveWorkouts();
   }
 
-  async handleExerciseSetActionEvent(event: ExerciseSetActionEvent) {
+  async handleWorkoutDayActionEvent(event: ExerciseSetActionEvent) {
     const exerciseSetAction: ExerciseSetAction = event.action;
 
     switch (exerciseSetAction) {

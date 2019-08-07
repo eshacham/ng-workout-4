@@ -1,4 +1,4 @@
-import { Subject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
@@ -6,11 +6,10 @@ import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
 import { StateCache } from '../../models/StateCache';
+import { Muscles } from '../../models/enums';
 import { Workout } from '../../models/Workout';
 import { defaultWorkouts } from '../../constants/defaultWorkouts';
 import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
-import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
-import { ExerciseSetAction, Muscles } from '../../models/enums';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
 import * as DefeaultsActions from '../../actions/defaults.actions';
 import {
@@ -29,7 +28,6 @@ export class DataServiceProvider {
   private _workouts: Workout[];
   private _images: ExerciseMedia[];
   private state: StateCache;
-  workoutPublisher: Subject<ExerciseSetActionEvent>;
 
   constructor(
     private platform: Platform,
@@ -40,7 +38,6 @@ export class DataServiceProvider {
     this._images = [];
     this._workouts = [];
     this.state = new StateCache();
-    this.workoutPublisher = new Subject();
   }
 
   getHasDefaultWorkoutsBeenReset(): Observable<boolean> {
@@ -81,31 +78,31 @@ export class DataServiceProvider {
 
   async resetWorkouts() {
     this._workouts = defaultWorkouts.workouts.map(x => Object.assign({}, x)); // deep clone of objects in an array
-    await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
+    await this.saveWorkouts(true);
     console.log('workouts have been reset to default workouts');
-    this.store.dispatch(new DefeaultsActions.ResetDefaultWorkouts());
   }
 
-  async saveWorkouts() {
+  async saveWorkouts(haveWorkoutsBeenReset: boolean = false) {
     await this.storage.ready();
     await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
     console.log('workouts have been saved');
-    this.store.dispatch(new DefeaultsActions.UpdatedDefaultWorkouts());
+    if (haveWorkoutsBeenReset) {
+      this.store.dispatch(new DefeaultsActions.ResetDefaultWorkouts());
+    } else {
+      this.store.dispatch(new DefeaultsActions.UpdatedDefaultWorkouts());
+    }
   }
 
   async resetImages() {
-    this._images = [];
     await this.storage.ready();
     await this.storage.remove(IMAGES_STORAGE_KEY);
-    await this.initImages();
-    this.store.dispatch(new DefeaultsActions.ResetDefaultImages());
-    this.workoutPublisher.next(new ExerciseSetActionEvent(ExerciseSetAction.ImagesReset, null, null, null));
+    await this.initDefaultImages();
     console.log('images have been reset');
   }
 
   async getImages(): Promise<ExerciseMedia[]> {
     if (!this._images.length) {
-      await this.initImages();
+      await this.loadImages();
     }
     return this._images;
   }
@@ -130,24 +127,24 @@ export class DataServiceProvider {
     }
   }
 
-  async initImages() {
+  async loadImages() {
     await this.displayPlatform();
     await this.storage.ready();
     this._images = await this.storage.get(IMAGES_STORAGE_KEY);
 
-    if (!this._images || !this._images.length) {
+    if (!this._images.length) {
       this.initDefaultImages();
       return;
     }
 
     if (this._images.length) {
-      console.log(`DS - loaded ${this._images.length} images from storage:`, this._images);
       for (const img of this._images) {
         console.log('DS: loaded images from storage:', img.name, img.muscles);
       }
       if (this.isMobile) {
         console.log(`updating to device data directory ${this.file.dataDirectory}`);
         this.upgradeImages();
+        await this.saveImages();
       }
     }
   }
@@ -170,17 +167,10 @@ export class DataServiceProvider {
   }
 
   private async initDefaultImages() {
-    this._images = [];
-    console.log('initializing saved images from assests...');
-    // const images: Map<string, ExerciseMedia> = this.extractUniqueImagesFromWorkouts(defaultWorkouts.workouts);
     this._images = Array.from(defaultExerciseMedia.values());
-    console.log(`initialized ${this._images.length} saved images from assests`, this._images);
-    await this.saveImages();
+    console.log(`initialized ${this._images.length} default images`, this._images);
+    await this.saveImages(true);
   }
-
-  // private extractUniqueImagesFromWorkouts(workouts: Workout[]) {
-  //   return defaultExerciseMedia;
-  // }
 
   private UpdateImagesInWorkouts(workouts: Workout[]) {
     for (const workout of workouts) {
@@ -201,9 +191,14 @@ export class DataServiceProvider {
     }
   }
 
-  async saveImages() {
+  async saveImages(imagesHaveBeenReset: boolean = false) {
     await this.storage.ready();
     await this.storage.set(IMAGES_STORAGE_KEY, this._images);
+    if (imagesHaveBeenReset) {
+      this.store.dispatch(new DefeaultsActions.ResetDefaultImages());
+    } else {
+      this.store.dispatch(new DefeaultsActions.UpdatedDefaultImages());
+    }
   }
 
   async addImage(origImagePath: string, origImageName: string, newImageName: string) {
@@ -224,20 +219,19 @@ export class DataServiceProvider {
   }
 
   async deleteImage(image: ExerciseMedia, position: number) {
-    console.log(`removing image ${name} from library`);
     const imageToRemove = this._images.splice(position, 1)[0];
     await this.saveImages();
     if (this.isMobile && !imageToRemove.isDefault) {
       const path = image.nativePath.substr(0, image.nativePath.lastIndexOf('/') + 1);
       const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
-      console.log(`deleting image from ${path} ${name}`);
+      console.log(`deleting image file ${path}/${name}`);
       await this.file.removeFile(path, name);
     }
   }
 
   async updateImage(imgEntry: ExerciseMedia, position: number) {
-    console.log(`updated image name ${imgEntry.name} as ${this._images[position].ionicPath}`);
     await this.saveImages();
+    console.log(`updated image name ${imgEntry.name} as ${this._images[position].ionicPath}`);
   }
 
   getIonicPath(img: string) {
