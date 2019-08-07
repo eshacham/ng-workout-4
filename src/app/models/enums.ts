@@ -45,7 +45,6 @@ export enum ExerciseSetAction {
     DeleteDay,
     MoveDayForward,
     MoveDayBack,
-    WorkoutReset,
     ImagesReset
 }
 export enum Muscles {

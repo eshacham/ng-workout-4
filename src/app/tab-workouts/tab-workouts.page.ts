@@ -23,15 +23,15 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   subs: Subscription;
 
   constructor(
-    private dataServiceProvider: DataServiceProvider) {
+    private dataService: DataServiceProvider) {
     this.workoutPublisher = new Subject();
   }
 
   async ngOnInit() {
-    this.workouts = await this.dataServiceProvider.getWorkouts();
-    this.subs = this.dataServiceProvider.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+    this.workouts = await this.dataService.getWorkouts();
+    this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
 
-    this.dataServiceProvider.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
+    this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
       console.log('tab-workouts redux - HasDefaultWorkoutsBeenReset:', reset);
     });
   }
@@ -48,7 +48,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
       this._displayMode = val;
       this.publishWorkoutEvent(this._displayMode);
       if (this.DisplayMode === DisplayMode.Display) {
-        this.dataServiceProvider.saveWorkouts();
+        this.dataService.saveWorkouts();
       }
     }
   }
@@ -78,7 +78,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     await new Promise(() => setTimeout(() => {
       this.DisplayMode = DisplayMode.Edit;
       this.publishWorkoutEvent(this._displayMode);
-      this.dataServiceProvider.saveWorkouts();
+      this.dataService.saveWorkouts();
     }, 1));
 
   }
@@ -103,12 +103,8 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
             });
           }
           this.workouts.splice(index, 1);
-          await this.dataServiceProvider.saveWorkouts();
+          await this.dataService.saveWorkouts();
         }
-        break;
-      case ExerciseSetAction.WorkoutReset:
-        this.workouts = await this.dataServiceProvider.getWorkouts();
-        console.log('workouts page - loading reset workouts');
         break;
     }
   }

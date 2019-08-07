@@ -30,8 +30,6 @@ export class DataServiceProvider {
   private _images: ExerciseMedia[];
   private state: StateCache;
   workoutPublisher: Subject<ExerciseSetActionEvent>;
-  // hasDefaultWorkoutsBeenReset: Observable<boolean>;
-  // hasDefaultImagesBeenReset: Observable<boolean>;
 
   constructor(
     private platform: Platform,
@@ -43,8 +41,6 @@ export class DataServiceProvider {
     this._workouts = [];
     this.state = new StateCache();
     this.workoutPublisher = new Subject();
-    // this.hasDefaultWorkoutsBeenReset = this.store.select(getHasDefaultWorkoutsBeenReset);
-    // this.hasDefaultImagesBeenReset = this.store.select(getHasDefaultImagesBeenReset);
   }
 
   getHasDefaultWorkoutsBeenReset(): Observable<boolean> {
@@ -88,7 +84,6 @@ export class DataServiceProvider {
     await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
     console.log('workouts have been reset to default workouts');
     this.store.dispatch(new DefeaultsActions.ResetDefaultWorkouts());
-    this.workoutPublisher.next(new ExerciseSetActionEvent(ExerciseSetAction.WorkoutReset, null, null, null));
   }
 
   async saveWorkouts() {

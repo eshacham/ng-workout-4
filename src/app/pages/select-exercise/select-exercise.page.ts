@@ -78,6 +78,10 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.images = await this.getImages();
     this.workout = await this.dataService.getWorkout(this.workoutId);
     this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleWorkoutActionEvent(event));
+    this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
+      console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
+      this.haveWorkoutsBeenReset = reset;
+    });
   }
 
   ngOnDestroy() {
@@ -100,7 +104,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       return [];
     }
     const images = this._images.filter((image) => {
-        const intersection =
+      const intersection =
         new Set(Array.from(image.media.muscles).filter(x => muscles.has(x)));
       return (intersection.size > 0);
     });
@@ -113,8 +117,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       case ExerciseSetAction.ImagesReset:
         this.images = await this.getImages();
         break;
-      case ExerciseSetAction.WorkoutReset:
-        this.haveWorkoutsBeenReset = true;
     }
   }
 
@@ -160,9 +162,9 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
     let maxId = this.getMaxIdForWorkoutSets();
     if (this.isSet) {
-      newSets = [new ExerciseSet({id: ++maxId, exercises: newExercises })];
+      newSets = [new ExerciseSet({ id: ++maxId, exercises: newExercises })];
     } else {
-      newSets = newExercises.map((exe) => new ExerciseSet({id: ++maxId, exercises: [exe] }));
+      newSets = newExercises.map((exe) => new ExerciseSet({ id: ++maxId, exercises: [exe] }));
     }
     return newSets;
   }

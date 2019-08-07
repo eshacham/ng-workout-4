@@ -49,6 +49,13 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.subs = this.dataService.workoutPublisher.subscribe(event => this.handleExerciseSetActionEvent(event));
+    this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(async (reset) => {
+      console.log('workout days redux - HasDefaultWorkoutsBeenReset:', reset);
+      console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
+      if (reset) {
+        await this.navCtrl.navigateBack('/tabs/tab-workouts');
+      }
+    });
     this.workout = await this.dataService.getWorkout(this.workoutId);
     if (this.slides && this.workout) {
       this.activeDayIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
@@ -123,10 +130,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       case ExerciseSetAction.MoveDayBack:
         console.log('workout-days: receieved move day back event: ', JSON.stringify(event));
         await this.moveBackWorkoutDay(this.activeDayIndex);
-        break;
-      case ExerciseSetAction.WorkoutReset:
-        console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
-        await this.navCtrl.navigateBack('/tabs/tab-workouts');
         break;
     }
   }
