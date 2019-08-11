@@ -1,13 +1,16 @@
 import { Subject, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonSlides as Slides, NavController} from '@ionic/angular';
+import { IonSlides as Slides, NavController } from '@ionic/angular';
+import { AppState } from 'src/app/reducers';
 import { Workout } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction, DisplayMode } from '../../models/enums';
 import { WorkoutDay } from '../../models/WorkoutDay';
+import * as WorkoutsAction from '../../actions/workouts.actions';
 
 @Component({
   selector: 'app-workout-days',
@@ -36,20 +39,22 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   };
 
 
-  constructor (
+  constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    private dataService: DataServiceProvider) {
-      this.isNewDayAdded = false;
-      this.activeDayIndex = 0;
-      this.subs = [];
-      this.workoutDaysPublisher = new Subject();
-      this.subs.push(this.route.params.subscribe(params => {
-        this.workoutId = +params.id;
+    private dataService: DataServiceProvider,
+    private store: Store<AppState>) {
+    this.isNewDayAdded = false;
+    this.activeDayIndex = 0;
+    this.subs = [];
+    this.workoutDaysPublisher = new Subject();
+    this.subs.push(this.route.params.subscribe(params => {
+      this.workoutId = +params.id;
     }));
   }
 
   async ngOnInit() {
+    this.workout = await this.dataService.getWorkout(this.workoutId);
     this.subs.push(this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(async (reset) => {
       console.log('workout days redux - HasDefaultWorkoutsBeenReset:', reset);
       if (reset) {
@@ -57,11 +62,19 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         await this.navCtrl.navigateBack('/tabs/tab-workouts');
       }
     }));
-    this.workout = await this.dataService.getWorkout(this.workoutId);
+  }
+
+  ionViewWillEnter() {
     if (this.slides && this.workout) {
-      this.activeDayIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
-      console.log('last index on view loaded', this.activeDayIndex);
-      await this.slides.slideTo(this.activeDayIndex, 0);
+      this.subs.push(this.dataService.getLastSelectedWorkoutDay().subscribe(async (workoutStates) => {
+        console.log('workout day redux - getLastSelectedWorkoutDay:', workoutStates);
+        const workout = workoutStates.find(w => w.workoutId === this.workout.id);
+        if (workout) {
+          this.activeDayIndex = workout.lastSelectedDay;
+          console.log('last index on view loaded', this.activeDayIndex);
+          await this.slides.slideTo(this.activeDayIndex, 0);
+        }
+      }));
     }
   }
 
@@ -71,7 +84,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       sub.unsubscribe();
     }
     this.subs = [];
-}
+  }
 
   get isLastDayActive(): boolean {
     return this.activeDayIndex === this.workout.days.length - 1;
@@ -87,7 +100,11 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     if (this.slides && this.workout) {
       this.activeDayIndex = await this.slides.getActiveIndex();
       console.log('last index on slide changes', this.activeDayIndex);
-      this.dataService.setLastSelectedWorkoutDay(this.workout.name, this.activeDayIndex);
+      this.store.dispatch(new WorkoutsAction.SetLastSelectedWorkoutDay(
+        {
+          workoutId: this.workout.id,
+          lastSelectedDay: this.activeDayIndex
+        }));
     }
   }
 
@@ -166,7 +183,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   private async addWorkoutDay(currentWorkoutDayname: string) {
     let maxId = this.getMaxIdForWorkoutDays();
-    const newDay = new WorkoutDay({id: ++maxId, name: 'new workout day', exerciseSets: []});
+    const newDay = new WorkoutDay({ id: ++maxId, name: 'new workout day', exerciseSets: [] });
     const index = this.getWorkoutDayIndexByName(currentWorkoutDayname);
     console.log('splicing (insert) at ', index);
     this.isNewDayAdded = true;

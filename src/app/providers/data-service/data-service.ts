@@ -5,7 +5,6 @@ import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
-import { StateCache } from '../../models/StateCache';
 import { Muscles } from '../../models/enums';
 import { Workout } from '../../models/Workout';
 import { defaultWorkouts } from '../../constants/defaultWorkouts';
@@ -17,9 +16,10 @@ import {
   getHasDefaultWorkoutsBeenReset,
   getHasDefaultImagesBeenReset,
   getExerciseMusclesFilterState,
-  getLibraryMusclesFilterState
+  getLibraryMusclesFilterState,
+  getWorkoutsLastSelectedDay,
 } from '../../reducers';
-
+import { WorkoutState } from 'src/app/reducers/workouts.reducer';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -29,7 +29,6 @@ export class DataServiceProvider {
 
   private _workouts: Workout[];
   private _images: ExerciseMedia[];
-  private state: StateCache;
 
   constructor(
     private platform: Platform,
@@ -39,7 +38,11 @@ export class DataServiceProvider {
     private store: Store<AppState>) {
     this._images = [];
     this._workouts = [];
-    this.state = new StateCache();
+    // this.state = new StateCache();
+  }
+
+  getLastSelectedWorkoutDay(): Observable<WorkoutState[]> {
+    return this.store.select(getWorkoutsLastSelectedDay);
   }
 
   getHasDefaultWorkoutsBeenReset(): Observable<boolean> {
@@ -257,12 +260,4 @@ export class DataServiceProvider {
     const platformSource = await this.platform.ready();
     console.log(`this app runs on ${platformSource}`);
   }
-
-  setLastSelectedWorkoutDay(workoutName: string, workoutDayIndex: number) {
-    this.state.setLastSelectedWorkoutDay(workoutName, workoutDayIndex);
-  }
-  getLastSelectedWorkoutDay(workoutName: string): number {
-    return this.state.getLastSelectedWorkoutDay(workoutName);
-  }
-
 }

@@ -29,6 +29,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   workoutId: number;
   isSet = false;
   haveWorkoutsBeenReset = false;
+  lastSelectedWorkoutDay = 0;
   subs: Subscription[];
 
   constructor(
@@ -104,6 +105,11 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
       this.filteredImages = this.filterImagesByMuscles(filter);
     }));
+    this.subs.push(this.dataService.getLastSelectedWorkoutDay().subscribe(async (workoutStates) => {
+      console.log('select-exercise redux - getLastSelectedWorkoutDay:', workoutStates);
+      this.lastSelectedWorkoutDay = workoutStates.find(w => w.workoutId === this.workout.id).lastSelectedDay;
+      console.log('last index on view loaded', this.lastSelectedWorkoutDay);
+    }));
   }
 
   ngOnDestroy() {
@@ -143,17 +149,15 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       return;
     }
     const newSets = this.getNewSets();
-    const lastSelectedWorkoutDay = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
     newSets.forEach((set) => {
-      this.workout.days[lastSelectedWorkoutDay].exerciseSets.push(set);
+      this.workout.days[this.lastSelectedWorkoutDay].exerciseSets.push(set);
     });
     this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   getMaxIdForWorkoutSets(): number {
-    const lastSelectedWorkoutDay = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
-    const maxSetId = Math.max(...this.workout.days[lastSelectedWorkoutDay].exerciseSets.map(e => e.id));
+    const maxSetId = Math.max(...this.workout.days[this.lastSelectedWorkoutDay].exerciseSets.map(e => e.id));
     return maxSetId;
   }
 
