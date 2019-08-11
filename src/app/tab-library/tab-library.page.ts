@@ -14,6 +14,7 @@ import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { AppState } from '../reducers';
 import * as DefeaultsActions from '../actions/defaults.actions';
+
 @Component({
   selector: 'app-tab-library',
   templateUrl: 'tab-library.page.html',
@@ -21,7 +22,6 @@ import * as DefeaultsActions from '../actions/defaults.actions';
 })
 export class TabLibraryPage implements OnInit, OnDestroy {
 
-  _images: ExerciseMedia[];
   isMobile = false;
   subs: Subscription;
   _useFilter = false;
@@ -40,15 +40,25 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this._images = [];
   }
 
+  _images: ExerciseMedia[];
   get images(): ExerciseMedia[] {
     if (this.useFilter) {
-      return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
+      // return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
+      return this.filteredImages;
     } else {
       return this._images;
     }
   }
   set images(images: ExerciseMedia[]) {
     this._images = images;
+  }
+
+  _filteredImages: ExerciseMedia[];
+  get filteredImages(): ExerciseMedia[] {
+    return this._filteredImages;
+  }
+  set filteredImages(images: ExerciseMedia[]) {
+    this._filteredImages = images;
   }
 
   get useFilter(): boolean {
@@ -76,8 +86,10 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    console.log('tab-library-ionViewWillEnter', this.dataService.exerciseMuscleFilter);
-
+    this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
+      console.log('select-muscle redux - LibraryMusclesFilterState:', filter);
+      this.filteredImages = this.filterImagesByMuscles(filter);
+    });
   }
 
   ngOnDestroy() {
@@ -182,14 +194,14 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this.router.navigate(['select-muscle'], extra);
   }
 
-  filterImagesByMuscles(muscles: Set<Muscles>): ExerciseMedia[] {
-    console.log('tab-library: filtering by muscles', Array.from(muscles));
-    if (muscles.size === 0) {
+  filterImagesByMuscles(musclesFilter: Set<Muscles>): ExerciseMedia[] {
+    console.log('tab-library: filtering by muscles', Array.from(musclesFilter));
+    if (musclesFilter.size === 0) {
       return [];
     }
     const images = this._images.filter((image) => {
       const intersection =
-        new Set(Array.from(image.muscles).filter(x => muscles.has(x)));
+        new Set(Array.from(image.muscles).filter(imageMuscle => musclesFilter.has(imageMuscle)));
       return (intersection.size > 0);
     });
     return images;

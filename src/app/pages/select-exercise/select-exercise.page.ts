@@ -24,12 +24,10 @@ interface SelectedExerciseMedia {
 })
 export class SelectExercisePage implements OnInit, OnDestroy {
 
-  _images: SelectedExerciseMedia[];
   workout: Workout;
   workoutId: number;
   isSet = false;
   haveWorkoutsBeenReset = false;
-  _useFilter = false;
 
   constructor(
     private router: Router,
@@ -42,9 +40,11 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     });
   }
 
+  _images: SelectedExerciseMedia[];
   get images(): SelectedExerciseMedia[] {
     if (this.useFilter) {
-      return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
+      return this.filteredImages;
+      // return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
     } else {
       return this._images;
     }
@@ -53,6 +53,15 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this._images = images;
   }
 
+  _filteredImages: SelectedExerciseMedia[];
+  get filteredImages(): SelectedExerciseMedia[] {
+    return this._filteredImages;
+  }
+  set filteredImages(images: SelectedExerciseMedia[]) {
+    this._filteredImages = images;
+  }
+
+  _useFilter = false;
   get useFilter(): boolean {
     return this._useFilter;
   }
@@ -88,6 +97,13 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
       console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
       this.haveWorkoutsBeenReset = reset;
+    });
+  }
+
+  ionViewWillEnter() {
+    this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
+      console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
+      this.filteredImages = this.filterImagesByMuscles(filter);
     });
   }
 

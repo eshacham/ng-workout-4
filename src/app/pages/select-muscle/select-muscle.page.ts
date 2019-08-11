@@ -1,7 +1,10 @@
+import { Store } from '@ngrx/store';
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Muscles } from 'src/app/models/enums';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AppState } from 'src/app/reducers';
+import * as MusclesFilterActions from '../../actions/musclesFilter.actions';
 
 interface MuscleElements {
   muscle: Muscles;
@@ -35,12 +38,34 @@ export class SelectMusclePage implements OnInit {
   muscleFilterUsage: MuscleFilterUsage = {
     for: MuscleFilterFor.NoSet
   };
-get isSettingMedia(): boolean {
-  return this.muscleFilterUsage.for === MuscleFilterFor.SetExerciseMedia;
-}
-get mediaToSet(): string {
-  return this.muscleFilterUsage.mediaName;
-}
+  get isSettingMedia(): boolean {
+    return this.muscleFilterUsage.for === MuscleFilterFor.SetExerciseMedia;
+  }
+  get mediaToSet(): string {
+    return this.muscleFilterUsage.mediaName;
+  }
+
+  get isFilteringLibrary(): boolean {
+    return (
+      this.muscleFilterUsage.for === MuscleFilterFor.FilterLibraryImages ||
+      this.muscleFilterUsage.for === MuscleFilterFor.SelectExercise);
+  }
+
+  // private _musclesFilter: Set<Muscles>;
+  get exerciseMuscleFilter(): Set<Muscles> {
+    // return this._musclesFilter;
+    const set: Set<Muscles> = new Set();
+    this.selectedMuscles.forEach(m => {
+      if (m.isSelected) {
+        set.add(m.muscle);
+      }
+    });
+    return set;
+  }
+  // set musclesFilter(muscles: Set<Muscles>) {
+  //   this._musclesFilter = muscles;
+  //   this.SelectedMuscles = this.getSelectedMuscles(this.musclesFilter);
+  // }
 
   private _selectedMuscles: SelectedMuscle[];
   get selectedMuscles(): SelectedMuscle[] {
@@ -54,10 +79,16 @@ get mediaToSet(): string {
     private renderer: Renderer2,
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataServiceProvider) {
+    private dataService: DataServiceProvider,
+    private store: Store<AppState>) {
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.muscleFilterUsage = this.router.getCurrentNavigation().extras.state.muscleFilterUsage;
+          if (this.muscleFilterUsage.for === MuscleFilterFor.SetExerciseMedia) {
+            const filter = this.dataService.getExerciseMusclesFilterFromImage(this.mediaToSet);
+            this.store.dispatch(new MusclesFilterActions.SetExerciseMuscleFilter(filter));
+            // this.SelectedMuscles = this.getSelectedMuscles(filter);
+          }
         }
       });
       this.init();
@@ -67,43 +98,41 @@ get mediaToSet(): string {
   }
 
   ionViewWillEnter() {
-    let muscleFilter: Set<Muscles> = new Set();
-    switch (this.muscleFilterUsage.for) {
-      case MuscleFilterFor.FilterLibraryImages:
-        console.log('select-muscle - filter library');
-        muscleFilter = this.dataService.libraryMuscleFilter;
-        break;
-      case MuscleFilterFor.SelectExercise:
-        console.log('select-muscle - select exercise by muscles');
-        muscleFilter = this.dataService.libraryMuscleFilter;
-        break;
-      case MuscleFilterFor.SetExerciseMedia:
-        this.dataService.setExerciseMusclesFilterFromImage(this.mediaToSet);
-        console.log('select-muscle - set exercise\'s muscles:', this.mediaToSet);
-        muscleFilter = this.dataService.exerciseMuscleFilter;
-        break;
-      default:
-        break;
+    if (this.isFilteringLibrary) {
+        this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
+          console.log('select-muscle redux - LibraryMusclesFilterState:', filter);
+          this.SelectedMuscles = this.getSelectedMuscles(filter);
+        });
+    } else {
+      this.dataService.getExerciseMusclesFilterState().subscribe(async (filter) => {
+        console.log('select-muscle redux - getExerciseMusclesFilterState:', filter);
+        this.SelectedMuscles = this.getSelectedMuscles(filter);
+        this.dataService.setImageMuscles(this.mediaToSet, filter);
+      });
     }
-    this.SelectedMuscles = Object.values(Muscles).map(muscle => {
+  }
+
+  private getSelectedMuscles(muscles: Set<Muscles>): SelectedMuscle[] {
+    return Object.values(Muscles).map(muscle => {
       const selectedMuscle: SelectedMuscle = {
         muscle: muscle,
-        isSelected: muscleFilter.has(muscle)
+        isSelected: muscles.has(muscle)
       };
       if (selectedMuscle.isSelected) {
         this.showMuscle(muscle);
       }
       return selectedMuscle;
     });
-    console.log('select-muscle: muscleFilter', this.selectedMuscles);
   }
 
-  ionViewWillLeave() {
-    if (this.isSettingMedia) {
-      this.dataService.setImageMuscles(this.mediaToSet);
-      console.log('select-muscle - leaving view - media has been set:', this.mediaToSet);
-    }
-  }
+  // ionViewWillLeave() {
+  //   if (this.isSettingMedia) {
+  //     const filter = this.exerciseMuscleFilter;
+  //     // this.dataService.setImageMuscles(this.mediaToSet, filter);
+  //     console.log('select-muscle - leaving view - media has been set:', this.mediaToSet);
+  //     // this.store.dispatch(new MusclesFilterActions.SetExerciseMuscleFilter(filter));
+  //   }
+  // }
 
   toggleMuscle(clickedMuscle: Muscles) {
     const muscle = this.selectedMuscles.filter(selectedMuscle => selectedMuscle.muscle === clickedMuscle)[0];
@@ -118,21 +147,21 @@ get mediaToSet(): string {
   }
 
   addMuscleToFilter(muscle: Muscles) {
-    if (this.isSettingMedia) {
-      this.dataService.addMuscleToExerciseMuscleFilter(muscle);
+    if (this.isFilteringLibrary) {
+      this.store.dispatch(new MusclesFilterActions.AddLibraryMuscleFilter(muscle));
     } else {
-      this.dataService.addMuscleToLibraryMuscleFilter(muscle);
+      this.store.dispatch(new MusclesFilterActions.AddExerciseMuscleFilter(muscle));
     }
   }
   deleteMuscleFromFilter(muscle: Muscles) {
-    if (this.isSettingMedia) {
-      this.dataService.deleteMuscleFromExerciseMuscleFilter(muscle);
+    if (this.isFilteringLibrary) {
+      this.store.dispatch(new MusclesFilterActions.DeleteLibraryMuscleFilter(muscle));
     } else {
-      this.dataService.deleteMuscleFromLibraryMuscleFilter(muscle);
+      this.store.dispatch(new MusclesFilterActions.DeleteExerciseMuscleFilter(muscle));
     }
   }
 
-  getMuscleElements(muscle: Muscles) {
+  private getMuscleElements(muscle: Muscles) {
     const query = `g#${Muscles[muscle]} > path`;
     const elements = document.querySelectorAll(query);
     console.log('muscles found: ', elements);
@@ -158,7 +187,7 @@ get mediaToSet(): string {
     return selectedMuscle.isSelected ? 'outline' : 'clear';
   }
 
-  init() {
+  private init() {
     this.muscleGroupElements = [];
     // tslint:disable: max-line-length
     this.muscleGroupElements = [
