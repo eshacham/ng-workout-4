@@ -12,7 +12,6 @@ import { defaultWorkouts } from '../../constants/defaultWorkouts';
 import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
 import * as DefeaultsActions from '../../actions/defaults.actions';
-// import * as MusclesFilterActions from '../../actions/musclesFilter.actions';
 import {
   AppState,
   getHasDefaultWorkoutsBeenReset,
@@ -138,7 +137,7 @@ export class DataServiceProvider {
     this._images = await this.storage.get(IMAGES_STORAGE_KEY);
 
     if (!this._images.length) {
-      this.initDefaultImages();
+      await this.initDefaultImages();
       return;
     }
 

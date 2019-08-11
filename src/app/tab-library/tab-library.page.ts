@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
@@ -23,7 +22,6 @@ import * as DefeaultsActions from '../actions/defaults.actions';
 export class TabLibraryPage implements OnInit, OnDestroy {
 
   isMobile = false;
-  subs: Subscription;
   _useFilter = false;
 
   constructor(
@@ -92,7 +90,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 
   async presentToast(text: string) {
