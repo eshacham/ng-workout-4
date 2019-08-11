@@ -51,22 +51,6 @@ export class SelectMusclePage implements OnInit {
       this.muscleFilterUsage.for === MuscleFilterFor.SelectExercise);
   }
 
-  // private _musclesFilter: Set<Muscles>;
-  get exerciseMuscleFilter(): Set<Muscles> {
-    // return this._musclesFilter;
-    const set: Set<Muscles> = new Set();
-    this.selectedMuscles.forEach(m => {
-      if (m.isSelected) {
-        set.add(m.muscle);
-      }
-    });
-    return set;
-  }
-  // set musclesFilter(muscles: Set<Muscles>) {
-  //   this._musclesFilter = muscles;
-  //   this.SelectedMuscles = this.getSelectedMuscles(this.musclesFilter);
-  // }
-
   private _selectedMuscles: SelectedMuscle[];
   get selectedMuscles(): SelectedMuscle[] {
     return this._selectedMuscles;
@@ -87,7 +71,6 @@ export class SelectMusclePage implements OnInit {
           if (this.muscleFilterUsage.for === MuscleFilterFor.SetExerciseMedia) {
             const filter = this.dataService.getExerciseMusclesFilterFromImage(this.mediaToSet);
             this.store.dispatch(new MusclesFilterActions.SetExerciseMuscleFilter(filter));
-            // this.SelectedMuscles = this.getSelectedMuscles(filter);
           }
         }
       });
@@ -112,11 +95,11 @@ export class SelectMusclePage implements OnInit {
     }
   }
 
-  private getSelectedMuscles(muscles: Set<Muscles>): SelectedMuscle[] {
+  private getSelectedMuscles(muscles: Muscles[]): SelectedMuscle[] {
     return Object.values(Muscles).map(muscle => {
       const selectedMuscle: SelectedMuscle = {
         muscle: muscle,
-        isSelected: muscles.has(muscle)
+        isSelected: muscles.includes(muscle)
       };
       if (selectedMuscle.isSelected) {
         this.showMuscle(muscle);
@@ -124,15 +107,6 @@ export class SelectMusclePage implements OnInit {
       return selectedMuscle;
     });
   }
-
-  // ionViewWillLeave() {
-  //   if (this.isSettingMedia) {
-  //     const filter = this.exerciseMuscleFilter;
-  //     // this.dataService.setImageMuscles(this.mediaToSet, filter);
-  //     console.log('select-muscle - leaving view - media has been set:', this.mediaToSet);
-  //     // this.store.dispatch(new MusclesFilterActions.SetExerciseMuscleFilter(filter));
-  //   }
-  // }
 
   toggleMuscle(clickedMuscle: Muscles) {
     const muscle = this.selectedMuscles.filter(selectedMuscle => selectedMuscle.muscle === clickedMuscle)[0];

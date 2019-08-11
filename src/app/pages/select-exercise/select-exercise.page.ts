@@ -44,7 +44,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   get images(): SelectedExerciseMedia[] {
     if (this.useFilter) {
       return this.filteredImages;
-      // return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
     } else {
       return this._images;
     }
@@ -120,15 +119,15 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     });
   }
 
-  filterImagesByMuscles(muscles: Set<Muscles>): SelectedExerciseMedia[] {
-    console.log('select-execrcise: filtering by muscles', Array.from(muscles));
-    if (muscles.size === 0) {
+  filterImagesByMuscles(musclesFilter: Muscles[]): SelectedExerciseMedia[] {
+    console.log('select-execrcise: filtering by muscles', Array.from(musclesFilter));
+    if (musclesFilter.length === 0) {
       return [];
     }
     const images = this._images.filter((image) => {
       const intersection =
-        new Set(Array.from(image.media.muscles).filter(x => muscles.has(x)));
-      return (intersection.size > 0);
+      image.media.muscles.filter(imageMuscle => musclesFilter.includes(imageMuscle));
+      return (intersection.length > 0);
     });
     return images;
   }

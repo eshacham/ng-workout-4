@@ -49,10 +49,10 @@ export class DataServiceProvider {
   getHasDefaultImagesBeenReset(): Observable<boolean> {
     return this.store.select(getHasDefaultImagesBeenReset);
   }
-  getExerciseMusclesFilterState(): Observable<Set<Muscles>> {
+  getExerciseMusclesFilterState(): Observable<Muscles[]> {
     return this.store.select(getExerciseMusclesFilterState);
   }
-  getLibraryMusclesFilterState(): Observable<Set<Muscles>> {
+  getLibraryMusclesFilterState(): Observable<Muscles[]> {
     return this.store.select(getLibraryMusclesFilterState);
   }
 
@@ -116,27 +116,20 @@ export class DataServiceProvider {
     return this._images;
   }
 
-  async setImageMuscles(name: string, exerciseMuscleFilter: Set<Muscles>) {
+  async setImageMuscles(name: string, exerciseMuscleFilter: Muscles[]) {
     const imageToSet = this._images.filter(image => image.name === name)[0];
     if (imageToSet) {
-      imageToSet.muscles = [];
-      exerciseMuscleFilter.forEach(muscle => {
-        imageToSet.muscles.push(muscle);
-      });
+        imageToSet.muscles = exerciseMuscleFilter;
       console.log(`data service - setImageMuscles found ${name}`, imageToSet.muscles);
       await this.saveImages();
     }
   }
 
-  getExerciseMusclesFilterFromImage(name: string): Set<Muscles> {
+  getExerciseMusclesFilterFromImage(name: string): Muscles[] {
     const imageToSet = this._images.filter(image => image.name === name)[0];
-    let set: Set<Muscles> = new Set();
     if (imageToSet) {
-      // console.log(`data service - setMusclesFilterFromImage for ${imageToSet}`);
-      set = new Set(imageToSet.muscles);
-      // this.store.dispatch(new MusclesFilterActions.SetExecrciseMuscleFilter(exerciseMuscleFilter));
+      return imageToSet.muscles;
     }
-    return set;
   }
 
   async loadImages() {
@@ -274,31 +267,4 @@ export class DataServiceProvider {
     return this.state.getLastSelectedWorkoutDay(workoutName);
   }
 
-  // get exerciseMuscleFilter(): Set<Muscles> {
-  //   return this.state.exerciseMuscleFilter;
-  // }
-  // set exerciseMuscleFilter(value: Set<Muscles>) {
-  //   this.state.exerciseMuscleFilter = value;
-  // }
-
-  // get libraryMuscleFilter(): Set<Muscles> {
-  //   return this.state.libraryMuscleFilter;
-  // }
-  // set libraryMuscleFilter(value: Set<Muscles>) {
-  //   this.state.libraryMuscleFilter = value;
-  // }
-
-  // addMuscleToExerciseMuscleFilter(muscle: Muscles) {
-  //   this.state.addMuscleToExerciseMuscleFilter(muscle);
-  // }
-  // deleteMuscleFromExerciseMuscleFilter(muscle: Muscles) {
-  //   this.state.deleteMuscleFromExerciseMuscleFilter(muscle);
-  // }
-
-  // addMuscleToLibraryMuscleFilter(muscle: Muscles) {
-  //   this.state.addMuscleToLibraryMuscleFilter(muscle);
-  // }
-  // deleteMuscleFromLibraryMuscleFilter(muscle: Muscles) {
-  //   this.state.deleteMuscleFromLibraryMuscleFilter(muscle);
-  // }
 }

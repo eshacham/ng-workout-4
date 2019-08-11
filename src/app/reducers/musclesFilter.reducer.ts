@@ -2,20 +2,13 @@ import * as fromMusclesFilter from '../actions/musclesFilter.actions';
 import { Muscles } from '../models/enums';
 
 export interface MusclesFilterState {
-    exerciseMusclesFilter: Set<Muscles>;
-    libraryMusclesFilter: Set<Muscles>;
+    exerciseMusclesFilter: Muscles[];
+    libraryMusclesFilter: Muscles[];
 }
 
 export const initialState: MusclesFilterState = {
-    exerciseMusclesFilter: new Set(),
-    libraryMusclesFilter: new Set()
-};
-
-const getNewSet = (set: Set<Muscles>) => {
-    const allMuscles: Muscles[] = [];
-    set.forEach(muscle => allMuscles.push(muscle));
-    const newSet = new Set(allMuscles);
-    return newSet;
+    exerciseMusclesFilter: [],
+    libraryMusclesFilter: []
 };
 
 export function reducer(
@@ -36,35 +29,35 @@ export function reducer(
             };
         }
         case fromMusclesFilter.ActionTypes.AddExerciseMuscleFilter: {
-            const newSet = getNewSet(state.exerciseMusclesFilter);
-            newSet.add(action.muscle);
+            // const newSet = getNewSet(state.exerciseMusclesFilter);
+            // newSet.add(action.muscle);
             return {
                 ...state,
-                exerciseMusclesFilter: newSet
+                exerciseMusclesFilter: [...state.exerciseMusclesFilter, action.muscle]
             };
         }
         case fromMusclesFilter.ActionTypes.AddLibraryMuscleFilter: {
-            const newSet = getNewSet(state.libraryMusclesFilter);
-            newSet.add(action.muscle);
+            // const newSet = getNewSet(state.libraryMusclesFilter);
+            // newSet.add(action.muscle);
             return {
                 ...state,
-                libraryMusclesFilter: newSet
+                libraryMusclesFilter: [...state.libraryMusclesFilter, action.muscle]
             };
         }
         case fromMusclesFilter.ActionTypes.DeleteExerciseMuscleFilter: {
-            const newSet = getNewSet(state.exerciseMusclesFilter);
-            newSet.delete(action.muscle);
+            // const inde;
+            // newSet.delete(action.muscle);
             return {
                 ...state,
-                exerciseMusclesFilter: newSet
+                exerciseMusclesFilter: state.exerciseMusclesFilter.filter(m => m !== action.muscle)
             };
         }
         case fromMusclesFilter.ActionTypes.DeleteLibraryMuscleFilter: {
-            const newSet = getNewSet(state.libraryMusclesFilter);
-            newSet.delete(action.muscle);
+            // const newSet = getNewSet(state.libraryMusclesFilter);
+            // newSet.delete(action.muscle);
             return {
                 ...state,
-                libraryMusclesFilter: newSet
+                libraryMusclesFilter: state.libraryMusclesFilter.filter(m => m !== action.muscle)
             };
         }
         default: {

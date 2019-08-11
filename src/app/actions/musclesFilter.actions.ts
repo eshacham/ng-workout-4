@@ -12,7 +12,7 @@ export enum ActionTypes {
 
 export class SetExerciseMuscleFilter implements Action {
     readonly type = ActionTypes.SetExerciseMuscleFilter;
-    constructor (public muscles: Set<Muscles>) {}
+    constructor (public muscles: Muscles[]) {}
 }
 export class AddExerciseMuscleFilter implements Action {
     readonly type = ActionTypes.AddExerciseMuscleFilter;
@@ -24,7 +24,7 @@ export class DeleteExerciseMuscleFilter implements Action {
 }
 export class SetLibraryMuscleFilter implements Action {
     readonly type = ActionTypes.SetLibraryMuscleFilter;
-    constructor (public muscles: Set<Muscles>) {}
+    constructor (public muscles: Muscles[]) {}
 }
 export class AddLibraryMuscleFilter implements Action {
     readonly type = ActionTypes.AddLibraryMuscleFilter;

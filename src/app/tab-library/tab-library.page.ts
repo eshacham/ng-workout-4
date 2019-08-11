@@ -43,7 +43,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   _images: ExerciseMedia[];
   get images(): ExerciseMedia[] {
     if (this.useFilter) {
-      // return this.filterImagesByMuscles(this.dataService.libraryMuscleFilter);
       return this.filteredImages;
     } else {
       return this._images;
@@ -194,15 +193,15 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this.router.navigate(['select-muscle'], extra);
   }
 
-  filterImagesByMuscles(musclesFilter: Set<Muscles>): ExerciseMedia[] {
+  filterImagesByMuscles(musclesFilter: Muscles[]): ExerciseMedia[] {
     console.log('tab-library: filtering by muscles', Array.from(musclesFilter));
-    if (musclesFilter.size === 0) {
+    if (musclesFilter.length === 0) {
       return [];
     }
     const images = this._images.filter((image) => {
       const intersection =
-        new Set(Array.from(image.muscles).filter(imageMuscle => musclesFilter.has(imageMuscle)));
-      return (intersection.size > 0);
+        image.muscles.filter(imageMuscle => musclesFilter.includes(imageMuscle));
+      return (intersection.length > 0);
     });
     return images;
   }
