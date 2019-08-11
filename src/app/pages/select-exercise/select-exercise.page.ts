@@ -11,6 +11,7 @@ import { Muscles, RepetitionSpeed } from 'src/app/models/enums';
 import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
 import { AppState } from '../../reducers';
 import * as DefeaultsActions from '../../actions/defaults.actions';
+import { Subscription } from 'rxjs';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -28,6 +29,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   workoutId: number;
   isSet = false;
   haveWorkoutsBeenReset = false;
+  subs: Subscription[];
 
   constructor(
     private router: Router,
@@ -35,9 +37,10 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     private dataService: DataServiceProvider,
     private store: Store<AppState>) {
     this._images = [];
-    this.route.params.subscribe(params => {
+    this.subs = [];
+    this.subs.push(this.route.params.subscribe(params => {
       this.workoutId = +params.id;
-    });
+    }));
   }
 
   _images: SelectedExerciseMedia[];
@@ -86,27 +89,29 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.haveWorkoutsBeenReset = false;
     this.images = await this.getImages();
     this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.dataService.getHasDefaultImagesBeenReset().subscribe(async (reset) => {
+    this.subs.push(this.dataService.getHasDefaultImagesBeenReset().subscribe(async (reset) => {
       console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
       if (reset) {
         this.images = await this.getImages();
         this.store.dispatch(new DefeaultsActions.LoadedDefaultImages());
       }
-    });
-    this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
+    }));
+    this.subs.push(this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
       console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
       this.haveWorkoutsBeenReset = reset;
-    });
-  }
-
-  ionViewWillEnter() {
-    this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
+    }));
+    this.subs.push(this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
       console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
       this.filteredImages = this.filterImagesByMuscles(filter);
-    });
+    }));
   }
 
   ngOnDestroy() {
+    console.log('onDestroy - select-exercise');
+    for (const sub of this.subs) {
+      sub.unsubscribe();
+    }
+    this.subs = [];
   }
 
   private async getImages(): Promise<SelectedExerciseMedia[]> {
@@ -126,7 +131,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
     const images = this._images.filter((image) => {
       const intersection =
-      image.media.muscles.filter(imageMuscle => musclesFilter.includes(imageMuscle));
+        image.media.muscles.filter(imageMuscle => musclesFilter.includes(imageMuscle));
       return (intersection.length > 0);
     });
     return images;

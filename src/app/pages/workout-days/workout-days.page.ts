@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSlides as Slides, NavController} from '@ionic/angular';
@@ -21,6 +21,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   activeDayIndex: number;
   isNewDayAdded: boolean;
+  subs: Subscription[];
 
   @ViewChild('slider') slides: Slides;
 
@@ -34,26 +35,28 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     noSwipingSelector: 'ion-range, ion-reorder, ion-fab, ion-button'
   };
 
+
   constructor (
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private dataService: DataServiceProvider) {
       this.isNewDayAdded = false;
       this.activeDayIndex = 0;
+      this.subs = [];
       this.workoutDaysPublisher = new Subject();
-      this.route.params.subscribe(params => {
+      this.subs.push(this.route.params.subscribe(params => {
         this.workoutId = +params.id;
-    });
+    }));
   }
 
   async ngOnInit() {
-    this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(async (reset) => {
+    this.subs.push(this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(async (reset) => {
       console.log('workout days redux - HasDefaultWorkoutsBeenReset:', reset);
-      console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
       if (reset) {
+        console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
         await this.navCtrl.navigateBack('/tabs/tab-workouts');
       }
-    });
+    }));
     this.workout = await this.dataService.getWorkout(this.workoutId);
     if (this.slides && this.workout) {
       this.activeDayIndex = this.dataService.getLastSelectedWorkoutDay(this.workout.name);
@@ -63,7 +66,12 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  }
+    console.log('ngOnDestroy - workout days');
+    for (const sub of this.subs) {
+      sub.unsubscribe();
+    }
+    this.subs = [];
+}
 
   get isLastDayActive(): boolean {
     return this.activeDayIndex === this.workout.days.length - 1;

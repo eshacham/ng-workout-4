@@ -1,7 +1,7 @@
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { IonFab } from '@ionic/angular';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { DisplayMode, ExerciseSetAction } from '../models/enums';
@@ -16,7 +16,7 @@ import * as DefeaultsActions from '../actions/defaults.actions';
   templateUrl: 'tab-workouts.page.html',
   styleUrls: ['tab-workouts.page.scss']
 })
-export class TabWorkoutsPage implements OnInit, OnDestroy {
+export class TabWorkoutsPage implements OnInit {
 
   @ViewChild('fabEdit') fabEdit: IonFab;
   workouts: Workout[];
@@ -34,9 +34,6 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
       console.log('tab-workouts redux - HasDefaultWorkoutsBeenReset:', reset);
     });
-  }
-
-  ngOnDestroy() {
   }
 
   async ionViewWillEnter() {

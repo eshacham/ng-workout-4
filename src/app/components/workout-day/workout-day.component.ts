@@ -72,9 +72,11 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
       this.DisplayMode = DisplayMode.Edit;
     }
   }
+
   ngOnDestroy() {
+    console.log('onDestroy - workout-day');
     this.subs.unsubscribe();
-  }
+}
 
   handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent) {
     console.log('workout day handleWorkoutEventchange', event, this.workoutDay.name);

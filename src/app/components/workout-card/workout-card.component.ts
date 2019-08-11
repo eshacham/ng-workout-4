@@ -22,7 +22,8 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   private subs: Subscription;
 
   constructor(
-    private router: Router, private route: ActivatedRoute) { }
+    private router: Router, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     console.log('workout-card ngOnInit -> ', this);
@@ -30,7 +31,8 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-      this.subs.unsubscribe();
+    console.log('onDestroy - workout-card');
+    this.subs.unsubscribe();
   }
 
   get DisplayMode(): DisplayMode {
@@ -58,7 +60,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
   emitExerciseSetActionEvent(action: ExerciseSetAction) {
     this.outEventEmitter.emit(new ExerciseSetActionEvent(
-        action, null, this.workout.id, null));
+      action, null, this.workout.id, null));
   }
 
   deleteWorkout() {

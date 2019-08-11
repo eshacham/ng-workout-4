@@ -112,6 +112,7 @@ export class DataServiceProvider {
     if (!this._images.length) {
       await this.loadImages();
     }
+    console.log('data service - returning _images');
     return this._images;
   }
 
@@ -134,14 +135,12 @@ export class DataServiceProvider {
   async loadImages() {
     await this.displayPlatform();
     await this.storage.ready();
-    this._images = await this.storage.get(IMAGES_STORAGE_KEY);
+    this._images = await this.storage.get(IMAGES_STORAGE_KEY) || [];
 
     if (!this._images.length) {
+      console.log('DS: limages not found is storage, initializing default images...');
       await this.initDefaultImages();
-      return;
-    }
-
-    if (this._images.length) {
+    } else {
       for (const img of this._images) {
         console.log('DS: loaded images from storage:', img.name, img.muscles);
       }
@@ -171,7 +170,7 @@ export class DataServiceProvider {
   }
 
   private async initDefaultImages() {
-    this._images = Array.from(defaultExerciseMedia.values());
+    this._images = Array.from(defaultExerciseMedia.values()) || [];
     console.log(`initialized ${this._images.length} default images`, this._images);
     await this.saveImages(true);
   }

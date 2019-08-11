@@ -36,7 +36,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     private _isRunning = false;
     private _isEditing = false;
     private _displayMode: DisplayMode = DisplayMode.Display;
-    // private _isFrozen: boolean;
     private subs: Subscription;
 
     @Input() workoutDayName: string;
@@ -65,7 +64,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     safeImage(media: ExerciseMedia): SafeUrl {
-        // console.log('getting safe image url from ', media);
         if (media) {
             return this.domSanitizer.bypassSecurityTrustUrl(media.ionicPath);
         }
@@ -115,9 +113,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         return this._displayMode === DisplayMode.Edit;
     }
 
-    // get IsFrozen(): boolean { return this._isFrozen; }
-    // set IsFrozen(val: boolean) { this._isFrozen = val; }
-
     toggleOpen() {
         this.IsOpen = !this.IsOpen;
     }
@@ -141,6 +136,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        console.log('onDestroy - exercise-thumbnail');
         this.subs.unsubscribe();
     }
 

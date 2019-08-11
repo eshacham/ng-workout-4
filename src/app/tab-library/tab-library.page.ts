@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
@@ -19,7 +19,7 @@ import * as DefeaultsActions from '../actions/defaults.actions';
   templateUrl: 'tab-library.page.html',
   styleUrls: ['tab-library.page.scss']
 })
-export class TabLibraryPage implements OnInit, OnDestroy {
+export class TabLibraryPage implements OnInit {
 
   isMobile = false;
   _useFilter = false;
@@ -68,7 +68,9 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    console.log('tab-library ngOnInit - getting Images:');
     this._images = await this.dataService.getImages();
+    console.log('tab-library ngOnInit - got Images:', this._images);
     this.isMobile = this.dataService.isMobile;
     this.dataService.getHasDefaultImagesBeenReset().subscribe(async (reset) => {
       console.log('tab-library redux - HasDefaultImagesBeenReset:', reset);
@@ -77,19 +79,10 @@ export class TabLibraryPage implements OnInit, OnDestroy {
         this.store.dispatch(new DefeaultsActions.LoadedDefaultImages());
       }
     });
-    for (const img of this._images) {
-      console.log('tab-library-page: loaded images from storage:', img.name, img.muscles);
-    }
-  }
-
-  ionViewWillEnter() {
     this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
-      console.log('select-muscle redux - LibraryMusclesFilterState:', filter);
+      console.log('tab-library-page redux - LibraryMusclesFilterState:', filter);
       this.filteredImages = this.filterImagesByMuscles(filter);
     });
-  }
-
-  ngOnDestroy() {
   }
 
   async presentToast(text: string) {

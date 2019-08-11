@@ -1,10 +1,11 @@
 import { Store } from '@ngrx/store';
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Muscles } from 'src/app/models/enums';
 import { AppState } from 'src/app/reducers';
 import * as MusclesFilterActions from '../../actions/musclesFilter.actions';
+import { Subscription } from 'rxjs';
 
 interface MuscleElements {
   muscle: Muscles;
@@ -32,8 +33,9 @@ export enum MuscleFilterFor {
   templateUrl: './select-muscle.page.html',
   styleUrls: ['./select-muscle.page.scss'],
 })
-export class SelectMusclePage implements OnInit {
+export class SelectMusclePage implements OnInit, OnDestroy {
 
+  subs: Subscription[];
   muscleGroupElements: MuscleElements[];
   muscleFilterUsage: MuscleFilterUsage = {
     for: MuscleFilterFor.NoSet
@@ -65,7 +67,8 @@ export class SelectMusclePage implements OnInit {
     private router: Router,
     private dataService: DataServiceProvider,
     private store: Store<AppState>) {
-      this.route.queryParams.subscribe(params => {
+      this.subs = [];
+      this.subs.push(this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.muscleFilterUsage = this.router.getCurrentNavigation().extras.state.muscleFilterUsage;
           if (this.muscleFilterUsage.for === MuscleFilterFor.SetExerciseMedia) {
@@ -73,8 +76,8 @@ export class SelectMusclePage implements OnInit {
             this.store.dispatch(new MusclesFilterActions.SetExerciseMuscleFilter(filter));
           }
         }
-      });
-      this.init();
+      }));
+      this.initMuscleGroups();
   }
 
   ngOnInit() {
@@ -82,17 +85,25 @@ export class SelectMusclePage implements OnInit {
 
   ionViewWillEnter() {
     if (this.isFilteringLibrary) {
-        this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
+        this.subs.push(this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
           console.log('select-muscle redux - LibraryMusclesFilterState:', filter);
           this.SelectedMuscles = this.getSelectedMuscles(filter);
-        });
+        }));
     } else {
-      this.dataService.getExerciseMusclesFilterState().subscribe(async (filter) => {
+      this.subs.push(this.dataService.getExerciseMusclesFilterState().subscribe(async (filter) => {
         console.log('select-muscle redux - getExerciseMusclesFilterState:', filter);
         this.SelectedMuscles = this.getSelectedMuscles(filter);
         this.dataService.setImageMuscles(this.mediaToSet, filter);
-      });
+      }));
     }
+  }
+
+  ngOnDestroy() {
+    console.log('onDestroy - select-muscle');
+    for (const sub of this.subs) {
+      sub.unsubscribe();
+    }
+    this.subs = [];
   }
 
   private getSelectedMuscles(muscles: Muscles[]): SelectedMuscle[] {
@@ -161,7 +172,7 @@ export class SelectMusclePage implements OnInit {
     return selectedMuscle.isSelected ? 'outline' : 'clear';
   }
 
-  private init() {
+  private initMuscleGroups() {
     this.muscleGroupElements = [];
     // tslint:disable: max-line-length
     this.muscleGroupElements = [
