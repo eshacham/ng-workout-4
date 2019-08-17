@@ -1,40 +1,40 @@
 import { Action } from '@ngrx/store';
 
-export enum ActionTypes {
-    ResetDefaultWorkouts = '[Default Service] Reset default workouts',
-    UpdatedDefaultWorkouts = '[Default Service] Updated default workouts',
-    LoadedDefaultWorkouts = '[Default Service] Loaded default workouts',
-    ResetDefaultImages = '[Default Service] Reset default images',
-    UpdatedDefaultImages = '[Default Service] Updated default images',
-    LoadedDefaultImages = '[Default Service] Loaded default images',
+export enum EDefaultsAction {
+    ResetDefaultWorkouts = '[Defaults] Reset workouts',
+    UpdatedDefaultWorkouts = '[Defaults] Updated workouts',
+    LoadedDefaultWorkouts = '[Defaults] Loaded workouts',
+    ResetDefaultImages = '[Defaults] Reset images',
+    UpdatedDefaultImages = '[Defaults] Updated images',
+    LoadedDefaultImages = '[Defaults] Loaded images',
 }
 
 export class ResetDefaultWorkouts implements Action {
-    readonly type = ActionTypes.ResetDefaultWorkouts;
+    readonly type = EDefaultsAction.ResetDefaultWorkouts;
     constructor () {}
 }
 export class LoadedDefaultWorkouts implements Action {
-    readonly type = ActionTypes.LoadedDefaultWorkouts;
+    readonly type = EDefaultsAction.LoadedDefaultWorkouts;
     constructor () {}
 }
 export class UpdatedDefaultWorkouts implements Action {
-    readonly type = ActionTypes.UpdatedDefaultWorkouts;
+    readonly type = EDefaultsAction.UpdatedDefaultWorkouts;
     constructor () {}
 }
 export class ResetDefaultImages implements Action {
-    readonly type = ActionTypes.ResetDefaultImages;
+    readonly type = EDefaultsAction.ResetDefaultImages;
     constructor () {}
 }
 export class UpdatedDefaultImages implements Action {
-    readonly type = ActionTypes.UpdatedDefaultImages;
+    readonly type = EDefaultsAction.UpdatedDefaultImages;
     constructor () {}
 }
 export class LoadedDefaultImages implements Action {
-    readonly type = ActionTypes.LoadedDefaultImages;
+    readonly type = EDefaultsAction.LoadedDefaultImages;
     constructor () {}
 }
 
-export type ActionsUnion =
+export type DefaultsActions =
 ResetDefaultWorkouts |
 LoadedDefaultWorkouts |
 UpdatedDefaultWorkouts |

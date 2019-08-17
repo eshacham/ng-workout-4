@@ -3,14 +3,14 @@ import { Store } from '@ngrx/store';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSlides as Slides, NavController } from '@ionic/angular';
-import { AppState } from 'src/app/store/reducers';
+import { IAppState } from 'src/app/store/state/app.state';
 import { Workout } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction, DisplayMode } from '../../models/enums';
 import { WorkoutDay } from '../../models/WorkoutDay';
-import * as WorkoutsAction from '../../store/actions/workouts.actions';
+import { SetCurrentWorkoutId, SetLastSelectedWorkoutDay } from 'src/app/store/actions/workouts.actions';
 
 @Component({
   selector: 'app-workout-days',
@@ -43,7 +43,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private dataService: DataServiceProvider,
-    private store: Store<AppState>) {
+    private store: Store<IAppState>) {
     this.isNewDayAdded = false;
     this.activeDayIndex = 0;
     this.subs = [];
@@ -55,7 +55,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.store.dispatch(new WorkoutsAction.SetCurrentWorkoutId(
+    this.store.dispatch(new SetCurrentWorkoutId(
       {
         currentWorkoutId: this.workout.id,
       }));
@@ -105,7 +105,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     if (this.slides && this.workout) {
       this.activeDayIndex = await this.slides.getActiveIndex();
       console.log('last index on slide changes', this.activeDayIndex);
-      this.store.dispatch(new WorkoutsAction.SetLastSelectedWorkoutDay(
+      this.store.dispatch(new SetLastSelectedWorkoutDay(
         {
           workoutId: this.workout.id,
           lastSelectedDay: this.activeDayIndex

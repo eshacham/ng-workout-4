@@ -1,4 +1,4 @@
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { IonFab } from '@ionic/angular';
 import { Component, OnInit, ViewChild} from '@angular/core';
@@ -8,8 +8,8 @@ import { DisplayMode, ExerciseSetAction } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
 import { ExerciseSetSwitchModeEvent } from '../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
-import { AppState } from '../store/reducers';
-import * as DefeaultsActions from '../store/actions/defaults.actions';
+import { IAppState } from '../store/state/app.state';
+import { LoadedDefaultWorkouts } from '../store/actions/defaults.actions';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -26,7 +26,7 @@ export class TabWorkoutsPage implements OnInit {
 
   constructor(
     private dataService: DataServiceProvider,
-    private store: Store<AppState>) {
+    private store: Store<IAppState>) {
     this.workoutPublisher = new Subject();
   }
 
@@ -38,7 +38,7 @@ export class TabWorkoutsPage implements OnInit {
 
   async ionViewWillEnter() {
     this.workouts = await this.dataService.getWorkouts();
-    this.store.dispatch(new DefeaultsActions.LoadedDefaultWorkouts());
+    this.store.dispatch(new LoadedDefaultWorkouts());
   }
 
   get DisplayMode(): DisplayMode {

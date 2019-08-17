@@ -10,16 +10,16 @@ import { Workout } from '../../models/Workout';
 import { defaultWorkouts } from '../../constants/defaultWorkouts';
 import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
-import * as DefeaultsActions from '../../store/actions/defaults.actions';
+import { IAppState } from '../../store/state/app.state';
+import { IWorkoutState } from '../../store/state/workouts.state';
+import { selectCurrentWorkoutLastSelectedDay } from 'src/app/store/selectors/workouts.selectors';
+import { selectHasDefaultWorkoutsBeenReset, selectHasDefaultImagesBeenReset } from 'src/app/store/selectors/defaults.selectors';
+import { selectExerciseMusclesFilterState, selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import {
-  AppState,
-  getHasDefaultWorkoutsBeenReset,
-  getHasDefaultImagesBeenReset,
-  getExerciseMusclesFilterState,
-  getLibraryMusclesFilterState,
-  getCurrentWorkoutLastSelectedDay,
-} from '../../store/reducers';
-import { WorkoutState } from 'src/app/store/reducers/workouts.reducer';
+  ResetDefaultWorkouts,
+  UpdatedDefaultWorkouts,
+  ResetDefaultImages,
+  UpdatedDefaultImages } from 'src/app/store/actions/defaults.actions';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -35,26 +35,26 @@ export class DataServiceProvider {
     private file: File,
     private webview: WebView,
     private storage: Storage,
-    private store: Store<AppState>) {
+    private store: Store<IAppState>) {
     this._images = [];
     this._workouts = [];
   }
 
-  getCurrentWorkoutLastSelectedDay(): Observable<WorkoutState> {
-    return this.store.select(getCurrentWorkoutLastSelectedDay);
+  getCurrentWorkoutLastSelectedDay(): Observable<IWorkoutState> {
+    return this.store.select(selectCurrentWorkoutLastSelectedDay);
   }
 
   getHasDefaultWorkoutsBeenReset(): Observable<boolean> {
-    return this.store.select(getHasDefaultWorkoutsBeenReset);
+    return this.store.select(selectHasDefaultWorkoutsBeenReset);
   }
   getHasDefaultImagesBeenReset(): Observable<boolean> {
-    return this.store.select(getHasDefaultImagesBeenReset);
+    return this.store.select(selectHasDefaultImagesBeenReset);
   }
   getExerciseMusclesFilterState(): Observable<Muscles[]> {
-    return this.store.select(getExerciseMusclesFilterState);
+    return this.store.select(selectExerciseMusclesFilterState);
   }
   getLibraryMusclesFilterState(): Observable<Muscles[]> {
-    return this.store.select(getLibraryMusclesFilterState);
+    return this.store.select(selectLibraryMusclesFilterState);
   }
 
   async getWorkout(id: number): Promise<Workout> {
@@ -97,9 +97,9 @@ export class DataServiceProvider {
     await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
     console.log('workouts have been saved');
     if (haveWorkoutsBeenReset) {
-      this.store.dispatch(new DefeaultsActions.ResetDefaultWorkouts());
+      this.store.dispatch(new ResetDefaultWorkouts());
     } else {
-      this.store.dispatch(new DefeaultsActions.UpdatedDefaultWorkouts());
+      this.store.dispatch(new UpdatedDefaultWorkouts());
     }
   }
 
@@ -200,9 +200,9 @@ export class DataServiceProvider {
     await this.storage.ready();
     await this.storage.set(IMAGES_STORAGE_KEY, this._images);
     if (imagesHaveBeenReset) {
-      this.store.dispatch(new DefeaultsActions.ResetDefaultImages());
+      this.store.dispatch(new ResetDefaultImages());
     } else {
-      this.store.dispatch(new DefeaultsActions.UpdatedDefaultImages());
+      this.store.dispatch(new UpdatedDefaultImages());
     }
   }
 

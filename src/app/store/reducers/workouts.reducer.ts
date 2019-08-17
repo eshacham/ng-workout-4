@@ -1,26 +1,10 @@
-import * as fromWorkouts from '../actions/workouts.actions';
+import {WorkoutsActions, EWorkoutsActions} from '../actions/workouts.actions';
+import { initialWorkoutsState, IWorkoutsState } from '../state/workouts.state';
 
-export interface WorkoutState {
-    workoutId: number;
-    lastSelectedDay: number;
-}
-
-export interface WorkoutsState {
-    workouts: WorkoutState[];
-    currentWorkoutId: number;
-}
-
-export const initialState: WorkoutsState = {
-    workouts : [],
-    currentWorkoutId: undefined,
-};
-
-export function reducer(
-    state = initialState,
-    action: fromWorkouts.ActionsUnion
-): WorkoutsState {
+export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsActions)
+: IWorkoutsState => {
     switch (action.type) {
-        case fromWorkouts.ActionTypes.SetLastSelectedWorkoutDay: {
+        case EWorkoutsActions.SetLastSelectedWorkoutDay: {
             const workout = state.workouts.find(w => w.workoutId === action.payload.workoutId);
             if (workout) {
                 workout.lastSelectedDay = action.payload.lastSelectedDay;
@@ -32,7 +16,7 @@ export function reducer(
                 workouts: state.workouts
             };
         }
-        case fromWorkouts.ActionTypes.SetCurrentWorkoutId: {
+        case EWorkoutsActions.SetCurrentWorkoutId: {
             const workout = state.workouts.find(w => w.workoutId === action.payload.currentWorkoutId);
             if (!workout) {
                 state.workouts.push({ workoutId: action.payload.currentWorkoutId, lastSelectedDay: 0});
@@ -47,10 +31,4 @@ export function reducer(
             return state;
         }
     }
-}
-
-export const getWorkoutsLastSelectedDay =
-    (state: WorkoutsState) => state.workouts;
-
-export const getCurrentWorkoutId =
-    (state: WorkoutsState) => state.currentWorkoutId;
+};

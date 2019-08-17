@@ -9,9 +9,9 @@ import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { Muscles, RepetitionSpeed } from 'src/app/models/enums';
 import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
-import { AppState } from '../../store/reducers';
-import * as DefeaultsActions from '../../store/actions/defaults.actions';
+import { IAppState } from '../../store/state/app.state';
 import { Subscription } from 'rxjs';
+import { LoadedDefaultImages } from '../../store/actions/defaults.actions';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -36,7 +36,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private dataService: DataServiceProvider,
-    private store: Store<AppState>) {
+    private store: Store<IAppState>) {
     this._images = [];
     this.subs = [];
     this.subs.push(this.route.params.subscribe(params => {
@@ -95,7 +95,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
       if (reset) {
         this.images = await this.getImages();
-        this.store.dispatch(new DefeaultsActions.LoadedDefaultImages());
+        this.store.dispatch(new LoadedDefaultImages());
       }
     }));
     this.subs.push(this.dataService.getHasDefaultWorkoutsBeenReset()

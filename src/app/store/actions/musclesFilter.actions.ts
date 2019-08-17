@@ -1,41 +1,41 @@
 import { Action } from '@ngrx/store';
 import { Muscles } from '../../models/enums';
 
-export enum ActionTypes {
-    SetExerciseMuscleFilter = '[Muscle Filter] Set for exercise',
-    AddExerciseMuscleFilter = '[Muscle Filter] Add to exercise',
-    DeleteExerciseMuscleFilter = '[Muscle Filter] Delete from exercise',
-    SetLibraryMuscleFilter = '[Muscle Filter] Set for library',
-    AddLibraryMuscleFilter = '[Muscle Filter] Add to library',
-    DeleteLibraryMuscleFilter = '[Muscle Filter] Delete from library',
+export enum EMusclesFilterActions {
+    SetExerciseMuscleFilter = '[Muscle Filter] Set exercise\'s filter',
+    AddExerciseMuscleFilter = '[Muscle Filter] Add muscle to exercise',
+    DeleteExerciseMuscleFilter = '[Muscle Filter] Delete muscle from exercise',
+    SetLibraryMuscleFilter = '[Muscle Filter] Set library\'s filter',
+    AddLibraryMuscleFilter = '[Muscle Filter] Add muscle to library',
+    DeleteLibraryMuscleFilter = '[Muscle Filter] Delete muscle from library',
 }
 
 export class SetExerciseMuscleFilter implements Action {
-    readonly type = ActionTypes.SetExerciseMuscleFilter;
+    readonly type = EMusclesFilterActions.SetExerciseMuscleFilter;
     constructor (public muscles: Muscles[]) {}
 }
 export class AddExerciseMuscleFilter implements Action {
-    readonly type = ActionTypes.AddExerciseMuscleFilter;
+    readonly type = EMusclesFilterActions.AddExerciseMuscleFilter;
     constructor (public muscle: Muscles) {}
 }
 export class DeleteExerciseMuscleFilter implements Action {
-    readonly type = ActionTypes.DeleteExerciseMuscleFilter;
+    readonly type = EMusclesFilterActions.DeleteExerciseMuscleFilter;
     constructor (public muscle: Muscles) {}
 }
 export class SetLibraryMuscleFilter implements Action {
-    readonly type = ActionTypes.SetLibraryMuscleFilter;
+    readonly type = EMusclesFilterActions.SetLibraryMuscleFilter;
     constructor (public muscles: Muscles[]) {}
 }
 export class AddLibraryMuscleFilter implements Action {
-    readonly type = ActionTypes.AddLibraryMuscleFilter;
+    readonly type = EMusclesFilterActions.AddLibraryMuscleFilter;
     constructor (public muscle: Muscles) {}
 }
 export class DeleteLibraryMuscleFilter implements Action {
-    readonly type = ActionTypes.DeleteLibraryMuscleFilter;
+    readonly type = EMusclesFilterActions.DeleteLibraryMuscleFilter;
     constructor (public muscle: Muscles) {}
 }
 
-export type ActionsUnion =
+export type MusclesFilterActions =
 SetExerciseMuscleFilter |
 AddExerciseMuscleFilter |
 DeleteExerciseMuscleFilter |

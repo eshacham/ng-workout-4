@@ -1,21 +1,21 @@
 import { Action } from '@ngrx/store';
 
-export enum ActionTypes {
+export enum EWorkoutsActions {
     SetLastSelectedWorkoutDay = '[Workouts] Set last selected day',
-    SetCurrentWorkoutId = '[Workouts] Set Current sworkout id',
+    SetCurrentWorkoutId = '[Workouts] Set current workout id',
 }
 
 export class SetLastSelectedWorkoutDay implements Action {
-    readonly type = ActionTypes.SetLastSelectedWorkoutDay;
+    readonly type = EWorkoutsActions.SetLastSelectedWorkoutDay;
     constructor (public payload: {workoutId: number, lastSelectedDay: number}) {}
 }
 
 export class SetCurrentWorkoutId implements Action {
-    readonly type = ActionTypes.SetCurrentWorkoutId;
+    readonly type = EWorkoutsActions.SetCurrentWorkoutId;
     constructor (public payload: {currentWorkoutId: number}) {}
 }
 
-export type ActionsUnion =
+export type WorkoutsActions =
     SetLastSelectedWorkoutDay |
     SetCurrentWorkoutId
 ;

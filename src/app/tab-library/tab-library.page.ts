@@ -11,8 +11,8 @@ import { ExerciseMedia } from '../models/ExerciseMedia';
 import { ToastService } from '../providers/toast-service/toast.service';
 import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
-import { AppState } from '../store/reducers';
-import * as DefeaultsActions from '../store/actions/defaults.actions';
+import { IAppState } from '../store/state/app.state';
+import { LoadedDefaultImages } from '../store/actions/defaults.actions';
 
 @Component({
   selector: 'app-tab-library',
@@ -34,7 +34,7 @@ export class TabLibraryPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private dataService: DataServiceProvider,
-    private store: Store<AppState>) {
+    private store: Store<IAppState>) {
     this._images = [];
   }
 
@@ -76,7 +76,7 @@ export class TabLibraryPage implements OnInit {
       console.log('tab-library redux - HasDefaultImagesBeenReset:', reset);
       if (reset) {
         this.images = await this.dataService.getImages();
-        this.store.dispatch(new DefeaultsActions.LoadedDefaultImages());
+        this.store.dispatch(new LoadedDefaultImages());
       }
     });
     this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {

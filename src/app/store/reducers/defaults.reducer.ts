@@ -1,41 +1,30 @@
-import * as fromDefaults from '../actions/defaults.actions';
+import { DefaultsActions, EDefaultsAction } from '../actions/defaults.actions';
+import { IDefaultsState, initialDefaultsState } from '../state/defaults.state';
 
-export interface DefaultsState {
-    hasDefaultWorkoutsBeenReset: boolean;
-    hasDefaultImagesBeenReset: boolean;
-}
-
-export const initialState: DefaultsState = {
-    hasDefaultWorkoutsBeenReset: false,
-    hasDefaultImagesBeenReset: false
-};
-
-export function reducer(
-    state = initialState,
-    action: fromDefaults.ActionsUnion
-): DefaultsState {
+export const defaultsReducers = (state = initialDefaultsState, action: DefaultsActions)
+: IDefaultsState => {
     switch (action.type) {
-        case fromDefaults.ActionTypes.ResetDefaultWorkouts: {
+        case EDefaultsAction.ResetDefaultWorkouts: {
             return {
                 ...state,
                 hasDefaultWorkoutsBeenReset: true
             };
         }
-        case fromDefaults.ActionTypes.UpdatedDefaultWorkouts:
-        case fromDefaults.ActionTypes.LoadedDefaultWorkouts: {
+        case EDefaultsAction.UpdatedDefaultWorkouts:
+        case EDefaultsAction.LoadedDefaultWorkouts: {
             return {
                 ...state,
                 hasDefaultWorkoutsBeenReset: false
             };
         }
-        case fromDefaults.ActionTypes.ResetDefaultImages: {
+        case EDefaultsAction.ResetDefaultImages: {
             return {
                 ...state,
                 hasDefaultImagesBeenReset: true
             };
         }
-        case fromDefaults.ActionTypes.UpdatedDefaultImages:
-        case fromDefaults.ActionTypes.LoadedDefaultImages: {
+        case EDefaultsAction.UpdatedDefaultImages:
+        case EDefaultsAction.LoadedDefaultImages: {
             return {
                 ...state,
                 hasDefaultImagesBeenReset: false
@@ -45,7 +34,4 @@ export function reducer(
             return state;
         }
     }
-}
-
-export const getHasDefaultImagesBeenReset = (state: DefaultsState) => state.hasDefaultImagesBeenReset;
-export const getHasDefaultWorkoutsBeenReset = (state: DefaultsState) => state.hasDefaultWorkoutsBeenReset;
+};

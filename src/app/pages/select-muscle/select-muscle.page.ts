@@ -1,11 +1,16 @@
+import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Muscles } from 'src/app/models/enums';
-import { AppState } from 'src/app/store/reducers';
-import * as MusclesFilterActions from '../../store/actions/musclesFilter.actions';
-import { Subscription } from 'rxjs';
+import { IAppState } from 'src/app/store/state/app.state';
+import {
+  SetExerciseMuscleFilter,
+  AddLibraryMuscleFilter,
+  AddExerciseMuscleFilter,
+  DeleteLibraryMuscleFilter,
+  DeleteExerciseMuscleFilter } from '../../store/actions/musclesFilter.actions';
 
 interface MuscleElements {
   muscle: Muscles;
@@ -66,14 +71,14 @@ export class SelectMusclePage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private dataService: DataServiceProvider,
-    private store: Store<AppState>) {
+    private store: Store<IAppState>) {
       this.subs = [];
       this.subs.push(this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.muscleFilterUsage = this.router.getCurrentNavigation().extras.state.muscleFilterUsage;
           if (this.muscleFilterUsage.for === MuscleFilterFor.SetExerciseMedia) {
             const filter = this.dataService.getExerciseMusclesFilterFromImage(this.mediaToSet);
-            this.store.dispatch(new MusclesFilterActions.SetExerciseMuscleFilter(filter));
+            this.store.dispatch(new SetExerciseMuscleFilter(filter));
           }
         }
       }));
@@ -133,16 +138,16 @@ export class SelectMusclePage implements OnInit, OnDestroy {
 
   addMuscleToFilter(muscle: Muscles) {
     if (this.isFilteringLibrary) {
-      this.store.dispatch(new MusclesFilterActions.AddLibraryMuscleFilter(muscle));
+      this.store.dispatch(new AddLibraryMuscleFilter(muscle));
     } else {
-      this.store.dispatch(new MusclesFilterActions.AddExerciseMuscleFilter(muscle));
+      this.store.dispatch(new AddExerciseMuscleFilter(muscle));
     }
   }
   deleteMuscleFromFilter(muscle: Muscles) {
     if (this.isFilteringLibrary) {
-      this.store.dispatch(new MusclesFilterActions.DeleteLibraryMuscleFilter(muscle));
+      this.store.dispatch(new DeleteLibraryMuscleFilter(muscle));
     } else {
-      this.store.dispatch(new MusclesFilterActions.DeleteExerciseMuscleFilter(muscle));
+      this.store.dispatch(new DeleteExerciseMuscleFilter(muscle));
     }
   }
 
