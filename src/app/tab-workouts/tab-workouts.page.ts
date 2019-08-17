@@ -1,12 +1,10 @@
-import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { IonFab } from '@ionic/angular';
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { DisplayMode, ExerciseSetAction } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
-import { ExerciseSetSwitchModeEvent } from '../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
 import { IAppState } from '../store/state/app.state';
 import { LoadedDefaultWorkouts } from '../store/actions/defaults.actions';
@@ -22,12 +20,10 @@ export class TabWorkoutsPage implements OnInit {
   workouts: Workout[];
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
-  workoutPublisher: Subject<ExerciseSetSwitchModeEvent>;
 
   constructor(
     private dataService: DataServiceProvider,
     private store: Store<IAppState>) {
-    this.workoutPublisher = new Subject();
   }
 
   async ngOnInit() {
@@ -47,7 +43,6 @@ export class TabWorkoutsPage implements OnInit {
   set DisplayMode(val: DisplayMode) {
     if (this._displayMode !== val) {
       this._displayMode = val;
-      this.publishWorkoutEvent(this._displayMode);
       if (this.DisplayMode === DisplayMode.Display) {
         this.dataService.saveWorkouts();
       }
@@ -78,17 +73,9 @@ export class TabWorkoutsPage implements OnInit {
     event.stopPropagation();
     await new Promise(() => setTimeout(() => {
       this.DisplayMode = DisplayMode.Edit;
-      this.publishWorkoutEvent(this._displayMode);
       this.dataService.saveWorkouts();
     }, 1));
 
-  }
-
-  publishWorkoutEvent(
-    displayMode: DisplayMode) {
-    const workoutEvent =
-      new ExerciseSetSwitchModeEvent(displayMode, null, null);
-    this.workoutPublisher.next(workoutEvent);
   }
 
   async handleWorkoutCardActionEvent(event: ExerciseSetActionEvent) {
@@ -99,7 +86,7 @@ export class TabWorkoutsPage implements OnInit {
           const index = this.workouts.findIndex(w => w.id === event.exerciseSetIndex);
           const workout = this.workouts[index];
           if (workout.days.length) {
-            workout.days.forEach((day, idx) => {
+            workout.days.forEach((_day, idx) => {
               WorkoutDay.delete(workout.days, idx);
             });
           }

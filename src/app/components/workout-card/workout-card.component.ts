@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Workout } from '../../models/Workout';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
-import { ExerciseSetSwitchModeEvent } from 'src/app/models/ExerciseSwitchModeEvent';
+import { Subscription } from 'rxjs';
 import { DisplayMode, ExerciseSetAction } from 'src/app/models/enums';
 import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 
@@ -14,11 +13,9 @@ import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
 export class WorkoutCardComponent implements OnInit, OnDestroy {
 
   @Input() workout: Workout;
-  @Input() inWorkoutPublisher: Subject<ExerciseSetSwitchModeEvent>;
+  @Input() displayMode: DisplayMode;
   @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
-  displayMode = DisplayMode;
-  private _displayMode: DisplayMode = DisplayMode.Display;
   private subs: Subscription;
 
   constructor(
@@ -26,30 +23,15 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('workout-card ngOnInit -> ', this);
-    this.subs = this.inWorkoutPublisher.subscribe(event => this.handleWorkoutEventchange(event));
+    console.log('workout-card ngOnInit -> ', DisplayMode[this.displayMode]);
   }
 
   ngOnDestroy() {
     console.log('onDestroy - workout-card');
-    this.subs.unsubscribe();
   }
 
-  get DisplayMode(): DisplayMode {
-    return this._displayMode;
-  }
-  set DisplayMode(val: DisplayMode) {
-    if (this._displayMode !== val) {
-      this._displayMode = val;
-    }
-  }
-  get IsEditMode() { return this._displayMode === DisplayMode.Edit; }
-  get IsDisplayMode() { return this._displayMode === DisplayMode.Display; }
-
-  handleWorkoutEventchange(event: ExerciseSetSwitchModeEvent): void {
-    this.DisplayMode = event.displayMode;
-    console.log(`workout-card: receieved ${DisplayMode[event.displayMode]} Event`);
-  }
+  get IsEditMode() { return this.displayMode === DisplayMode.Edit; }
+  get IsDisplayMode() { return this.displayMode === DisplayMode.Display; }
 
   goToWorkoutDays() {
     this.router.navigate([`workout-days/${this.workout.id}`], { relativeTo: this.route });
