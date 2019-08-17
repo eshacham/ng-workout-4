@@ -7,10 +7,12 @@ export interface WorkoutState {
 
 export interface WorkoutsState {
     workouts: WorkoutState[];
+    currentWorkoutId: number;
 }
 
 export const initialState: WorkoutsState = {
-    workouts : []
+    workouts : [],
+    currentWorkoutId: 0,
 };
 
 export function reducer(
@@ -30,6 +32,12 @@ export function reducer(
                 workouts: state.workouts
             };
         }
+        case fromWorkouts.ActionTypes.SetCurrentWorkoutId: {
+            return {
+                ...state,
+                currentWorkoutId: action.payload.currentWorkoutId
+            };
+        }
 
         default: {
             return state;
@@ -39,3 +47,6 @@ export function reducer(
 
 export const getWorkoutsLastSelectedDay =
     (state: WorkoutsState) => state.workouts;
+
+export const getCurrentWorkoutId =
+    (state: WorkoutsState) => state.currentWorkoutId;

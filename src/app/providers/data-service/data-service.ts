@@ -17,7 +17,7 @@ import {
   getHasDefaultImagesBeenReset,
   getExerciseMusclesFilterState,
   getLibraryMusclesFilterState,
-  getWorkoutsLastSelectedDay,
+  getCurrentWorkoutLastSelectedDay,
 } from '../../reducers';
 import { WorkoutState } from 'src/app/reducers/workouts.reducer';
 
@@ -38,11 +38,10 @@ export class DataServiceProvider {
     private store: Store<AppState>) {
     this._images = [];
     this._workouts = [];
-    // this.state = new StateCache();
   }
 
-  getLastSelectedWorkoutDay(): Observable<WorkoutState[]> {
-    return this.store.select(getWorkoutsLastSelectedDay);
+  getCurrentWorkoutLastSelectedDay(): Observable<WorkoutState> {
+    return this.store.select(getCurrentWorkoutLastSelectedDay);
   }
 
   getHasDefaultWorkoutsBeenReset(): Observable<boolean> {

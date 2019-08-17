@@ -23,18 +23,26 @@ export const reducers: ActionReducerMap<AppState> = {
 };
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production
-? []
-: [];
+  ? []
+  : [];
 
-export const getDefaultState = (state: AppState) => state.defaults;
-export const getMusclesFilterState = (state: AppState) => state.musclesFilter;
 export const getWorkoutsState = (state: AppState) => state.workouts;
-
+export const getCurrentWorkoutId = createSelector(
+  getWorkoutsState,
+  fromWorkouts.getCurrentWorkoutId,
+);
 export const getWorkoutsLastSelectedDay = createSelector(
   getWorkoutsState,
-  fromWorkouts.getWorkoutsLastSelectedDay
+  fromWorkouts.getWorkoutsLastSelectedDay,
+);
+export const getCurrentWorkoutLastSelectedDay = createSelector(
+  getWorkoutsLastSelectedDay,
+  getCurrentWorkoutId,
+  (workouts, id) => workouts.find(w => w.workoutId === id)
 );
 
+
+export const getDefaultState = (state: AppState) => state.defaults;
 export const getHasDefaultImagesBeenReset = createSelector(
   getDefaultState,
   fromDefaults.getHasDefaultImagesBeenReset
@@ -44,6 +52,7 @@ export const getHasDefaultWorkoutsBeenReset = createSelector(
   fromDefaults.getHasDefaultWorkoutsBeenReset
 );
 
+export const getMusclesFilterState = (state: AppState) => state.musclesFilter;
 export const getExerciseMusclesFilterState = createSelector(
   getMusclesFilterState,
   fromMusclesFilter.getExerciseMusclesFilter

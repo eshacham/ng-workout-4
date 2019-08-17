@@ -55,7 +55,12 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.subs.push(this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(async (reset) => {
+    this.store.dispatch(new WorkoutsAction.SetCurrentWorkoutId(
+      {
+        currentWorkoutId: this.workout.id,
+      }));
+    this.subs.push(this.dataService.getHasDefaultWorkoutsBeenReset()
+    .subscribe(async (reset) => {
       console.log('workout days redux - HasDefaultWorkoutsBeenReset:', reset);
       if (reset) {
         console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
@@ -66,9 +71,9 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     if (this.slides && this.workout) {
-      this.subs.push(this.dataService.getLastSelectedWorkoutDay().subscribe(async (workoutStates) => {
-        console.log('workout day redux - getLastSelectedWorkoutDay:', workoutStates);
-        const workout = workoutStates.find(w => w.workoutId === this.workout.id);
+      this.subs.push(this.dataService.getCurrentWorkoutLastSelectedDay()
+      .subscribe(async (workout) => {
+        console.log('workout day redux - getCurrentWorkoutLastSelectedDay:', workout);
         if (workout) {
           this.activeDayIndex = workout.lastSelectedDay;
           console.log('last index on view loaded', this.activeDayIndex);

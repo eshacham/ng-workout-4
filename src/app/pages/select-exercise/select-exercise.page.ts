@@ -90,24 +90,28 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.haveWorkoutsBeenReset = false;
     this.images = await this.getImages();
     this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.subs.push(this.dataService.getHasDefaultImagesBeenReset().subscribe(async (reset) => {
+    this.subs.push(this.dataService.getHasDefaultImagesBeenReset()
+    .subscribe(async (reset) => {
       console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
       if (reset) {
         this.images = await this.getImages();
         this.store.dispatch(new DefeaultsActions.LoadedDefaultImages());
       }
     }));
-    this.subs.push(this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
+    this.subs.push(this.dataService.getHasDefaultWorkoutsBeenReset()
+    .subscribe(reset => {
       console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
       this.haveWorkoutsBeenReset = reset;
     }));
-    this.subs.push(this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
+    this.subs.push(this.dataService.getLibraryMusclesFilterState()
+    .subscribe(async (filter) => {
       console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
       this.filteredImages = this.filterImagesByMuscles(filter);
     }));
-    this.subs.push(this.dataService.getLastSelectedWorkoutDay().subscribe(async (workoutStates) => {
-      console.log('select-exercise redux - getLastSelectedWorkoutDay:', workoutStates);
-      this.lastSelectedWorkoutDay = workoutStates.find(w => w.workoutId === this.workout.id).lastSelectedDay;
+    this.subs.push(this.dataService.getCurrentWorkoutLastSelectedDay()
+    .subscribe(async (workout) => {
+      console.log('select-exercise redux - getCurrentWorkoutLastSelectedDay:', workout);
+      this.lastSelectedWorkoutDay = workout.lastSelectedDay;
       console.log('last index on view loaded', this.lastSelectedWorkoutDay);
     }));
   }
