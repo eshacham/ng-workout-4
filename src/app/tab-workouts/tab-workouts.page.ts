@@ -8,8 +8,8 @@ import { DisplayMode, ExerciseSetAction } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
 import { ExerciseSetSwitchModeEvent } from '../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
-import { AppState } from '../reducers';
-import * as DefeaultsActions from '../actions/defaults.actions';
+import { AppState } from '../store/reducers';
+import * as DefeaultsActions from '../store/actions/defaults.actions';
 
 @Component({
   selector: 'app-tab-workouts',

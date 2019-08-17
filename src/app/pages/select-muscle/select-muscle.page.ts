@@ -3,8 +3,8 @@ import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { Muscles } from 'src/app/models/enums';
-import { AppState } from 'src/app/reducers';
-import * as MusclesFilterActions from '../../actions/musclesFilter.actions';
+import { AppState } from 'src/app/store/reducers';
+import * as MusclesFilterActions from '../../store/actions/musclesFilter.actions';
 import { Subscription } from 'rxjs';
 
 interface MuscleElements {

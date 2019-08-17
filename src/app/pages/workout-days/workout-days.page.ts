@@ -3,14 +3,14 @@ import { Store } from '@ngrx/store';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSlides as Slides, NavController } from '@ionic/angular';
-import { AppState } from 'src/app/reducers';
+import { AppState } from 'src/app/store/reducers';
 import { Workout } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction, DisplayMode } from '../../models/enums';
 import { WorkoutDay } from '../../models/WorkoutDay';
-import * as WorkoutsAction from '../../actions/workouts.actions';
+import * as WorkoutsAction from '../../store/actions/workouts.actions';
 
 @Component({
   selector: 'app-workout-days',

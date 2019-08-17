@@ -1,5 +1,5 @@
 import * as fromMusclesFilter from '../actions/musclesFilter.actions';
-import { Muscles } from '../models/enums';
+import { Muscles } from '../../models/enums';
 
 export interface MusclesFilterState {
     exerciseMusclesFilter: Muscles[];

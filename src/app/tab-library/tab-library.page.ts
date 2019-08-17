@@ -11,8 +11,8 @@ import { ExerciseMedia } from '../models/ExerciseMedia';
 import { ToastService } from '../providers/toast-service/toast.service';
 import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
-import { AppState } from '../reducers';
-import * as DefeaultsActions from '../actions/defaults.actions';
+import { AppState } from '../store/reducers';
+import * as DefeaultsActions from '../store/actions/defaults.actions';
 
 @Component({
   selector: 'app-tab-library',

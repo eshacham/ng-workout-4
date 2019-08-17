@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Muscles } from '../models/enums';
+import { Muscles } from '../../models/enums';
 
 export enum ActionTypes {
     SetExerciseMuscleFilter = '[Muscle Filter] Set for exercise',

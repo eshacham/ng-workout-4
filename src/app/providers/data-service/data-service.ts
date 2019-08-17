@@ -10,7 +10,7 @@ import { Workout } from '../../models/Workout';
 import { defaultWorkouts } from '../../constants/defaultWorkouts';
 import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
-import * as DefeaultsActions from '../../actions/defaults.actions';
+import * as DefeaultsActions from '../../store/actions/defaults.actions';
 import {
   AppState,
   getHasDefaultWorkoutsBeenReset,
@@ -18,8 +18,8 @@ import {
   getExerciseMusclesFilterState,
   getLibraryMusclesFilterState,
   getCurrentWorkoutLastSelectedDay,
-} from '../../reducers';
-import { WorkoutState } from 'src/app/reducers/workouts.reducer';
+} from '../../store/reducers';
+import { WorkoutState } from 'src/app/store/reducers/workouts.reducer';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';

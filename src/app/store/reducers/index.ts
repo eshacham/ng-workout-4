@@ -5,7 +5,7 @@ import {
   createSelector,
   MetaReducer
 } from '@ngrx/store';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import * as fromDefaults from './defaults.reducer';
 import * as fromMusclesFilter from './musclesFilter.reducer';
 import * as fromWorkouts from './workouts.reducer';

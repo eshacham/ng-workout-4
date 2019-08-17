@@ -9,8 +9,8 @@ import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { Muscles, RepetitionSpeed } from 'src/app/models/enums';
 import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
-import { AppState } from '../../reducers';
-import * as DefeaultsActions from '../../actions/defaults.actions';
+import { AppState } from '../../store/reducers';
+import * as DefeaultsActions from '../../store/actions/defaults.actions';
 import { Subscription } from 'rxjs';
 
 interface SelectedExerciseMedia {

@@ -12,7 +12,7 @@ export interface WorkoutsState {
 
 export const initialState: WorkoutsState = {
     workouts : [],
-    currentWorkoutId: 0,
+    currentWorkoutId: undefined,
 };
 
 export function reducer(
@@ -33,6 +33,10 @@ export function reducer(
             };
         }
         case fromWorkouts.ActionTypes.SetCurrentWorkoutId: {
+            const workout = state.workouts.find(w => w.workoutId === action.payload.currentWorkoutId);
+            if (!workout) {
+                state.workouts.push({ workoutId: action.payload.currentWorkoutId, lastSelectedDay: 0});
+            }
             return {
                 ...state,
                 currentWorkoutId: action.payload.currentWorkoutId
