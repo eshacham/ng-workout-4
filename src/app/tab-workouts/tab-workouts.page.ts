@@ -3,11 +3,11 @@ import { IonFab } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
-import { DisplayMode, ExerciseSetAction } from '../models/enums';
+import { DisplayMode } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
-import { ExerciseSetActionEvent } from '../models/ExerciseActionEvent';
 import { IAppState } from '../store/state/app.state';
 import { LoadedDefaultWorkouts } from '../store/actions/defaults.actions';
+import { DeleteWorkout } from '../store/actions/workouts.actions';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -27,8 +27,11 @@ export class TabWorkoutsPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.dataService.getHasDefaultWorkoutsBeenReset().subscribe(reset => {
-      console.log('tab-workouts redux - HasDefaultWorkoutsBeenReset:', reset);
+    this.dataService.getWorkoutId2Delete().subscribe(async id => {
+      if (id) {
+        await this.deleteWorkout(id);
+        this.store.dispatch(new DeleteWorkout({workoutId: undefined}));
+      }
     });
   }
 
@@ -78,22 +81,17 @@ export class TabWorkoutsPage implements OnInit {
 
   }
 
-  async handleWorkoutCardActionEvent(event: ExerciseSetActionEvent) {
-    const exerciseSetAction: ExerciseSetAction = event.action;
-    switch (exerciseSetAction) {
-      case ExerciseSetAction.Delete:
-        if (this.workouts.length > 1) {
-          const index = this.workouts.findIndex(w => w.id === event.exerciseSetIndex);
-          const workout = this.workouts[index];
-          if (workout.days.length) {
-            workout.days.forEach((_day, idx) => {
-              WorkoutDay.delete(workout.days, idx);
-            });
-          }
-          this.workouts.splice(index, 1);
-          await this.dataService.saveWorkouts();
-        }
-        break;
+  async deleteWorkout(id: number) {
+    if (this.workouts.length > 1) {
+      const index = this.workouts.findIndex(w => w.id === id);
+      const workout = this.workouts[index];
+      if (workout.days.length) {
+        workout.days.forEach((_day, idx) => {
+          WorkoutDay.delete(workout.days, idx);
+        });
+      }
+      this.workouts.splice(index, 1);
+      await this.dataService.saveWorkouts();
     }
   }
 }

@@ -12,7 +12,7 @@ import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
 import { IAppState } from '../../store/state/app.state';
 import { IWorkoutState } from '../../store/state/workouts.state';
-import { selectCurrentWorkoutLastSelectedDay } from 'src/app/store/selectors/workouts.selectors';
+import { selectCurrentWorkoutLastSelectedDay, SelectWorkoutId2Delete } from 'src/app/store/selectors/workouts.selectors';
 import { selectHasDefaultWorkoutsBeenReset, selectHasDefaultImagesBeenReset } from 'src/app/store/selectors/defaults.selectors';
 import { selectExerciseMusclesFilterState, selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import {
@@ -55,6 +55,10 @@ export class DataServiceProvider {
   }
   getLibraryMusclesFilterState(): Observable<Muscles[]> {
     return this.store.select(selectLibraryMusclesFilterState);
+  }
+
+  getWorkoutId2Delete(): Observable<number> {
+    return this.store.select(SelectWorkoutId2Delete);
   }
 
   async getWorkout(id: number): Promise<Workout> {

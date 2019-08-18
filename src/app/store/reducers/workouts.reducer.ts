@@ -26,7 +26,12 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
                 currentWorkoutId: action.payload.currentWorkoutId
             };
         }
-
+        case EWorkoutsActions.DeleteWorkout: {
+            return {
+                ...state,
+                workoutId2Delete: action.payload.workoutId
+            };
+        }
         default: {
             return state;
         }

@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Workout } from '../../models/Workout';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { DisplayMode, ExerciseSetAction } from 'src/app/models/enums';
-import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
+import { Store } from '@ngrx/store';
+import { Workout } from '../../models/Workout';
+import { DisplayMode } from 'src/app/models/enums';
+import { IAppState } from 'src/app/store/state/app.state';
+import { DeleteWorkout } from 'src/app/store/actions/workouts.actions';
 
 @Component({
   selector: 'app-workout-card',
@@ -14,12 +15,10 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
 
   @Input() workout: Workout;
   @Input() displayMode: DisplayMode;
-  @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
-
-  private subs: Subscription;
 
   constructor(
-    private router: Router, private route: ActivatedRoute) {
+    private router: Router, private route: ActivatedRoute,
+    private store: Store<IAppState>) {
   }
 
   ngOnInit() {
@@ -40,14 +39,9 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   get daysCount(): number {
     return (this.workout.days) ? this.workout.days.length : 0;
   }
-  emitExerciseSetActionEvent(action: ExerciseSetAction) {
-    this.outEventEmitter.emit(new ExerciseSetActionEvent(
-      action, null, this.workout.id, null));
-  }
 
   deleteWorkout() {
-    this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
+    this.store.dispatch(new DeleteWorkout({workoutId: this.workout.id}));
   }
-
 
 }

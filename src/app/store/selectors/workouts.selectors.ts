@@ -17,3 +17,8 @@ export const selectCurrentWorkoutLastSelectedDay = createSelector(
   selectCurrentWorkoutId,
   (workouts, id) => workouts.find(w => w.workoutId === id)
 );
+
+export const SelectWorkoutId2Delete = createSelector(
+  workoutsState,
+  (state: IWorkoutsState) => state.workoutId2Delete
+);
