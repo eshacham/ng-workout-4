@@ -1,14 +1,28 @@
-export interface IWorkoutState {
-    workoutId: number;
-    lastSelectedDay: number;
+import { DisplayMode } from 'src/app/models/enums';
+
+export interface IWorkoutDayState {
+    id: number;
+    runningExerciseSetIndex: number;
+    displayMode: DisplayMode;
 }
+export interface IWorkoutDays {
+    byId: { [id: number]: IWorkoutDayState };
+}
+
+export interface IWorkoutState {
+    id: number;
+    selectedDayId: number;
+    days: IWorkoutDays;
+}
+
 export interface IWorkoutsState {
-    workouts: IWorkoutState[];
+    byId: { [id: number]: IWorkoutState };
     currentWorkoutId: number;
     workoutId2Delete: number;
 }
+
 export const initialWorkoutsState: IWorkoutsState = {
-    workouts: [],
+    byId: {},
     currentWorkoutId: undefined,
-    workoutId2Delete: undefined
+    workoutId2Delete: undefined,
 };

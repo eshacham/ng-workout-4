@@ -4,13 +4,13 @@ export class ExerciseSetSwitchModeEvent {
 
    displayMode: DisplayMode;
    runningExerciseSetIndex: number;
-   runningExerciseSetDayName: string;
+   runningExerciseSetDayId: number;
 
    constructor(_displayMode: DisplayMode,
             _runningExerciseIndex: number,
-            _runningExerciseDayName: string) {
+            _runningExerciseDayId: number) {
                 this.displayMode = _displayMode;
                 this.runningExerciseSetIndex = _runningExerciseIndex;
-                this.runningExerciseSetDayName = _runningExerciseDayName;
+                this.runningExerciseSetDayId = _runningExerciseDayId;
    }
 }

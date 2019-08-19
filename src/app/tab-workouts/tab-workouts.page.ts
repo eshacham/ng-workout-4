@@ -1,25 +1,29 @@
 import { Store } from '@ngrx/store';
 import { IonFab } from '@ionic/angular';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Workout } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { DisplayMode } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
 import { IAppState } from '../store/state/app.state';
 import { LoadedDefaultWorkouts } from '../store/actions/defaults.actions';
-import { DeleteWorkout } from '../store/actions/workouts.actions';
+import { DeleteWorkoutById } from '../store/actions/workouts.actions';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { SelectWorkoutId2Delete } from '../store/selectors/workouts.selectors';
 
 @Component({
   selector: 'app-tab-workouts',
   templateUrl: 'tab-workouts.page.html',
   styleUrls: ['tab-workouts.page.scss']
 })
-export class TabWorkoutsPage implements OnInit {
+export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   @ViewChild('fabEdit') fabEdit: IonFab;
   workouts: Workout[];
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private dataService: DataServiceProvider,
@@ -27,13 +31,20 @@ export class TabWorkoutsPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.dataService.getWorkoutId2Delete().subscribe(async id => {
+    this.store.select(SelectWorkoutId2Delete)
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(async id => {
       if (id) {
         await this.deleteWorkout(id);
-        this.store.dispatch(new DeleteWorkout({workoutId: undefined}));
+        this.store.dispatch(new DeleteWorkoutById({workoutId: undefined}));
       }
     });
   }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+}
 
   async ionViewWillEnter() {
     this.workouts = await this.dataService.getWorkouts();

@@ -19,13 +19,19 @@ export const musclesFilterReducers = (state = initialMusclesFilterState, action:
         case EMusclesFilterActions.AddExerciseMuscleFilter: {
             return {
                 ...state,
-                exerciseMusclesFilter: [...state.exerciseMusclesFilter, action.muscle]
+                exerciseMusclesFilter: [
+                    ...state.exerciseMusclesFilter,
+                    action.muscle
+                ]
             };
         }
         case EMusclesFilterActions.AddLibraryMuscleFilter: {
             return {
                 ...state,
-                libraryMusclesFilter: [...state.libraryMusclesFilter, action.muscle]
+                libraryMusclesFilter: [
+                    ...state.libraryMusclesFilter,
+                    action.muscle
+                ]
             };
         }
         case EMusclesFilterActions.DeleteExerciseMuscleFilter: {

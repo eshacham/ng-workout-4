@@ -1,14 +1,21 @@
 import { Action } from '@ngrx/store';
+import { DisplayMode } from 'src/app/models/enums';
 
 export enum EWorkoutsActions {
-    SetLastSelectedWorkoutDay = '[Workouts] Set last selected day',
+    SetSelectedDay = '[Workouts] Set selected day',
     SetCurrentWorkoutId = '[Workouts] Set current workout id',
-    DeleteWorkout = '[Workout] Delete workout',
+    DeleteWorkoutById = '[Workout] Delete workout by id',
+    SetWorkoutDayState = '[Workout] Set workout day state',
 }
 
-export class SetLastSelectedWorkoutDay implements Action {
-    readonly type = EWorkoutsActions.SetLastSelectedWorkoutDay;
-    constructor (public payload: {workoutId: number, lastSelectedDay: number}) {}
+export interface ISetSelectedDayPayload {
+    workoutId: number;
+    dayId: number;
+}
+
+export class SetSelectedDay implements Action {
+    readonly type = EWorkoutsActions.SetSelectedDay;
+    constructor (public payload: ISetSelectedDayPayload) {}
 }
 
 export class SetCurrentWorkoutId implements Action {
@@ -16,13 +23,24 @@ export class SetCurrentWorkoutId implements Action {
     constructor (public payload: {currentWorkoutId: number}) {}
 }
 
-export class DeleteWorkout implements Action {
-    readonly type = EWorkoutsActions.DeleteWorkout;
+export class DeleteWorkoutById implements Action {
+    readonly type = EWorkoutsActions.DeleteWorkoutById;
     constructor (public payload: {workoutId?: number}) {}
 }
 
+export interface ISetWorkoutDayStatePayload {
+    workoutDayId: number;
+        runningExerciseSetIndex?: number;
+        displayMode: DisplayMode;
+}
+export class SetWorkoutDayState implements Action {
+    readonly type = EWorkoutsActions.SetWorkoutDayState;
+    constructor (public payload: ISetWorkoutDayStatePayload) {}
+}
+
 export type WorkoutsActions =
-    SetLastSelectedWorkoutDay |
+    SetSelectedDay |
     SetCurrentWorkoutId |
-    DeleteWorkout
+    DeleteWorkoutById |
+    SetWorkoutDayState
 ;

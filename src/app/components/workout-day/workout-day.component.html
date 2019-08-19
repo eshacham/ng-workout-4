@@ -53,8 +53,8 @@
         class="exercise-thumbnail-ion-item">
         <app-exercise-thumbnail #exerciseSetComponent
           [exerciseSet]="exerciseSet"
-          [workoutDayName]=workoutDay.name
-          [exerciseSetIndex]="i+1"
+          [workoutDayId]=workoutDay.id
+          [exerciseSetIndex]="i"
           [isDayInEditMode]="IsEditMode"
           [inWorkoutDayPublisher]="workoutDayPublisher"
           (outEventEmitter)="handleExerciseSetActionEvent($event)"

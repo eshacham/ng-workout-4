@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
@@ -13,16 +13,22 @@ import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
 import { LoadedDefaultImages } from '../store/actions/defaults.actions';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { selectHasDefaultImagesBeenReset } from '../store/selectors/defaults.selectors';
+import { selectLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
 
 @Component({
   selector: 'app-tab-library',
   templateUrl: 'tab-library.page.html',
   styleUrls: ['tab-library.page.scss']
 })
-export class TabLibraryPage implements OnInit {
+export class TabLibraryPage implements OnInit, OnDestroy {
 
   isMobile = false;
   _useFilter = false;
+  private ngUnsubscribeForImgaeReset: Subject<void> = new Subject<void>();
+  private ngUnsubscribeForLibraryFilter: Subject<void> = new Subject<void>();
 
   constructor(
     private camera: Camera,
@@ -72,18 +78,30 @@ export class TabLibraryPage implements OnInit {
     this._images = await this.dataService.getImages();
     console.log('tab-library ngOnInit - got Images:', this._images);
     this.isMobile = this.dataService.isMobile;
-    this.dataService.getHasDefaultImagesBeenReset().subscribe(async (reset) => {
+    this.store.select(selectHasDefaultImagesBeenReset)
+    .pipe(takeUntil(this.ngUnsubscribeForImgaeReset))
+    .subscribe(async (reset) => {
       console.log('tab-library redux - HasDefaultImagesBeenReset:', reset);
       if (reset) {
         this.images = await this.dataService.getImages();
         this.store.dispatch(new LoadedDefaultImages());
       }
     });
-    this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
+    this.store.select(selectLibraryMusclesFilterState)
+    .pipe(takeUntil(this.ngUnsubscribeForLibraryFilter))
+    .subscribe(async (filter) => {
       console.log('tab-library-page redux - LibraryMusclesFilterState:', filter);
       this.filteredImages = this.filterImagesByMuscles(filter);
     });
   }
+
+  ngOnDestroy() {
+    console.log('onDestroy - exercise-thumbnail');
+    this.ngUnsubscribeForImgaeReset.next();
+    this.ngUnsubscribeForImgaeReset.complete();
+    this.ngUnsubscribeForLibraryFilter.next();
+    this.ngUnsubscribeForLibraryFilter.complete();
+}
 
   async presentToast(text: string) {
     this.toastService.presentToast(text);

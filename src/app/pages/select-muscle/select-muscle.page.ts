@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,10 @@ import {
   AddLibraryMuscleFilter,
   AddExerciseMuscleFilter,
   DeleteLibraryMuscleFilter,
-  DeleteExerciseMuscleFilter } from '../../store/actions/musclesFilter.actions';
+  DeleteExerciseMuscleFilter
+} from '../../store/actions/musclesFilter.actions';
+import { takeUntil } from 'rxjs/operators';
+import { selectLibraryMusclesFilterState, selectExerciseMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 
 interface MuscleElements {
   muscle: Muscles;
@@ -40,7 +43,10 @@ export enum MuscleFilterFor {
 })
 export class SelectMusclePage implements OnInit, OnDestroy {
 
-  subs: Subscription[];
+  subs: Subscription;
+  private ngUnsubscribeForLibraryFilter: Subject<void> = new Subject<void>();
+  private ngUnsubscribeForExerciseFilter: Subject<void> = new Subject<void>();
+
   muscleGroupElements: MuscleElements[];
   muscleFilterUsage: MuscleFilterUsage = {
     for: MuscleFilterFor.NoSet
@@ -72,17 +78,16 @@ export class SelectMusclePage implements OnInit, OnDestroy {
     private router: Router,
     private dataService: DataServiceProvider,
     private store: Store<IAppState>) {
-      this.subs = [];
-      this.subs.push(this.route.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.muscleFilterUsage = this.router.getCurrentNavigation().extras.state.muscleFilterUsage;
-          if (this.muscleFilterUsage.for === MuscleFilterFor.SetExerciseMedia) {
-            const filter = this.dataService.getExerciseMusclesFilterFromImage(this.mediaToSet);
-            this.store.dispatch(new SetExerciseMuscleFilter(filter));
-          }
+    this.subs = this.route.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.muscleFilterUsage = this.router.getCurrentNavigation().extras.state.muscleFilterUsage;
+        if (this.muscleFilterUsage.for === MuscleFilterFor.SetExerciseMedia) {
+          const filter = this.dataService.getExerciseMusclesFilterFromImage(this.mediaToSet);
+          this.store.dispatch(new SetExerciseMuscleFilter(filter));
         }
-      }));
-      this.initMuscleGroups();
+      }
+    });
+    this.initMuscleGroups();
   }
 
   ngOnInit() {
@@ -90,25 +95,30 @@ export class SelectMusclePage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     if (this.isFilteringLibrary) {
-        this.subs.push(this.dataService.getLibraryMusclesFilterState().subscribe(async (filter) => {
+      this.store.select(selectLibraryMusclesFilterState)
+        .pipe(takeUntil(this.ngUnsubscribeForLibraryFilter))
+        .subscribe(async (filter) => {
           console.log('select-muscle redux - LibraryMusclesFilterState:', filter);
           this.SelectedMuscles = this.getSelectedMuscles(filter);
-        }));
+        });
     } else {
-      this.subs.push(this.dataService.getExerciseMusclesFilterState().subscribe(async (filter) => {
-        console.log('select-muscle redux - getExerciseMusclesFilterState:', filter);
-        this.SelectedMuscles = this.getSelectedMuscles(filter);
-        this.dataService.setImageMuscles(this.mediaToSet, filter);
-      }));
+      this.store.select(selectExerciseMusclesFilterState)
+        .pipe(takeUntil(this.ngUnsubscribeForExerciseFilter))
+        .subscribe(async (filter) => {
+          console.log('select-muscle redux - getExerciseMusclesFilterState:', filter);
+          this.SelectedMuscles = this.getSelectedMuscles(filter);
+          this.dataService.setImageMuscles(this.mediaToSet, filter);
+        });
     }
   }
 
   ngOnDestroy() {
     console.log('onDestroy - select-muscle');
-    for (const sub of this.subs) {
-      sub.unsubscribe();
-    }
-    this.subs = [];
+    this.subs.unsubscribe();
+    this.ngUnsubscribeForExerciseFilter.next();
+    this.ngUnsubscribeForExerciseFilter.complete();
+    this.ngUnsubscribeForLibraryFilter.next();
+    this.ngUnsubscribeForLibraryFilter.complete();
   }
 
   private getSelectedMuscles(muscles: Muscles[]): SelectedMuscle[] {

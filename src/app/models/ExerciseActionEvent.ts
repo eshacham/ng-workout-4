@@ -6,16 +6,16 @@ export class ExerciseSetActionEvent {
     action: ExerciseSetAction;
     exerciseSet: ExerciseSet;
     exerciseSetIndex: number;
-    workoutDayName: string;
+    workoutDayId: number;
 
    constructor (
         _exerciseAction: ExerciseSetAction,
         _exerciseSet: ExerciseSet,
         _exerciseSetIndex: number,
-        _workoutDayName: string) {
+        _workoutDayId: number) {
         this.action = _exerciseAction;
         this.exerciseSet = _exerciseSet;
         this.exerciseSetIndex = _exerciseSetIndex;
-        this.workoutDayName = _workoutDayName;
+        this.workoutDayId = _workoutDayId;
    }
 }

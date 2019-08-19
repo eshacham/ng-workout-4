@@ -11,10 +11,6 @@ import { defaultWorkouts } from '../../constants/defaultWorkouts';
 import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
 import { IAppState } from '../../store/state/app.state';
-import { IWorkoutState } from '../../store/state/workouts.state';
-import { selectCurrentWorkoutLastSelectedDay, SelectWorkoutId2Delete } from 'src/app/store/selectors/workouts.selectors';
-import { selectHasDefaultWorkoutsBeenReset, selectHasDefaultImagesBeenReset } from 'src/app/store/selectors/defaults.selectors';
-import { selectExerciseMusclesFilterState, selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import {
   ResetDefaultWorkouts,
   UpdatedDefaultWorkouts,
@@ -38,27 +34,6 @@ export class DataServiceProvider {
     private store: Store<IAppState>) {
     this._images = [];
     this._workouts = [];
-  }
-
-  getCurrentWorkoutLastSelectedDay(): Observable<IWorkoutState> {
-    return this.store.select(selectCurrentWorkoutLastSelectedDay);
-  }
-
-  getHasDefaultWorkoutsBeenReset(): Observable<boolean> {
-    return this.store.select(selectHasDefaultWorkoutsBeenReset);
-  }
-  getHasDefaultImagesBeenReset(): Observable<boolean> {
-    return this.store.select(selectHasDefaultImagesBeenReset);
-  }
-  getExerciseMusclesFilterState(): Observable<Muscles[]> {
-    return this.store.select(selectExerciseMusclesFilterState);
-  }
-  getLibraryMusclesFilterState(): Observable<Muscles[]> {
-    return this.store.select(selectLibraryMusclesFilterState);
-  }
-
-  getWorkoutId2Delete(): Observable<number> {
-    return this.store.select(SelectWorkoutId2Delete);
   }
 
   async getWorkout(id: number): Promise<Workout> {
