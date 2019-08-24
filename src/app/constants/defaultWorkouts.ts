@@ -3866,7 +3866,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                 description: '4 days including upper, lower and core muscles',
                 days: [
                     new WorkoutDay({
-                        id: 4,
+                        id: 1,
                         name: 'Full Body',
                         exerciseSets: [
                             new ExerciseSet({
@@ -4886,7 +4886,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                         ]
                     }),
                     new WorkoutDay({
-                        id: 1,
+                        id: 4,
                         name: 'Lower Body',
                         exerciseSets: [
                             new ExerciseSet({
