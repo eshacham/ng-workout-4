@@ -48,6 +48,12 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
                 workoutId2Delete: action.payload.workoutId
             };
         }
+        case EWorkoutsActions.WorkoutDeleted: {
+            return {
+                ...state,
+                workoutId2Delete: undefined
+            };
+        }
         case EWorkoutsActions.StartFirstExercise:
         case EWorkoutsActions.StartNextExercise:
         case EWorkoutsActions.ExerciseCompleted:
@@ -77,7 +83,26 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
                 workoutId2Delete: state.workoutId2Delete
             };
         }
-
+        case EWorkoutsActions.DeleteWorkoutDay: {
+            const oldWorkout: IWorkoutState = state.byId[state.currentWorkoutId];
+            return {
+                byId: {
+                    ...state.byId,
+                    [state.currentWorkoutId]: {
+                        workoutId: state.currentWorkoutId,
+                        selectedDayId: oldWorkout ? oldWorkout.selectedDayId : undefined,
+                        days: {
+                            byId: {
+                                ...oldWorkout.days.byId,
+                                [action.payload.workoutDayId]: undefined
+                            }
+                        }
+                    }
+                },
+                currentWorkoutId: state.currentWorkoutId,
+                workoutId2Delete: state.workoutId2Delete
+            };
+        }
         default: {
             return state;
         }

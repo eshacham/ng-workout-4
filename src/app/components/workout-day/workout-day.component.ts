@@ -52,16 +52,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   set DisplayMode(val: DisplayMode) {
     if (this._displayMode !== val) {
       this._displayMode = val;
-      // if (this._displayMode === DisplayMode.Workout) {
-      //   this.runningExerciseSetIndex = this.runningExerciseSetIndex || 0;
-      // } else {
-      //   this.runningExerciseSetIndex = null;
-      // }
-      // this.store.dispatch(new StartFirstExercise({
-      //   workoutDayId: this.workoutDay.id,
-      //   runningExerciseSetIndex: this.runningExerciseSetIndex,
-      //   displayMode: this._displayMode
-      // }));
     }
   }
 

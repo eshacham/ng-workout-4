@@ -9,7 +9,7 @@ import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction } from '../../models/enums';
 import { WorkoutDay } from '../../models/WorkoutDay';
-import { SetCurrentWorkoutId, SetSelectedDay } from 'src/app/store/actions/workouts.actions';
+import { SetCurrentWorkoutId, SetSelectedDay, DeleteWorkoutDay } from 'src/app/store/actions/workouts.actions';
 import { selectCurrentWorkoutSelectedDay } from 'src/app/store/selectors/workouts.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
@@ -203,18 +203,27 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       if (index > 0) {
         console.log('sliding back');
         await this.slides.slideTo(index - 1, 0, true);
-      } else {
-        console.log('sliding forward');
-        await this.slides.slideTo(1, 0, true);
       }
-      /// TODO was reversed - very wiered!
-      WorkoutDay.delete(this.workout.days, index);
-      await this.saveChanges();
-      await new Promise(() => setTimeout(() => {
-        this.slides.update();
-        console.log(`deleted day index ${index} out of ${this.workout.days.length + 1} days`);
-      }, 1));
+      const workDayId = this.workout.days[index].id;
+      await this.actuallyDeleteWorkoutDay(index);
+      this.store.dispatch(new DeleteWorkoutDay({
+        workoutDayId: workDayId
+      }));
+      if (index <= 0) {
+        this.store.dispatch(new SetSelectedDay(
+          {
+            workoutId: this.workout.id,
+            dayId: this.workout.days[this.activeDayIndex].id
+          }));
+      }
+      await this.slides.update();
     }
+  }
+
+  async actuallyDeleteWorkoutDay(index: number) {
+    WorkoutDay.delete(this.workout.days, index);
+    await this.saveChanges();
+    console.log(`deleted day index ${index} out of ${this.workout.days.length + 1} days`);
   }
 
   getWorkoutDayIndexByName(id: number) {
