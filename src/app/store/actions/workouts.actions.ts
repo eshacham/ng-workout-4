@@ -3,10 +3,11 @@ import { DisplayMode, RunningState } from 'src/app/models/enums';
 import { IWorkoutDayState } from '../state/workouts.state';
 
 export enum EWorkoutsActions {
-    SetSelectedDay = '[Workouts] Set selected day',
-    SetCurrentWorkoutId = '[Workouts] Set current workout id',
-    DeleteWorkoutById = '[Workout] Delete workout by id',
+    SelectWorkout = '[Workouts] Select workout day',
+    UnselectWorkout = '[Workouts] Unselect workout',
+    DeleteWorkout = '[Workout] Delete workout',
     WorkoutDeleted = '[Workout] Workout has been deleted',
+    SelectedWorkoutDay = '[Workouts] Set selected day',
     DeleteWorkoutDay = '[Workout] Delete workout day',
     StartFirstExercise = '[Workouts] Start first exercise',
     StartNextExercise = '[Workouts] Start next exercise',
@@ -20,18 +21,22 @@ export interface ISetSelectedDayPayload {
     dayId: number;
 }
 
-export class SetSelectedDay implements Action {
-    readonly type = EWorkoutsActions.SetSelectedDay;
+export class SelectedWorkoutDay implements Action {
+    readonly type = EWorkoutsActions.SelectedWorkoutDay;
     constructor(public payload: ISetSelectedDayPayload) { }
 }
 
-export class SetCurrentWorkoutId implements Action {
-    readonly type = EWorkoutsActions.SetCurrentWorkoutId;
+export class SelectWorkout implements Action {
+    readonly type = EWorkoutsActions.SelectWorkout;
     constructor(public payload: { currentWorkoutId: number }) { }
 }
+export class UnselectWorkout implements Action {
+    readonly type = EWorkoutsActions.UnselectWorkout;
+    constructor() { }
+}
 
-export class DeleteWorkoutById implements Action {
-    readonly type = EWorkoutsActions.DeleteWorkoutById;
+export class DeleteWorkout implements Action {
+    readonly type = EWorkoutsActions.DeleteWorkout;
     constructor(public payload: { workoutId?: number }) { }
 }
 export class WorkoutDeleted implements Action {
@@ -79,10 +84,11 @@ export class ChangeDisplayMode implements Action {
 }
 
 export type WorkoutsActions =
-    SetSelectedDay |
-    SetCurrentWorkoutId |
-    DeleteWorkoutById |
+    SelectWorkout |
+    UnselectWorkout |
+    DeleteWorkout |
     WorkoutDeleted |
+    SelectedWorkoutDay |
     DeleteWorkoutDay |
     StartFirstExercise |
     StartNextExercise |

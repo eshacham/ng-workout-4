@@ -9,7 +9,7 @@ import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction } from '../../models/enums';
 import { WorkoutDay } from '../../models/WorkoutDay';
-import { SetCurrentWorkoutId, SetSelectedDay, DeleteWorkoutDay } from 'src/app/store/actions/workouts.actions';
+import { SelectWorkout, SelectedWorkoutDay, DeleteWorkoutDay, UnselectWorkout } from 'src/app/store/actions/workouts.actions';
 import { selectCurrentWorkoutSelectedDay } from 'src/app/store/selectors/workouts.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
@@ -51,7 +51,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     this.activeDayIndex = 0;
     this.subs = this.route.params.subscribe(params => {
       this.workoutId = +params.id;
-      this.store.dispatch(new SetCurrentWorkoutId(
+      this.store.dispatch(new SelectWorkout(
         {
           currentWorkoutId: this.workoutId,
         }));
@@ -69,7 +69,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           await this.navCtrl.navigateBack('/tabs/tab-workouts');
         }
       });
-    this.store.dispatch(new SetSelectedDay(
+    this.store.dispatch(new SelectedWorkoutDay(
       {
         workoutId: this.workout.id,
         dayId: this.workout.days[this.activeDayIndex].id
@@ -101,6 +101,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     this.ngUnsubscribeForWorkoutReset.complete();
     this.ngUnsubscribeForWorkoutSelectedDay.next();
     this.ngUnsubscribeForWorkoutSelectedDay.complete();
+    this.store.dispatch(new UnselectWorkout());
   }
 
   get isLastDayActive(): boolean {
@@ -116,7 +117,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   async slideChanged() {
     if (this.slides && this.workout) {
       this.activeDayIndex = await this.slides.getActiveIndex();
-      this.store.dispatch(new SetSelectedDay(
+      this.store.dispatch(new SelectedWorkoutDay(
         {
           workoutId: this.workout.id,
           dayId: this.workout.days[this.activeDayIndex].id
@@ -210,7 +211,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         workoutDayId: workDayId
       }));
       if (index <= 0) {
-        this.store.dispatch(new SetSelectedDay(
+        this.store.dispatch(new SelectedWorkoutDay(
           {
             workoutId: this.workout.id,
             dayId: this.workout.days[this.activeDayIndex].id

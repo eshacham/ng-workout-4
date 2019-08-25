@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Workout } from '../../models/Workout';
 import { DisplayMode } from 'src/app/models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
-import { DeleteWorkoutById } from 'src/app/store/actions/workouts.actions';
+import { DeleteWorkout } from 'src/app/store/actions/workouts.actions';
 
 @Component({
   selector: 'app-workout-card',
@@ -41,7 +41,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkout() {
-    this.store.dispatch(new DeleteWorkoutById({workoutId: this.workout.id}));
+    this.store.dispatch(new DeleteWorkout({workoutId: this.workout.id}));
   }
 
 }

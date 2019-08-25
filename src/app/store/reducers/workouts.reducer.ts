@@ -12,7 +12,7 @@ import {
 export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsActions)
     : IWorkoutsState => {
     switch (action.type) {
-        case EWorkoutsActions.SetSelectedDay: {
+        case EWorkoutsActions.SelectedWorkoutDay: {
             const oldWorkout: IWorkoutState = state.byId[action.payload.workoutId];
             return {
                 byId: {
@@ -27,7 +27,7 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
                 workoutId2Delete: state.workoutId2Delete
             };
         }
-        case EWorkoutsActions.SetCurrentWorkoutId: {
+        case EWorkoutsActions.SelectWorkout: {
             const oldWorkout: IWorkoutState = state.byId[action.payload.currentWorkoutId];
             return {
                 byId: {
@@ -42,7 +42,13 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
                 workoutId2Delete: state.workoutId2Delete
             };
         }
-        case EWorkoutsActions.DeleteWorkoutById: {
+        case EWorkoutsActions.UnselectWorkout: {
+            return {
+                ...state,
+                currentWorkoutId: undefined
+            };
+        }
+        case EWorkoutsActions.DeleteWorkout: {
             return {
                 ...state,
                 workoutId2Delete: action.payload.workoutId
