@@ -10,7 +10,7 @@ import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
-import { StartFirstExercise, ChangeDisplayMode, StartNextExercise } from 'src/app/store/actions/workouts.actions';
+import { StartFirstExercise, ChangeDisplayMode, StartNextExercise, DeleteWorkoutDay } from 'src/app/store/actions/workouts.actions';
 import { SelectWorkoutDayState } from 'src/app/store/selectors/workouts.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { IWorkoutDayState } from 'src/app/store/state/workouts.state';
@@ -179,7 +179,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     const index = this.workoutDay.exerciseSets.findIndex(s => s === set);
     ExerciseSet.delete(this.workoutDay.exerciseSets, index);
     await this.saveChanges();
-    this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
   }
 
   async addExercise(event) {
@@ -203,7 +202,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkoutDay(event) {
-    this.emitExerciseSetActionEvent(ExerciseSetAction.DeleteDay);
+    this.store.dispatch(new DeleteWorkoutDay({workoutDayId: this.workoutDay.id}));
     event.stopPropagation();
   }
 

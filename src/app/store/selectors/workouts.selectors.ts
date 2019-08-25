@@ -6,7 +6,7 @@ export const workoutsState = (state: IAppState) => state.workouts;
 
 export const selectCurrentWorkoutId = createSelector(
   workoutsState,
-  (workouts: IWorkoutsState) => workouts.currentWorkoutId
+  (workouts: IWorkoutsState) => workouts.selectedWorkoutId
 );
 export const SelectWorkoutId2Delete = createSelector(
   workoutsState,
@@ -20,11 +20,16 @@ export const selectCurrentWorkout = createSelector(
 );
 export const selectCurrentWorkoutSelectedDay = createSelector(
   selectCurrentWorkout,
-  (workout: IWorkoutState) => workout.selectedDayId
+  (workout: IWorkoutState) => workout.selectedWorkoutDayId
 );
 
 export const SelectWorkoutDayState = createSelector(
   selectCurrentWorkout,
   selectCurrentWorkoutSelectedDay,
   (workout: IWorkoutState, dayId: number) => workout.days.byId[dayId]
+);
+
+export const selectWorkoutDayId2Delete = createSelector(
+  selectCurrentWorkout,
+  (workout: IWorkoutState) => workout ? workout.deleteSelectedWorkoutDay : null
 );

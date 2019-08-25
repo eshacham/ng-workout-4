@@ -3,32 +3,23 @@ import { DisplayMode, RunningState } from 'src/app/models/enums';
 import { IWorkoutDayState } from '../state/workouts.state';
 
 export enum EWorkoutsActions {
-    SelectWorkout = '[Workouts] Select workout day',
+    SelectWorkout = '[Workouts] Select workout',
     UnselectWorkout = '[Workouts] Unselect workout',
-    DeleteWorkout = '[Workout] Delete workout',
-    WorkoutDeleted = '[Workout] Workout has been deleted',
-    SelectedWorkoutDay = '[Workouts] Set selected day',
-    DeleteWorkoutDay = '[Workout] Delete workout day',
+    DeleteWorkout = '[Workouts] Delete workout',
+    WorkoutDeleted = '[Workouts] Workout has been deleted',
+    SelectWorkoutDay = '[Workouts] Select workout day',
+    DeleteWorkoutDay = '[Workouts] Delete workout day',
+    WorkoutDayDeleted = '[Workouts] Workout day has been deleted',
     StartFirstExercise = '[Workouts] Start first exercise',
     StartNextExercise = '[Workouts] Start next exercise',
     ExerciseStarted = '[Workouts] Exercise has started',
     ExerciseCompleted = '[Workouts] Exercise has completed',
-    ChangeDisplayMode = '[Workouts] Change Display Mode',
-}
-
-export interface ISetSelectedDayPayload {
-    workoutId: number;
-    dayId: number;
-}
-
-export class SelectedWorkoutDay implements Action {
-    readonly type = EWorkoutsActions.SelectedWorkoutDay;
-    constructor(public payload: ISetSelectedDayPayload) { }
+    ChangeDisplayMode = '[Workouts] Change workout day display mode'
 }
 
 export class SelectWorkout implements Action {
     readonly type = EWorkoutsActions.SelectWorkout;
-    constructor(public payload: { currentWorkoutId: number }) { }
+    constructor(public payload: { workoutId: number }) { }
 }
 export class UnselectWorkout implements Action {
     readonly type = EWorkoutsActions.UnselectWorkout;
@@ -37,14 +28,28 @@ export class UnselectWorkout implements Action {
 
 export class DeleteWorkout implements Action {
     readonly type = EWorkoutsActions.DeleteWorkout;
-    constructor(public payload: { workoutId?: number }) { }
+    constructor(public payload: { workoutId: number }) { }
 }
+
 export class WorkoutDeleted implements Action {
     readonly type = EWorkoutsActions.WorkoutDeleted;
     constructor() { }
 }
+
+export class SelectWorkoutDay implements Action {
+    readonly type = EWorkoutsActions.SelectWorkoutDay;
+    constructor(public payload: {
+        workoutId: number;
+        dayId: number }) { }
+}
+
 export class DeleteWorkoutDay implements Action {
     readonly type = EWorkoutsActions.DeleteWorkoutDay;
+    constructor(public payload: { workoutDayId: number }) { }
+}
+
+export class WorkoutDayDeleted implements Action {
+    readonly type = EWorkoutsActions.WorkoutDayDeleted;
     constructor(public payload: { workoutDayId: number }) { }
 }
 
@@ -88,8 +93,9 @@ export type WorkoutsActions =
     UnselectWorkout |
     DeleteWorkout |
     WorkoutDeleted |
-    SelectedWorkoutDay |
+    SelectWorkoutDay |
     DeleteWorkoutDay |
+    WorkoutDayDeleted |
     StartFirstExercise |
     StartNextExercise |
     ExerciseStarted |

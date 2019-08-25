@@ -12,18 +12,19 @@ export interface IWorkoutDays {
 
 export interface IWorkoutState {
     workoutId: number;
-    selectedDayId: number;
+    selectedWorkoutDayId: number;
+    deleteSelectedWorkoutDay?: number;
     days: IWorkoutDays;
 }
 
 export interface IWorkoutsState {
     byId: { [id: number]: IWorkoutState };
-    currentWorkoutId: number;
-    workoutId2Delete: number;
+    selectedWorkoutId: number;
+    workoutId2Delete?: number;
 }
 
 export const initialWorkoutsState: IWorkoutsState = {
     byId: {},
-    currentWorkoutId: undefined,
+    selectedWorkoutId: undefined,
     workoutId2Delete: undefined,
 };
