@@ -6,12 +6,11 @@ import { IonSlides as Slides, NavController } from '@ionic/angular';
 import { IAppState } from 'src/app/store/state/app.state';
 import { Workout } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
-import { ExerciseSetSwitchModeEvent } from '../../models/ExerciseSwitchModeEvent';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
-import { ExerciseSetAction, DisplayMode } from '../../models/enums';
+import { ExerciseSetAction } from '../../models/enums';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import { SetCurrentWorkoutId, SetSelectedDay } from 'src/app/store/actions/workouts.actions';
-import { SelectWorkoutDayState, selectCurrentWorkoutSelectedDay } from 'src/app/store/selectors/workouts.selectors';
+import { selectCurrentWorkoutSelectedDay } from 'src/app/store/selectors/workouts.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
 
@@ -24,7 +23,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   workout: Workout;
   workoutId: number;
-  workoutDaysPublisher: Subject<ExerciseSetSwitchModeEvent>;
   activeDayIndex: number;
   isNewDayAdded: boolean;
   subs: Subscription;
@@ -51,18 +49,17 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     private store: Store<IAppState>) {
     this.isNewDayAdded = false;
     this.activeDayIndex = 0;
-    this.workoutDaysPublisher = new Subject();
     this.subs = this.route.params.subscribe(params => {
       this.workoutId = +params.id;
+      this.store.dispatch(new SetCurrentWorkoutId(
+        {
+          currentWorkoutId: this.workoutId,
+        }));
     });
   }
 
   async ngOnInit() {
     this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.store.dispatch(new SetCurrentWorkoutId(
-      {
-        currentWorkoutId: this.workout.id,
-      }));
     this.store.select(selectHasDefaultWorkoutsBeenReset)
       .pipe(takeUntil(this.ngUnsubscribeForWorkoutReset))
       .subscribe(async (reset) => {
@@ -72,14 +69,11 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           await this.navCtrl.navigateBack('/tabs/tab-workouts');
         }
       });
-    this.store.select(SelectWorkoutDayState)
-      .subscribe(data => {
-        console.log('workout-days redux SelectWorkoutDayState', data);
-      });
-    this.store.select(selectCurrentWorkoutSelectedDay)
-      .subscribe(data => {
-        console.log('workout-days redux selectCurrentWorkoutSelectedDay', data);
-      });
+    this.store.dispatch(new SetSelectedDay(
+      {
+        workoutId: this.workout.id,
+        dayId: this.workout.days[this.activeDayIndex].id
+      }));
   }
 
   ionViewWillEnter() {
@@ -87,11 +81,14 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       this.store.select(selectCurrentWorkoutSelectedDay)
         .pipe(takeUntil(this.ngUnsubscribeForWorkoutSelectedDay))
         .subscribe(async (workoutDayId) => {
-          console.log('workout day redux - getCurrentWorkoutSelectedDay:', workoutDayId);
           if (workoutDayId) {
+            console.log('workout days - redux - selectCurrentWorkoutSelectedDay:', workoutDayId);
             this.activeDayIndex = this.workout.days.findIndex(day => day.id === workoutDayId);
-            console.log('last index on view loaded', this.activeDayIndex);
-            await this.slides.slideTo(this.activeDayIndex, 0);
+            const activeSlideIndex = await this.slides.getActiveIndex();
+            if (activeSlideIndex !== this.activeDayIndex) {
+              console.log('sliding to last selected day index:', this.activeDayIndex);
+              await this.slides.slideTo(this.activeDayIndex, 0);
+            }
           }
         });
     }
@@ -119,7 +116,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   async slideChanged() {
     if (this.slides && this.workout) {
       this.activeDayIndex = await this.slides.getActiveIndex();
-      console.log('last index on slide changes', this.activeDayIndex);
       this.store.dispatch(new SetSelectedDay(
         {
           workoutId: this.workout.id,
@@ -136,9 +132,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     const exerciseSetAction: ExerciseSetAction = event.action;
 
     switch (exerciseSetAction) {
-      case ExerciseSetAction.Completed:
-        console.log('workout-days: receieved completed event: ', JSON.stringify(event));
-        break;
       case ExerciseSetAction.Delete:
         console.log('workout-days: receieved delete event: ', JSON.stringify(event));
         console.log('workout-days: this.activeDayIndex: ', this.activeDayIndex);
@@ -146,16 +139,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         if (!this.workout.days[this.activeDayIndex].exerciseSets.length) {
           await this.deleteWorkoutDay(this.activeDayIndex);
         }
-        break;
-      case ExerciseSetAction.Edit:
-        console.log('workout-days: receieved edit event: ', JSON.stringify(event));
-        break;
-      case ExerciseSetAction.Run:
-        console.log('workout-days: receieved run event: ', JSON.stringify(event));
-        this.publishWorkoutEvent(DisplayMode.Workout, event.workoutDayId);
-        break;
-      case ExerciseSetAction.Save:
-        console.log('workout-days: receieved save event: ', JSON.stringify(event));
         break;
       case ExerciseSetAction.AddDay:
         console.log('workout-days: receieved add day event: ', JSON.stringify(event));
@@ -238,9 +221,4 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     return this.workout.days.findIndex(day => day.id === id);
   }
 
-  publishWorkoutEvent(displayMode: DisplayMode, runningExerciseDayId: number) {
-    const workoutEvent =
-      new ExerciseSetSwitchModeEvent(displayMode, null, runningExerciseDayId);
-    this.workoutDaysPublisher.next(workoutEvent);
-  }
 }

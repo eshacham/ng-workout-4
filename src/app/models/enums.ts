@@ -34,6 +34,12 @@ export enum DisplayMode {
     Edit,
     Workout
 }
+export enum RunningState {
+    Starting,
+    Started,
+    Completed,
+    NA
+}
 
 export enum ExerciseSetAction {
     Completed,

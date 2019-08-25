@@ -26,5 +26,5 @@ export const selectCurrentWorkoutSelectedDay = createSelector(
 export const SelectWorkoutDayState = createSelector(
   selectCurrentWorkout,
   selectCurrentWorkoutSelectedDay,
-  (workout: IWorkoutState, day: number) => workout.days.byId[day]
+  (workout: IWorkoutState, dayId: number) => workout.days.byId[dayId]
 );

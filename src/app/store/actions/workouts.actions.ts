@@ -1,11 +1,16 @@
 import { Action } from '@ngrx/store';
-import { DisplayMode } from 'src/app/models/enums';
+import { DisplayMode, RunningState } from 'src/app/models/enums';
+import { IWorkoutDayState } from '../state/workouts.state';
 
 export enum EWorkoutsActions {
     SetSelectedDay = '[Workouts] Set selected day',
     SetCurrentWorkoutId = '[Workouts] Set current workout id',
     DeleteWorkoutById = '[Workout] Delete workout by id',
-    SetWorkoutDayState = '[Workout] Set workout day state',
+    StartFirstExercise = '[Workouts] Start first exercise',
+    StartNextExercise = '[Workouts] Start next exercise',
+    ExerciseStarted = '[Workouts] Exercise has started',
+    ExerciseCompleted = '[Workouts] Exercise has completed',
+    ChangeDisplayMode = '[Workouts] Change Display Mode',
 }
 
 export interface ISetSelectedDayPayload {
@@ -28,19 +33,48 @@ export class DeleteWorkoutById implements Action {
     constructor (public payload: {workoutId?: number}) {}
 }
 
-export interface ISetWorkoutDayStatePayload {
-    workoutDayId: number;
-        runningExerciseSetIndex?: number;
-        displayMode: DisplayMode;
+export class StartFirstExercise implements Action {
+    readonly type = EWorkoutsActions.StartFirstExercise;
+    constructor (public payload: IWorkoutDayState) {
+        payload.runningExerciseSetIndex = 0;
+        payload.displayMode = DisplayMode.Workout;
+    }
 }
-export class SetWorkoutDayState implements Action {
-    readonly type = EWorkoutsActions.SetWorkoutDayState;
-    constructor (public payload: ISetWorkoutDayStatePayload) {}
+export class StartNextExercise implements Action {
+    readonly type = EWorkoutsActions.StartNextExercise;
+    constructor (public payload: IWorkoutDayState) {
+        payload.displayMode = DisplayMode.Workout;
+    }
+}
+export class ExerciseStarted implements Action {
+    readonly type = EWorkoutsActions.ExerciseStarted;
+    constructor (public payload: IWorkoutDayState) {
+        payload.runningState = RunningState.Started;
+        payload.displayMode = DisplayMode.Workout;
+    }
+}
+export class ExerciseCompleted implements Action {
+    readonly type = EWorkoutsActions.ExerciseCompleted;
+    constructor (public payload: IWorkoutDayState) {
+        payload.runningState = RunningState.Completed;
+        payload.displayMode = DisplayMode.Workout;
+    }
+}
+export class ChangeDisplayMode implements Action {
+    readonly type = EWorkoutsActions.ChangeDisplayMode;
+    constructor (public payload: IWorkoutDayState) {
+        payload.runningState = RunningState.NA;
+        payload.runningExerciseSetIndex = null;
+    }
 }
 
 export type WorkoutsActions =
     SetSelectedDay |
     SetCurrentWorkoutId |
     DeleteWorkoutById |
-    SetWorkoutDayState
+    StartFirstExercise |
+    StartNextExercise |
+    ExerciseStarted |
+    ExerciseCompleted |
+    ChangeDisplayMode
 ;

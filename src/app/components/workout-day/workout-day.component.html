@@ -1,6 +1,6 @@
 <div id="workout-day-comp">
   <ion-fab vertical="top" horizontal="start" #fabWorkout id="fabWorkout">
-    <ion-fab-button size="small" (click)="startWorkout()" color="warning">
+    <ion-fab-button size="small" (click)="startWorkoutToggler()" color="warning">
       <ion-icon name="play"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="end">
@@ -10,7 +10,7 @@
     </ion-fab-list>
   </ion-fab>
   <ion-fab vertical="bottom" horizontal="end" #fabEdit id="fabEdit">
-    <ion-fab-button size="small" (click)="editWorkout()" color="warning">
+    <ion-fab-button size="small" (click)="editWorkoutToggler()" color="warning">
       <ion-icon name="construct"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="start">
@@ -56,7 +56,6 @@
           [workoutDayId]=workoutDay.id
           [exerciseSetIndex]="i"
           [isDayInEditMode]="IsEditMode"
-          [inWorkoutDayPublisher]="workoutDayPublisher"
           (outEventEmitter)="handleExerciseSetActionEvent($event)"
           (click)="exerciseSetComponent.exerciseSetSelected()">
           </app-exercise-thumbnail>

@@ -1,16 +1,17 @@
-import { DisplayMode } from 'src/app/models/enums';
+import { DisplayMode, RunningState } from 'src/app/models/enums';
 
 export interface IWorkoutDayState {
-    id: number;
-    runningExerciseSetIndex: number;
+    workoutDayId: number;
+    runningExerciseSetIndex?: number;
     displayMode: DisplayMode;
+    runningState: RunningState;
 }
 export interface IWorkoutDays {
     byId: { [id: number]: IWorkoutDayState };
 }
 
 export interface IWorkoutState {
-    id: number;
+    workoutId: number;
     selectedDayId: number;
     days: IWorkoutDays;
 }

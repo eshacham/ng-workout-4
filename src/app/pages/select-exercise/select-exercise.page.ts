@@ -170,14 +170,14 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
     const newSets = this.getNewSets();
     newSets.forEach((set) => {
-      this.workout.days[this.lastSelectedWorkoutDay].exerciseSets.push(set);
+      this.workout.days.find(day => day.id === this.lastSelectedWorkoutDay).exerciseSets.push(set);
     });
     this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   getMaxIdForWorkoutSets(): number {
-    const maxSetId = Math.max(...this.workout.days[this.lastSelectedWorkoutDay].exerciseSets.map(e => e.id));
+    const maxSetId = Math.max(...this.workout.days.find(day => day.id === this.lastSelectedWorkoutDay).exerciseSets.map(e => e.id));
     return maxSetId;
   }
 
