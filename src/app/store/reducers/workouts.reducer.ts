@@ -49,8 +49,13 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
             };
         }
         case EWorkoutsActions.WorkoutDeleted: {
+            const workoutId2Delete = state.workoutId2Delete;
             return {
-                ...state,
+                byId: {
+                    ...state.byId,
+                    [workoutId2Delete]: undefined
+                },
+                currentWorkoutId: workoutId2Delete === state.currentWorkoutId ? undefined : state.currentWorkoutId,
                 workoutId2Delete: undefined
             };
         }

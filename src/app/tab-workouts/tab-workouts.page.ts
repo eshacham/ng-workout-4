@@ -7,7 +7,7 @@ import { DisplayMode } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
 import { IAppState } from '../store/state/app.state';
 import { LoadedDefaultWorkouts } from '../store/actions/defaults.actions';
-import { DeleteWorkoutById } from '../store/actions/workouts.actions';
+import { DeleteWorkoutById, WorkoutDeleted } from '../store/actions/workouts.actions';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SelectWorkoutId2Delete } from '../store/selectors/workouts.selectors';
@@ -36,7 +36,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     .subscribe(async id => {
       if (id) {
         await this.deleteWorkout(id);
-        this.store.dispatch(new DeleteWorkoutById({workoutId: undefined}));
+        this.store.dispatch(new WorkoutDeleted());
       }
     });
   }
