@@ -14,7 +14,9 @@ export enum EWorkoutsActions {
     StartNextExercise = '[Workouts] Start next exercise',
     ExerciseStarted = '[Workouts] Exercise has started',
     ExerciseCompleted = '[Workouts] Exercise has completed',
-    ChangeDisplayMode = '[Workouts] Change workout day display mode'
+    ChangeDisplayMode = '[Workouts] Change workout day display mode',
+    DeleteExerciseSet = '[Workouts] Delete exercise set',
+    ExerciseSetDeleted = '[Workouts] Eexercise set has been deleted'
 }
 
 export class SelectWorkout implements Action {
@@ -47,9 +49,18 @@ export class DeleteWorkoutDay implements Action {
     readonly type = EWorkoutsActions.DeleteWorkoutDay;
     constructor(public payload: { workoutDayId: number }) { }
 }
-
 export class WorkoutDayDeleted implements Action {
     readonly type = EWorkoutsActions.WorkoutDayDeleted;
+    constructor(public payload: { workoutDayId: number }) { }
+}
+export class DeleteExerciseSet implements Action {
+    readonly type = EWorkoutsActions.DeleteExerciseSet;
+    constructor(public payload: {
+        workoutDayId: number,
+        exerciseSetIndex: number }) { }
+}
+export class ExerciseSetDeleted implements Action {
+    readonly type = EWorkoutsActions.ExerciseSetDeleted;
     constructor(public payload: { workoutDayId: number }) { }
 }
 
@@ -100,5 +111,7 @@ export type WorkoutsActions =
     StartNextExercise |
     ExerciseStarted |
     ExerciseCompleted |
-    ChangeDisplayMode
+    ChangeDisplayMode |
+    DeleteExerciseSet |
+    ExerciseSetDeleted
     ;

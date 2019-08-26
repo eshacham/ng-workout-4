@@ -128,6 +128,52 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
                 workoutId2Delete: state.workoutId2Delete
             };
         }
+        case EWorkoutsActions.DeleteExerciseSet: {
+            const oldWorkout: IWorkoutState = state.byId[state.selectedWorkoutId];
+            return {
+                byId: {
+                    ...state.byId,
+                    [state.selectedWorkoutId]: {
+                        workoutId: state.selectedWorkoutId,
+                        selectedWorkoutDayId: oldWorkout ? oldWorkout.selectedWorkoutDayId : undefined,
+                        days: {
+                            byId: {
+                                ...oldWorkout.days.byId,
+                                [action.payload.workoutDayId]: {
+                                    ...oldWorkout.days.byId[action.payload.workoutDayId],
+                                    exerciseSetIndex2Delete: action.payload.exerciseSetIndex
+                                }
+                            }
+                        }
+                    }
+                },
+                selectedWorkoutId: state.selectedWorkoutId,
+                workoutId2Delete: state.workoutId2Delete
+            };
+        }
+        case EWorkoutsActions.ExerciseSetDeleted: {
+            const oldWorkout: IWorkoutState = state.byId[state.selectedWorkoutId];
+            return {
+                byId: {
+                    ...state.byId,
+                    [state.selectedWorkoutId]: {
+                        workoutId: state.selectedWorkoutId,
+                        selectedWorkoutDayId: oldWorkout ? oldWorkout.selectedWorkoutDayId : undefined,
+                        days: {
+                            byId: {
+                                ...oldWorkout.days.byId,
+                                [action.payload.workoutDayId]: {
+                                    ...oldWorkout.days.byId[action.payload.workoutDayId],
+                                    exerciseSetIndex2Delete: undefined
+                                }
+                            }
+                        }
+                    }
+                },
+                selectedWorkoutId: state.selectedWorkoutId,
+                workoutId2Delete: state.workoutId2Delete
+            };
+        }
         default: {
             return state;
         }

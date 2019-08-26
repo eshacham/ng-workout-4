@@ -17,7 +17,7 @@ export class WorkoutDay {
 
     static delete(days: WorkoutDay[], index: number) {
         const day = days[index];
-        if (day.exerciseSets.length) {
+        if (day && day.exerciseSets.length) {
             day.exerciseSets.forEach((set, idx) =>  {
                 ExerciseSet.delete(day.exerciseSets, idx);
             });

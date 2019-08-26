@@ -20,16 +20,26 @@ export const selectCurrentWorkout = createSelector(
 );
 export const selectCurrentWorkoutSelectedDay = createSelector(
   selectCurrentWorkout,
-  (workout: IWorkoutState) => workout.selectedWorkoutDayId
+  (workout: IWorkoutState) => workout ? workout.selectedWorkoutDayId : null
 );
 
 export const SelectWorkoutDayState = createSelector(
   selectCurrentWorkout,
   selectCurrentWorkoutSelectedDay,
-  (workout: IWorkoutState, dayId: number) => workout.days.byId[dayId]
+  (workout: IWorkoutState, dayId: number) => workout ? workout.days.byId[dayId] : null
 );
 
 export const selectWorkoutDayId2Delete = createSelector(
   selectCurrentWorkout,
   (workout: IWorkoutState) => workout ? workout.deleteSelectedWorkoutDay : null
+);
+
+export const SelectExerciseSetIndex2Delete = createSelector(
+  selectCurrentWorkout,
+  selectCurrentWorkoutSelectedDay,
+  (workout: IWorkoutState, dayId: number) => ({
+    workoutDayId: dayId,
+    exerciseSetIndex2Delete: workout ? workout.days.byId[dayId] ?
+      workout.days.byId[dayId].exerciseSetIndex2Delete : null : null
+  })
 );

@@ -1,20 +1,19 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser/';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser/';
 import { PopoverController } from '@ionic/angular';
 import { Exercise } from 'src/app/models/Exercise';
-import { ExerciseSetActionEvent } from 'src/app/models/ExerciseActionEvent';
-import { DisplayMode, WeightUnit, ExerciseSetAction, RunningState } from 'src/app/models/enums';
+import { DisplayMode, WeightUnit, RunningState } from 'src/app/models/enums';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover/exercise-thumbnail-popover.component';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 import { IWorkoutDayState } from 'src/app/store/state/workouts.state';
-import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { SelectWorkoutDayState } from 'src/app/store/selectors/workouts.selectors';
-import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workouts.actions';
+import { ExerciseStarted, ExerciseCompleted, DeleteExerciseSet } from 'src/app/store/actions/workouts.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -45,7 +44,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     @Input() exerciseSet: ExerciseSet;
     @Input() exerciseSetIndex: number;
     @Input() isDayInEditMode: boolean;
-    @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
     get activeExercise(): Exercise {
         return this.exerciseSet.exercises[this.activeExerciseInSetIndex];
@@ -122,10 +120,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                     this.handleWorkoutDayStateChange(state);
                 }
             });
-        // TODO new login with redux state
-        // if (this.isDayInEditMode) {
-        //     this.DisplayMode = DisplayMode.Edit;
-        // }
         this.initReps();
     }
 
@@ -201,7 +195,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     deleteExerciseSet() {
-        this.emitExerciseSetActionEvent(ExerciseSetAction.Delete);
+        this.store.dispatch(new DeleteExerciseSet({
+            workoutDayId: this.workoutDayId, exerciseSetIndex: this.exerciseSetIndex}));
     }
 
     deleteExercise(index: number) {
@@ -218,14 +213,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             displayMode: DisplayMode.Workout,
             runningState: RunningState.Completed
           }));
-    }
-
-    emitExerciseSetActionEvent(action: ExerciseSetAction) {
-        this.outEventEmitter.emit(new ExerciseSetActionEvent(
-            action,
-            this.exerciseSet,
-            this.exerciseSetIndex,
-            this.workoutDayId));
     }
 
     isTimedRepRemaining(repIndex: number): boolean {

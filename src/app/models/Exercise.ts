@@ -16,21 +16,18 @@ export class Exercise {
     public restBetweenReps: number;
     public restAfterExercise: number;
 
-    // get muscles() {
-    //     return this.media.muscles;
-    // }
-
     constructor(options: {
-         name: string,
-         media: ExerciseMedia,
-         theGrip?: Grip,
-         repSpeed: RepetitionSpeed,
-         typeOfWeight?: WeightType,
-         isFavorite: Boolean,
-         reps: Rep[],
-         restBetweenReps: number,
-         restAfterExercise: number}
-        ) {
+        name: string,
+        media: ExerciseMedia,
+        theGrip?: Grip,
+        repSpeed: RepetitionSpeed,
+        typeOfWeight?: WeightType,
+        isFavorite: Boolean,
+        reps: Rep[],
+        restBetweenReps: number,
+        restAfterExercise: number
+    }
+    ) {
         this.name = options.name;
         this.media = options.media;
         this.theGrip = options.theGrip || new Grip();
@@ -44,7 +41,9 @@ export class Exercise {
     }
 
     static delete(exercises: Exercise[], index: number) {
-        exercises[index].media.mediaUsageCounter--;
-        exercises.splice(index, 1);
+        if (exercises[index] && exercises[index].media) {
+            exercises[index].media.mediaUsageCounter--;
+            exercises.splice(index, 1);
+        }
     }
 }

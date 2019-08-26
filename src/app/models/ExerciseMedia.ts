@@ -31,7 +31,6 @@ export class ExerciseMedia {
       isDefault: true,
       muscles: muscles
     });
-    // console.log('constructed exercise media as', image);
     return image;
   }
 }

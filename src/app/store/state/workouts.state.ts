@@ -5,6 +5,7 @@ export interface IWorkoutDayState {
     runningExerciseSetIndex?: number;
     displayMode: DisplayMode;
     runningState: RunningState;
+    exerciseSetIndex2Delete?: number;
 }
 export interface IWorkoutDays {
     byId: { [id: number]: IWorkoutDayState };
