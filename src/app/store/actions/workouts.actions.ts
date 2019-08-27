@@ -10,6 +10,8 @@ export enum EWorkoutsActions {
     SelectWorkoutDay = '[Workouts] Select workout day',
     DeleteWorkoutDay = '[Workouts] Delete workout day',
     WorkoutDayDeleted = '[Workouts] Workout day has been deleted',
+    AddWorkoutDay = '[Workouts] Add workout day',
+    WorkoutDayAdded = '[Workouts] Workout day has been added',
     StartFirstExercise = '[Workouts] Start first exercise',
     StartNextExercise = '[Workouts] Start next exercise',
     ExerciseStarted = '[Workouts] Exercise has started',
@@ -49,10 +51,21 @@ export class DeleteWorkoutDay implements Action {
     readonly type = EWorkoutsActions.DeleteWorkoutDay;
     constructor(public payload: { workoutDayId: number }) { }
 }
+
 export class WorkoutDayDeleted implements Action {
     readonly type = EWorkoutsActions.WorkoutDayDeleted;
     constructor(public payload: { workoutDayId: number }) { }
 }
+export class AddWorkoutDay implements Action {
+    readonly type = EWorkoutsActions.AddWorkoutDay;
+    constructor(public payload: { workoutDayId: number }) { }
+}
+
+export class WorkoutDayAdded implements Action {
+    readonly type = EWorkoutsActions.WorkoutDayAdded;
+    constructor() { }
+}
+
 export class DeleteExerciseSet implements Action {
     readonly type = EWorkoutsActions.DeleteExerciseSet;
     constructor(public payload: {
@@ -106,6 +119,8 @@ export type WorkoutsActions =
     WorkoutDeleted |
     SelectWorkoutDay |
     DeleteWorkoutDay |
+    WorkoutDayAdded |
+    AddWorkoutDay |
     WorkoutDayDeleted |
     StartFirstExercise |
     StartNextExercise |

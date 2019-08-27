@@ -48,6 +48,18 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
                 selectedWorkoutId: workoutId2Delete === state.selectedWorkoutId ? undefined : state.selectedWorkoutId,
             };
         }
+        case EWorkoutsActions.AddWorkoutDay: {
+            return {
+                ...state,
+                workoutDayId2AddFrom: action.payload.workoutDayId
+            };
+        }
+        case EWorkoutsActions.WorkoutDayAdded: {
+            return {
+                ...state,
+                workoutDayId2AddFrom: undefined
+            };
+        }
         case EWorkoutsActions.SelectWorkoutDay: {
             const oldWorkout: IWorkoutState = state.byId[action.payload.workoutId];
             return {

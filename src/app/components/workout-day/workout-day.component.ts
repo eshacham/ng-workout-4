@@ -15,7 +15,8 @@ import {
   ChangeDisplayMode,
   StartNextExercise,
   DeleteWorkoutDay,
-  ExerciseSetDeleted } from 'src/app/store/actions/workouts.actions';
+  ExerciseSetDeleted,
+  AddWorkoutDay} from 'src/app/store/actions/workouts.actions';
 import { SelectWorkoutDayState, SelectExerciseSetIndex2Delete } from 'src/app/store/selectors/workouts.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { IWorkoutDayState } from 'src/app/store/state/workouts.state';
@@ -201,7 +202,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   addWorkoutDay(event) {
-    this.emitExerciseSetActionEvent(ExerciseSetAction.AddDay);
+    this.store.dispatch(new AddWorkoutDay({workoutDayId: this.workoutDay.id}));
     event.stopPropagation();
   }
 

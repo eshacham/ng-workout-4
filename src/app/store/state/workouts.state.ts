@@ -22,6 +22,7 @@ export interface IWorkoutsState {
     byId: { [id: number]: IWorkoutState };
     selectedWorkoutId: number;
     workoutId2Delete?: number;
+    workoutDayId2AddFrom?: number;
 }
 
 export const initialWorkoutsState: IWorkoutsState = {

@@ -12,6 +12,10 @@ export const SelectWorkoutId2Delete = createSelector(
   workoutsState,
   (workouts: IWorkoutsState) => workouts.workoutId2Delete
 );
+export const SelectWorkoutDayId2AddFrom = createSelector(
+  workoutsState,
+  (workouts: IWorkoutsState) => workouts.workoutDayId2AddFrom
+);
 
 export const selectCurrentWorkout = createSelector(
   workoutsState,
