@@ -6,8 +6,6 @@ import { IonSlides as Slides, NavController } from '@ionic/angular';
 import { IAppState } from 'src/app/store/state/app.state';
 import { Workout } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
-import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
-import { ExerciseSetAction } from '../../models/enums';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import {
   SelectWorkout,
@@ -173,17 +171,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   async saveChanges() {
     await this.dataService.saveWorkouts();
-  }
-
-  async handleWorkoutDayActionEvent(event: ExerciseSetActionEvent) {
-    const exerciseSetAction: ExerciseSetAction = event.action;
-
-    switch (exerciseSetAction) {
-      case ExerciseSetAction.DeleteDay:
-        console.log('workout-days: receieved delete day event: ', JSON.stringify(event));
-        await this.deleteWorkoutDay(this.activeDayIndex);
-        break;
-    }
   }
 
   moveWorkoutDay(direction: Direction) {

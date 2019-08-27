@@ -1,13 +1,12 @@
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { Component, Input, Output, EventEmitter, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonFab } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import { ExerciseSet } from '../../models/ExerciseSet';
-import { DisplayMode, ExerciseSetAction, RunningState } from '../../models/enums';
-import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
+import { DisplayMode, RunningState } from '../../models/enums';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { IAppState } from 'src/app/store/state/app.state';
 import {
@@ -44,7 +43,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   @Input() isFirstDayActive: boolean;
   @Input() isOneDayOnly: boolean;
   @Input() isNewDayAdded: boolean;
-  @Output() outEventEmitter = new EventEmitter<ExerciseSetActionEvent>();
 
   constructor(
     private router: Router,
@@ -216,15 +214,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   async saveChanges() {
     await this.dataService.saveWorkouts();
     // this.toastr.info('Saved!');
-  }
-
-
-  emitExerciseSetActionEvent(action: ExerciseSetAction) {
-    this.outEventEmitter.emit(new ExerciseSetActionEvent(
-      action,
-      null,
-      null,
-      this.workoutDay.id));
   }
 
   reorderItems(event: CustomEvent<ItemReorderEventDetail>) {
