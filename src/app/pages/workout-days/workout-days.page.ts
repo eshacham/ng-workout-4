@@ -9,8 +9,19 @@ import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { ExerciseSetActionEvent } from '../../models/ExerciseActionEvent';
 import { ExerciseSetAction } from '../../models/enums';
 import { WorkoutDay } from '../../models/WorkoutDay';
-import { SelectWorkout, SelectWorkoutDay, WorkoutDayDeleted, UnselectWorkout, WorkoutDayAdded } from 'src/app/store/actions/workouts.actions';
-import { selectCurrentWorkoutSelectedDay, selectWorkoutDayId2Delete, SelectWorkoutDayId2AddFrom } from 'src/app/store/selectors/workouts.selectors';
+import {
+  SelectWorkout,
+  SelectWorkoutDay,
+  WorkoutDayDeleted,
+  UnselectWorkout,
+  WorkoutDayAdded,
+  Direction,
+  WorkoutDayMoved } from 'src/app/store/actions/workouts.actions';
+import {
+  selectCurrentWorkoutSelectedDay,
+  selectWorkoutDayId2Delete,
+  SelectWorkoutDayId2AddFrom,
+  SelectworkoutDayMoveDirection } from 'src/app/store/selectors/workouts.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
 
@@ -30,6 +41,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   private ngUnsubscribeForWorkoutSelectedDay: Subject<void> = new Subject<void>();
   private ngUnsubscribeForSelectWorkoutDayId2Delete: Subject<void> = new Subject<void>();
   private ngUnsubscribeForSelectWorkoutId2AddDay: Subject<void> = new Subject<void>();
+  private ngUnsubscribeForSelectWorkoutDayMoveDirection: Subject<void> = new Subject<void>();
 
   @ViewChild('slider') slides: Slides;
 
@@ -87,6 +99,14 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           await this.addWorkoutDay(workoutDayId);
         }
       });
+      this.store.select(SelectworkoutDayMoveDirection)
+      .pipe(takeUntil(this.ngUnsubscribeForSelectWorkoutDayMoveDirection))
+      .subscribe(async (direction) => {
+        console.log('workout days redux - SelectworkoutDayMoveDirection:', direction);
+        if (direction) {
+          await this.moveWorkoutDay(direction);
+        }
+      });
   }
 
   ionViewWillEnter() {
@@ -124,6 +144,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     this.ngUnsubscribeForWorkoutSelectedDay.complete();
     this.ngUnsubscribeForSelectWorkoutId2AddDay.next();
     this.ngUnsubscribeForSelectWorkoutId2AddDay.complete();
+    this.ngUnsubscribeForSelectWorkoutDayMoveDirection.next();
+    this.ngUnsubscribeForSelectWorkoutDayMoveDirection.complete();
     this.store.dispatch(new UnselectWorkout());
   }
 
@@ -161,15 +183,16 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         console.log('workout-days: receieved delete day event: ', JSON.stringify(event));
         await this.deleteWorkoutDay(this.activeDayIndex);
         break;
-      case ExerciseSetAction.MoveDayForward:
-        console.log('workout-days: receieved move day forward event: ', JSON.stringify(event));
-        await this.moveForwardWorkoutDay(this.activeDayIndex);
-        break;
-      case ExerciseSetAction.MoveDayBack:
-        console.log('workout-days: receieved move day back event: ', JSON.stringify(event));
-        await this.moveBackWorkoutDay(this.activeDayIndex);
-        break;
     }
+  }
+
+  moveWorkoutDay(direction: Direction) {
+    if (direction === Direction.Backword) {
+      this.moveBackWorkoutDay(this.activeDayIndex);
+    } else {
+      this.moveForwardWorkoutDay(this.activeDayIndex);
+    }
+    this.store.dispatch(new WorkoutDayMoved());
   }
 
   private async moveForwardWorkoutDay(index: number) {

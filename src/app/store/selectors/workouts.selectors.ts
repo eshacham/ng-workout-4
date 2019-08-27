@@ -16,6 +16,10 @@ export const SelectWorkoutDayId2AddFrom = createSelector(
   workoutsState,
   (workouts: IWorkoutsState) => workouts.workoutDayId2AddFrom
 );
+export const SelectworkoutDayMoveDirection = createSelector(
+  workoutsState,
+  (workouts: IWorkoutsState) => workouts.workoutDayMoveState
+);
 
 export const selectCurrentWorkout = createSelector(
   workoutsState,

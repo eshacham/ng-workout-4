@@ -2,6 +2,11 @@ import { Action } from '@ngrx/store';
 import { DisplayMode, RunningState } from 'src/app/models/enums';
 import { IWorkoutDayState } from '../state/workouts.state';
 
+export enum Direction {
+    Forward = 1,
+    Backword = 2
+}
+
 export enum EWorkoutsActions {
     SelectWorkout = '[Workouts] Select workout',
     UnselectWorkout = '[Workouts] Unselect workout',
@@ -12,6 +17,8 @@ export enum EWorkoutsActions {
     WorkoutDayDeleted = '[Workouts] Workout day has been deleted',
     AddWorkoutDay = '[Workouts] Add workout day',
     WorkoutDayAdded = '[Workouts] Workout day has been added',
+    MoveWorkoutDay = '[Workouts] Move workout day',
+    WorkoutDayMoved = '[Workouts] Workout day has been moved',
     StartFirstExercise = '[Workouts] Start first exercise',
     StartNextExercise = '[Workouts] Start next exercise',
     ExerciseStarted = '[Workouts] Exercise has started',
@@ -37,6 +44,15 @@ export class DeleteWorkout implements Action {
 
 export class WorkoutDeleted implements Action {
     readonly type = EWorkoutsActions.WorkoutDeleted;
+    constructor() { }
+}
+export class MoveWorkoutDay implements Action {
+    readonly type = EWorkoutsActions.MoveWorkoutDay;
+    constructor(public payload: { direction: Direction }) {}
+}
+
+export class WorkoutDayMoved implements Action {
+    readonly type = EWorkoutsActions.WorkoutDayMoved;
     constructor() { }
 }
 
@@ -123,6 +139,8 @@ export type WorkoutsActions =
     AddWorkoutDay |
     WorkoutDayDeleted |
     StartFirstExercise |
+    MoveWorkoutDay |
+    WorkoutDayMoved |
     StartNextExercise |
     ExerciseStarted |
     ExerciseCompleted |

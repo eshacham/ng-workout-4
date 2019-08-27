@@ -1,4 +1,5 @@
 import { DisplayMode, RunningState } from 'src/app/models/enums';
+import { Direction } from '../actions/workouts.actions';
 
 export interface IWorkoutDayState {
     workoutDayId: number;
@@ -23,6 +24,7 @@ export interface IWorkoutsState {
     selectedWorkoutId: number;
     workoutId2Delete?: number;
     workoutDayId2AddFrom?: number;
+    workoutDayMoveState?: Direction;
 }
 
 export const initialWorkoutsState: IWorkoutsState = {

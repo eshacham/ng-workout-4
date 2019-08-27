@@ -60,6 +60,18 @@ export const workoutsReducers = (state = initialWorkoutsState, action: WorkoutsA
                 workoutDayId2AddFrom: undefined
             };
         }
+        case EWorkoutsActions.MoveWorkoutDay: {
+            return {
+                ...state,
+                workoutDayMoveState: action.payload.direction
+            };
+        }
+        case EWorkoutsActions.WorkoutDayMoved: {
+            return {
+                ...state,
+                workoutDayMoveState: undefined
+            };
+        }
         case EWorkoutsActions.SelectWorkoutDay: {
             const oldWorkout: IWorkoutState = state.byId[action.payload.workoutId];
             return {
