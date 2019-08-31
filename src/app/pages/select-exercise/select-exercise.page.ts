@@ -120,10 +120,13 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       });
     this.store.select(selectCurrentWorkoutSelectedDayId)
       .pipe(takeUntil(this.ngUnsubscribeForWorkoutDaySelected))
-      .subscribe(async (workoutDayId) => {
-        console.log('select-exercise redux - getCurrentWorkoutLastSelectedDay:', workoutDayId);
-        this.lastSelectedWorkoutDay = workoutDayId;
-        console.log('last index on view loaded', this.lastSelectedWorkoutDay);
+      .subscribe(async (selectedWorkoutDayState) => {
+        if (this.workoutId === selectedWorkoutDayState.workoutId) {
+          const workoutDayId = selectedWorkoutDayState.workoutId;
+          console.log('select-exercise redux - getCurrentWorkoutLastSelectedDay:', workoutDayId);
+          this.lastSelectedWorkoutDay = workoutDayId;
+          console.log('last index on view loaded', this.lastSelectedWorkoutDay);
+        }
       });
   }
 

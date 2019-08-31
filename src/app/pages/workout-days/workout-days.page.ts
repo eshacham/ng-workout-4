@@ -9,13 +9,14 @@ import { Workout } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import { SelectWorkout, UnselectWorkout } from 'src/app/store/actions/workouts.actions';
-  import {
-    SelectWorkoutDay,
-    WorkoutDayDeleted,
-    WorkoutDayAdded,
-    Direction,
-    WorkoutDayMoved } from 'src/app/store/actions/workoutDays.actions';
-import {selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
+import {
+  SelectWorkoutDay,
+  WorkoutDayDeleted,
+  WorkoutDayAdded,
+  Direction,
+  WorkoutDayMoved
+} from 'src/app/store/actions/workoutDays.actions';
+import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 import { selectWorkoutDayId2Delete } from 'src/app/store/selectors/workoutDays.selectors';
 import { selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
 import { SelectWorkoutDayId2AddFrom, SelectworkoutDayMoveDirection } from 'src/app/store/selectors/workoutDays.selectors';
@@ -29,9 +30,9 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   workout: Workout;
   workoutId: number;
-  activeDayIndex: number;
   isNewDayAdded: boolean;
   subs: Subscription;
+  activeDayIndex = 0;
   private ngUnsubscribeForWorkoutReset: Subject<void> = new Subject<void>();
   private ngUnsubscribeForWorkoutSelectedDay: Subject<void> = new Subject<void>();
   private ngUnsubscribeForSelectWorkoutDayId2Delete: Subject<void> = new Subject<void>();
@@ -50,20 +51,15 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     noSwipingSelector: 'ion-range, ion-reorder, ion-fab, ion-button'
   };
 
-
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private dataService: DataServiceProvider,
     private store: Store<IAppState>) {
     this.isNewDayAdded = false;
-    this.activeDayIndex = 0;
     this.subs = this.route.params.subscribe(params => {
       this.workoutId = +params.id;
-      this.store.dispatch(new SelectWorkout(
-        {
-          workoutId: this.workoutId,
-        }));
+      this.store.dispatch(new SelectWorkout({ workoutId: this.workoutId }));
     });
   }
 
@@ -78,7 +74,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           await this.navCtrl.navigateBack('/tabs/tab-workouts');
         }
       });
-      this.store.select(selectWorkoutDayId2Delete)
+    this.store.select(selectWorkoutDayId2Delete)
       .pipe(takeUntil(this.ngUnsubscribeForSelectWorkoutDayId2Delete))
       .subscribe(async (dayId) => {
         console.log('workout days redux - selectWorkoutDayId2Delete:', dayId);
@@ -86,7 +82,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           this.deleteWorkoutDay(dayId);
         }
       });
-      this.store.select(SelectWorkoutDayId2AddFrom)
+    this.store.select(SelectWorkoutDayId2AddFrom)
       .pipe(takeUntil(this.ngUnsubscribeForSelectWorkoutId2AddDay))
       .subscribe(async (dayId) => {
         console.log('workout days redux - SelectWorkoutId2AddDay:', dayId);
@@ -94,7 +90,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           await this.addWorkoutDay(dayId);
         }
       });
-      this.store.select(SelectworkoutDayMoveDirection)
+    this.store.select(SelectworkoutDayMoveDirection)
       .pipe(takeUntil(this.ngUnsubscribeForSelectWorkoutDayMoveDirection))
       .subscribe(async (direction) => {
         console.log('workout days redux - SelectworkoutDayMoveDirection:', direction);
@@ -105,30 +101,20 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    if (this.slides && this.workout) {
-      this.store.select(selectCurrentWorkoutSelectedDayId)
-        .pipe(takeUntil(this.ngUnsubscribeForWorkoutSelectedDay))
-        .subscribe(async (dayId) => {
-          if (dayId) {
-            console.log('workout days - redux - selectCurrentWorkoutSelectedDay:', dayId);
-            this.activeDayIndex = this.workout.days.findIndex(day => day.id === dayId);
-            const activeSlideIndex = await this.slides.getActiveIndex();
-            if (activeSlideIndex !== this.activeDayIndex) {
-              console.log('sliding to last selected day index:', this.activeDayIndex);
-              await this.slides.slideTo(this.activeDayIndex, 0);
-            }
-          } else {
-            if (this.workout) {
-              console.log('workout has no selected day. new selecting day index:', this.activeDayIndex);
-              this.store.dispatch(new SelectWorkoutDay(
-              {
-                workoutId: this.workout.id,
-                dayId: this.workout.days[this.activeDayIndex].id
-              }));
-            }
+    this.store.select(selectCurrentWorkoutSelectedDayId)
+      .pipe(takeUntil(this.ngUnsubscribeForWorkoutSelectedDay))
+      .subscribe(async (selectedWorkoutDayState) => {
+        if (this.slides && this.workout && selectedWorkoutDayState &&
+          selectedWorkoutDayState.workoutId === this.workoutId) {
+          const dayId = selectedWorkoutDayState.dayId;
+          console.log('workout days - redux - selectCurrentWorkoutSelectedDay:', dayId);
+          const lastWorkoutDayIndex = this.workout.days.findIndex(day => day.id === dayId);
+          if (lastWorkoutDayIndex !== this.activeDayIndex) {
+            console.log('sliding to last selected day index:', lastWorkoutDayIndex);
+            await this.slides.slideTo(lastWorkoutDayIndex, 0);
           }
-        });
-    }
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -148,8 +134,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   get isLastDayActive(): boolean {
-    return this.workout &&
-      this.activeDayIndex === this.workout.days.length - 1;
+    return this.workout && this.activeDayIndex === this.workout.days.length - 1;
   }
   get isFirstDayActive(): boolean {
     return this.activeDayIndex === 0;
@@ -161,6 +146,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   async slideChanged() {
     if (this.slides && this.workout) {
       this.activeDayIndex = await this.slides.getActiveIndex();
+      console.log('workout-days slideChanged to index', this.activeDayIndex);
       this.store.dispatch(new SelectWorkoutDay(
         {
           workoutId: this.workout.id,
@@ -218,28 +204,24 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     await this.saveChanges();
     console.log('sliding forward');
     await this.slides.slideNext(0);
-    this.store.dispatch(new WorkoutDayAdded({workoutDayId: newDay.id}));
+    this.store.dispatch(new WorkoutDayAdded({ workoutDayId: newDay.id }));
   }
 
   private async deleteWorkoutDay(dayId: number) {
     if (this.workout.days.length > 1) {
       const index = this.workout.days.findIndex(day => day.id === dayId);
       console.log('splicing (delete) at ', index);
-      if (index > 0) {
-        console.log('sliding back');
-        await this.slides.slideTo(index - 1, 0, true);
-      }
+      const oldDayId = this.workout.days[index].id;
       await this.actuallyDeleteWorkoutDay(index);
-      this.store.dispatch(new WorkoutDayDeleted());
-      if (index <= 0) {
-        // slide to the previous workout day
-        this.store.dispatch(new SelectWorkoutDay(
-          {
-            workoutId: this.workout.id,
-            dayId: this.workout.days[this.activeDayIndex].id
-          }));
-      }
       await this.slides.update();
+      this.activeDayIndex = await this.slides.getActiveIndex();
+      const nextWorkoutDayId = this.workout.days[this.activeDayIndex].id;
+      console.log(`deleted workout day ${oldDayId}. next day is ${nextWorkoutDayId}`);
+      this.store.dispatch(new SelectWorkoutDay(
+        {
+          workoutId: this.workout.id,
+          dayId: nextWorkoutDayId
+        }));
     }
   }
 
@@ -247,6 +229,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     WorkoutDay.delete(this.workout.days, index);
     await this.saveChanges();
     console.log(`deleted day index ${index} out of ${this.workout.days.length + 1} days`);
+    this.store.dispatch(new WorkoutDayDeleted());
   }
 
   getWorkoutDayIndexById(id: number) {
