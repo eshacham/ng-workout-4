@@ -30,10 +30,10 @@ interface SelectedExerciseMedia {
 export class SelectExercisePage implements OnInit, OnDestroy {
 
   workout: Workout;
-  workoutId: number;
+  workoutId?: number;
   isSet = false;
   haveWorkoutsBeenReset = false;
-  lastSelectedWorkoutDay = 0;
+  lastSelectedWorkoutDayId?: number;
   subs: Subscription;
   private ngUnsubscribeForImageReset: Subject<void> = new Subject<void>();
   private ngUnsubscribeForWorkoutReset: Subject<void> = new Subject<void>();
@@ -121,11 +121,10 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.store.select(selectCurrentWorkoutSelectedDayId)
       .pipe(takeUntil(this.ngUnsubscribeForWorkoutDaySelected))
       .subscribe(async (selectedWorkoutDayState) => {
-        if (this.workoutId === selectedWorkoutDayState.workoutId) {
+        if (selectedWorkoutDayState && this.workoutId === selectedWorkoutDayState.workoutId) {
           const workoutDayId = selectedWorkoutDayState.workoutId;
+          this.lastSelectedWorkoutDayId = workoutDayId;
           console.log('select-exercise redux - getCurrentWorkoutLastSelectedDay:', workoutDayId);
-          this.lastSelectedWorkoutDay = workoutDayId;
-          console.log('last index on view loaded', this.lastSelectedWorkoutDay);
         }
       });
   }
@@ -173,14 +172,19 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
     const newSets = this.getNewSets();
     newSets.forEach((set) => {
-      this.workout.days.find(day => day.id === this.lastSelectedWorkoutDay).exerciseSets.push(set);
+      this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId).exerciseSets.push(set);
     });
     this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   getMaxIdForWorkoutSets(): number {
-    const maxSetId = Math.max(...this.workout.days.find(day => day.id === this.lastSelectedWorkoutDay).exerciseSets.map(e => e.id));
+    const lastSelectedWorkoutDay = this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId);
+    if (!lastSelectedWorkoutDay) {
+      throw Error('select-exercise: cant find lastSelectedWorkoutDay');
+    }
+    const allids: number[] = lastSelectedWorkoutDay.exerciseSets.map(e => e.id);
+    const maxSetId = Math.max(...allids);
     return maxSetId;
   }
 

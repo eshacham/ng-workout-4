@@ -115,6 +115,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           }
         }
       });
+      this.slideChanged();
   }
 
   ngOnDestroy() {
