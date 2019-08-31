@@ -17,10 +17,10 @@ import {
   ExerciseSetDeleted,
   AddWorkoutDay,
   MoveWorkoutDay,
-  Direction} from 'src/app/store/actions/workouts.actions';
-import { SelectWorkoutDayState, SelectExerciseSetIndex2Delete } from 'src/app/store/selectors/workouts.selectors';
+  Direction} from 'src/app/store/actions/workoutDays.actions';
+import { SelectWorkoutDayState, SelectExerciseSetIndex2Delete } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil } from 'rxjs/operators';
-import { IWorkoutDayState } from 'src/app/store/state/workouts.state';
+import { IWorkoutDayState } from 'src/app/store/state/workoutDays.state';
 
 @Component({
   selector: 'app-workout-day',
@@ -83,10 +83,9 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
       });
     this.store.select(SelectExerciseSetIndex2Delete)
       .pipe(takeUntil(this.ngUnsubscribeForExerciseSetDeletion))
-      .subscribe(state => {
-        if (state.workoutDayId === this.workoutDay.id &&
-          (state.exerciseSetIndex2Delete || state.exerciseSetIndex2Delete === 0)) {
-          this.deleteExerciseSet(state.exerciseSetIndex2Delete);
+      .subscribe(index => {
+        if (index || index === 0) {
+          this.deleteExerciseSet(index);
         }
       });
   }
@@ -207,7 +206,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkoutDay(event) {
-    this.store.dispatch(new DeleteWorkoutDay({ workoutDayId: this.workoutDay.id }));
+    this.store.dispatch(new DeleteWorkoutDay({workoutDayId: this.workoutDay.id}));
     event.stopPropagation();
   }
 

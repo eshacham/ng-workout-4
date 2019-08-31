@@ -15,7 +15,7 @@ import { LoadedDefaultImages } from '../../store/actions/defaults.actions';
 import { takeUntil } from 'rxjs/operators';
 import { selectHasDefaultImagesBeenReset, selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
 import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
-import { selectCurrentWorkoutSelectedDay } from 'src/app/store/selectors/workouts.selectors';
+import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -118,7 +118,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
         console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
         this.filteredImages = this.filterImagesByMuscles(filter);
       });
-    this.store.select(selectCurrentWorkoutSelectedDay)
+    this.store.select(selectCurrentWorkoutSelectedDayId)
       .pipe(takeUntil(this.ngUnsubscribeForWorkoutDaySelected))
       .subscribe(async (workoutDayId) => {
         console.log('select-exercise redux - getCurrentWorkoutLastSelectedDay:', workoutDayId);

@@ -1,34 +1,19 @@
-import { DisplayMode, RunningState } from 'src/app/models/enums';
-import { Direction } from '../actions/workouts.actions';
-
-export interface IWorkoutDayState {
-    workoutDayId: number;
-    runningExerciseSetIndex?: number;
-    displayMode: DisplayMode;
-    runningState: RunningState;
-    exerciseSetIndex2Delete?: number;
-}
-export interface IWorkoutDays {
-    byId: { [id: number]: IWorkoutDayState };
-}
-
 export interface IWorkoutState {
     workoutId: number;
     selectedWorkoutDayId: number;
-    deleteSelectedWorkoutDay?: number;
-    days: IWorkoutDays;
+    // daysIds: number[];
 }
 
 export interface IWorkoutsState {
-    byId: { [id: number]: IWorkoutState };
     selectedWorkoutId: number;
     workoutId2Delete?: number;
-    workoutDayId2AddFrom?: number;
-    workoutDayMoveState?: Direction;
+    // allIds: number [];
+    byId: { [id: number]: IWorkoutState };
 }
 
 export const initialWorkoutsState: IWorkoutsState = {
-    byId: {},
     selectedWorkoutId: undefined,
     workoutId2Delete: undefined,
+    // allIds: [],
+    byId: {},
 };

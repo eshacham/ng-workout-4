@@ -10,10 +10,10 @@ import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover/exercise-thumbnail-popover.component';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
-import { IWorkoutDayState } from 'src/app/store/state/workouts.state';
+import { IWorkoutDayState } from 'src/app/store/state/workoutDays.state';
 import { IAppState } from 'src/app/store/state/app.state';
-import { SelectWorkoutDayState } from 'src/app/store/selectors/workouts.selectors';
-import { ExerciseStarted, ExerciseCompleted, DeleteExerciseSet } from 'src/app/store/actions/workouts.actions';
+import { SelectWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
+import { ExerciseStarted, ExerciseCompleted, DeleteExerciseSet } from 'src/app/store/actions/workoutDays.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
