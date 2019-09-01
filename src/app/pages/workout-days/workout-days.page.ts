@@ -20,6 +20,7 @@ import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/worko
 import { selectWorkoutDayId2Delete } from 'src/app/store/selectors/workoutDays.selectors';
 import { selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
 import { SelectWorkoutDayId2AddFrom, SelectworkoutDayMoveDirection } from 'src/app/store/selectors/workoutDays.selectors';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-workout-days',
@@ -29,7 +30,7 @@ import { SelectWorkoutDayId2AddFrom, SelectworkoutDayMoveDirection } from 'src/a
 export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   workout: Workout;
-  workoutId: number;
+  workoutId: Guid;
   isNewDayAdded: boolean;
   subs: Subscription;
   activeDayIndex = 0;
@@ -58,8 +59,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     private store: Store<IAppState>) {
     this.isNewDayAdded = false;
     this.subs = this.route.params.subscribe(params => {
-      this.workoutId = +params.id;
-      this.store.dispatch(new SelectWorkout({ workoutId: this.workoutId }));
+      this.workoutId = Guid.parse(params.id);
+      this.store.dispatch(new SelectWorkout({ workoutId: this.workoutId.toString() }));
     });
   }
 
@@ -79,7 +80,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       .subscribe(async (dayId) => {
         console.log('workout days redux - selectWorkoutDayId2Delete:', dayId);
         if (dayId) {
-          this.deleteWorkoutDay(dayId);
+          this.deleteWorkoutDay(Guid.parse(dayId));
         }
       });
     this.store.select(SelectWorkoutDayId2AddFrom)
@@ -87,7 +88,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       .subscribe(async (dayId) => {
         console.log('workout days redux - SelectWorkoutId2AddDay:', dayId);
         if (dayId) {
-          await this.addWorkoutDay(dayId);
+          await this.addWorkoutDay(Guid.parse(dayId));
         }
       });
     this.store.select(SelectworkoutDayMoveDirection)
@@ -104,11 +105,13 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     this.store.select(selectCurrentWorkoutSelectedDayId)
       .pipe(takeUntil(this.ngUnsubscribeForWorkoutSelectedDay))
       .subscribe(async (selectedWorkoutDayState) => {
-        if (this.slides && this.workout && selectedWorkoutDayState &&
-          selectedWorkoutDayState.workoutId === this.workoutId) {
-          const dayId = selectedWorkoutDayState.dayId;
+        if (!(this.slides && this.workout && selectedWorkoutDayState &&
+          selectedWorkoutDayState.workoutId && selectedWorkoutDayState.dayId)) { return; }
+        const workoutId = Guid.parse(selectedWorkoutDayState.workoutId);
+        if (workoutId.equals(this.workoutId)) {
+          const dayId = Guid.parse(selectedWorkoutDayState.dayId);
           console.log('workout days - redux - selectCurrentWorkoutSelectedDay:', dayId);
-          const lastWorkoutDayIndex = this.workout.days.findIndex(day => day.id === dayId);
+          const lastWorkoutDayIndex = this.workout.days.findIndex(day => day.id.equals(dayId));
           if (lastWorkoutDayIndex !== this.activeDayIndex) {
             console.log('sliding to last selected day index:', lastWorkoutDayIndex);
             await this.slides.slideTo(lastWorkoutDayIndex, 0);
@@ -150,8 +153,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       console.log('workout-days slideChanged to index', this.activeDayIndex);
       this.store.dispatch(new SelectWorkoutDay(
         {
-          workoutId: this.workout.id,
-          dayId: this.workout.days[this.activeDayIndex].id
+          workoutId: this.workout.id.toString(),
+          dayId: this.workout.days[this.activeDayIndex].id.toString()
         }));
     }
   }
@@ -189,14 +192,9 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     }
   }
 
-  getMaxIdForWorkoutDays(): number {
-    const maxDayId = Math.max(...this.workout.days.map(d => d.id));
-    return maxDayId;
-  }
-
-  private async addWorkoutDay(currentWorkoutDayId: number) {
-    let maxId = this.getMaxIdForWorkoutDays();
-    const newDay = new WorkoutDay({ id: ++maxId, name: 'new workout day', exerciseSets: [] });
+  private async addWorkoutDay(currentWorkoutDayId: Guid) {
+    const newId = Guid.create();
+    const newDay = new WorkoutDay({ id: newId, name: 'new workout day', exerciseSets: [] });
     const index = this.getWorkoutDayIndexById(currentWorkoutDayId);
     console.log('splicing (insert) at ', index);
     this.isNewDayAdded = true;
@@ -205,12 +203,12 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     await this.saveChanges();
     console.log('sliding forward');
     await this.slides.slideNext(0);
-    this.store.dispatch(new WorkoutDayAdded({ workoutDayId: newDay.id }));
+    this.store.dispatch(new WorkoutDayAdded({ workoutDayId: newDay.id.toString() }));
   }
 
-  private async deleteWorkoutDay(dayId: number) {
+  private async deleteWorkoutDay(dayId: Guid) {
     if (this.workout.days.length > 1) {
-      const index = this.workout.days.findIndex(day => day.id === dayId);
+      const index = this.workout.days.findIndex(day => day.id.equals(dayId));
       console.log('splicing (delete) at ', index);
       const oldDayId = this.workout.days[index].id;
       await this.actuallyDeleteWorkoutDay(index);
@@ -220,8 +218,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       console.log(`deleted workout day ${oldDayId}. next day is ${nextWorkoutDayId}`);
       this.store.dispatch(new SelectWorkoutDay(
         {
-          workoutId: this.workout.id,
-          dayId: nextWorkoutDayId
+          workoutId: this.workout.id.toString(),
+          dayId: nextWorkoutDayId.toString()
         }));
     }
   }
@@ -233,8 +231,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     this.store.dispatch(new WorkoutDayDeleted());
   }
 
-  getWorkoutDayIndexById(id: number) {
-    return this.workout.days.findIndex(day => day.id === id);
+  getWorkoutDayIndexById(id: Guid) {
+    return this.workout.days.findIndex(day => day.id.equals(id));
   }
 
 }

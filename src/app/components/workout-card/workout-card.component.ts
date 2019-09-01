@@ -41,7 +41,9 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkout() {
-    this.store.dispatch(new DeleteWorkout({workoutId: this.workout.id}));
+    this.store.dispatch(new DeleteWorkout({
+      workoutId: this.workout.id.toString()
+    }));
   }
 
 }

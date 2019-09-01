@@ -11,6 +11,7 @@ import { DeleteWorkout, WorkoutDeleted } from '../store/actions/workouts.actions
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SelectWorkoutId2Delete } from '../store/selectors/workouts.selectors';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -35,7 +36,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(async id => {
       if (id) {
-        await this.deleteWorkout(id);
+        await this.deleteWorkout(Guid.parse(id));
         this.store.dispatch(new WorkoutDeleted());
       }
     });
@@ -76,11 +77,11 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   async addWorkout(event: any) {
     const newWorkout = new Workout({
-      id: Math.max(...this.workouts.map(w => w.id)) + 1,
+      id: Guid.create(),
       name: 'new workout',
       description: 'describe the workout',
       days: [
-        new WorkoutDay({ id: 1, name: 'workout day name', exerciseSets: [] })
+        new WorkoutDay({ id: Guid.create(), name: 'workout day name', exerciseSets: [] })
       ]
     });
     this.workouts.push(newWorkout);
@@ -92,9 +93,9 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   }
 
-  async deleteWorkout(id: number) {
+  async deleteWorkout(id: Guid) {
     if (this.workouts.length > 1) {
-      const index = this.workouts.findIndex(w => w.id === id);
+      const index = this.workouts.findIndex(w => w.id.equals(id));
       const workout = this.workouts[index];
       if (workout.days.length) {
         workout.days.forEach((_day, idx) => {

@@ -16,6 +16,7 @@ import {
   UpdatedDefaultWorkouts,
   ResetDefaultImages,
   UpdatedDefaultImages } from 'src/app/store/actions/defaults.actions';
+import { Guid } from 'guid-typescript';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -36,12 +37,12 @@ export class DataServiceProvider {
     this._workouts = [];
   }
 
-  async getWorkout(id: number): Promise<Workout> {
+  async getWorkout(id: Guid): Promise<Workout> {
     if (!this._workouts.length) {
       await this.initWorkouts();
     }
     console.log(`servicing workout ${id} from `, this._workouts);
-    const workout = this._workouts.find(w => w.id === id);
+    const workout = this._workouts.find(w => w.id.toString() === id.toString());
     console.log(`found workout ${id}`, workout);
     return workout;
   }

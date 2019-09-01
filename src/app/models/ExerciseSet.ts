@@ -1,11 +1,12 @@
 import { Exercise } from './Exercise';
+import { Guid } from 'guid-typescript';
 
 export class ExerciseSet {
 
-    public id: number;
+    public id: Guid;
     public exercises: Exercise[];
 
-    constructor(options: { id: number, exercises: Exercise[] }) {
+    constructor(options: { id: Guid, exercises: Exercise[] }) {
         this.id = options.id;
         this.exercises = options.exercises;
     }

@@ -1,13 +1,14 @@
 import { ExerciseSet } from './ExerciseSet';
+import { Guid } from 'guid-typescript';
 
 export class WorkoutDay {
 
-    public id: number;
+    public id: Guid;
     public name: string;
     public exerciseSets: ExerciseSet[];
 
     constructor(options: {
-        id: number,
+        id: Guid,
         name: string,
         exerciseSets: ExerciseSet[]}) {
         this.id = options.id;
@@ -18,7 +19,7 @@ export class WorkoutDay {
     static delete(days: WorkoutDay[], index: number) {
         const day = days[index];
         if (day && day.exerciseSets.length) {
-            day.exerciseSets.forEach((set, idx) =>  {
+            day.exerciseSets.forEach((_, idx) =>  {
                 ExerciseSet.delete(day.exerciseSets, idx);
             });
         }

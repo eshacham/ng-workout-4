@@ -9,7 +9,7 @@ export enum EWorkoutsActions {
 
 export class SelectWorkout implements Action {
     readonly type = EWorkoutsActions.SelectWorkout;
-    constructor(public payload: { workoutId: number }) { }
+    constructor(public payload: { workoutId: string }) { }
 }
 export class UnselectWorkout implements Action {
     readonly type = EWorkoutsActions.UnselectWorkout;
@@ -18,7 +18,7 @@ export class UnselectWorkout implements Action {
 
 export class DeleteWorkout implements Action {
     readonly type = EWorkoutsActions.DeleteWorkout;
-    constructor(public payload: { workoutId: number }) { }
+    constructor(public payload: { workoutId: string }) { }
 }
 
 export class WorkoutDeleted implements Action {

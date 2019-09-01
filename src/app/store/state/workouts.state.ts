@@ -1,14 +1,15 @@
+
 export interface IWorkoutState {
-    workoutId: number;
-    selectedWorkoutDayId: number;
+    workoutId: string;
+    selectedWorkoutDayId: string;
     // daysIds: number[];
 }
 
 export interface IWorkoutsState {
-    selectedWorkoutId: number;
-    workoutId2Delete?: number;
+    selectedWorkoutId: string;
+    workoutId2Delete?: string;
     // allIds: number [];
-    byId: { [id: number]: IWorkoutState };
+    byId: { [id: string]: IWorkoutState };
 }
 
 export const initialWorkoutsState: IWorkoutsState = {

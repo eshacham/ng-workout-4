@@ -37,13 +37,13 @@ export class WorkoutDayMoved implements Action {
 export class SelectWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.SelectWorkoutDay;
     constructor(public payload: {
-        workoutId: number;
-        dayId: number }) { }
+        workoutId: string;
+        dayId: string }) { }
 }
 
 export class DeleteWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.DeleteWorkoutDay;
-    constructor(public payload: { workoutDayId: number }) { }
+    constructor(public payload: { workoutDayId: string }) { }
 }
 
 export class WorkoutDayDeleted implements Action {
@@ -52,23 +52,23 @@ export class WorkoutDayDeleted implements Action {
 }
 export class AddWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.AddWorkoutDay;
-    constructor(public payload: { workoutDayId: number }) { }
+    constructor(public payload: { workoutDayId: string }) { }
 }
 
 export class WorkoutDayAdded implements Action {
     readonly type = EWorkoutDaysActions.WorkoutDayAdded;
-    constructor(public payload: { workoutDayId: number }) { }
+    constructor(public payload: { workoutDayId: string }) { }
 }
 
 export class DeleteExerciseSet implements Action {
     readonly type = EWorkoutDaysActions.DeleteExerciseSet;
     constructor(public payload: {
-        workoutDayId: number,
+        workoutDayId: string,
         exerciseSetIndex: number }) { }
 }
 export class ExerciseSetDeleted implements Action {
     readonly type = EWorkoutDaysActions.ExerciseSetDeleted;
-    constructor(public payload: { workoutDayId: number }) { }
+    constructor(public payload: { workoutDayId: string }) { }
 }
 
 export class StartFirstExercise implements Action {

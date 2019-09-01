@@ -14,6 +14,7 @@ import { IWorkoutDayState } from 'src/app/store/state/workoutDays.state';
 import { IAppState } from 'src/app/store/state/app.state';
 import { SelectWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
 import { ExerciseStarted, ExerciseCompleted, DeleteExerciseSet } from 'src/app/store/actions/workoutDays.actions';
+import { Guid } from 'guid-typescript';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -40,7 +41,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     private _displayMode: DisplayMode = DisplayMode.Display;
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    @Input() workoutDayId: number;
+    @Input() workoutDayId: Guid;
     @Input() exerciseSet: ExerciseSet;
     @Input() exerciseSetIndex: number;
     @Input() isDayInEditMode: boolean;
@@ -150,7 +151,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     handleWorkoutDayStateChange(state: IWorkoutDayState) {
-        if (state.workoutDayId !== this.workoutDayId) {
+        if (!Guid.parse(state.workoutDayId).equals(this.workoutDayId)) {
             return;
         }
         this.DisplayMode = state.displayMode;
@@ -165,7 +166,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             state.runningExerciseSetIndex === this.exerciseSetIndex) {
             this.startWorkout();
             this.store.dispatch(new ExerciseStarted({
-                workoutDayId: this.workoutDayId,
+                workoutDayId: this.workoutDayId.toString(),
                 runningExerciseSetIndex: this.exerciseSetIndex,
                 displayMode: DisplayMode.Workout,
                 runningState: RunningState.Started
@@ -181,7 +182,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     runExercise() {
         this.startWorkout();
         this.store.dispatch(new ExerciseStarted({
-            workoutDayId: this.workoutDayId,
+            workoutDayId: this.workoutDayId.toString(),
             runningExerciseSetIndex: this.exerciseSetIndex,
             displayMode: DisplayMode.Workout,
             runningState: RunningState.Started
@@ -196,7 +197,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     deleteExerciseSet() {
         this.store.dispatch(new DeleteExerciseSet({
-            workoutDayId: this.workoutDayId, exerciseSetIndex: this.exerciseSetIndex}));
+            workoutDayId: this.workoutDayId.toString(),
+            exerciseSetIndex: this.exerciseSetIndex}));
     }
 
     deleteExercise(index: number) {
@@ -208,7 +210,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     completeExercise() {
         this.store.dispatch(new ExerciseCompleted({
-            workoutDayId: this.workoutDayId,
+            workoutDayId: this.workoutDayId.toString(),
             runningExerciseSetIndex: this.exerciseSetIndex,
             displayMode: DisplayMode.Workout,
             runningState: RunningState.Completed

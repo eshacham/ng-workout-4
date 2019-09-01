@@ -48,7 +48,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 },
             };
         }
-        case EWorkoutDaysActions.DeleteWorkoutDay: {
+        case EWorkoutDaysActions.WorkoutDayDeleted: {
             return {
                 ...state,
                 byId: {

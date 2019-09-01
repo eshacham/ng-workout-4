@@ -2,7 +2,7 @@ import { DisplayMode, RunningState } from 'src/app/models/enums';
 import { Direction } from '../actions/workoutDays.actions';
 
 export interface IWorkoutDayStateChange {
-    workoutDayId: number;
+    workoutDayId: string;
     runningExerciseSetIndex?: number;
     displayMode: DisplayMode;
     runningState: RunningState;
@@ -10,15 +10,15 @@ export interface IWorkoutDayStateChange {
     // exercisesIds: number[];
 }
 export interface IWorkoutDayState extends IWorkoutDayStateChange {
-    workoutId: number;
+    workoutId: string;
     // exercisesIds: number[];
 }
 
 export interface IWorkoutDaysState {
-    workoutDayId2AddFrom?: number;
-    deleteSelectedWorkoutDay?: number;
+    workoutDayId2AddFrom?: string;
+    deleteSelectedWorkoutDay?: string;
     workoutDayMoveState?: Direction;
-    byId: { [id: number]: IWorkoutDayState };
+    byId: { [id: string]: IWorkoutDayState };
 }
 
 export const initialWorkoutDaysState: IWorkoutDaysState = {

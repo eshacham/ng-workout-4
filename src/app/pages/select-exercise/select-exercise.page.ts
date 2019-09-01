@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 import { selectHasDefaultImagesBeenReset, selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
 import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
+import { Guid } from 'guid-typescript';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -30,10 +31,10 @@ interface SelectedExerciseMedia {
 export class SelectExercisePage implements OnInit, OnDestroy {
 
   workout: Workout;
-  workoutId?: number;
+  workoutId?: Guid;
   isSet = false;
   haveWorkoutsBeenReset = false;
-  lastSelectedWorkoutDayId?: number;
+  lastSelectedWorkoutDayId?: Guid;
   subs: Subscription;
   private ngUnsubscribeForImageReset: Subject<void> = new Subject<void>();
   private ngUnsubscribeForWorkoutReset: Subject<void> = new Subject<void>();
@@ -47,7 +48,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     private store: Store<IAppState>) {
     this._images = [];
     this.subs = this.route.params.subscribe(params => {
-      this.workoutId = +params.id;
+      this.workoutId = Guid.parse(params.id);
     });
   }
 
@@ -121,8 +122,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.store.select(selectCurrentWorkoutSelectedDayId)
       .pipe(takeUntil(this.ngUnsubscribeForWorkoutDaySelected))
       .subscribe(async (selectedWorkoutDayState) => {
-        if (selectedWorkoutDayState && this.workoutId === selectedWorkoutDayState.workoutId) {
-          const workoutDayId = selectedWorkoutDayState.workoutId;
+        if (selectedWorkoutDayState && this.workoutId.toString() === selectedWorkoutDayState.workoutId) {
+          const workoutDayId = Guid.parse(selectedWorkoutDayState.dayId);
           this.lastSelectedWorkoutDayId = workoutDayId;
           console.log('select-exercise redux - getCurrentWorkoutLastSelectedDay:', workoutDayId);
         }
@@ -172,20 +173,10 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
     const newSets = this.getNewSets();
     newSets.forEach((set) => {
-      this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId).exerciseSets.push(set);
+      this.workout.days.find(day => day.id.equals(this.lastSelectedWorkoutDayId)).exerciseSets.push(set);
     });
     this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });
-  }
-
-  getMaxIdForWorkoutSets(): number {
-    const lastSelectedWorkoutDay = this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId);
-    if (!lastSelectedWorkoutDay) {
-      throw Error('select-exercise: cant find lastSelectedWorkoutDay');
-    }
-    const allids: number[] = lastSelectedWorkoutDay.exerciseSets.map(e => e.id);
-    const maxSetId = Math.max(...allids);
-    return maxSetId;
   }
 
   getNewSets(): ExerciseSet[] {
@@ -197,6 +188,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
         times: 1
       });
       const newExercise = new Exercise({
+        id: Guid.create(),
         name: image.media.name,
         media: image.media,
         reps: [newRep],
@@ -208,11 +200,11 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       newExercises.push(newExercise);
     }
 
-    let maxId = this.getMaxIdForWorkoutSets();
+    const newId = Guid.create();
     if (this.isSet) {
-      newSets = [new ExerciseSet({ id: ++maxId, exercises: newExercises })];
+      newSets = [new ExerciseSet({ id: newId, exercises: newExercises })];
     } else {
-      newSets = newExercises.map((exe) => new ExerciseSet({ id: ++maxId, exercises: [exe] }));
+      newSets = newExercises.map((exe) => new ExerciseSet({ id: newId, exercises: [exe] }));
     }
     return newSets;
   }
