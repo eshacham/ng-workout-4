@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { ThemeServiceProvider } from '../providers/theme-service/theme-service';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 
@@ -17,7 +16,6 @@ interface Theme  {
 export class TabSettingsPage {
   constructor (
     private themeService: ThemeServiceProvider,
-    private storage: Storage,
     private dataServiceProvider: DataServiceProvider) {}
 
   selectedSegment = 'themes';

@@ -31,10 +31,10 @@ interface SelectedExerciseMedia {
 export class SelectExercisePage implements OnInit, OnDestroy {
 
   workout: Workout;
-  workoutId?: Guid;
+  workoutId?: string;
   isSet = false;
   haveWorkoutsBeenReset = false;
-  lastSelectedWorkoutDayId?: Guid;
+  lastSelectedWorkoutDayId?: string;
   subs: Subscription;
   private ngUnsubscribeForImageReset: Subject<void> = new Subject<void>();
   private ngUnsubscribeForWorkoutReset: Subject<void> = new Subject<void>();
@@ -48,7 +48,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     private store: Store<IAppState>) {
     this._images = [];
     this.subs = this.route.params.subscribe(params => {
-      this.workoutId = Guid.parse(params.id);
+      this.workoutId = params.id;
     });
   }
 
@@ -123,7 +123,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribeForWorkoutDaySelected))
       .subscribe(async (selectedWorkoutDayState) => {
         if (selectedWorkoutDayState && this.workoutId.toString() === selectedWorkoutDayState.workoutId) {
-          const workoutDayId = Guid.parse(selectedWorkoutDayState.dayId);
+          const workoutDayId = selectedWorkoutDayState.dayId;
           this.lastSelectedWorkoutDayId = workoutDayId;
           console.log('select-exercise redux - getCurrentWorkoutLastSelectedDay:', workoutDayId);
         }
@@ -173,7 +173,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
     const newSets = this.getNewSets();
     newSets.forEach((set) => {
-      this.workout.days.find(day => day.id.equals(this.lastSelectedWorkoutDayId)).exerciseSets.push(set);
+      this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId).exerciseSets.push(set);
     });
     this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });
@@ -188,7 +188,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
         times: 1
       });
       const newExercise = new Exercise({
-        id: Guid.create(),
+        id: Guid.raw(),
         name: image.media.name,
         media: image.media,
         reps: [newRep],
@@ -200,7 +200,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       newExercises.push(newExercise);
     }
 
-    const newId = Guid.create();
+    const newId = Guid.raw();
     if (this.isSet) {
       newSets = [new ExerciseSet({ id: newId, exercises: newExercises })];
     } else {

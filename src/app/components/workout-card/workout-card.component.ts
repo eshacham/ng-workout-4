@@ -32,8 +32,10 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   get IsEditMode() { return this.displayMode === DisplayMode.Edit; }
   get IsDisplayMode() { return this.displayMode === DisplayMode.Display; }
 
-  goToWorkoutDays() {
-    this.router.navigate([`workout-days/${this.workout.id}`], { relativeTo: this.route });
+  async goToWorkoutDays() {
+    const id = this.workout.id;
+    console.log('going to workout with id', JSON.stringify(id));
+    this.router.navigate([`workout-days/${id}`], { relativeTo: this.route });
   }
 
   get daysCount(): number {

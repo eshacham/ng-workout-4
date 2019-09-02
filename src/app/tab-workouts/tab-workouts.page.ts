@@ -1,4 +1,4 @@
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { IonFab } from '@ionic/angular';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Workout } from '../models/Workout';
@@ -9,9 +9,11 @@ import { IAppState } from '../store/state/app.state';
 import { LoadedDefaultWorkouts } from '../store/actions/defaults.actions';
 import { DeleteWorkout, WorkoutDeleted } from '../store/actions/workouts.actions';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { SelectWorkoutId2Delete } from '../store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
+import { GetWorkouts } from '../store/actions/data.actions';
+import { selectWorkoutsList } from '../store/selectors/data.selectors';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -21,14 +23,19 @@ import { Guid } from 'guid-typescript';
 export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   @ViewChild('fabEdit') fabEdit: IonFab;
+
   workouts: Workout[];
+  workouts$: Observable<Workout[]>;
+
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribeForGetWorkouts: Subject<void> = new Subject<void>();
 
   constructor(
     private dataService: DataServiceProvider,
     private store: Store<IAppState>) {
+      this.workouts$ = this.store.pipe(select(selectWorkoutsList));
   }
 
   async ngOnInit() {
@@ -36,7 +43,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(async id => {
       if (id) {
-        await this.deleteWorkout(Guid.parse(id));
+        await this.deleteWorkout(id);
         this.store.dispatch(new WorkoutDeleted());
       }
     });
@@ -45,11 +52,22 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.ngUnsubscribeForGetWorkouts.next();
+    this.ngUnsubscribeForGetWorkouts.complete();
 }
 
   async ionViewWillEnter() {
-    this.workouts = await this.dataService.getWorkouts();
-    this.store.dispatch(new LoadedDefaultWorkouts());
+    this.store.dispatch(new GetWorkouts());
+
+    // this.store.select(selectWorkoutsList)
+    // .pipe(takeUntil(this.ngUnsubscribeForGetWorkouts))
+    // .subscribe(workouts => {
+    //   if (workouts) {
+    //     this.workouts = workouts;
+    //     this.store.dispatch(new LoadedDefaultWorkouts());
+    //   }
+    // });
+
   }
 
   get DisplayMode(): DisplayMode {
@@ -77,11 +95,11 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   async addWorkout(event: any) {
     const newWorkout = new Workout({
-      id: Guid.create(),
+      id: Guid.raw(),
       name: 'new workout',
       description: 'describe the workout',
       days: [
-        new WorkoutDay({ id: Guid.create(), name: 'workout day name', exerciseSets: [] })
+        new WorkoutDay({ id: Guid.raw(), name: 'workout day name', exerciseSets: [] })
       ]
     });
     this.workouts.push(newWorkout);
@@ -93,9 +111,9 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   }
 
-  async deleteWorkout(id: Guid) {
+  async deleteWorkout(id: string) {
     if (this.workouts.length > 1) {
-      const index = this.workouts.findIndex(w => w.id.equals(id));
+      const index = this.workouts.findIndex(w => w.id === id);
       const workout = this.workouts[index];
       if (workout.days.length) {
         workout.days.forEach((_day, idx) => {

@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
@@ -37,7 +36,7 @@ export class DataServiceProvider {
     this._workouts = [];
   }
 
-  async getWorkout(id: Guid): Promise<Workout> {
+  async getWorkout(id: string): Promise<Workout> {
     if (!this._workouts.length) {
       await this.initWorkouts();
     }

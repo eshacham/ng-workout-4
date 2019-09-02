@@ -4,12 +4,12 @@ import { Guid } from 'guid-typescript';
 
 export class Workout {
 
-    public id: Guid;
+    public id: string;
     public name: string;
     public description: string;
     public days: WorkoutDay[];
     constructor (options: {
-        id: Guid,
+        id: string,
         name: string,
         description: string,
         days: WorkoutDay[]}) {

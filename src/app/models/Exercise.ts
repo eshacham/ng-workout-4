@@ -7,7 +7,7 @@ import { Guid } from 'guid-typescript';
 
 export class Exercise {
 
-    public id: Guid;
+    public id: string;
     public name: string;
     public media: ExerciseMedia;
     public theGrip: Grip = new Grip();
@@ -19,7 +19,7 @@ export class Exercise {
     public restAfterExercise: number;
 
     constructor(options: {
-        id: Guid,
+        id: string,
         name: string,
         media: ExerciseMedia,
         theGrip?: Grip,
