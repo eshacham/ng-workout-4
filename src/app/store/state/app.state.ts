@@ -3,12 +3,14 @@ import { IMusclesFilterState, initialMusclesFilterState } from './musclesFilter.
 import { IWorkoutsState, initialWorkoutsState } from './workouts.state';
 import { IWorkoutDaysState, initialWorkoutDaysState } from './workoutDays.state';
 import { IDataState, initialDataState } from './data.state';
+import { IExerciseSetsState, initialExerciseSetsState } from './ExerciseSets.state';
 
 export interface IAppState {
   defaults: IDefaultsState;
   musclesFilter: IMusclesFilterState;
   workouts: IWorkoutsState;
   days: IWorkoutDaysState;
+  sets: IExerciseSetsState;
   data: IDataState;
 }
 
@@ -17,6 +19,7 @@ export const initialAppState: IAppState = {
   musclesFilter: initialMusclesFilterState,
   workouts: initialWorkoutsState,
   days: initialWorkoutDaysState,
+  sets: initialExerciseSetsState,
   data: initialDataState,
 };
 
