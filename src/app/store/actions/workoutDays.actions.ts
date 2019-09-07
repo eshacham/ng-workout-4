@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { DisplayMode, RunningState } from 'src/app/models/enums';
-import { IWorkoutDayState, IWorkoutDayStateChange } from '../state/workoutDays.state';
+import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 
 export enum Direction {
     Forward = 1,
@@ -73,34 +73,34 @@ export class ExerciseSetDeleted implements Action {
 
 export class StartFirstExercise implements Action {
     readonly type = EWorkoutDaysActions.StartFirstExercise;
-    constructor(public payload: IWorkoutDayStateChange) {
+    constructor(public payload: WorkoutDayBean) {
         payload.runningExerciseSetIndex = 0;
         payload.displayMode = DisplayMode.Workout;
     }
 }
 export class StartNextExercise implements Action {
     readonly type = EWorkoutDaysActions.StartNextExercise;
-    constructor(public payload: IWorkoutDayStateChange) {
+    constructor(public payload: WorkoutDayBean) {
         payload.displayMode = DisplayMode.Workout;
     }
 }
 export class ExerciseStarted implements Action {
     readonly type = EWorkoutDaysActions.ExerciseStarted;
-    constructor(public payload: IWorkoutDayStateChange) {
+    constructor(public payload: WorkoutDayBean) {
         payload.runningState = RunningState.Started;
         payload.displayMode = DisplayMode.Workout;
     }
 }
 export class ExerciseCompleted implements Action {
     readonly type = EWorkoutDaysActions.ExerciseCompleted;
-    constructor(public payload: IWorkoutDayStateChange) {
+    constructor(public payload: WorkoutDayBean) {
         payload.runningState = RunningState.Completed;
         payload.displayMode = DisplayMode.Workout;
     }
 }
 export class ChangeDisplayMode implements Action {
     readonly type = EWorkoutDaysActions.ChangeDisplayMode;
-    constructor(public payload: IWorkoutDayStateChange) {
+    constructor(public payload: WorkoutDayBean) {
         payload.runningState = RunningState.NA;
         payload.runningExerciseSetIndex = null;
     }

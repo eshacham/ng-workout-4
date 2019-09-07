@@ -1,11 +1,18 @@
-import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
+import { WorkoutsActions, EWorkoutsActions,  } from '../actions/workouts.actions';
 import { initialWorkoutsState, IWorkoutsState } from '../state/workouts.state';
 import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.actions';
+import { GetDataSuccess, EDataActions } from '../actions/data.actions';
 
 export const workoutsReducers = (state = initialWorkoutsState,
-    action: WorkoutsActions | WorkoutDaysActions)
+    action: WorkoutsActions | WorkoutDaysActions | GetDataSuccess)
     : IWorkoutsState => {
     switch (action.type) {
+        case EDataActions.GetDataSuccess: {
+            return {
+                ...state,
+                byId: action.payload.workouts.byId,
+            };
+        }
         case EWorkoutsActions.SelectWorkout: {
             return {
                 ...state,
@@ -42,7 +49,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
                     ...state.byId,
                     [action.payload.workoutId]: {
                         ...state.byId[action.payload.workoutId],
-                        workoutId: action.payload.workoutId,
+                        id: action.payload.workoutId,
                         selectedWorkoutDayId: action.payload.dayId,
                     }
                 },

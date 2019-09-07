@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { SelectWorkoutId2Delete } from '../store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
-import { GetWorkouts } from '../store/actions/data.actions';
+import { GetData } from '../store/actions/data.actions';
 import { selectWorkoutsList } from '../store/selectors/data.selectors';
 
 @Component({
@@ -57,7 +57,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 }
 
   async ionViewWillEnter() {
-    this.store.dispatch(new GetWorkouts());
+    this.store.dispatch(new GetData());
 
     // this.store.select(selectWorkoutsList)
     // .pipe(takeUntil(this.ngUnsubscribeForGetWorkouts))

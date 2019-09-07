@@ -1,7 +1,6 @@
 import { WorkoutDay } from './WorkoutDay';
 
 export class WorkoutBase {
-
     public id: string;
     public name: string;
     public description: string;
@@ -15,7 +14,6 @@ export class WorkoutBase {
     }
 }
 export class Workout extends WorkoutBase {
-
     public days?: WorkoutDay[];
     constructor (options: {
         id: string,
@@ -33,11 +31,8 @@ export class Workout extends WorkoutBase {
     }
 }
 export class WorkoutBean extends WorkoutBase {
-
-    public id: string;
-    public name: string;
-    public description: string;
     public days?: string[];
+    selectedWorkoutDayId?: string;
     constructor (options: {
         id: string,
         name: string,

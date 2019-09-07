@@ -7,7 +7,7 @@ export const dataReducers = (
     action: DataActions
 ): IDataState => {
     switch (action.type) {
-        case EDataActions.GetWorkoutsSuccess: {
+        case EDataActions.GetDataSuccess: {
             return {
                 ...state,
                 entities:  action.payload

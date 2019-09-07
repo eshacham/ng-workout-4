@@ -1,15 +1,10 @@
-
-export interface IWorkoutState {
-    workoutId: string;
-    selectedWorkoutDayId: string;
-    // daysIds: number[];
-}
+import { WorkoutBean } from 'src/app/models/Workout';
 
 export interface IWorkoutsState {
     selectedWorkoutId: string;
     workoutId2Delete?: string;
     // allIds: number [];
-    byId: { [id: string]: IWorkoutState };
+    byId: { [id: string]: WorkoutBean };
 }
 
 export const initialWorkoutsState: IWorkoutsState = {

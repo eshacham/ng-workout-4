@@ -2,20 +2,20 @@ import { Action} from '@ngrx/store';
 import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
 
 export enum EDataActions {
-    GetWorkouts = '[Data] Get workouts data',
-    GetWorkoutsSuccess = '[Data] Get workouts success',
+    GetData = '[Data] Get app data',
+    GetDataSuccess = '[Data] Get app data success',
 }
 
-export class GetWorkouts implements Action {
-    public readonly type = EDataActions.GetWorkouts;
+export class GetData implements Action {
+    public readonly type = EDataActions.GetData;
 }
 
-export class GetWorkoutsSuccess implements Action {
-    public readonly type = EDataActions.GetWorkoutsSuccess;
+export class GetDataSuccess implements Action {
+    public readonly type = EDataActions.GetDataSuccess;
     constructor (public payload: WorkoutsDataMaps) {}
 }
 
 export type DataActions =
-GetWorkouts |
-GetWorkoutsSuccess
+GetData |
+GetDataSuccess
 ;

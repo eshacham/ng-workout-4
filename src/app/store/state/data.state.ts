@@ -2,7 +2,6 @@ import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
 
 export interface IDataState {
     entities: WorkoutsDataMaps;
-    // selectedWorkout: Workout;
 }
 
 export const initialDataState: IDataState = {
@@ -12,5 +11,4 @@ export const initialDataState: IDataState = {
         sets: { byId: {} },
         exercises: { byId: {} },
     },
-    // selectedWorkout: null
 };

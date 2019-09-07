@@ -4,7 +4,7 @@ import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonFab } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
-import { WorkoutDay } from '../../models/WorkoutDay';
+import { WorkoutDay, WorkoutDayBean } from '../../models/WorkoutDay';
 import { ExerciseSet } from '../../models/ExerciseSet';
 import { DisplayMode, RunningState } from '../../models/enums';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
@@ -20,8 +20,6 @@ import {
   Direction} from 'src/app/store/actions/workoutDays.actions';
 import { SelectWorkoutDayState, SelectExerciseSetIndex2Delete } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil } from 'rxjs/operators';
-import { IWorkoutDayState } from 'src/app/store/state/workoutDays.state';
-import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-workout-day',
@@ -99,16 +97,18 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     this.ngUnsubscribeForExerciseSetDeletion.complete();
   }
 
-  handleWorkoutDayStateChange(state: IWorkoutDayState) {
+  handleWorkoutDayStateChange(state: WorkoutDayBean) {
     switch (state.runningState) {
       case RunningState.Completed:
-        if (state.workoutDayId === this.workoutDay.id.toString()) {
+        if (state.id === this.workoutDay.id) {
           if (state.runningExerciseSetIndex + 1 < this.workoutDay.exerciseSets.length) {
             this.store.dispatch(new StartNextExercise({
-              workoutDayId: state.workoutDayId,
+              id: state.id,
               runningExerciseSetIndex: state.runningExerciseSetIndex + 1,
               displayMode: DisplayMode.Workout,
-              runningState: RunningState.Starting
+              runningState: RunningState.Starting,
+              exerciseSets: null,
+              name: null
             }));
           } else {
             this.stopWorkout();
@@ -116,7 +116,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         }
         break;
       case RunningState.Started:
-        if (state.workoutDayId !== this.workoutDay.id.toString()) {
+        if (state.id !== this.workoutDay.id) {
           this.stopWorkout();
         }
         break;
@@ -130,10 +130,12 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   DispatchChangeDisplayMode() {
     this.store.dispatch(new ChangeDisplayMode({
-      workoutDayId: this.workoutDay.id.toString(),
+      id: this.workoutDay.id,
       runningExerciseSetIndex: null,
       displayMode: this.DisplayMode,
-      runningState: RunningState.NA
+      runningState: RunningState.NA,
+      exerciseSets: null,
+      name: null
     }));
   }
 
@@ -143,10 +145,12 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
       case DisplayMode.Edit:
         this.DisplayMode = DisplayMode.Workout;
         this.store.dispatch(new StartFirstExercise({
-          workoutDayId: this.workoutDay.id.toString(),
+          id: this.workoutDay.id,
           runningExerciseSetIndex: 0,
           displayMode: DisplayMode.Workout,
-          runningState: RunningState.Starting
+          runningState: RunningState.Starting,
+          exerciseSets: null,
+          name: null
         }));
         break;
       case DisplayMode.Workout:

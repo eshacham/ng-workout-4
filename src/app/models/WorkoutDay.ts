@@ -1,7 +1,7 @@
 import { ExerciseSet } from './ExerciseSet';
+import { DisplayMode, RunningState } from './enums';
 
 export class WorkoutDayBase {
-
     public id: string;
     public name: string;
 
@@ -10,11 +10,12 @@ export class WorkoutDayBase {
         name: string
     }) {
         this.id = options.id;
-        this.name = options.name;
+        if (options.name) {
+            this.name = options.name;
+        }
     }
 }
 export class WorkoutDay extends WorkoutDayBase {
-
     public exerciseSets: ExerciseSet[];
 
     constructor(options: {
@@ -45,15 +46,31 @@ export class WorkoutDay extends WorkoutDayBase {
 }
 
 export class WorkoutDayBean extends WorkoutDayBase {
-
     public exerciseSets: string[];
+    runningExerciseSetIndex?: number;
+    displayMode?: DisplayMode;
+    runningState?: RunningState;
+    exerciseSetIndex2Delete?: number;
+    workoutId?: string;
 
     constructor(options: {
         id: string,
         name: string,
-        exerciseSets: string[]
+        exerciseSets: string[],
+        runningExerciseSetIndex?: number,
+        displayMode?: DisplayMode,
+        runningState?: RunningState,
+        exerciseSetIndex2Delete?: number,
+        workoutId?: string;
     }) {
         super(options);
-        this.exerciseSets = options.exerciseSets;
+        if (options.exerciseSets) {
+            this.exerciseSets = options.exerciseSets;
+        }
+        this.runningExerciseSetIndex = options.runningExerciseSetIndex;
+        this.displayMode = options.displayMode;
+        this.runningState = options.runningState;
+        this.exerciseSetIndex2Delete = options.exerciseSetIndex2Delete;
+        this.workoutId = options.workoutId;
     }
 }

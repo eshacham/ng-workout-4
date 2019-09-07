@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { IAppState } from '../state/app.state';
-import { IWorkoutsState, IWorkoutState } from '../state/workouts.state';
+import { IWorkoutsState } from '../state/workouts.state';
+import { WorkoutBean } from 'src/app/models/Workout';
 
 export const workoutsState = (state: IAppState): IWorkoutsState => state.workouts;
 
@@ -22,8 +23,8 @@ export const selectCurrentWorkout = createSelector(
 
 export const selectCurrentWorkoutSelectedDayId = createSelector(
   selectCurrentWorkout,
-  (workout: IWorkoutState) => workout ? {
-    workoutId: workout.workoutId,
+  (workout: WorkoutBean) => workout ? {
+    workoutId: workout.id,
     dayId: workout.selectedWorkoutDayId
   } : null
 );
