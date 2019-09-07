@@ -17,7 +17,7 @@ export const initialAppState: IAppState = {
   musclesFilter: initialMusclesFilterState,
   workouts: initialWorkoutsState,
   days: initialWorkoutDaysState,
-  data: initialDataState
+  data: initialDataState,
 };
 
 export const getInitialState = (): IAppState => initialAppState;

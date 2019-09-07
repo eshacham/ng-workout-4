@@ -1,5 +1,5 @@
 import { Action} from '@ngrx/store';
-import { Workout } from '../../models/Workout';
+import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
 
 export enum EDataActions {
     GetWorkouts = '[Data] Get workouts data',
@@ -12,7 +12,7 @@ export class GetWorkouts implements Action {
 
 export class GetWorkoutsSuccess implements Action {
     public readonly type = EDataActions.GetWorkoutsSuccess;
-    constructor (public payload: Workout[]) {}
+    constructor (public payload: WorkoutsDataMaps) {}
 }
 
 export type DataActions =

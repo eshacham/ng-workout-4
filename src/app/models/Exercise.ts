@@ -1,9 +1,8 @@
 
-import { RepetitionSpeed, WeightType, Muscles } from './enums';
+import { RepetitionSpeed, WeightType } from './enums';
 import { Grip } from './Grip';
 import { Rep } from './Rep';
 import { ExerciseMedia } from './ExerciseMedia';
-import { Guid } from 'guid-typescript';
 
 export class Exercise {
 

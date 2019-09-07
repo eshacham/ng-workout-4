@@ -1,11 +1,16 @@
-import { Workout } from '../../models/Workout';
+import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
 
 export interface IDataState {
-    workouts: Workout[];
+    entities: WorkoutsDataMaps;
     // selectedWorkout: Workout;
 }
 
 export const initialDataState: IDataState = {
-    workouts: null,
+    entities: {
+        workouts: { byId: {} },
+        days: { byId: {} },
+        sets: { byId: {} },
+        exercises: { byId: {} },
+    },
     // selectedWorkout: null
 };

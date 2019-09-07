@@ -5,7 +5,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSlides as Slides, NavController } from '@ionic/angular';
 import { IAppState } from 'src/app/store/state/app.state';
-import { Workout } from '../../models/Workout';
+import { Workout, WorkoutBean } from '../../models/Workout';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import { SelectWorkout, UnselectWorkout } from 'src/app/store/actions/workouts.actions';
@@ -29,7 +29,7 @@ import { Guid } from 'guid-typescript';
 })
 export class WorkoutDaysPage implements OnInit, OnDestroy {
 
-  workout: Workout;
+  workout: WorkoutBean;
   workoutId: string;
   isNewDayAdded: boolean;
   subs: Subscription;
@@ -111,7 +111,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         if (workoutId === this.workoutId) {
           const dayId = selectedWorkoutDayState.dayId;
           console.log('workout days - redux - selectCurrentWorkoutSelectedDay:', dayId);
-          const lastWorkoutDayIndex = this.workout.days.findIndex(day => day.id === dayId);
+          const lastWorkoutDayIndex = this.workout.days.findIndex(day => day === dayId);
           if (lastWorkoutDayIndex !== this.activeDayIndex) {
             console.log('sliding to last selected day index:', lastWorkoutDayIndex);
             await this.slides.slideTo(lastWorkoutDayIndex, 0);
@@ -154,7 +154,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       this.store.dispatch(new SelectWorkoutDay(
         {
           workoutId: this.workout.id.toString(),
-          dayId: this.workout.days[this.activeDayIndex].id.toString()
+          dayId: this.workout.days[this.activeDayIndex]
         }));
     }
   }
@@ -198,7 +198,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     const index = this.getWorkoutDayIndexById(currentWorkoutDayId);
     console.log('splicing (insert) at ', index);
     this.isNewDayAdded = true;
-    this.workout.days.splice(index + 1, 0, newDay);
+    // this.workout.days.splice(index + 1, 0, newDay);
     await this.slides.update();
     await this.saveChanges();
     console.log('sliding forward');
@@ -208,13 +208,13 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   private async deleteWorkoutDay(dayId: string) {
     if (this.workout.days.length > 1) {
-      const index = this.workout.days.findIndex(day => day.id === dayId);
+      const index = this.workout.days.findIndex(day => day === dayId);
       console.log('splicing (delete) at ', index);
-      const oldDayId = this.workout.days[index].id;
+      const oldDayId = this.workout.days[index];
       await this.actuallyDeleteWorkoutDay(index);
       await this.slides.update();
       this.activeDayIndex = await this.slides.getActiveIndex();
-      const nextWorkoutDayId = this.workout.days[this.activeDayIndex].id;
+      const nextWorkoutDayId = this.workout.days[this.activeDayIndex];
       console.log(`deleted workout day ${oldDayId}. next day is ${nextWorkoutDayId}`);
       this.store.dispatch(new SelectWorkoutDay(
         {
@@ -225,14 +225,14 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   async actuallyDeleteWorkoutDay(index: number) {
-    WorkoutDay.delete(this.workout.days, index);
+    // WorkoutDay.delete(this.workout.days, index);
     await this.saveChanges();
     console.log(`deleted day index ${index} out of ${this.workout.days.length + 1} days`);
     this.store.dispatch(new WorkoutDayDeleted());
   }
 
   getWorkoutDayIndexById(id: string) {
-    return this.workout.days.findIndex(day => day.id === id);
+    return this.workout.days.findIndex(day => day === id);
   }
 
 }

@@ -6,5 +6,8 @@ const selectWorkouts = (state: IAppState) => state.data;
 
 export const selectWorkoutsList = createSelector(
     selectWorkouts,
-    (state: IDataState) => state.workouts
+    (state: IDataState) => {
+        return Object.keys(state.entities.workouts.byId)
+            .map(id => state.entities.workouts.byId[id]);
+    }
 );

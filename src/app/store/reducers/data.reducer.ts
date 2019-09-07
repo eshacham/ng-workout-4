@@ -10,7 +10,7 @@ export const dataReducers = (
         case EDataActions.GetWorkoutsSuccess: {
             return {
                 ...state,
-                workouts: action.payload
+                entities:  action.payload
             };
         }
     default:

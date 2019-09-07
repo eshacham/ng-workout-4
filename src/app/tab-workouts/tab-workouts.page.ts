@@ -1,7 +1,7 @@
 import { Store, select } from '@ngrx/store';
 import { IonFab } from '@ionic/angular';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Workout } from '../models/Workout';
+import { Workout, WorkoutBean } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { DisplayMode } from '../models/enums';
 import { WorkoutDay } from '../models/WorkoutDay';
@@ -25,7 +25,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   @ViewChild('fabEdit') fabEdit: IonFab;
 
   workouts: Workout[];
-  workouts$: Observable<Workout[]>;
+  workouts$: Observable<WorkoutBean[]>;
 
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;

@@ -5147,3 +5147,5 @@ export const defaultWorkouts = new DefaultWorkouts(
         ]
     })
 );
+
+export const flatDefaultWorkouts = defaultWorkouts.flat;

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
-import { Workout } from 'src/app/models/Workout';
+import { Workout, WorkoutBean } from 'src/app/models/Workout';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Exercise } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
@@ -30,7 +30,7 @@ interface SelectedExerciseMedia {
 })
 export class SelectExercisePage implements OnInit, OnDestroy {
 
-  workout: Workout;
+  workout: WorkoutBean;
   workoutId?: string;
   isSet = false;
   haveWorkoutsBeenReset = false;
@@ -173,7 +173,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
     const newSets = this.getNewSets();
     newSets.forEach((set) => {
-      this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId).exerciseSets.push(set);
+      // this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId).exerciseSets.push(set);
     });
     this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });

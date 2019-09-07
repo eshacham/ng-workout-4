@@ -5,8 +5,9 @@ import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
 import { Muscles } from '../../models/enums';
-import { Workout } from '../../models/Workout';
+import { Workout, WorkoutBean } from '../../models/Workout';
 import { defaultWorkouts } from '../../constants/defaultWorkouts';
+import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
 import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
 import { IAppState } from '../../store/state/app.state';
@@ -14,8 +15,9 @@ import {
   ResetDefaultWorkouts,
   UpdatedDefaultWorkouts,
   ResetDefaultImages,
-  UpdatedDefaultImages } from 'src/app/store/actions/defaults.actions';
-import { Guid } from 'guid-typescript';
+  UpdatedDefaultImages
+} from 'src/app/store/actions/defaults.actions';
+import { Exercise } from 'src/app/models/Exercise';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -23,7 +25,7 @@ const IMAGES_STORAGE_KEY = 'my_images';
 @Injectable()
 export class DataServiceProvider {
 
-  private _workouts: Workout[];
+  private _workoutsDataMaps: WorkoutsDataMaps;
   private _images: ExerciseMedia[];
 
   constructor(
@@ -33,47 +35,64 @@ export class DataServiceProvider {
     private storage: Storage,
     private store: Store<IAppState>) {
     this._images = [];
-    this._workouts = [];
+    // this._workoutsDataMaps = {};
   }
 
-  async getWorkout(id: string): Promise<Workout> {
-    if (!this._workouts.length) {
+  get hasWorkouts(): boolean {
+    return this._workoutsDataMaps && Object.keys(this._workoutsDataMaps.workouts).length > 0;
+  }
+
+  async getWorkout(id: string): Promise<WorkoutBean> {
+    if (!this.hasWorkouts) {
       await this.initWorkouts();
     }
-    console.log(`servicing workout ${id} from `, this._workouts);
-    const workout = this._workouts.find(w => w.id.toString() === id.toString());
+    console.log(`servicing workout ${id} from `, this._workoutsDataMaps.workouts);
+    const workout = this._workoutsDataMaps.workouts[id];
     console.log(`found workout ${id}`, workout);
     return workout;
   }
 
-  async getWorkouts(): Promise<Workout[]> {
-    if (!this._workouts.length) {
-      await this.initWorkouts();
-    }
-    return this._workouts;
-  }
-
   async initWorkouts() {
     await this.storage.ready();
-    this._workouts = await this.storage.get(WORKOUTS_STORAGE_KEY);
-    if (!this._workouts || !this._workouts.length) {
+    this._workoutsDataMaps = await this.storage.get(WORKOUTS_STORAGE_KEY);
+    if (!this.hasWorkouts) {
       await this.resetWorkouts();
     } else if (this.isMobile) {
-      this.UpdateImagesInWorkouts(this._workouts);
+      this.UpdateImagesInWorkouts(this._workoutsDataMaps.exercises.byId);
       await this.saveWorkouts();
     }
-    console.log('loaded cached workouts', this._workouts.map(w => w.id));
+    console.log('loaded cached workouts', Object.keys(this._workoutsDataMaps.workouts));
   }
 
   async resetWorkouts() {
-    this._workouts = defaultWorkouts.workouts.map(x => Object.assign({}, x)); // deep clone of objects in an array
+    this._workoutsDataMaps = defaultWorkouts.flat;
     await this.saveWorkouts(true);
     console.log('workouts have been reset to default workouts');
+  }
+  async getWorkouts(): Promise<WorkoutsDataMaps> {
+    if (!this.hasWorkouts) {
+      await this.initWorkouts();
+    }
+    return this._workoutsDataMaps;
+  }
+
+  private UpdateImagesInWorkouts(exercises:  {[id: string]: Exercise }) {
+      for (const id of Object.keys(exercises)) {
+        const exe = exercises[id];
+        if (!exercises[id].media.isDefault &&
+          exe.media.nativePath.indexOf(this.file.dataDirectory) < 0) {
+          const oldPath = exe.media.nativePath;
+          const name = exe.media.nativePath.substr(exe.media.nativePath.lastIndexOf('/') + 1);
+          exe.media.nativePath = this.file.dataDirectory + name;
+          exe.media.ionicPath = this.getIonicPath(exe.media.nativePath);
+          console.log(`update exercise image path from ${oldPath} to ${exe.media.nativePath}`);
+        }
+    }
   }
 
   async saveWorkouts(haveWorkoutsBeenReset: boolean = false) {
     await this.storage.ready();
-    await this.storage.set(WORKOUTS_STORAGE_KEY, this._workouts);
+    await this.storage.set(WORKOUTS_STORAGE_KEY, this._workoutsDataMaps);
     console.log('workouts have been saved');
     if (haveWorkoutsBeenReset) {
       this.store.dispatch(new ResetDefaultWorkouts());
@@ -100,7 +119,7 @@ export class DataServiceProvider {
   async setImageMuscles(name: string, exerciseMuscleFilter: Muscles[]) {
     const imageToSet = this._images.filter(image => image.name === name)[0];
     if (imageToSet) {
-        imageToSet.muscles = exerciseMuscleFilter;
+      imageToSet.muscles = exerciseMuscleFilter;
       console.log(`data service - setImageMuscles found ${name}`, imageToSet.muscles);
       await this.saveImages();
     }
@@ -156,24 +175,7 @@ export class DataServiceProvider {
     await this.saveImages(true);
   }
 
-  private UpdateImagesInWorkouts(workouts: Workout[]) {
-    for (const workout of workouts) {
-      for (const day of workout.days) {
-        for (const set of day.exerciseSets) {
-          for (const exe of set.exercises) {
-            if (!exe.media.isDefault &&
-              exe.media.nativePath.indexOf(this.file.dataDirectory) < 0) {
-              const oldPath = exe.media.nativePath;
-              const name = exe.media.nativePath.substr(exe.media.nativePath.lastIndexOf('/') + 1);
-              exe.media.nativePath = this.file.dataDirectory + name;
-              exe.media.ionicPath = this.getIonicPath(exe.media.nativePath);
-              console.log(`update exercise image path from ${oldPath} to ${exe.media.nativePath}`);
-            }
-          }
-        }
-      }
-    }
-  }
+
 
   async saveImages(imagesHaveBeenReset: boolean = false) {
     await this.storage.ready();

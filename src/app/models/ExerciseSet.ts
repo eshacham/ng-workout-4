@@ -1,13 +1,19 @@
 import { Exercise } from './Exercise';
-import { Guid } from 'guid-typescript';
 
-export class ExerciseSet {
+export class ExerciseSetBase {
 
     public id: string;
+
+    constructor(options: { id: string }) {
+        this.id = options.id;
+    }
+}
+export class ExerciseSet extends ExerciseSetBase {
+
     public exercises: Exercise[];
 
     constructor(options: { id: string, exercises: Exercise[] }) {
-        this.id = options.id;
+        super(options);
         this.exercises = options.exercises;
     }
 
@@ -19,5 +25,21 @@ export class ExerciseSet {
             });
         }
         exerciseSets.splice(index, 1);
+    }
+
+    static makeBean(set: ExerciseSet): ExerciseSetBean {
+        return {
+            ...set,
+            exercises: set.exercises.map(e => e.id),
+        };
+    }
+}
+export class ExerciseSetBean extends ExerciseSetBase {
+
+    public exercises: string[];
+
+    constructor(options: { id: string, exercises: string[] }) {
+        super(options);
+        this.exercises = options.exercises;
     }
 }
