@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Workout } from '../../models/Workout';
+import { WorkoutBean } from '../../models/Workout';
 import { DisplayMode } from 'src/app/models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
 import { DeleteWorkout } from 'src/app/store/actions/workouts.actions';
@@ -13,7 +13,7 @@ import { DeleteWorkout } from 'src/app/store/actions/workouts.actions';
 })
 export class WorkoutCardComponent implements OnInit, OnDestroy {
 
-  @Input() workout: Workout;
+  @Input() workout: WorkoutBean;
   @Input() displayMode: DisplayMode;
 
   constructor(
@@ -23,6 +23,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('workout-card ngOnInit -> ', DisplayMode[this.displayMode]);
+    console.log('workout-card workout -> ', this.workout);
   }
 
   ngOnDestroy() {

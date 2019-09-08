@@ -16,9 +16,9 @@ import {
   Direction,
   WorkoutDayMoved
 } from 'src/app/store/actions/workoutDays.actions';
-import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
+import { selectCurrentWorkoutSelectedDayId, selectCurrentWorkout } from 'src/app/store/selectors/workouts.selectors';
 import { selectWorkoutDayId2Delete } from 'src/app/store/selectors/workoutDays.selectors';
-import { selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
+import { selectHasWorkoutsBeenReset } from 'src/app/store/selectors/data.selectors';
 import { SelectWorkoutDayId2AddFrom, SelectworkoutDayMoveDirection } from 'src/app/store/selectors/workoutDays.selectors';
 import { Guid } from 'guid-typescript';
 
@@ -34,11 +34,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   isNewDayAdded: boolean;
   subs: Subscription;
   activeDayIndex = 0;
-  private ngUnsubscribeForWorkoutReset: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForWorkoutSelectedDay: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForSelectWorkoutDayId2Delete: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForSelectWorkoutId2AddDay: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForSelectWorkoutDayMoveDirection: Subject<void> = new Subject<void>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   @ViewChild('slider') slides: Slides;
 
@@ -55,7 +51,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    private dataService: DataServiceProvider,
+    // private dataService: DataServiceProvider,
     private store: Store<IAppState>) {
     this.isNewDayAdded = false;
     this.subs = this.route.params.subscribe(params => {
@@ -65,9 +61,14 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.store.select(selectHasDefaultWorkoutsBeenReset)
-      .pipe(takeUntil(this.ngUnsubscribeForWorkoutReset))
+    this.store.select(selectCurrentWorkout)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(async (workout) => {
+        console.log('workout days redux - selectCurrentWorkout:', workout);
+        this.workout = workout;
+      });
+    this.store.select(selectHasWorkoutsBeenReset)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (reset) => {
         console.log('workout days redux - HasDefaultWorkoutsBeenReset:', reset);
         if (reset) {
@@ -76,7 +77,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         }
       });
     this.store.select(selectWorkoutDayId2Delete)
-      .pipe(takeUntil(this.ngUnsubscribeForSelectWorkoutDayId2Delete))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (dayId) => {
         console.log('workout days redux - selectWorkoutDayId2Delete:', dayId);
         if (dayId) {
@@ -84,7 +85,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         }
       });
     this.store.select(SelectWorkoutDayId2AddFrom)
-      .pipe(takeUntil(this.ngUnsubscribeForSelectWorkoutId2AddDay))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (dayId) => {
         console.log('workout days redux - SelectWorkoutId2AddDay:', dayId);
         if (dayId) {
@@ -92,7 +93,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         }
       });
     this.store.select(SelectworkoutDayMoveDirection)
-      .pipe(takeUntil(this.ngUnsubscribeForSelectWorkoutDayMoveDirection))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (direction) => {
         console.log('workout days redux - SelectworkoutDayMoveDirection:', direction);
         if (direction) {
@@ -103,7 +104,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.store.select(selectCurrentWorkoutSelectedDayId)
-      .pipe(takeUntil(this.ngUnsubscribeForWorkoutSelectedDay))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (selectedWorkoutDayState) => {
         if (!(this.slides && this.workout && selectedWorkoutDayState &&
           selectedWorkoutDayState.workoutId && selectedWorkoutDayState.dayId)) { return; }
@@ -124,16 +125,10 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log('ngOnDestroy - workout days');
     this.subs.unsubscribe();
-    this.ngUnsubscribeForWorkoutReset.next();
-    this.ngUnsubscribeForWorkoutReset.complete();
-    this.ngUnsubscribeForSelectWorkoutDayId2Delete.next();
-    this.ngUnsubscribeForSelectWorkoutDayId2Delete.complete();
-    this.ngUnsubscribeForWorkoutSelectedDay.next();
-    this.ngUnsubscribeForWorkoutSelectedDay.complete();
-    this.ngUnsubscribeForSelectWorkoutId2AddDay.next();
-    this.ngUnsubscribeForSelectWorkoutId2AddDay.complete();
-    this.ngUnsubscribeForSelectWorkoutDayMoveDirection.next();
-    this.ngUnsubscribeForSelectWorkoutDayMoveDirection.complete();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
     this.store.dispatch(new UnselectWorkout());
   }
 
@@ -160,7 +155,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   async saveChanges() {
-    await this.dataService.saveWorkouts();
+    // await this.dataService.saveWorkouts();
   }
 
   moveWorkoutDay(direction: Direction) {

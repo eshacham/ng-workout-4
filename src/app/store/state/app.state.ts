@@ -1,26 +1,26 @@
-import { IDefaultsState, initialDefaultsState } from './defaults.state';
+import { IDataState, initialDataState } from './data.state';
 import { IMusclesFilterState, initialMusclesFilterState } from './musclesFilter.state';
 import { IWorkoutsState, initialWorkoutsState } from './workouts.state';
 import { IWorkoutDaysState, initialWorkoutDaysState } from './workoutDays.state';
-import { IDataState, initialDataState } from './data.state';
 import { IExerciseSetsState, initialExerciseSetsState } from './ExerciseSets.state';
+import { initialExercisesState, IExercisesState } from './Exercises.state';
 
 export interface IAppState {
-  defaults: IDefaultsState;
+  data: IDataState;
   musclesFilter: IMusclesFilterState;
   workouts: IWorkoutsState;
   days: IWorkoutDaysState;
   sets: IExerciseSetsState;
-  data: IDataState;
+  exercises: IExercisesState;
 }
 
 export const initialAppState: IAppState = {
-  defaults: initialDefaultsState,
+  data: initialDataState,
   musclesFilter: initialMusclesFilterState,
   workouts: initialWorkoutsState,
   days: initialWorkoutDaysState,
   sets: initialExerciseSetsState,
-  data: initialDataState,
+  exercises: initialExercisesState,
 };
 
 export const getInitialState = (): IAppState => initialAppState;

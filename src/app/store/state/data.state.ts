@@ -1,14 +1,10 @@
-import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
-
 export interface IDataState {
-    entities: WorkoutsDataMaps;
+    hasWorkoutsBeenReset: boolean;
+    hasImagesBeenReset: boolean;
+    hasDataBeenLoaded: boolean;
 }
-
 export const initialDataState: IDataState = {
-    entities: {
-        workouts: { byId: {} },
-        days: { byId: {} },
-        sets: { byId: {} },
-        exercises: { byId: {} },
-    },
+    hasWorkoutsBeenReset: false,
+    hasImagesBeenReset: false,
+    hasDataBeenLoaded: false,
 };

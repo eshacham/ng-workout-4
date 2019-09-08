@@ -19,12 +19,16 @@
 </ion-fab>
 
 <ion-content>
-  <ion-list lines="none">
-    <ion-item *ngFor="let workout of workouts$ | async">
-      <app-workout-card
-        [workout]="workout"
-        [displayMode]="DisplayMode">
-      </app-workout-card>
+
+  <ion-list lines="none" >
+    <ion-item *ngFor="let workout of (workouts$ | async)">
+
+        <app-workout-card
+          [workout]="workout"
+          [displayMode]="DisplayMode">
+        </app-workout-card>
+
     </ion-item>
-  </ion-list>
+   </ion-list>
+
 </ion-content>

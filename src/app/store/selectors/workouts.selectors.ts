@@ -3,7 +3,15 @@ import { IAppState } from '../state/app.state';
 import { IWorkoutsState } from '../state/workouts.state';
 import { WorkoutBean } from 'src/app/models/Workout';
 
-export const workoutsState = (state: IAppState): IWorkoutsState => state.workouts;
+const workoutsState = (state: IAppState) => state.workouts;
+
+export const selectWorkouts = createSelector(
+    workoutsState,
+    (workoutsMap: IWorkoutsState) => {
+        return Object.keys(workoutsMap.byId)
+        .map(id => workoutsMap.byId[id]);
+    }
+);
 
 export const selectCurrentWorkoutId = createSelector(
   workoutsState,

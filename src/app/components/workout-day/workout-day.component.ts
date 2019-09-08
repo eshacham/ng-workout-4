@@ -222,7 +222,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   async saveChanges() {
-    await this.dataService.saveWorkouts();
+    // await this.dataService.saveWorkouts();
     // this.toastr.info('Saved!');
   }
 

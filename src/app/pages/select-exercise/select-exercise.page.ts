@@ -11,9 +11,9 @@ import { Muscles, RepetitionSpeed } from 'src/app/models/enums';
 import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
 import { IAppState } from '../../store/state/app.state';
 import { Subscription, Subject } from 'rxjs';
-import { LoadedDefaultImages } from '../../store/actions/defaults.actions';
+import { LoadedImages } from '../../store/actions/data.actions';
 import { takeUntil } from 'rxjs/operators';
-import { selectHasDefaultImagesBeenReset, selectHasDefaultWorkoutsBeenReset } from 'src/app/store/selectors/defaults.selectors';
+import { selectHasImagesBeenReset, selectHasWorkoutsBeenReset } from 'src/app/store/selectors/data.selectors';
 import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
@@ -97,17 +97,17 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.haveWorkoutsBeenReset = false;
     this.images = await this.getImages();
-    this.workout = await this.dataService.getWorkout(this.workoutId);
-    this.store.select(selectHasDefaultImagesBeenReset)
+    // this.workout = await this.dataService.getWorkout(this.workoutId);
+    this.store.select(selectHasImagesBeenReset)
       .pipe(takeUntil(this.ngUnsubscribeForImageReset))
       .subscribe(async (reset) => {
         console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
         if (reset) {
           this.images = await this.getImages();
-          this.store.dispatch(new LoadedDefaultImages());
+          this.store.dispatch(new LoadedImages());
         }
       });
-    this.store.select(selectHasDefaultWorkoutsBeenReset)
+    this.store.select(selectHasWorkoutsBeenReset)
       .pipe(takeUntil(this.ngUnsubscribeForWorkoutReset))
       .subscribe(reset => {
         console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
@@ -175,7 +175,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     newSets.forEach((set) => {
       // this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId).exerciseSets.push(set);
     });
-    this.dataService.saveWorkouts();
+    // this.dataService.saveWorkouts();
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 

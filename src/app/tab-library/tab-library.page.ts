@@ -12,10 +12,10 @@ import { ToastService } from '../providers/toast-service/toast.service';
 import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
-import { LoadedDefaultImages } from '../store/actions/defaults.actions';
+import { LoadedImages } from '../store/actions/data.actions';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { selectHasDefaultImagesBeenReset } from '../store/selectors/defaults.selectors';
+import { selectHasImagesBeenReset } from '../store/selectors/data.selectors';
 import { selectLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
 
 @Component({
@@ -78,13 +78,13 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this._images = await this.dataService.getImages();
     console.log('tab-library ngOnInit - got Images:', this._images);
     this.isMobile = this.dataService.isMobile;
-    this.store.select(selectHasDefaultImagesBeenReset)
+    this.store.select(selectHasImagesBeenReset)
     .pipe(takeUntil(this.ngUnsubscribeForImgaeReset))
     .subscribe(async (reset) => {
       console.log('tab-library redux - HasDefaultImagesBeenReset:', reset);
       if (reset) {
         this.images = await this.dataService.getImages();
-        this.store.dispatch(new LoadedDefaultImages());
+        this.store.dispatch(new LoadedImages());
       }
     });
     this.store.select(selectLibraryMusclesFilterState)

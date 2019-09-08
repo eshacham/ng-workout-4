@@ -5,19 +5,20 @@ import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
 import { Muscles } from '../../models/enums';
-import { Workout, WorkoutBean } from '../../models/Workout';
+import { WorkoutBean } from '../../models/Workout';
 import { defaultWorkouts } from '../../constants/defaultWorkouts';
 import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
 import { defaultExerciseMedia } from '../../constants/defaultExerciseMedia';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
 import { IAppState } from '../../store/state/app.state';
 import {
-  ResetDefaultWorkouts,
-  UpdatedDefaultWorkouts,
-  ResetDefaultImages,
-  UpdatedDefaultImages
-} from 'src/app/store/actions/defaults.actions';
+  ResetWorkouts,
+  WorkoutsUpdated,
+  ResetImages,
+  ImagesUpdated
+} from 'src/app/store/actions/data.actions';
 import { Exercise } from 'src/app/models/Exercise';
+import { selectHasDataBeenLoaded } from 'src/app/store/selectors/data.selectors';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -25,8 +26,8 @@ const IMAGES_STORAGE_KEY = 'my_images';
 @Injectable()
 export class DataServiceProvider {
 
-  private _workoutsDataMaps: WorkoutsDataMaps;
   private _images: ExerciseMedia[];
+  // private hasDataBeenLoaded = false;
 
   constructor(
     private platform: Platform,
@@ -35,69 +36,75 @@ export class DataServiceProvider {
     private storage: Storage,
     private store: Store<IAppState>) {
     this._images = [];
-    // this._workoutsDataMaps = {};
+    // this.store.select(selectHasDataBeenLoaded)
+    //   .subscribe(async loaded => {
+    //     if (loaded) {
+    //       this.hasDataBeenLoaded = loaded;
+    //     }
+    //   });
   }
 
-  get hasWorkouts(): boolean {
-    return this._workoutsDataMaps && Object.keys(this._workoutsDataMaps.workouts).length > 0;
-  }
-
-  async getWorkout(id: string): Promise<WorkoutBean> {
-    if (!this.hasWorkouts) {
-      await this.initWorkouts();
-    }
-    console.log(`servicing workout ${id} from `, this._workoutsDataMaps.workouts);
-    const workout = this._workoutsDataMaps.workouts[id];
-    console.log(`found workout ${id}`, workout);
-    return workout;
-  }
-
-  async initWorkouts() {
-    await this.storage.ready();
-    this._workoutsDataMaps = await this.storage.get(WORKOUTS_STORAGE_KEY);
-    if (!this.hasWorkouts) {
-      await this.resetWorkouts();
-    } else if (this.isMobile) {
-      this.UpdateImagesInWorkouts(this._workoutsDataMaps.exercises.byId);
-      await this.saveWorkouts();
-    }
-    console.log('loaded cached workouts', Object.keys(this._workoutsDataMaps.workouts));
-  }
-
-  async resetWorkouts() {
-    this._workoutsDataMaps = defaultWorkouts.flat;
-    await this.saveWorkouts(true);
-    console.log('workouts have been reset to default workouts');
-  }
   async getWorkouts(): Promise<WorkoutsDataMaps> {
-    if (!this.hasWorkouts) {
-      await this.initWorkouts();
-    }
-    return this._workoutsDataMaps;
+    // if (!this.hasDataBeenLoaded) {
+      return await this.initWorkouts();
+    // }
+    // return this._workoutsDataMaps;
   }
 
-  private UpdateImagesInWorkouts(exercises:  {[id: string]: Exercise }) {
-      for (const id of Object.keys(exercises)) {
-        const exe = exercises[id];
-        if (!exercises[id].media.isDefault &&
-          exe.media.nativePath.indexOf(this.file.dataDirectory) < 0) {
-          const oldPath = exe.media.nativePath;
-          const name = exe.media.nativePath.substr(exe.media.nativePath.lastIndexOf('/') + 1);
-          exe.media.nativePath = this.file.dataDirectory + name;
-          exe.media.ionicPath = this.getIonicPath(exe.media.nativePath);
-          console.log(`update exercise image path from ${oldPath} to ${exe.media.nativePath}`);
-        }
-    }
-  }
+  // async getWorkout(id: string): Promise<WorkoutBean> {
+  //   if (!this.hasDataBeenLoaded) {
+  //     await this.initWorkouts();
+  //   }
+  //   console.log(`servicing workout ${id} from `, this._workoutsDataMaps.workouts);
+  //   const workout = this._workoutsDataMaps.workouts[id];
+  //   console.log(`found workout ${id}`, workout);
+  //   return workout;
+  // }
 
-  async saveWorkouts(haveWorkoutsBeenReset: boolean = false) {
+  async initWorkouts(): Promise<WorkoutsDataMaps> {
     await this.storage.ready();
-    await this.storage.set(WORKOUTS_STORAGE_KEY, this._workoutsDataMaps);
+    let workoutsDataMaps = await this.storage.get(WORKOUTS_STORAGE_KEY);
+    if (!workoutsDataMaps && Object.keys(workoutsDataMaps.workouts).length === 0) {
+      workoutsDataMaps = await this.resetWorkouts();
+    } else if (this.isMobile) {
+      this.UpdateImagesInWorkouts(workoutsDataMaps);
+      await this.saveWorkouts(workoutsDataMaps);
+    }
+    console.log('loaded cached workouts', Object.keys(workoutsDataMaps.workouts));
+    return workoutsDataMaps;
+  }
+
+  async resetWorkouts(): Promise<WorkoutsDataMaps>  {
+    const workoutsDataMaps = defaultWorkouts.flat;
+    await this.saveWorkouts(workoutsDataMaps, true);
+    console.log('workouts have been reset to default workouts');
+    return workoutsDataMaps;
+  }
+
+
+  private UpdateImagesInWorkouts(workoutsDataMaps: WorkoutsDataMaps) {
+    const exercises = workoutsDataMaps.exercises.byId;
+    for (const id of Object.keys(exercises)) {
+      const exe = exercises[id];
+      if (!exercises[id].media.isDefault &&
+        exe.media.nativePath.indexOf(this.file.dataDirectory) < 0) {
+        const oldPath = exe.media.nativePath;
+        const name = exe.media.nativePath.substr(exe.media.nativePath.lastIndexOf('/') + 1);
+        exe.media.nativePath = this.file.dataDirectory + name;
+        exe.media.ionicPath = this.getIonicPath(exe.media.nativePath);
+        console.log(`update exercise image path from ${oldPath} to ${exe.media.nativePath}`);
+      }
+    }
+  }
+
+  async saveWorkouts(workoutsDataMaps: WorkoutsDataMaps, haveWorkoutsBeenReset: boolean = false) {
+    await this.storage.ready();
+    await this.storage.set(WORKOUTS_STORAGE_KEY, workoutsDataMaps);
     console.log('workouts have been saved');
     if (haveWorkoutsBeenReset) {
-      this.store.dispatch(new ResetDefaultWorkouts());
+      this.store.dispatch(new ResetWorkouts());
     } else {
-      this.store.dispatch(new UpdatedDefaultWorkouts());
+      this.store.dispatch(new WorkoutsUpdated());
     }
   }
 
@@ -181,9 +188,9 @@ export class DataServiceProvider {
     await this.storage.ready();
     await this.storage.set(IMAGES_STORAGE_KEY, this._images);
     if (imagesHaveBeenReset) {
-      this.store.dispatch(new ResetDefaultImages());
+      this.store.dispatch(new ResetImages());
     } else {
-      this.store.dispatch(new UpdatedDefaultImages());
+      this.store.dispatch(new ImagesUpdated());
     }
   }
 

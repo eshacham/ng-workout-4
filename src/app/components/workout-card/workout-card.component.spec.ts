@@ -25,7 +25,7 @@ describe('WorkoutCardPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WorkoutCardComponent);
     component = fixture.componentInstance;
-    component.workout = defaultFirstWorkout;
+    component.workout$ = defaultFirstWorkout;
     fixture.detectChanges();
   });
 
