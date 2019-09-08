@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { SelectWorkoutId2Delete } from '../store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
-import { GetData } from '../store/actions/data.actions';
+import { GetData, UpdateWorkouts } from '../store/actions/data.actions';
 import { selectWorkouts } from '../store/selectors/workouts.selectors';
 
 @Component({
@@ -63,6 +63,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
       this._displayMode = val;
       if (this.DisplayMode === DisplayMode.Display) {
         // this.dataService.saveWorkouts();
+        this.store.dispatch(new UpdateWorkouts());
       }
     }
   }

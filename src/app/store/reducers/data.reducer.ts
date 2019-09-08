@@ -1,7 +1,7 @@
 import { DataActions, EDataActions } from '../actions/data.actions';
 import { IDataState, initialDataState } from '../state/data.state';
 
-export const defaultsReducers =
+export const dataReducers =
 (state = initialDataState, action: DataActions)
 : IDataState => {
     switch (action.type) {

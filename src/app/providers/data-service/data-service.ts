@@ -104,7 +104,7 @@ export class DataServiceProvider {
     if (haveWorkoutsBeenReset) {
       this.store.dispatch(new ResetWorkouts());
     } else {
-      this.store.dispatch(new WorkoutsUpdated());
+      // this.store.dispatch(new WorkoutsUpdated());
     }
   }
 

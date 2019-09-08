@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
+import { IDataState } from '../state/data.state';
 
 export enum EDataActions {
     GetData = '[Data] Get app data',
