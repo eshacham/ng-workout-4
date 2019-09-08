@@ -4,9 +4,9 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Workout, WorkoutBean } from '../models/Workout';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { DisplayMode } from '../models/enums';
-import { WorkoutDay } from '../models/WorkoutDay';
+import { WorkoutDay, WorkoutDayBean } from '../models/WorkoutDay';
 import { IAppState } from '../store/state/app.state';
-import { DeleteWorkout, WorkoutDeleted } from '../store/actions/workouts.actions';
+import { DeleteWorkout, WorkoutDeleted, AddWorkout } from '../store/actions/workouts.actions';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { SelectWorkoutId2Delete } from '../store/selectors/workouts.selectors';
@@ -80,19 +80,13 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   }
 
   async addWorkout(event: any) {
-    const newWorkout = new Workout({
-      id: Guid.raw(),
-      name: 'new workout',
-      description: 'describe the workout',
-      days: [
-        new WorkoutDay({ id: Guid.raw(), name: 'workout day name', exerciseSets: [] })
-      ]
-    });
-    // this.workouts.push(newWorkout);
     event.stopPropagation();
+    const data = WorkoutBean.newBean();
+    this.store.dispatch(new AddWorkout(data));
     await new Promise(() => setTimeout(() => {
       this.DisplayMode = DisplayMode.Edit;
       // this.dataService.saveWorkouts();
+      this.store.dispatch(new UpdateWorkouts());
     }, 1));
 
   }

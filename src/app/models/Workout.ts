@@ -1,4 +1,5 @@
-import { WorkoutDay } from './WorkoutDay';
+import { WorkoutDay, WorkoutDayBean } from './WorkoutDay';
+import { Guid } from 'guid-typescript';
 
 export class WorkoutBase {
     public id: string;
@@ -40,5 +41,17 @@ export class WorkoutBean extends WorkoutBase {
         days: string[]}) {
         super(options);
         this.days = options.days;
+    }
+
+    static newBean() {
+        const id = Guid.raw();
+        const day = WorkoutDayBean.newBean(id);
+        const workout = new WorkoutBean({
+            id: id,
+            name: 'new workout',
+            description: 'describe the workout',
+            days: [ day.id ]
+        });
+        return { workout: workout, day: day };
     }
 }

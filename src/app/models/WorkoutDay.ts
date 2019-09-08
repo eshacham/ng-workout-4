@@ -1,5 +1,6 @@
 import { ExerciseSet } from './ExerciseSet';
 import { DisplayMode, RunningState } from './enums';
+import { Guid } from 'guid-typescript';
 
 export class WorkoutDayBase {
     public id: string;
@@ -72,5 +73,14 @@ export class WorkoutDayBean extends WorkoutDayBase {
         this.runningState = options.runningState;
         this.exerciseSetIndex2Delete = options.exerciseSetIndex2Delete;
         this.workoutId = options.workoutId;
+    }
+
+    static newBean(workoutId: string = null) {
+        return new WorkoutDayBean({
+            id: Guid.raw(),
+            name: 'new workout day',
+            exerciseSets: [],
+            workoutId: workoutId
+        });
     }
 }

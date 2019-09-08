@@ -1,10 +1,13 @@
 import { Action } from '@ngrx/store';
+import { WorkoutBean } from 'src/app/models/Workout';
+import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 
 export enum EWorkoutsActions {
     SelectWorkout = '[Workouts] Select workout',
     UnselectWorkout = '[Workouts] Unselect workout',
     DeleteWorkout = '[Workouts] Delete workout',
     WorkoutDeleted = '[Workouts] Workout has been deleted',
+    AddWorkout = '[Workouts] Add workout',
 }
 
 export class SelectWorkout implements Action {
@@ -25,10 +28,15 @@ export class WorkoutDeleted implements Action {
     readonly type = EWorkoutsActions.WorkoutDeleted;
     constructor() { }
 }
+export class AddWorkout implements Action {
+    readonly type = EWorkoutsActions.AddWorkout;
+    constructor(public payload: { workout: WorkoutBean, day: WorkoutDayBean }) { }
+}
 
 export type WorkoutsActions =
     SelectWorkout |
     UnselectWorkout |
     DeleteWorkout |
-    WorkoutDeleted
+    WorkoutDeleted |
+    AddWorkout
     ;

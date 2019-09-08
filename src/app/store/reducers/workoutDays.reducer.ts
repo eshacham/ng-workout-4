@@ -1,16 +1,25 @@
 import { WorkoutDaysActions, EWorkoutDaysActions } from '../actions/workoutDays.actions';
 import { initialWorkoutDaysState, IWorkoutDaysState } from '../state/workoutDays.state';
 import { GetDataSuccess, EDataActions } from '../actions/data.actions';
-
+import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
 
 export const workoutDaysReducers = (state = initialWorkoutDaysState,
-    action: WorkoutDaysActions | GetDataSuccess)
+    action: WorkoutDaysActions | WorkoutsActions | GetDataSuccess)
     : IWorkoutDaysState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
             return {
                 ...state,
                 byId: action.payload.days.byId,
+            };
+        }
+        case EWorkoutsActions.AddWorkout: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.day.id]: action.payload.day
+                }
             };
         }
         case EWorkoutDaysActions.AddWorkoutDay: {

@@ -13,6 +13,15 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 byId: action.payload.workouts.byId,
             };
         }
+        case EWorkoutsActions.AddWorkout: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.workout.id]: action.payload.workout
+                }
+            };
+        }
         case EWorkoutsActions.SelectWorkout: {
             return {
                 ...state,

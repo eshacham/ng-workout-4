@@ -189,7 +189,10 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   private async addWorkoutDay(currentWorkoutDayId: string) {
     const newId = Guid.raw();
-    const newDay = new WorkoutDay({ id: newId, name: 'new workout day', exerciseSets: [] });
+    const newDay = new WorkoutDay({
+      id: newId,
+      name: 'new workout day',
+      exerciseSets: [] });
     const index = this.getWorkoutDayIndexById(currentWorkoutDayId);
     console.log('splicing (insert) at ', index);
     this.isNewDayAdded = true;
