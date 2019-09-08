@@ -1,13 +1,13 @@
 import { Workout, WorkoutBean } from './Workout';
 import { WorkoutDayBean, WorkoutDay } from './WorkoutDay';
 import { ExerciseSetBean, ExerciseSet } from './ExerciseSet';
-import { Exercise } from './Exercise';
+import { ExerciseBean } from './Exercise';
 
 export interface WorkoutsDataMaps {
     workouts: { byId: {[id: string]: WorkoutBean }};
     days: { byId: {[id: string]: WorkoutDayBean }};
     sets: { byId: {[id: string]: ExerciseSetBean }};
-    exercises: { byId: { [id: string]: Exercise }};
+    exercises: { byId: { [id: string]: ExerciseBean }};
 }
 
 export class DefaultWorkouts {
@@ -24,11 +24,11 @@ export class DefaultWorkouts {
             exercises: { byId: {}},
         };
         for (const workout of this.workouts) {
-            workoutsData.workouts.byId[`${workout.id}`] = Workout.makeBean(workout);
+            workoutsData.workouts.byId[`${workout.id}`] = WorkoutBean.makeBean(workout);
             for (const day of workout.days) {
-                workoutsData.days.byId[`${day.id}`] = WorkoutDay.makeBean(day);
+                workoutsData.days.byId[`${day.id}`] = WorkoutDayBean.makeBean(day, workout.id);
                 for (const set of day.exerciseSets) {
-                    workoutsData.sets.byId[`${set.id}`] = ExerciseSet.makeBean(set);
+                    workoutsData.sets.byId[`${set.id}`] = ExerciseSetBean.makeBean(set, day.id);
                     for (const exe of set.exercises) {
                         workoutsData.exercises.byId[`${exe.id}`] = exe;
                     }

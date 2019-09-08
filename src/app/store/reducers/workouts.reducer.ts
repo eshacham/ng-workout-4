@@ -37,7 +37,11 @@ export const workoutsReducers = (state = initialWorkoutsState,
         case EWorkoutsActions.DeleteWorkout: {
             return {
                 ...state,
-                workoutId2Delete: action.payload.workoutId,
+                byId:
+                    Object.entries(state.byId)
+                        .filter(([key, value]) => key !== action.payload.workoutId)
+                        .reduce((map, obj) => (map[obj[0]] = obj[1], map), {})
+
             };
         }
         case EWorkoutsActions.WorkoutDeleted: {

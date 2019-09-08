@@ -37,13 +37,6 @@ export class WorkoutDay extends WorkoutDayBase {
         }
         days.splice(index, 1);
     }
-
-    static makeBean(day: WorkoutDay): WorkoutDayBean {
-        return {
-            ...day,
-            exerciseSets: day.exerciseSets.map(s => s.id),
-        };
-    }
 }
 
 export class WorkoutDayBean extends WorkoutDayBase {
@@ -72,15 +65,26 @@ export class WorkoutDayBean extends WorkoutDayBase {
         this.displayMode = options.displayMode;
         this.runningState = options.runningState;
         this.exerciseSetIndex2Delete = options.exerciseSetIndex2Delete;
-        this.workoutId = options.workoutId;
+        if (options.workoutId) {
+            this.workoutId = options.workoutId;
+        }
+
     }
 
-    static newBean(workoutId: string = null) {
+    static newBean(workoutId: string) {
         return new WorkoutDayBean({
             id: Guid.raw(),
             name: 'new workout day',
             exerciseSets: [],
             workoutId: workoutId
         });
+    }
+
+    static makeBean(day: WorkoutDay, workoutId: string): WorkoutDayBean {
+        return {
+            ...day,
+            exerciseSets: day.exerciseSets.map(s => s.id),
+            workoutId: workoutId
+        };
     }
 }

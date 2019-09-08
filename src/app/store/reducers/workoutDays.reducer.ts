@@ -22,6 +22,16 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 }
             };
         }
+        case EWorkoutsActions.DeleteWorkout: {
+            console.log('workout days reducer, delete workout', action.payload.workoutId);
+            return {
+                ...state,
+                byId:
+                    Object.entries(state.byId)
+                        .filter(([key, value]) => value.workoutId !== action.payload.workoutId)
+                        .reduce((map, obj) => (map[obj[0]] = obj[1], map), {})
+            };
+        }
         case EWorkoutDaysActions.AddWorkoutDay: {
             return {
                 ...state,

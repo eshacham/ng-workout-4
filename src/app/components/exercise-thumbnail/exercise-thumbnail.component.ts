@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser/';
 import { PopoverController } from '@ionic/angular';
-import { Exercise } from 'src/app/models/Exercise';
+import { ExerciseBean } from 'src/app/models/Exercise';
 import { DisplayMode, WeightUnit, RunningState } from 'src/app/models/enums';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
 import { Rep } from 'src/app/models/Rep';
@@ -45,7 +45,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     @Input() exerciseSetIndex: number;
     @Input() isDayInEditMode: boolean;
 
-    get activeExercise(): Exercise {
+    get activeExercise(): ExerciseBean {
         return this.exerciseSet.exercises[this.activeExerciseInSetIndex];
     }
 
@@ -69,7 +69,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this._isOpen = val;
     }
 
-    get OpenedExercises(): Exercise[] {
+    get OpenedExercises(): ExerciseBean[] {
         return this.IsOpen ? this.exerciseSet.exercises : [];
     }
 
@@ -170,7 +170,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 displayMode: DisplayMode.Workout,
                 runningState: RunningState.Started,
                 exerciseSets: null,
-                name: null
+                name: null,
+                workoutId: null
             }));
             return;
         }
@@ -188,7 +189,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             displayMode: DisplayMode.Workout,
             runningState: RunningState.Started,
             exerciseSets: null,
-            name: null
+            name: null,
+            workoutId: null
         }));
     }
 
@@ -205,7 +207,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     deleteExercise(index: number) {
-        Exercise.delete(this.exerciseSet.exercises, index);
+        ExerciseBean.delete(this.exerciseSet.exercises, index);
         if (!this.exerciseSet.exercises.length) {
             this.deleteExerciseSet();
         }
@@ -218,7 +220,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             displayMode: DisplayMode.Workout,
             runningState: RunningState.Completed,
             exerciseSets: null,
-            name: null
+            name: null,
+            workoutId: null
           }));
     }
 
@@ -247,27 +250,27 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         //     }
     }
 
-    isFirstInSet(exercise: Exercise): boolean {
+    isFirstInSet(exercise: ExerciseBean): boolean {
         return this.hasSet && this.activeExercise === exercise;
     }
 
-    isLastInSet(exercise: Exercise): boolean {
+    isLastInSet(exercise: ExerciseBean): boolean {
         return this.hasSet && this.exerciseSet.exercises[this.exerciseSet.exercises.length - 1] === exercise;
     }
 
-    isNotLastInSet(exercise: Exercise): boolean {
+    isNotLastInSet(exercise: ExerciseBean): boolean {
         return this.hasSet && this.exerciseSet.exercises[this.exerciseSet.exercises.length - 1] !== exercise;
     }
 
-    isFirstSet(exercise: Exercise): boolean {
+    isFirstSet(exercise: ExerciseBean): boolean {
         return !this.hasSet || this.isFirstInSet(exercise);
     }
 
-    isLastSet(exerciseSet: Exercise): boolean {
+    isLastSet(exerciseSet: ExerciseBean): boolean {
         return !this.hasSet || this.isLastInSet(exerciseSet);
     }
 
-    getTopBottomMarginClass(exercise: Exercise) {
+    getTopBottomMarginClass(exercise: ExerciseBean) {
         if (this.isFirstInSet(exercise)) {
             return ['noBottomMargin'];
         } else {
@@ -298,7 +301,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         return exerciseIndex === this.activeExerciseInSetIndex;
     }
 
-    getRepClass(rep: Rep, exercise: Exercise) {
+    getRepClass(rep: Rep, exercise: ExerciseBean) {
         const classes: string[] = ['nonActiveRep'];
         if (this.IsRunning) {
             if (rep.isActive) {
@@ -337,7 +340,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.setExecrciseRepsActiveState(this.activeExercise, this.activeRepIndex);
     }
 
-    private resetRepsState(exercise: Exercise) {
+    private resetRepsState(exercise: ExerciseBean) {
         exercise
             .reps.forEach((rep) => {
                 rep.isActive = false;
@@ -345,14 +348,14 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             });
     }
 
-    private setExecrciseRepsActiveState(exercise: Exercise, index: number) {
+    private setExecrciseRepsActiveState(exercise: ExerciseBean, index: number) {
         exercise
             .reps.forEach((rep, i) => {
                 rep.isActive = (i === index);
             });
     }
 
-    private InactiveExerciseReps(exercise: Exercise) {
+    private InactiveExerciseReps(exercise: ExerciseBean) {
         exercise
             .reps.forEach((rep, i) => {
                 rep.isActive = false;

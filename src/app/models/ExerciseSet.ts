@@ -1,7 +1,6 @@
-import { Exercise } from './Exercise';
+import { ExerciseBean } from './Exercise';
 
 export class ExerciseSetBase {
-
     public id: string;
 
     constructor(options: { id: string }) {
@@ -9,10 +8,9 @@ export class ExerciseSetBase {
     }
 }
 export class ExerciseSet extends ExerciseSetBase {
+    public exercises: ExerciseBean[];
 
-    public exercises: Exercise[];
-
-    constructor(options: { id: string, exercises: Exercise[] }) {
+    constructor(options: { id: string, exercises: ExerciseBean[] }) {
         super(options);
         this.exercises = options.exercises;
     }
@@ -21,25 +19,29 @@ export class ExerciseSet extends ExerciseSetBase {
         const set = exerciseSets[index];
         if (set && set.exercises.length) {
             set.exercises.forEach((_, idx) => {
-                Exercise.delete(set.exercises, idx);
+                ExerciseBean.delete(set.exercises, idx);
             });
         }
         exerciseSets.splice(index, 1);
     }
+}
+export class ExerciseSetBean extends ExerciseSetBase {
+    public exercises: string[];
+    public workoutDayId?: string;
 
-    static makeBean(set: ExerciseSet): ExerciseSetBean {
+    constructor(options: { id: string, exercises: string[], workoutDayId?: string }) {
+        super(options);
+        this.exercises = options.exercises;
+        if (options.workoutDayId) {
+            this.workoutDayId = options.workoutDayId;
+        }
+    }
+
+    static makeBean(set: ExerciseSet, dayId): ExerciseSetBean {
         return {
             ...set,
             exercises: set.exercises.map(e => e.id),
+            workoutDayId: dayId
         };
-    }
-}
-export class ExerciseSetBean extends ExerciseSetBase {
-
-    public exercises: string[];
-
-    constructor(options: { id: string, exercises: string[] }) {
-        super(options);
-        this.exercises = options.exercises;
     }
 }

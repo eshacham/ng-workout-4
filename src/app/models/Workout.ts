@@ -24,12 +24,6 @@ export class Workout extends WorkoutBase {
         super(options);
         this.days = options.days;
     }
-    static makeBean(workout: Workout): WorkoutBean {
-        return {
-            ...workout,
-            days: workout.days.map(d => d.id),
-        };
-    }
 }
 export class WorkoutBean extends WorkoutBase {
     public days?: string[];
@@ -53,5 +47,12 @@ export class WorkoutBean extends WorkoutBase {
             days: [ day.id ]
         });
         return { workout: workout, day: day };
+    }
+
+    static makeBean(workout: Workout): WorkoutBean {
+        return {
+            ...workout,
+            days: workout.days.map(d => d.id),
+        };
     }
 }

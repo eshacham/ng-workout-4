@@ -21,7 +21,7 @@
 <ion-content>
 
   <ion-list lines="none" >
-    <ion-item *ngFor="let workout of (workouts$ | async)">
+    <ion-item *ngFor="let workout of workouts">
 
         <app-workout-card
           [workout]="workout"

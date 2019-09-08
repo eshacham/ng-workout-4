@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { GripType, WeightType, GripWidth, RepetitionSpeed } from 'src/app/models/enums';
-import { Exercise } from 'src/app/models/Exercise';
+import { ExerciseBean } from 'src/app/models/Exercise';
 
 @Component({
   selector: 'app-exercise-variation-popover',
@@ -10,7 +10,7 @@ import { Exercise } from 'src/app/models/Exercise';
 })
 export class ExerciseVariationPopoverComponent implements OnInit {
 
-  exercise: Exercise;
+  exercise: ExerciseBean;
 
   weightTypes: string[];
   gripTypes: string[];

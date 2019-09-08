@@ -23,7 +23,8 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   @ViewChild('fabEdit') fabEdit: IonFab;
 
-  workouts$: Observable<WorkoutBean[]>;
+  // workouts$: Observable<WorkoutBean[]>;
+  workouts: WorkoutBean[];
 
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
@@ -32,18 +33,16 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   constructor(
     private dataService: DataServiceProvider,
     private store: Store<IAppState>) {
-    this.workouts$ = this.store.pipe(select(selectWorkouts));
+    // this.workouts$ = this.store.pipe(select(selectWorkouts));
   }
 
   async ngOnInit() {
     this.store.dispatch(new GetData());
-    this.store.select(SelectWorkoutId2Delete)
+
+    this.store.select(selectWorkouts)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(async id => {
-        if (id) {
-          await this.deleteWorkout(id);
-          this.store.dispatch(new WorkoutDeleted());
-        }
+      .subscribe(workouts => {
+        this.workouts = workouts;
       });
   }
 
@@ -85,7 +84,6 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     this.store.dispatch(new AddWorkout(data));
     await new Promise(() => setTimeout(() => {
       this.DisplayMode = DisplayMode.Edit;
-      // this.dataService.saveWorkouts();
       this.store.dispatch(new UpdateWorkouts());
     }, 1));
 

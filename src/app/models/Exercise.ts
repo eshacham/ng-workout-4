@@ -4,9 +4,10 @@ import { Grip } from './Grip';
 import { Rep } from './Rep';
 import { ExerciseMedia } from './ExerciseMedia';
 
-export class Exercise {
+export class ExerciseBean {
 
     public id: string;
+    public exerciseSetId?: string;
     public name: string;
     public media: ExerciseMedia;
     public theGrip: Grip = new Grip();
@@ -19,6 +20,7 @@ export class Exercise {
 
     constructor(options: {
         id: string,
+        exerciseSetId?: string;
         name: string,
         media: ExerciseMedia,
         theGrip?: Grip,
@@ -41,9 +43,12 @@ export class Exercise {
         this.restAfterExercise = options.restAfterExercise;
         this.reps = options.reps;
         this.media.mediaUsageCounter++;
+        if (options.exerciseSetId) {
+            this.exerciseSetId = options.exerciseSetId;
+        }
     }
 
-    static delete(exercises: Exercise[], index: number) {
+    static delete(exercises: ExerciseBean[], index: number) {
         if (exercises[index] && exercises[index].media) {
             exercises[index].media.mediaUsageCounter--;
             exercises.splice(index, 1);

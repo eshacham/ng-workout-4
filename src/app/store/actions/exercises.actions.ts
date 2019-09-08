@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Exercise } from 'src/app/models/Exercise';
+import { ExerciseBean } from 'src/app/models/Exercise';
 
 // export enum EWorkoutDaysActions {
 //     SelectWorkoutDay = '[Workouts] Select workout day',

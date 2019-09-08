@@ -4,7 +4,7 @@ import { DefaultWorkouts } from '../models/DefaultWorkouts';
 import { Workout } from '../models/Workout';
 import { WorkoutDay } from '../models/WorkoutDay';
 import { ExerciseSet } from '../models/ExerciseSet';
-import { Exercise } from '../models/Exercise';
+import { ExerciseBean } from '../models/Exercise';
 import { Grip } from '../models/Grip';
 import { Rep } from '../models/Rep';
 import { getMedia } from './defaultExerciseMedia';
@@ -24,7 +24,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bench Press, Wide Grip',
                                         media: getMedia('BenchPressWideGrip.jpeg'),
                                         theGrip: new Grip(
@@ -64,7 +64,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Seated Rope Cable Row',
                                         media: getMedia('SeatedRopeCableRow.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -94,7 +94,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Wrist Curl',
                                         media: getMedia('DumbbellWristCurl.png'),
                                         theGrip: new Grip(
@@ -129,7 +129,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Triceps Pushdown, Overhand Grip',
                                         media: getMedia('CableTricepsPushdownOverheadGrip.png'),
                                         theGrip: new Grip(
@@ -167,7 +167,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Biceps Curl, Underhand Grip',
                                         media: getMedia('CableBicepsCurlUnderhandGrip.png'),
                                         theGrip: new Grip(
@@ -205,7 +205,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Leg Raise Machine',
                                         media: getMedia('LegRaiseMachine.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -240,7 +240,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Leg Curl',
                                         media: getMedia('CableLegCurl.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -275,7 +275,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Crossfit Situps',
                                         media: getMedia('CrossfitSitup.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -299,7 +299,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cross Body Crunch',
                                         media: getMedia('CrossBodyCrunch.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -330,7 +330,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bench Press, Narrow Grip',
                                         media: getMedia('BenchPressNarrowGrip.png'),
                                         theGrip: new Grip(
@@ -360,7 +360,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Bench Press, Rotating Grip',
                                         media: getMedia('DumbbellBenshPressRotatingGrip.png'),
                                         theGrip: new Grip(
@@ -390,7 +390,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Bench Press, Rotating Grip',
                                         media: getMedia('DumbbellBenshPressRotatingGrip.png'),
                                         theGrip: new Grip(
@@ -425,7 +425,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Fly',
                                         media: getMedia('CableFly.png'),
                                         theGrip: new Grip(
@@ -463,7 +463,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Fly',
                                         media: getMedia('DumbbellFly.png'),
                                         theGrip: new Grip(
@@ -497,7 +497,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Horizontal Row, Inclined Prone',
                                         media: getMedia('DumbbellHorizontalRowInclineProne.png'),
                                         theGrip: new Grip(
@@ -532,7 +532,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Tricpes Extensions, Seated',
                                         media: getMedia('DumbbellTricepsExtensionSeated.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -564,7 +564,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Inclined Pushup, Narrow Grip',
                                         media: getMedia('InclinePushupNarrowGrip.jpg'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -593,7 +593,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Reverse Cable Fly, On Flat Bench',
                                         media: getMedia('ReverseCableFlyOnFlatBench.png'),
                                         theGrip: new Grip(
@@ -627,7 +627,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Situps',
                                         media: getMedia('Situps.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -652,7 +652,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Situps with Weight Above Head',
                                         media: getMedia('SitupsWithWeightAboveHead.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -683,7 +683,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Russian Twist',
                                         media: getMedia('RussianTwist.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -714,7 +714,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                         media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
                                         theGrip: new Grip(
@@ -749,7 +749,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Decline Dumbbell Pullover',
                                         media: getMedia('DeclineDumbbellPullover.png'),
                                         theGrip: new Grip(
@@ -790,7 +790,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Arm Circles',
                                         media: getMedia('DumbbellArmCircles.png'),
                                         theGrip: new Grip(
@@ -825,7 +825,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Machine Row Medium Grip',
                                         media: getMedia('MachineRowMediumGrip.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -856,7 +856,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dummbell Biceps Curl Standing Underhand Grip',
                                         media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
                                         theGrip: new Grip(
@@ -891,7 +891,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Shrug',
                                         media: getMedia('CableShrug.png'),
                                         theGrip: new Grip(
@@ -926,7 +926,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dragon Flags',
                                         media: getMedia('DragonFlags.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -951,7 +951,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Decline Situps',
                                         media: getMedia('DeclineSitups.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -977,7 +977,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cross Body Crunch',
                                         media: getMedia('CrossBodyCrunch.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1002,7 +1002,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Lying Scissors Kicks',
                                         media: getMedia('LyingScissorsKicks.png'),
                                         theGrip: new Grip(),
@@ -1035,7 +1035,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Walking Lunge with Side Weights',
                                         media: getMedia('WalkingLungeWithSideWeights.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1067,7 +1067,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Abduction',
                                         media: getMedia('CableAbduction.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1092,7 +1092,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Adduction',
                                         media: getMedia('CableAdduction.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1123,7 +1123,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Leg Curl',
                                         media: getMedia('CableLegCurl.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1153,7 +1153,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Calf Raise',
                                         media: getMedia('CableCalfRaise.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1183,7 +1183,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bodyweight Flutter Kicks',
                                         media: getMedia('BodyweightFlutterKicks.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1207,7 +1207,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Weighted Situps',
                                         media: getMedia('WeightedSitups.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1237,7 +1237,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Plank',
                                         media: getMedia('Plank.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1261,7 +1261,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Twist',
                                         media: getMedia('Twist.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1298,7 +1298,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bench Press, Wide Grip',
                                         media: getMedia('BenchPressWideGrip.jpeg'),
                                         theGrip: new Grip(
@@ -1339,7 +1339,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Seated Rope Cable Row',
                                         media: getMedia('SeatedRopeCableRow.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1370,7 +1370,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Wrist Curl',
                                         media: getMedia('DumbbellWristCurl.png'),
                                         theGrip: new Grip(
@@ -1406,7 +1406,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Triceps Pushdown, Overhand Grip',
                                         media: getMedia('CableTricepsPushdownOverheadGrip.png'),
                                         theGrip: new Grip(
@@ -1445,7 +1445,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Biceps Curl, Underhand Grip',
                                         media: getMedia('CableBicepsCurlUnderhandGrip.png'),
                                         theGrip: new Grip(
@@ -1484,7 +1484,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Leg Raise Machine',
                                         media: getMedia('LegRaiseMachine.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1520,7 +1520,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Leg Curl',
                                         media: getMedia('CableLegCurl.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1555,7 +1555,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Crossfit Situps',
                                         media: getMedia('CrossfitSitup.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1580,7 +1580,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cross Body Crunch',
                                         media: getMedia('CrossBodyCrunch.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1612,7 +1612,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bench Press, Narrow Grip',
                                         media: getMedia('BenchPressNarrowGrip.png'),
                                         theGrip: new Grip(
@@ -1643,7 +1643,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Bench Press, Rotating Grip',
                                         media: getMedia('DumbbellBenshPressRotatingGrip.png'),
                                         theGrip: new Grip(
@@ -1674,7 +1674,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Bench Press, Rotating Grip',
                                         media: getMedia('DumbbellBenshPressRotatingGrip.png'),
                                         theGrip: new Grip(
@@ -1710,7 +1710,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Fly',
                                         media: getMedia('CableFly.png'),
                                         theGrip: new Grip(
@@ -1749,7 +1749,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Fly',
                                         media: getMedia('DumbbellFly.png'),
                                         theGrip: new Grip(
@@ -1784,7 +1784,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Horizontal Row, Inclined Prone',
                                         media: getMedia('DumbbellHorizontalRowInclineProne.png'),
                                         theGrip: new Grip(
@@ -1819,7 +1819,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Tricpes Extensions, Seated',
                                         media: getMedia('DumbbellTricepsExtensionSeated.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1851,7 +1851,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Inclined Pushup, Narrow Grip',
                                         media: getMedia('InclinePushupNarrowGrip.jpg'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1880,7 +1880,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Reverse Cable Fly, On Flat Bench',
                                         media: getMedia('ReverseCableFlyOnFlatBench.png'),
                                         theGrip: new Grip(
@@ -1914,7 +1914,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Situps',
                                         media: getMedia('Situps.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1939,7 +1939,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Situps with Weight Above Head',
                                         media: getMedia('SitupsWithWeightAboveHead.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -1970,7 +1970,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Russian Twist',
                                         media: getMedia('RussianTwist.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2001,7 +2001,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                         media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
                                         theGrip: new Grip(
@@ -2036,7 +2036,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Decline Dumbbell Pullover',
                                         media: getMedia('DeclineDumbbellPullover.png'),
                                         theGrip: new Grip(
@@ -2077,7 +2077,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Arm Circles',
                                         media: getMedia('DumbbellArmCircles.png'),
                                         theGrip: new Grip(
@@ -2112,7 +2112,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Machine Row Medium Grip',
                                         media: getMedia('MachineRowMediumGrip.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2143,7 +2143,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dummbell Biceps Curl Standing Underhand Grip',
                                         media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
                                         theGrip: new Grip(
@@ -2178,7 +2178,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Shrug',
                                         media: getMedia('CableShrug.png'),
                                         theGrip: new Grip(
@@ -2213,7 +2213,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dragon Flags',
                                         media: getMedia('DragonFlags.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2238,7 +2238,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Decline Situps',
                                         media: getMedia('DeclineSitups.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2264,7 +2264,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cross Body Crunch',
                                         media: getMedia('CrossBodyCrunch.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2289,7 +2289,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Lying Scissors Kicks',
                                         media: getMedia('LyingScissorsKicks.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2321,7 +2321,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Walking Lunge with Side Weights',
                                         media: getMedia('WalkingLungeWithSideWeights.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2353,7 +2353,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Abduction',
                                         media: getMedia('CableAbduction.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2378,7 +2378,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Adduction',
                                         media: getMedia('CableAdduction.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2409,7 +2409,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Leg Curl',
                                         media: getMedia('CableLegCurl.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2439,7 +2439,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Calf Raise',
                                         media: getMedia('CableCalfRaise.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2469,7 +2469,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bodyweight Flutter Kicks',
                                         media: getMedia('BodyweightFlutterKicks.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2493,7 +2493,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Weighted Situps',
                                         media: getMedia('WeightedSitups.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2523,7 +2523,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Plank',
                                         media: getMedia('Plank.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2548,7 +2548,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Twist',
                                         media: getMedia('Twist.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2585,7 +2585,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bench Press, Wide Grip',
                                         media: getMedia('BenchPressWideGrip.jpeg'),
                                         theGrip: new Grip(
@@ -2626,7 +2626,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Seated Rope Cable Row',
                                         media: getMedia('SeatedRopeCableRow.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2657,7 +2657,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Wrist Curl',
                                         media: getMedia('DumbbellWristCurl.png'),
                                         theGrip: new Grip(
@@ -2693,7 +2693,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Triceps Pushdown, Overhand Grip',
                                         media: getMedia('CableTricepsPushdownOverheadGrip.png'),
                                         theGrip: new Grip(
@@ -2732,7 +2732,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Biceps Curl, Underhand Grip',
                                         media: getMedia('CableBicepsCurlUnderhandGrip.png'),
                                         theGrip: new Grip(
@@ -2771,7 +2771,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Leg Raise Machine',
                                         media: getMedia('LegRaiseMachine.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2807,7 +2807,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Leg Curl',
                                         media: getMedia('CableLegCurl.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2842,7 +2842,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Crossfit Situps',
                                         media: getMedia('CrossfitSitup.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2867,7 +2867,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cross Body Crunch',
                                         media: getMedia('CrossBodyCrunch.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -2899,7 +2899,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bench Press, Narrow Grip',
                                         media: getMedia('BenchPressNarrowGrip.png'),
                                         theGrip: new Grip(
@@ -2930,7 +2930,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Bench Press, Rotating Grip',
                                         media: getMedia('DumbbellBenshPressRotatingGrip.png'),
                                         theGrip: new Grip(
@@ -2961,7 +2961,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Bench Press, Rotating Grip',
                                         media: getMedia('DumbbellBenshPressRotatingGrip.png'),
                                         theGrip: new Grip(
@@ -2997,7 +2997,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Fly',
                                         media: getMedia('CableFly.png'),
                                         theGrip: new Grip(
@@ -3036,7 +3036,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Fly',
                                         media: getMedia('DumbbellFly.png'),
                                         theGrip: new Grip(
@@ -3071,7 +3071,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Horizontal Row, Inclined Prone',
                                         media: getMedia('DumbbellHorizontalRowInclineProne.png'),
                                         theGrip: new Grip(
@@ -3106,7 +3106,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Tricpes Extensions, Seated',
                                         media: getMedia('DumbbellTricepsExtensionSeated.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3138,7 +3138,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Inclined Pushup, Narrow Grip',
                                         media: getMedia('InclinePushupNarrowGrip.jpg'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3167,7 +3167,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Reverse Cable Fly, On Flat Bench',
                                         media: getMedia('ReverseCableFlyOnFlatBench.png'),
                                         theGrip: new Grip(
@@ -3201,7 +3201,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Situps',
                                         media: getMedia('Situps.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3226,7 +3226,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Situps with Weight Above Head',
                                         media: getMedia('SitupsWithWeightAboveHead.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3257,7 +3257,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Russian Twist',
                                         media: getMedia('RussianTwist.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3288,7 +3288,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                         media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
                                         theGrip: new Grip(
@@ -3323,7 +3323,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Decline Dumbbell Pullover',
                                         media: getMedia('DeclineDumbbellPullover.png'),
                                         theGrip: new Grip(
@@ -3364,7 +3364,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Arm Circles',
                                         media: getMedia('DumbbellArmCircles.png'),
                                         theGrip: new Grip(
@@ -3399,7 +3399,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Machine Row Medium Grip',
                                         media: getMedia('MachineRowMediumGrip.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3430,7 +3430,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dummbell Biceps Curl Standing Underhand Grip',
                                         media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
                                         theGrip: new Grip(
@@ -3465,7 +3465,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Shrug',
                                         media: getMedia('CableShrug.png'),
                                         theGrip: new Grip(
@@ -3500,7 +3500,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dragon Flags',
                                         media: getMedia('DragonFlags.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3525,7 +3525,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Decline Situps',
                                         media: getMedia('DeclineSitups.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3551,7 +3551,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cross Body Crunch',
                                         media: getMedia('CrossBodyCrunch.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3576,7 +3576,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Lying Scissors Kicks',
                                         media: getMedia('LyingScissorsKicks.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3608,7 +3608,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Walking Lunge with Side Weights',
                                         media: getMedia('WalkingLungeWithSideWeights.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3640,7 +3640,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Abduction',
                                         media: getMedia('CableAbduction.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3665,7 +3665,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Adduction',
                                         media: getMedia('CableAdduction.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3696,7 +3696,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Leg Curl',
                                         media: getMedia('CableLegCurl.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3726,7 +3726,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Calf Raise',
                                         media: getMedia('CableCalfRaise.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3756,7 +3756,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bodyweight Flutter Kicks',
                                         media: getMedia('BodyweightFlutterKicks.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3780,7 +3780,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Weighted Situps',
                                         media: getMedia('WeightedSitups.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3810,7 +3810,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Plank',
                                         media: getMedia('Plank.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3835,7 +3835,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Twist',
                                         media: getMedia('Twist.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3872,7 +3872,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bench Press, Wide Grip',
                                         media: getMedia('BenchPressWideGrip.jpeg'),
                                         theGrip: new Grip(
@@ -3913,7 +3913,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Seated Rope Cable Row',
                                         media: getMedia('SeatedRopeCableRow.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -3944,7 +3944,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Wrist Curl',
                                         media: getMedia('DumbbellWristCurl.png'),
                                         theGrip: new Grip(
@@ -3980,7 +3980,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Triceps Pushdown, Overhand Grip',
                                         media: getMedia('CableTricepsPushdownOverheadGrip.png'),
                                         theGrip: new Grip(
@@ -4019,7 +4019,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Biceps Curl, Underhand Grip',
                                         media: getMedia('CableBicepsCurlUnderhandGrip.png'),
                                         theGrip: new Grip(
@@ -4058,7 +4058,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Leg Raise Machine',
                                         media: getMedia('LegRaiseMachine.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4094,7 +4094,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Leg Curl',
                                         media: getMedia('CableLegCurl.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4129,7 +4129,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Crossfit Situps',
                                         media: getMedia('CrossfitSitup.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4154,7 +4154,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cross Body Crunch',
                                         media: getMedia('CrossBodyCrunch.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4186,7 +4186,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bench Press, Narrow Grip',
                                         media: getMedia('BenchPressNarrowGrip.png'),
                                         theGrip: new Grip(
@@ -4217,7 +4217,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Bench Press, Rotating Grip',
                                         media: getMedia('DumbbellBenshPressRotatingGrip.png'),
                                         theGrip: new Grip(
@@ -4248,7 +4248,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Bench Press, Rotating Grip',
                                         media: getMedia('DumbbellBenshPressRotatingGrip.png'),
                                         theGrip: new Grip(
@@ -4284,7 +4284,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Fly',
                                         media: getMedia('CableFly.png'),
                                         theGrip: new Grip(
@@ -4323,7 +4323,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Fly',
                                         media: getMedia('DumbbellFly.png'),
                                         theGrip: new Grip(
@@ -4358,7 +4358,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Horizontal Row, Inclined Prone',
                                         media: getMedia('DumbbellHorizontalRowInclineProne.png'),
                                         theGrip: new Grip(
@@ -4393,7 +4393,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Tricpes Extensions, Seated',
                                         media: getMedia('DumbbellTricepsExtensionSeated.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4425,7 +4425,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Inclined Pushup, Narrow Grip',
                                         media: getMedia('InclinePushupNarrowGrip.jpg'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4454,7 +4454,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Reverse Cable Fly, On Flat Bench',
                                         media: getMedia('ReverseCableFlyOnFlatBench.png'),
                                         theGrip: new Grip(
@@ -4488,7 +4488,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Situps',
                                         media: getMedia('Situps.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4513,7 +4513,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Situps with Weight Above Head',
                                         media: getMedia('SitupsWithWeightAboveHead.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4544,7 +4544,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Russian Twist',
                                         media: getMedia('RussianTwist.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4575,7 +4575,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                         media: getMedia('CabelLatPulldownBehindNeckWideGrip.png'),
                                         theGrip: new Grip(
@@ -4610,7 +4610,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Decline Dumbbell Pullover',
                                         media: getMedia('DeclineDumbbellPullover.png'),
                                         theGrip: new Grip(
@@ -4651,7 +4651,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dumbbell Arm Circles',
                                         media: getMedia('DumbbellArmCircles.png'),
                                         theGrip: new Grip(
@@ -4686,7 +4686,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Machine Row Medium Grip',
                                         media: getMedia('MachineRowMediumGrip.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4717,7 +4717,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dummbell Biceps Curl Standing Underhand Grip',
                                         media: getMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
                                         theGrip: new Grip(
@@ -4752,7 +4752,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Shrug',
                                         media: getMedia('CableShrug.png'),
                                         theGrip: new Grip(
@@ -4787,7 +4787,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Dragon Flags',
                                         media: getMedia('DragonFlags.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4811,7 +4811,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Decline Situps',
                                         media: getMedia('DeclineSitups.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4836,7 +4836,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cross Body Crunch',
                                         media: getMedia('CrossBodyCrunch.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4861,7 +4861,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Lying Scissors Kicks',
                                         media: getMedia('LyingScissorsKicks.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4892,7 +4892,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Walking Lunge with Side Weights',
                                         media: getMedia('WalkingLungeWithSideWeights.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4924,7 +4924,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Abduction',
                                         media: getMedia('CableAbduction.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4949,7 +4949,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                                         restBetweenReps: 20,
                                         restAfterExercise: 20
                                     }),
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Adduction',
                                         media: getMedia('CableAdduction.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -4980,7 +4980,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Leg Curl',
                                         media: getMedia('CableLegCurl.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -5010,7 +5010,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Cable Calf Raise',
                                         media: getMedia('CableCalfRaise.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -5040,7 +5040,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Bodyweight Flutter Kicks',
                                         media: getMedia('BodyweightFlutterKicks.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -5064,7 +5064,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Weighted Situps',
                                         media: getMedia('WeightedSitups.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -5094,7 +5094,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Plank',
                                         media: getMedia('Plank.png'),
                                         repSpeed: RepetitionSpeed.OneOne,
@@ -5119,7 +5119,7 @@ export const defaultWorkouts = new DefaultWorkouts(
                             new ExerciseSet({
                                 id: Guid.raw(),
                                 exercises: [
-                                    new Exercise({ id: Guid.raw(),
+                                    new ExerciseBean({ id: Guid.raw(),
                                         name: 'Twist',
                                         media: getMedia('Twist.png'),
                                         repSpeed: RepetitionSpeed.OneOne,

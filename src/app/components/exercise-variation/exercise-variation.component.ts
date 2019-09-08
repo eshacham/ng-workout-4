@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Exercise } from 'src/app/models/Exercise';
+import { ExerciseBean } from 'src/app/models/Exercise';
 import { PopoverController } from '@ionic/angular';
 import { Grip } from 'src/app/models/Grip';
 import { WeightType, GripType, GripWidth, RepetitionSpeed } from 'src/app/models/enums';
@@ -12,7 +12,7 @@ import { ExerciseVariationPopoverComponent } from '../exercise-variation-popover
 })
 export class ExerciseVariationComponent implements OnInit {
 
-  @Input() exercise: Exercise;
+  @Input() exercise: ExerciseBean;
   @Input() inEditMode: boolean;
 
   get InEditMode(): boolean {

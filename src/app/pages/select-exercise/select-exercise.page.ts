@@ -5,7 +5,7 @@ import { DataServiceProvider } from 'src/app/providers/data-service/data-service
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 import { Workout, WorkoutBean } from 'src/app/models/Workout';
 import { ExerciseSet } from 'src/app/models/ExerciseSet';
-import { Exercise } from 'src/app/models/Exercise';
+import { ExerciseBean } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { Muscles, RepetitionSpeed } from 'src/app/models/enums';
 import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
@@ -181,13 +181,13 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
   getNewSets(): ExerciseSet[] {
     let newSets: ExerciseSet[];
-    const newExercises: Exercise[] = [];
+    const newExercises: ExerciseBean[] = [];
     for (const image of this.selectedImages) {
       console.log('adding exercise media', image);
       const newRep = new Rep({
         times: 1
       });
-      const newExercise = new Exercise({
+      const newExercise = new ExerciseBean({
         id: Guid.raw(),
         name: image.media.name,
         media: image.media,
