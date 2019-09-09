@@ -5,7 +5,8 @@
     </ion-label>
     <ion-input [hidden]="IsDisplayMode" type="text"
       class="ion-text-center"
-      [(ngModel)]="workout.name">
+      [value]="workout.name"
+      (change)="workoutChanged($event, 'name')">
     </ion-input>
   </ion-card-header>
 
@@ -13,7 +14,8 @@
 
     <p class="ion-text-wrap">
       <ion-textarea [readonly]="IsDisplayMode"
-        [value]="workout.description">
+        [value]="workout.description"
+        (change)="workoutChanged($event, 'description')">
       </ion-textarea>
     </p>
 

@@ -99,7 +99,6 @@ export class DataServiceProvider {
 
   async saveWorkouts(workoutsDataMaps: WorkoutsDataMaps, haveWorkoutsBeenReset: boolean = false) {
     await this.storage.ready();
-    
     await this.storage.set(WORKOUTS_STORAGE_KEY, workoutsDataMaps);
     console.log('workouts have been saved');
     if (haveWorkoutsBeenReset) {

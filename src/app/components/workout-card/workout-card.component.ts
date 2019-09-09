@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { WorkoutBean } from '../../models/Workout';
 import { DisplayMode } from 'src/app/models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
-import { DeleteWorkout } from 'src/app/store/actions/workouts.actions';
+import { DeleteWorkout, UpdateWorkout } from 'src/app/store/actions/workouts.actions';
 import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
 
 @Component({
@@ -17,18 +17,19 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   @Input() workout: WorkoutBean;
   @Input() displayMode: DisplayMode;
 
+  private _workout: WorkoutBean;
+
   constructor(
     private router: Router, private route: ActivatedRoute,
     private store: Store<IAppState>) {
   }
 
   ngOnInit() {
-    console.log('workout-card ngOnInit -> ', DisplayMode[this.displayMode]);
     console.log('workout-card workout -> ', this.workout);
   }
 
   ngOnDestroy() {
-    console.log('onDestroy - workout-card');
+    console.log('onDestroy - workout-card', this.workout);
   }
 
   get IsEditMode() { return this.displayMode === DisplayMode.Edit; }
@@ -45,10 +46,16 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkout() {
-    this.store.dispatch(new DeleteWorkout({
-      workoutId: this.workout.id.toString()
-    }));
+    this.store.dispatch(new DeleteWorkout({ workoutId: this.workout.id }));
     this.store.dispatch(new UpdateWorkouts());
+  }
+
+  workoutChanged(event, prop) {
+    if (!this._workout) {
+      this._workout = {...this.workout };
+    }
+    this._workout[prop] = event.target.value;
+    this.store.dispatch(new UpdateWorkout({ workout: this._workout }));
   }
 
 }

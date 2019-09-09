@@ -44,17 +44,6 @@ export const workoutsReducers = (state = initialWorkoutsState,
 
             };
         }
-        case EWorkoutsActions.WorkoutDeleted: {
-            const workoutId2Delete = state.workoutId2Delete;
-            return {
-                ...state,
-                workoutId2Delete: undefined,
-                byId: {
-                    ...state.byId,
-                    [workoutId2Delete]: undefined
-                }
-            };
-        }
         case EWorkoutDaysActions.SelectWorkoutDay: {
             return {
                 ...state,
@@ -77,6 +66,15 @@ export const workoutsReducers = (state = initialWorkoutsState,
                         ...state.byId[state.selectedWorkoutId],
                         selectedWorkoutDayId: undefined,
                     }
+                },
+            };
+        }
+        case EWorkoutsActions.UpdateWorkout: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.workout.id]: action.payload.workout,
                 },
             };
         }
