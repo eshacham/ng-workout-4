@@ -51,7 +51,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     if (this._displayMode !== val) {
       this._displayMode = val;
       if (this.DisplayMode === DisplayMode.Display) {
-        console.log('tab-workouts, set display mode', this.workouts)
+        console.log('tab-workouts, set display mode', this.workouts);
         this.store.dispatch(new UpdateWorkouts());
       }
     }

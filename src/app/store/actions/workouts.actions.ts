@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { WorkoutBean, WorkoutBase } from 'src/app/models/Workout';
+import { WorkoutBean } from 'src/app/models/Workout';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 
 export enum EWorkoutsActions {

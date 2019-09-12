@@ -1,12 +1,12 @@
 <ion-card>
   <ion-card-header class="ion-text-center">
     <ion-label [hidden]="IsEditMode"
-       class="ion-text-center">{{ workout.name }}
+       class="ion-text-center">{{ name }}
     </ion-label>
     <ion-input [hidden]="IsDisplayMode" type="text"
       class="ion-text-center"
-      [value]="workout.name"
-      (change)="workoutChanged($event, 'name')">
+      [(ngModel)]="name"
+      (change)="workoutChanged()">
     </ion-input>
   </ion-card-header>
 
@@ -14,8 +14,8 @@
 
     <p class="ion-text-wrap">
       <ion-textarea [readonly]="IsDisplayMode"
-        [value]="workout.description"
-        (change)="workoutChanged($event, 'description')">
+      [(ngModel)]="description"
+        (change)="workoutChanged()">
       </ion-textarea>
     </p>
 

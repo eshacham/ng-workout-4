@@ -12,6 +12,12 @@ export const selectWorkouts = createSelector(
         .map(id => workoutsMap.byId[id]);
     }
 );
+export const selectWorkout = (id: string) => createSelector(
+    workoutsState,
+    (workoutsMap: IWorkoutsState) => {
+        return workoutsMap.byId[id];
+    }
+);
 
 export const selectCurrentWorkoutId = createSelector(
   workoutsState,

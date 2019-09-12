@@ -24,7 +24,7 @@
     <ion-item *ngFor="let workout of workouts">
 
         <app-workout-card
-          [workout]="workout"
+          [workoutId]="workout.id"
           [displayMode]="DisplayMode">
         </app-workout-card>
 
