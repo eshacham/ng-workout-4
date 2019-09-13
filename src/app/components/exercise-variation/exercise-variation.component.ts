@@ -10,7 +10,7 @@ import { ExerciseVariationPopoverComponent } from '../exercise-variation-popover
   templateUrl: './exercise-variation.component.html',
   styleUrls: ['./exercise-variation.component.scss'],
 })
-export class ExerciseVariationComponent implements OnInit {
+export class ExerciseVariationComponent {
 
   @Input() exercise: ExerciseBean;
   @Input() inEditMode: boolean;
@@ -20,19 +20,6 @@ export class ExerciseVariationComponent implements OnInit {
   }
 
   constructor(private popoverCtrl: PopoverController) {
-  }
-
-  ngOnInit() {
-    // if (!this.exercise.theGrip) {
-    //   this.exercise.theGrip = new Grip();
-    // }
-    // if (!this.exercise.typeOfWeight) {
-    //   this.exercise.typeOfWeight = WeightType.NoWeight;
-    // }
-    // this.exercise.theGrip.typeOfGrip = this.exercise.theGrip.typeOfGrip || GripType.NoGrip;
-    // this.exercise.theGrip.width = this.exercise.theGrip.width || GripWidth.NoGrip;
-    // this.exercise.typeOfWeight = this.exercise.typeOfWeight || WeightType.NoWeight;
-    // this.exercise.repSpeed = this.exercise.repSpeed || RepetitionSpeed.NA;
   }
 
   getWeightVariation = (): string => {

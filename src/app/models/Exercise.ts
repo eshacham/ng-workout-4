@@ -36,7 +36,7 @@ export class ExerciseBean {
         this.name = options.name;
         this.media = options.media;
         this.theGrip = options.theGrip || new Grip();
-        this.repSpeed = options.repSpeed;
+        this.repSpeed = options.repSpeed || RepetitionSpeed.NA;
         this.typeOfWeight = options.typeOfWeight || WeightType.NoWeight;
         this.isFavorite = options.isFavorite;
         this.restBetweenReps = options.restBetweenReps;

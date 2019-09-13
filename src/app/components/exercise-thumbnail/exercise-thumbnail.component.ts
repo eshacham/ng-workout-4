@@ -249,6 +249,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     exerciseSetSelected() {
+        /// TODO: undecided!
         //     if (this.DisplayMode === DisplayMode.Workout) {
         //         if (!this.IsRunning && !this.IsFrozen) {
         //             console.log(`Display Exercise ${this.activeExercise.name} and freezing`);
