@@ -4,10 +4,8 @@ import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonFab } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
-import { WorkoutDay, WorkoutDayBean } from '../../models/WorkoutDay';
-import { ExerciseSet } from '../../models/ExerciseSet';
+import { WorkoutDayBean } from '../../models/WorkoutDay';
 import { DisplayMode, RunningState } from '../../models/enums';
-import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { IAppState } from 'src/app/store/state/app.state';
 import {
   StartFirstExercise,
@@ -18,7 +16,10 @@ import {
   AddWorkoutDay,
   MoveWorkoutDay,
   Direction} from 'src/app/store/actions/workoutDays.actions';
-import { SelectWorkoutDayState, SelectExerciseSetIndex2Delete, selectWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
+import {
+  SelectWorkoutDayState,
+  SelectExerciseSetIndex2Delete,
+  selectWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil, take } from 'rxjs/operators';
 
 @Component({
@@ -32,7 +33,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   displayMode = DisplayMode;
   private _displayMode: DisplayMode = DisplayMode.Display;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForExerciseSetDeletion: Subject<void> = new Subject<void>();
   private workoutDay: WorkoutDayBean;
 
   @ViewChild('fabWorkout') fabWorkout: IonFab;
@@ -88,7 +88,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         }
       });
     this.store.select(SelectExerciseSetIndex2Delete)
-      .pipe(takeUntil(this.ngUnsubscribeForExerciseSetDeletion))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(index => {
         if (index || index === 0) {
           this.deleteExerciseSet(index);
@@ -100,8 +100,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     console.log('onDestroy - workout-day');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this.ngUnsubscribeForExerciseSetDeletion.next();
-    this.ngUnsubscribeForExerciseSetDeletion.complete();
   }
 
   handleWorkoutDayStateChange(state: WorkoutDayBean) {
@@ -137,7 +135,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   DispatchChangeDisplayMode() {
     this.store.dispatch(new ChangeDisplayMode({
-      id: this.workoutDay.id,
+      id: this.workoutDayId,
       runningExerciseSetIndex: null,
       displayMode: this.DisplayMode,
       runningState: RunningState.NA,

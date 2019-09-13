@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser/';
@@ -15,6 +15,12 @@ import { SelectWorkoutDayState } from 'src/app/store/selectors/workoutDays.selec
 import { ExerciseStarted, ExerciseCompleted, DeleteExerciseSet } from 'src/app/store/actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 import { selectexerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
+import {
+    ResetReps,
+    SetRepsActiveState,
+    SetInactiveReps,
+    SetRepsCompleteState,
+    SetRepsIncompleteState } from 'src/app/store/actions/exercises.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -107,7 +113,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.store.select(selectexerciseSet(this.exerciseSetId))
-            .pipe(take(1))
+            .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(exerciseSet => {
                 console.log('exercise-thumbnail selectexerciseSet', exerciseSet);
                 this.exerciseSet = exerciseSet.set;
@@ -120,7 +126,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                     this.handleWorkoutDayStateChange(state);
                 }
             });
-        this.initReps();
     }
 
     ngOnDestroy() {
@@ -137,26 +142,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     toggleOpen() {
         this.IsOpen = !this.IsOpen;
-    }
-
-    initReps() {
-        this.exercises.forEach((exercise) => {
-            exercise.reps.forEach((rep) => {
-                rep = new Rep({
-                    weight: rep.weight,
-                    weightUnit: rep.weightUnit,
-                    times: rep.times,
-                    seconds: rep.seconds
-                });
-            });
-        });
-        this.exercises.forEach(set => {
-            set.reps.forEach(rep => {
-                if (!rep.weightUnit) {
-                    rep.weightUnit = WeightUnit.Lbs;
-                }
-            });
-        });
     }
 
     handleWorkoutDayStateChange(state: WorkoutDayBean) {
@@ -249,16 +234,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     exerciseSetSelected() {
-        /// TODO: undecided!
-        //     if (this.DisplayMode === DisplayMode.Workout) {
-        //         if (!this.IsRunning && !this.IsFrozen) {
-        //             console.log(`Display Exercise ${this.activeExercise.name} and freezing`);
-        //             this.IsFrozen = true;
-        //         } else {
-        //             console.log(`Collapse Exercise ${this.activeExercise.name} and unfreezing`);
-        //             this.IsFrozen = false;
-        //         }
-        //     }
     }
 
     isFirstInSet(exercise: ExerciseBean): boolean {
@@ -299,13 +274,13 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     get hasIncompleteTimedRepInActiveRep(): boolean {
         return this.exercises.some((exe) => {
             const rep = exe.reps[this.activeRepIndex];
-            return rep.seconds > 0 && !rep.isCompleted;
+            return rep.seconds > 0 && !rep.isComplete;
         });
     }
     get hasCompleteTimedRepInActiveRep(): boolean {
         return this.exercises.some((exe) => {
             const rep = exe.reps[this.activeRepIndex];
-            return rep.seconds > 0 && rep.isCompleted;
+            return rep.seconds > 0 && rep.isComplete;
         });
     }
     isExecrciseSetActive(exerciseIndex: number): boolean {
@@ -339,7 +314,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     startWorkout() {
         this.IsRunning = true;
-        // this.IsFrozen = false;
         this.activeExerciseInSetIndex = 0;
         this.resetReps();
         this.startTimedRep();
@@ -352,25 +326,17 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     private resetRepsState(exercise: ExerciseBean) {
-        exercise
-            .reps.forEach((rep) => {
-                rep.isActive = false;
-                rep.isCompleted = false;
-            });
+        this.store.dispatch(new ResetReps({exerciseId: exercise.id}));
     }
 
     private setExecrciseRepsActiveState(exercise: ExerciseBean, index: number) {
-        exercise
-            .reps.forEach((rep, i) => {
-                rep.isActive = (i === index);
-            });
+        this.store.dispatch(new SetRepsActiveState({
+            exerciseId: exercise.id,
+            activeIndex: index}));
     }
 
     private InactiveExerciseReps(exercise: ExerciseBean) {
-        exercise
-            .reps.forEach((rep, i) => {
-                rep.isActive = false;
-            });
+        this.store.dispatch(new SetInactiveReps({exerciseId: exercise.id}));
     }
 
     private startTimedRep() {
@@ -420,11 +386,19 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this._timedRepRemaining = 0;
         if (this.activeExerciseInSetIndex > 0 &&
             (this.hasCompleteTimedRepInActiveRep || this.hasIncompleteTimedRepInActiveRep)) {
-            this.exercises[this.activeExerciseInSetIndex - 1].reps[this.activeRepIndex].isCompleted = false;
+            this.store.dispatch(new SetRepsIncompleteState({
+                exerciseId: this.exercises[this.activeExerciseInSetIndex - 1].id,
+                incompleteIndex: this.activeRepIndex
+            }));
             this.activatePrevExercise();
         } else {
             if (this.activeRepIndex > 0) {
-                this.exercises.forEach(exercise => exercise.reps[this.activeRepIndex - 1].isCompleted = false);
+                this.exercises.forEach(exercise => {
+                    this.store.dispatch(new SetRepsIncompleteState({
+                        exerciseId: exercise.id,
+                        incompleteIndex: this.activeRepIndex - 1
+                    }));
+                });
             }
             this.activatePrevRep();
         }
@@ -469,7 +443,10 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this._timedRepRemaining = 0;
         if (this.exercises.length > this.activeExerciseInSetIndex + 1 &&
             this.hasIncompleteTimedRepInActiveRep) {
-            this.activeRep.isCompleted = true;
+                this.store.dispatch(new SetRepsCompleteState({
+                    exerciseId: this.activeExercise.id,
+                    completeIndex: this.activeRepIndex
+                }));
             // need to go to the next exercise with current rep
             if (shouldRest) {
                 this._timedToRestAfterCurrentRep = this.activeExercise.restBetweenReps;
@@ -479,8 +456,16 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 this.activateNextExercise();
             }
         } else {
-            this.exercises.forEach((exercise) => exercise.reps[this.activeRepIndex].isCompleted = true);
-            this.activeRep.isCompleted = true;
+            this.exercises.forEach((exercise) => {
+                this.store.dispatch(new SetRepsCompleteState({
+                    exerciseId: exercise.id,
+                    completeIndex: this.activeRepIndex
+                }));
+            });
+            this.store.dispatch(new SetRepsCompleteState({
+                exerciseId: this.activeExercise.id,
+                completeIndex: this.activeRepIndex
+            }));
             // if there are more reps, need to go to the next rep on the first exercise
             if (this.activeExercise.reps.length > this.activeRepIndex + 1) {
                 if (shouldRest) {
@@ -503,7 +488,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     get isActiveRepCompleted(): boolean {
-        return this.activeRep.isCompleted;
+        return this.activeRep.isComplete;
     }
 
     get activeRep(): Rep {

@@ -48,12 +48,12 @@
                       </div>
                       <div *ngIf='rep.times'>
                           <h4 class="ion-text-center">{{rep.times}}<small> Times</small>
-                              <ion-icon *ngIf='rep.isCompleted' name="checkmark"></ion-icon>
+                              <ion-icon *ngIf='rep.isComplete' name="checkmark"></ion-icon>
                           </h4>
                       </div>
                       <div *ngIf='rep.seconds'>
                         <h4 class="ion-text-center">{{getSecondsStateText(rep)}}<small> Seconds</small>
-                            <ion-icon *ngIf='rep.isCompleted' name="checkmark"></ion-icon>
+                            <ion-icon *ngIf='rep.isComplete' name="checkmark"></ion-icon>
                         </h4>
                     </div>
                   </ion-col>
