@@ -1,12 +1,12 @@
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser/';
 import { PopoverController } from '@ionic/angular';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { DisplayMode, WeightUnit, RunningState } from 'src/app/models/enums';
-import { ExerciseSet } from 'src/app/models/ExerciseSet';
+import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover/exercise-thumbnail-popover.component';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
@@ -14,6 +14,7 @@ import { IAppState } from 'src/app/store/state/app.state';
 import { SelectWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
 import { ExerciseStarted, ExerciseCompleted, DeleteExerciseSet } from 'src/app/store/actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
+import { selectexerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -34,6 +35,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     displayMode = DisplayMode;
     weightUnit = WeightUnit;
 
+    private exerciseSet: ExerciseSetBean;
+    private exercises: ExerciseBean[];
     private _isOpen = false;
     private _isRunning = false;
     private _isEditing = false;
@@ -41,12 +44,12 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     @Input() workoutDayId: string;
-    @Input() exerciseSet: ExerciseSet;
+    @Input() exerciseSetId: string;
     @Input() exerciseSetIndex: number;
     @Input() isDayInEditMode: boolean;
 
     get activeExercise(): ExerciseBean {
-        return this.exerciseSet.exercises[this.activeExerciseInSetIndex];
+        return this.exercises[this.activeExerciseInSetIndex];
     }
 
     get isPrevRepAvailable(): boolean {
@@ -70,7 +73,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     get OpenedExercises(): ExerciseBean[] {
-        return this.IsOpen ? this.exerciseSet.exercises : [];
+        return this.IsOpen ? this.exercises : [];
     }
 
     get IsRunning(): boolean { return this._isRunning; }
@@ -102,17 +105,14 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         private store: Store<IAppState>) {
     }
 
-    safeImage(media: ExerciseMedia): SafeUrl {
-        if (media) {
-            return this.domSanitizer.bypassSecurityTrustUrl(media.ionicPath);
-        }
-    }
-
-    toggleOpen() {
-        this.IsOpen = !this.IsOpen;
-    }
-
     ngOnInit() {
+        this.store.select(selectexerciseSet(this.exerciseSetId))
+            .pipe(take(1))
+            .subscribe(exerciseSet => {
+                console.log('exercise-thumbnail selectexerciseSet', exerciseSet);
+                this.exerciseSet = exerciseSet.set;
+                this.exercises = exerciseSet.exercises;
+            });
         this.store.select(SelectWorkoutDayState)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(state => {
@@ -129,8 +129,18 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
+    safeImage(media: ExerciseMedia): SafeUrl {
+        if (media) {
+            return this.domSanitizer.bypassSecurityTrustUrl(media.ionicPath);
+        }
+    }
+
+    toggleOpen() {
+        this.IsOpen = !this.IsOpen;
+    }
+
     initReps() {
-        this.exerciseSet.exercises.forEach((exercise) => {
+        this.exercises.forEach((exercise) => {
             exercise.reps.forEach((rep) => {
                 rep = new Rep({
                     weight: rep.weight,
@@ -140,7 +150,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 });
             });
         });
-        this.exerciseSet.exercises.forEach(set => {
+        this.exercises.forEach(set => {
             set.reps.forEach(rep => {
                 if (!rep.weightUnit) {
                     rep.weightUnit = WeightUnit.Lbs;
@@ -195,9 +205,9 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     switchExercises(index: number) {
-        const exercise = this.exerciseSet.exercises[index];
-        this.exerciseSet.exercises.splice(index, 1);
-        this.exerciseSet.exercises.splice(index + 1, 0, exercise);
+        const exercise = this.exercises[index];
+        this.exercises.splice(index, 1);
+        this.exercises.splice(index + 1, 0, exercise);
     }
 
     deleteExerciseSet() {
@@ -207,8 +217,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     deleteExercise(index: number) {
-        ExerciseBean.delete(this.exerciseSet.exercises, index);
-        if (!this.exerciseSet.exercises.length) {
+        ExerciseBean.delete(this.exercises, index);
+        if (!this.exercises.length) {
             this.deleteExerciseSet();
         }
     }
@@ -235,7 +245,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     get hasSet(): boolean {
-        return this.exerciseSet.exercises.length > 1;
+        return this.exercises.length > 1;
     }
 
     exerciseSetSelected() {
@@ -255,11 +265,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     isLastInSet(exercise: ExerciseBean): boolean {
-        return this.hasSet && this.exerciseSet.exercises[this.exerciseSet.exercises.length - 1] === exercise;
+        return this.hasSet && this.exercises[this.exercises.length - 1] === exercise;
     }
 
     isNotLastInSet(exercise: ExerciseBean): boolean {
-        return this.hasSet && this.exerciseSet.exercises[this.exerciseSet.exercises.length - 1] !== exercise;
+        return this.hasSet && this.exercises[this.exercises.length - 1] !== exercise;
     }
 
     isFirstSet(exercise: ExerciseBean): boolean {
@@ -279,20 +289,20 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     get hasTimedRep(): boolean {
-        return this.exerciseSet.exercises.some((exe) => {
+        return this.exercises.some((exe) => {
             return exe.reps.some((rep) => {
                 return rep.seconds > 0;
             });
         });
     }
     get hasIncompleteTimedRepInActiveRep(): boolean {
-        return this.exerciseSet.exercises.some((exe) => {
+        return this.exercises.some((exe) => {
             const rep = exe.reps[this.activeRepIndex];
             return rep.seconds > 0 && !rep.isCompleted;
         });
     }
     get hasCompleteTimedRepInActiveRep(): boolean {
-        return this.exerciseSet.exercises.some((exe) => {
+        return this.exercises.some((exe) => {
             const rep = exe.reps[this.activeRepIndex];
             return rep.seconds > 0 && rep.isCompleted;
         });
@@ -335,7 +345,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     private resetReps() {
-        this.exerciseSet.exercises.forEach((exercise) => this.resetRepsState(exercise));
+        this.exercises.forEach((exercise) => this.resetRepsState(exercise));
         this.activeRepIndex = 0;
         this.setExecrciseRepsActiveState(this.activeExercise, this.activeRepIndex);
     }
@@ -409,11 +419,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this._timedRepRemaining = 0;
         if (this.activeExerciseInSetIndex > 0 &&
             (this.hasCompleteTimedRepInActiveRep || this.hasIncompleteTimedRepInActiveRep)) {
-            this.exerciseSet.exercises[this.activeExerciseInSetIndex - 1].reps[this.activeRepIndex].isCompleted = false;
+            this.exercises[this.activeExerciseInSetIndex - 1].reps[this.activeRepIndex].isCompleted = false;
             this.activatePrevExercise();
         } else {
             if (this.activeRepIndex > 0) {
-                this.exerciseSet.exercises.forEach(exercise => exercise.reps[this.activeRepIndex - 1].isCompleted = false);
+                this.exercises.forEach(exercise => exercise.reps[this.activeRepIndex - 1].isCompleted = false);
             }
             this.activatePrevRep();
         }
@@ -447,7 +457,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     private activatePrevRep() {
         if (this.activeRepIndex > 0) {
             this.InactiveExerciseReps(this.activeExercise);
-            this.activeExerciseInSetIndex = this.exerciseSet.exercises.length - 1;
+            this.activeExerciseInSetIndex = this.exercises.length - 1;
             this.setExecrciseRepsActiveState(this.activeExercise, --this.activeRepIndex);
         }
         this.startTimedRep();
@@ -456,7 +466,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     nextRep(shouldRest: boolean) {
         this.stopRepTimer();
         this._timedRepRemaining = 0;
-        if (this.exerciseSet.exercises.length > this.activeExerciseInSetIndex + 1 &&
+        if (this.exercises.length > this.activeExerciseInSetIndex + 1 &&
             this.hasIncompleteTimedRepInActiveRep) {
             this.activeRep.isCompleted = true;
             // need to go to the next exercise with current rep
@@ -468,7 +478,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 this.activateNextExercise();
             }
         } else {
-            this.exerciseSet.exercises.forEach((exercise) => exercise.reps[this.activeRepIndex].isCompleted = true);
+            this.exercises.forEach((exercise) => exercise.reps[this.activeRepIndex].isCompleted = true);
             this.activeRep.isCompleted = true;
             // if there are more reps, need to go to the next rep on the first exercise
             if (this.activeExercise.reps.length > this.activeRepIndex + 1) {
@@ -501,7 +511,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     addRep(index: number) {
         if (!this.isMaxReps) {
-            this.exerciseSet.exercises.forEach(set => {
+            this.exercises.forEach(set => {
                 const newRep: Rep = new Rep({
                     weight: set.reps[index].weight,
                     weightUnit: set.reps[index].weightUnit,
@@ -515,18 +525,18 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     deleteRep(index: number) {
         if (!this.isMinReps) {
-            this.exerciseSet.exercises.forEach(set => {
+            this.exercises.forEach(set => {
                 set.reps.splice(index, 1);
             });
         }
     }
 
     get isMaxReps(): boolean {
-        return this.exerciseSet.exercises[0].reps.length === MAXREPS;
+        return this.exercises[0].reps.length === MAXREPS;
     }
 
     get isMinReps(): boolean {
-        return this.exerciseSet.exercises[0].reps.length === MINREPS;
+        return this.exercises[0].reps.length === MINREPS;
     }
 
     async presentPopover(event: Event, rep: Rep) {

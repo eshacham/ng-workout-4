@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { WorkoutBean } from '../../models/Workout';
 import { DisplayMode } from 'src/app/models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
-import { DeleteWorkout, UpdateWorkout } from 'src/app/store/actions/workouts.actions';
+import { DeleteWorkout, UpdateWorkout, SelectWorkout } from 'src/app/store/actions/workouts.actions';
 import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
 import { selectWorkout } from 'src/app/store/selectors/workouts.selectors';
 
@@ -51,6 +51,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   async goToWorkoutDays() {
     const id = this.workoutId;
     console.log('going to workout with id', JSON.stringify(id));
+    this.store.dispatch(new SelectWorkout({ workoutId: id }));
     this.router.navigate([`workout-days/${id}`], { relativeTo: this.route });
   }
 

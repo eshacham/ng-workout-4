@@ -15,7 +15,8 @@ import {
   ResetWorkouts,
   WorkoutsUpdated,
   ResetImages,
-  ImagesUpdated
+  ImagesUpdated,
+  GetData
 } from 'src/app/store/actions/data.actions';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { selectHasDataBeenLoaded } from 'src/app/store/selectors/data.selectors';
@@ -42,6 +43,7 @@ export class DataServiceProvider {
     //       this.hasDataBeenLoaded = loaded;
     //     }
     //   });
+    console.log('data-service - constructor');
   }
 
   async getWorkouts(): Promise<WorkoutsDataMaps> {
@@ -70,7 +72,7 @@ export class DataServiceProvider {
       this.UpdateImagesInWorkouts(workoutsDataMaps);
       await this.saveWorkouts(workoutsDataMaps);
     }
-    console.log('loaded cached workouts', Object.keys(workoutsDataMaps.workouts));
+    console.log('data-service - loaded cached workouts', Object.keys(workoutsDataMaps.workouts));
     return workoutsDataMaps;
   }
 

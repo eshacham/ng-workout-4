@@ -6,6 +6,13 @@ import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 
 export const workoutDaysState = (state: IAppState): IWorkoutDaysState => state.days;
 
+export const selectWorkoutDay = (id: string) => createSelector(
+  workoutDaysState,
+  (workoutDays: IWorkoutDaysState) => {
+      return workoutDays.byId[id];
+  }
+);
+
 export const SelectWorkoutDayState = createSelector(
   workoutDaysState,
   selectCurrentWorkoutSelectedDayId,

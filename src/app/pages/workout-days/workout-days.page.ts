@@ -5,8 +5,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSlides as Slides, NavController } from '@ionic/angular';
 import { IAppState } from 'src/app/store/state/app.state';
-import { Workout, WorkoutBean } from '../../models/Workout';
-import { DataServiceProvider } from '../../providers/data-service/data-service';
+import { WorkoutBean } from '../../models/Workout';
 import { WorkoutDay } from '../../models/WorkoutDay';
 import { SelectWorkout, UnselectWorkout } from 'src/app/store/actions/workouts.actions';
 import {
@@ -51,7 +50,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    // private dataService: DataServiceProvider,
     private store: Store<IAppState>) {
     this.isNewDayAdded = false;
     this.subs = this.route.params.subscribe(params => {
@@ -125,8 +123,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log('ngOnDestroy - workout days');
     this.subs.unsubscribe();
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.store.dispatch(new UnselectWorkout());

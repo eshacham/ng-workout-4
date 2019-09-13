@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ workout?.name }}</ion-title>
+    <ion-title>{{ workout.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +13,7 @@
     (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let day of workout.days">
         <app-workout-day
-        [workoutDay]="day"
+        [workoutDayId]="day"
         [isLastDayActive]="isLastDayActive"
         [isFirstDayActive]="isFirstDayActive"
         [isOneDayOnly]="isOneDayOnly"

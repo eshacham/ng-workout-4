@@ -52,13 +52,13 @@
       <ion-item *ngFor="let exerciseSet of workoutDay.exerciseSets; let i = index"
         class="exercise-thumbnail-ion-item">
         <app-exercise-thumbnail #exerciseSetComponent
-          [exerciseSet]="exerciseSet"
-          [workoutDayId]=workoutDay.id
+          [exerciseSetId]="exerciseSet"
+          [workoutDayId]=workoutDayId
           [exerciseSetIndex]="i"
           [isDayInEditMode]="IsEditMode"
           (click)="exerciseSetComponent.exerciseSetSelected()">
-          </app-exercise-thumbnail>
-          <ion-reorder slot="end"></ion-reorder>
+        </app-exercise-thumbnail>
+        <ion-reorder slot="end"></ion-reorder>
       </ion-item>
     </ion-reorder-group>
   </ion-list>
