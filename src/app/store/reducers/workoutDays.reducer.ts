@@ -23,7 +23,6 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case EWorkoutsActions.DeleteWorkout: {
-            console.log('workout days reducer, delete workout', action.payload.workoutId);
             return {
                 ...state,
                 byId:
@@ -76,13 +75,13 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case EWorkoutDaysActions.WorkoutDayDeleted: {
+            const workoutDayId2Delete = state.deleteSelectedWorkoutDay;
             return {
                 ...state,
                 deleteSelectedWorkoutDay: undefined,
-                byId: {
-                    ...state.byId,
-                    [state.deleteSelectedWorkoutDay]: undefined
-                },
+                byId: Object.entries(state.byId)
+                .filter(([key, value]) => key !== workoutDayId2Delete)
+                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {})
             };
         }
         case EWorkoutDaysActions.StartFirstExercise:
