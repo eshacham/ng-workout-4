@@ -1,6 +1,6 @@
-import { WorkoutsActions, EWorkoutsActions,  } from '../actions/workouts.actions';
+import { WorkoutsActions, EWorkoutsActions, } from '../actions/workouts.actions';
 import { initialWorkoutsState, IWorkoutsState } from '../state/workouts.state';
-import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.actions';
+import { EWorkoutDaysActions, WorkoutDaysActions, Direction } from '../actions/workoutDays.actions';
 import { GetDataSuccess, EDataActions } from '../actions/data.actions';
 
 export const workoutsReducers = (state = initialWorkoutsState,
@@ -87,6 +87,23 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 },
             };
         }
+        case EWorkoutDaysActions.MoveWorkoutDay: {
+            const oldDays = state.byId[state.selectedWorkoutId].days;
+            const idfDay2Move = state.byId[state.selectedWorkoutId].selectedWorkoutDayId;
+            const indexOfDay2Move = oldDays.indexOf(idfDay2Move);
+            const offset = action.payload.direction === Direction.Forward ? 1 : -1;
+            const newDays = moveDayByDirection(oldDays, indexOfDay2Move, offset);
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [state.selectedWorkoutId]: {
+                        ...state.byId[state.selectedWorkoutId],
+                        days: newDays,
+                    }
+                }
+            };
+        }
         case EWorkoutsActions.UpdateWorkout: {
             return {
                 ...state,
@@ -101,3 +118,9 @@ export const workoutsReducers = (state = initialWorkoutsState,
         }
     }
 };
+function moveDayByDirection(oldDays: string[], index: number, offset: number) {
+    const newDays = [...oldDays];
+    const day2Move = newDays.splice(index, 1)[0];
+    newDays.splice(index + offset, 0, day2Move);
+    return newDays;
+}

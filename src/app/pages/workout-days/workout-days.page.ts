@@ -114,7 +114,9 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       .subscribe(async (direction) => {
         console.log(`workout-days ${this.workoutId} - SelectworkoutDayMoveDirection ${direction}`);
         if (direction) {
-          await this.moveWorkoutDay(direction);
+          console.log(`workout-days ${this.workoutId} moving day ${Direction[direction]}`);
+          this.store.dispatch(new WorkoutDayMoved());
+          await this.saveChanges();
         }
       });
   }
@@ -173,35 +175,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   async saveChanges() {
     this.store.dispatch(new UpdateWorkouts());
-  }
-
-  async moveWorkoutDay(direction: Direction) {
-    if (direction === Direction.Backword) {
-      await this.moveBackWorkoutDay(this.activeDayIndex);
-    } else {
-      await this.moveForwardWorkoutDay(this.activeDayIndex);
-    }
-    this.store.dispatch(new WorkoutDayMoved());
-  }
-
-  private async moveForwardWorkoutDay(index: number) {
-    console.log(`workout-days ${this.workoutId} moving day forward`);
-    if (index + 1 < this.days.length) {
-      this.days.splice(index, 0, this.days.splice(index + 1, 1)[0]);
-      await this.slides.update();
-      await this.saveChanges();
-      await this.slides.slideNext(0);
-    }
-  }
-
-  private async moveBackWorkoutDay(index: number) {
-    console.log(`workout-days ${this.workoutId} moving day back`);
-    if (index - 1 >= 0) {
-      this.days.splice(index, 0, this.days.splice(index - 1, 1)[0]);
-      await this.slides.update();
-      await this.saveChanges();
-      await this.slides.slidePrev(0);
-    }
   }
 
   private async addWorkoutDay(currentWorkoutDayId: string) {
