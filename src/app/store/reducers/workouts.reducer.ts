@@ -69,6 +69,22 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 },
             };
         }
+        case EWorkoutDaysActions.WorkoutDayAdded: {
+            const oldDays = state.byId[action.payload.workoutId].days;
+            const newDays = [...oldDays];
+            newDays.splice(action.payload.index2AddFrom + 1, 0, action.payload.workoutDayId);
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.workoutId]: {
+                        ...state.byId[action.payload.workoutId],
+                        days: newDays,
+                        // selectedWorkoutDayId: action.payload.workoutDayId
+                    }
+                },
+            };
+        }
         case EWorkoutsActions.UpdateWorkout: {
             return {
                 ...state,

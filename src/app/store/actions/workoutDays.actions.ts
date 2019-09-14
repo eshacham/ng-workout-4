@@ -57,7 +57,10 @@ export class AddWorkoutDay implements Action {
 
 export class WorkoutDayAdded implements Action {
     readonly type = EWorkoutDaysActions.WorkoutDayAdded;
-    constructor(public payload: { workoutDayId: string }) { }
+    constructor(public payload: {
+        workoutId: string,
+        workoutDayId: string,
+        index2AddFrom: number }) { }
 }
 
 export class DeleteExerciseSet implements Action {

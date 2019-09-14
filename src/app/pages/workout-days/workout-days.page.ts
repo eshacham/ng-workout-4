@@ -20,6 +20,7 @@ import { selectWorkoutDayId2Delete } from 'src/app/store/selectors/workoutDays.s
 import { selectHasWorkoutsBeenReset } from 'src/app/store/selectors/data.selectors';
 import { SelectWorkoutDayId2AddFrom, SelectworkoutDayMoveDirection } from 'src/app/store/selectors/workoutDays.selectors';
 import { Guid } from 'guid-typescript';
+import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
 
 @Component({
   selector: 'app-workout-days',
@@ -113,11 +114,12 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           const lastWorkoutDayIndex = this.workout.days.findIndex(day => day === dayId);
           if (lastWorkoutDayIndex !== this.activeDayIndex) {
             console.log('sliding to last selected day index:', lastWorkoutDayIndex);
+            // await this.slides.update();
             await this.slides.slideTo(lastWorkoutDayIndex, 0);
           }
         }
       });
-      this.slideChanged();
+    this.slideChanged();
   }
 
   ngOnDestroy() {
@@ -151,7 +153,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   async saveChanges() {
-    // await this.dataService.saveWorkouts();
+    this.store.dispatch(new UpdateWorkouts());
   }
 
   moveWorkoutDay(direction: Direction) {
@@ -188,16 +190,22 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     const newDay = new WorkoutDay({
       id: newId,
       name: 'new workout day',
-      exerciseSets: [] });
+      exerciseSets: []
+    });
     const index = this.getWorkoutDayIndexById(currentWorkoutDayId);
     console.log('splicing (insert) at ', index);
     this.isNewDayAdded = true;
-    // this.workout.days.splice(index + 1, 0, newDay);
-    await this.slides.update();
+    this.store.dispatch(new WorkoutDayAdded({
+      workoutId: this.workoutId,
+      workoutDayId: newDay.id,
+      index2AddFrom: index
+    }));
+    this.store.dispatch(new SelectWorkoutDay(
+      {
+        workoutId: this.workoutId,
+        dayId: newId
+      }));
     await this.saveChanges();
-    console.log('sliding forward');
-    await this.slides.slideNext(0);
-    this.store.dispatch(new WorkoutDayAdded({ workoutDayId: newDay.id.toString() }));
   }
 
   private async deleteWorkoutDay(dayId: string) {
@@ -212,8 +220,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       console.log(`deleted workout day ${oldDayId}. next day is ${nextWorkoutDayId}`);
       this.store.dispatch(new SelectWorkoutDay(
         {
-          workoutId: this.workout.id.toString(),
-          dayId: nextWorkoutDayId.toString()
+          workoutId: this.workoutId,
+          dayId: nextWorkoutDayId
         }));
     }
   }

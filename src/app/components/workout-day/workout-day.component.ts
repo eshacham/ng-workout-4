@@ -15,12 +15,15 @@ import {
   ExerciseSetDeleted,
   AddWorkoutDay,
   MoveWorkoutDay,
-  Direction} from 'src/app/store/actions/workoutDays.actions';
+  Direction
+} from 'src/app/store/actions/workoutDays.actions';
 import {
   SelectWorkoutDayState,
   SelectExerciseSetIndex2Delete,
-  selectWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
+  selectWorkoutDay
+} from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil, take } from 'rxjs/operators';
+import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
 
 @Component({
   selector: 'app-workout-day',
@@ -164,6 +167,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         break;
     }
   }
+
   stopWorkout() {
     switch (this.DisplayMode) {
       case DisplayMode.Workout:
@@ -175,6 +179,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     }
     this.DispatchChangeDisplayMode();
   }
+
   async editWorkoutToggler() {
     switch (this.DisplayMode) {
       case DisplayMode.Workout:
@@ -203,31 +208,31 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   moveForwardWorkoutDay(event) {
-    this.store.dispatch(new MoveWorkoutDay({direction: Direction.Forward}));
+    this.store.dispatch(new MoveWorkoutDay({ direction: Direction.Forward }));
     event.stopPropagation();
   }
 
   moveBackWorkoutDay(event) {
-    this.store.dispatch(new MoveWorkoutDay({direction: Direction.Backword}));
+    this.store.dispatch(new MoveWorkoutDay({ direction: Direction.Backword }));
     event.stopPropagation();
   }
 
   addWorkoutDay(event) {
     this.store.dispatch(new AddWorkoutDay({
-      workoutDayId: this.workoutDay.id.toString()
+      workoutDayId: this.workoutDay.id
     }));
     event.stopPropagation();
   }
 
   deleteWorkoutDay(event) {
     this.store.dispatch(new DeleteWorkoutDay({
-      workoutDayId: this.workoutDay.id.toString()
+      workoutDayId: this.workoutDay.id
     }));
     event.stopPropagation();
   }
 
   async saveChanges() {
-    // await this.dataService.saveWorkouts();
+    this.store.dispatch(new UpdateWorkouts());
     // this.toastr.info('Saved!');
   }
 
