@@ -1,10 +1,14 @@
 import { WorkoutDaysActions, EWorkoutDaysActions } from '../actions/workoutDays.actions';
 import { initialWorkoutDaysState, IWorkoutDaysState } from '../state/workoutDays.state';
-import { GetDataSuccess, EDataActions } from '../actions/data.actions';
+import { EDataActions, DataActions } from '../actions/data.actions';
 import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
+import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
 
 export const workoutDaysReducers = (state = initialWorkoutDaysState,
-    action: WorkoutDaysActions | WorkoutsActions | GetDataSuccess)
+    action: WorkoutDaysActions |
+    WorkoutsActions |
+    DataActions |
+    ExerciseSetActions)
     : IWorkoutDaysState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -134,6 +138,20 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                     [action.payload.dayId]: {
                         ...state.byId[action.payload.dayId],
                         exerciseSetIndex2Delete: undefined
+                    }
+                },
+            };
+        }
+        case EExerciseSetActions.AddExerciseSets: {
+            const oldSets = [ ...state.byId[action.payload.dayId].exerciseSets ];
+            const newSets = action.payload.sets.map(s => s.id);
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.dayId]: {
+                        ...state.byId[action.payload.dayId],
+                        exerciseSets: oldSets.concat(newSets)
                     }
                 },
             };

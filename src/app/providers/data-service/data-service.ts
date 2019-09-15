@@ -69,8 +69,7 @@ export class DataServiceProvider {
     if (!workoutsDataMaps && Object.keys(workoutsDataMaps.workouts).length === 0) {
       workoutsDataMaps = await this.resetWorkouts();
     } else if (this.isMobile) {
-      this.UpdateImagesInWorkouts(workoutsDataMaps);
-      await this.saveWorkouts(workoutsDataMaps);
+      await this.UpdateImagesInWorkouts(workoutsDataMaps);
     }
     console.log('data-service - loaded cached workouts', Object.keys(workoutsDataMaps.workouts));
     return workoutsDataMaps;
@@ -84,7 +83,7 @@ export class DataServiceProvider {
   }
 
 
-  private UpdateImagesInWorkouts(workoutsDataMaps: WorkoutsDataMaps) {
+  async UpdateImagesInWorkouts(workoutsDataMaps: WorkoutsDataMaps) {
     const exercises = workoutsDataMaps.exercises.byId;
     for (const id of Object.keys(exercises)) {
       const exe = exercises[id];
@@ -97,6 +96,7 @@ export class DataServiceProvider {
         console.log(`update exercise image path from ${oldPath} to ${exe.media.nativePath}`);
       }
     }
+    await this.saveWorkouts(workoutsDataMaps);
   }
 
   async saveWorkouts(workoutsDataMaps: WorkoutsDataMaps, haveWorkoutsBeenReset: boolean = false) {

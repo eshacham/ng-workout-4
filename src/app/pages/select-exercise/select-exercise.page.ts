@@ -3,8 +3,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
-import { Workout, WorkoutBean } from 'src/app/models/Workout';
-import { ExerciseSet } from 'src/app/models/ExerciseSet';
+import { ExerciseSet, ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { Muscles, RepetitionSpeed } from 'src/app/models/enums';
@@ -17,6 +16,7 @@ import { selectHasImagesBeenReset, selectHasWorkoutsBeenReset } from 'src/app/st
 import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
+import { AddExerciseSets } from 'src/app/store/actions/exerciseSets.actions';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -30,16 +30,12 @@ interface SelectedExerciseMedia {
 })
 export class SelectExercisePage implements OnInit, OnDestroy {
 
-  workout: WorkoutBean;
   workoutId?: string;
   isSet = false;
   haveWorkoutsBeenReset = false;
   lastSelectedWorkoutDayId?: string;
   subs: Subscription;
-  private ngUnsubscribeForImageReset: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForWorkoutReset: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForLibraryFilter: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForWorkoutDaySelected: Subject<void> = new Subject<void>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -97,9 +93,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.haveWorkoutsBeenReset = false;
     this.images = await this.getImages();
-    // this.workout = await this.dataService.getWorkout(this.workoutId);
     this.store.select(selectHasImagesBeenReset)
-      .pipe(takeUntil(this.ngUnsubscribeForImageReset))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (reset) => {
         console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
         if (reset) {
@@ -108,24 +103,24 @@ export class SelectExercisePage implements OnInit, OnDestroy {
         }
       });
     this.store.select(selectHasWorkoutsBeenReset)
-      .pipe(takeUntil(this.ngUnsubscribeForWorkoutReset))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(reset => {
         console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
         this.haveWorkoutsBeenReset = reset;
       });
     this.store.select(selectLibraryMusclesFilterState)
-      .pipe(takeUntil(this.ngUnsubscribeForLibraryFilter))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (filter) => {
         console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
         this.filteredImages = this.filterImagesByMuscles(filter);
       });
     this.store.select(selectCurrentWorkoutSelectedDayId)
-      .pipe(takeUntil(this.ngUnsubscribeForWorkoutDaySelected))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (selectedWorkoutDayState) => {
-        if (selectedWorkoutDayState && this.workoutId.toString() === selectedWorkoutDayState.workoutId) {
+        if (selectedWorkoutDayState && this.workoutId === selectedWorkoutDayState.workoutId) {
           const workoutDayId = selectedWorkoutDayState.dayId;
           this.lastSelectedWorkoutDayId = workoutDayId;
-          console.log('select-exercise redux - getCurrentWorkoutLastSelectedDay:', workoutDayId);
+          console.log('select-exercise - selectCurrentWorkoutSelectedDayId:', workoutDayId);
         }
       });
   }
@@ -133,14 +128,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log('onDestroy - select-exercise');
     this.subs.unsubscribe();
-    this.ngUnsubscribeForImageReset.next();
-    this.ngUnsubscribeForImageReset.complete();
-    this.ngUnsubscribeForWorkoutReset.next();
-    this.ngUnsubscribeForWorkoutReset.complete();
-    this.ngUnsubscribeForLibraryFilter.next();
-    this.ngUnsubscribeForLibraryFilter.complete();
-    this.ngUnsubscribeForWorkoutDaySelected.next();
-    this.ngUnsubscribeForWorkoutDaySelected.complete();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   private async getImages(): Promise<SelectedExerciseMedia[]> {
@@ -171,42 +160,34 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       console.log('select-exercise: Workouts have been reset! Can\'t update it now');
       return;
     }
-    const newSets = this.getNewSets();
-    newSets.forEach((set) => {
-      // this.workout.days.find(day => day.id === this.lastSelectedWorkoutDayId).exerciseSets.push(set);
-    });
-    // this.dataService.saveWorkouts();
+    const { sets, exes } = this.getNewSets();
+    this.store.dispatch(new AddExerciseSets({
+      dayId: this.lastSelectedWorkoutDayId,
+      sets: sets,
+      exes: exes
+    }));
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  getNewSets(): ExerciseSet[] {
-    let newSets: ExerciseSet[];
-    const newExercises: ExerciseBean[] = [];
-    for (const image of this.selectedImages) {
-      console.log('adding exercise media', image);
-      const newRep = new Rep({
-        times: 1
-      });
-      const newExercise = new ExerciseBean({
-        id: Guid.raw(),
-        name: image.media.name,
-        media: image.media,
-        reps: [newRep],
-        repSpeed: RepetitionSpeed.OneOne,
-        isFavorite: false,
-        restBetweenReps: 20,
-        restAfterExercise: 20
-      });
-      newExercises.push(newExercise);
-    }
-
-    const newId = Guid.raw();
+  getNewSets(): { sets: ExerciseSetBean[], exes: ExerciseBean[] } {
+    let newSets: ExerciseSetBean[];
+    let newExercises: ExerciseBean[];
+    newExercises = this.selectedImages
+      .map(image => ExerciseBean.defaultExerciseBean(Guid.raw(), image.media));
     if (this.isSet) {
-      newSets = [new ExerciseSet({ id: newId, exercises: newExercises })];
+      newSets = [this.makeNewSet(newExercises)];
     } else {
-      newSets = newExercises.map((exe) => new ExerciseSet({ id: newId, exercises: [exe] }));
+      newSets = newExercises.map((exe) =>  this.makeNewSet([exe]));
     }
-    return newSets;
+    return { sets: newSets, exes: newExercises };
+  }
+
+  private makeNewSet(newExercises: ExerciseBean[]): ExerciseSetBean {
+    return new ExerciseSetBean({
+      id: Guid.raw(),
+      workoutDayId: this.lastSelectedWorkoutDayId,
+      exercises: newExercises.map(exe => exe.id)
+    });
   }
 
   async selectMuscle() {

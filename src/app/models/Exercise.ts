@@ -54,4 +54,19 @@ export class ExerciseBean {
             exercises.splice(index, 1);
         }
     }
+
+    static defaultExerciseBean(id: string, media: ExerciseMedia): ExerciseBean {
+        return new ExerciseBean({
+            id: id,
+            name: media.name,
+            media: media,
+            reps: [new Rep({
+                times: 1
+              })],
+            repSpeed: RepetitionSpeed.OneOne,
+            isFavorite: false,
+            restBetweenReps: 20,
+            restAfterExercise: 20
+          });
+    }
 }

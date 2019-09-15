@@ -1,11 +1,12 @@
-import { GetDataSuccess, EDataActions } from '../actions/data.actions';
+import { EDataActions, DataActions } from '../actions/data.actions';
 import { initialExercisesState, IExercisesState } from '../state/Exercises.state';
 import { EExerciseActions, ExerciseActions } from '../actions/exercises.actions';
 import { Rep } from 'src/app/models/Rep';
+import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
 
 export const exercisesReducers = (
     state = initialExercisesState,
-    action: GetDataSuccess | ExerciseActions)
+    action: DataActions | ExerciseActions | ExerciseSetActions)
     : IExercisesState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -77,6 +78,19 @@ export const exercisesReducers = (
                         reps: newReps
                     }
                 }
+            };
+        }
+        case EExerciseSetActions.AddExerciseSets: {
+            return {
+                ...state,
+                byId: [...Object.entries(state.byId),
+                        ...action.payload.exes.map(exe => {
+                    return {
+                        [0]: exe.id,
+                        [1]: exe
+                    };
+                })]
+                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {})
             };
         }
         default: {
