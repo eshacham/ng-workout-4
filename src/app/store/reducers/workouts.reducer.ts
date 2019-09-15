@@ -2,6 +2,7 @@ import { WorkoutsActions, EWorkoutsActions, } from '../actions/workouts.actions'
 import { initialWorkoutsState, IWorkoutsState } from '../state/workouts.state';
 import { EWorkoutDaysActions, WorkoutDaysActions, Direction } from '../actions/workoutDays.actions';
 import { GetDataSuccess, EDataActions } from '../actions/data.actions';
+import { WorkoutBean } from 'src/app/models/Workout';
 
 export const workoutsReducers = (state = initialWorkoutsState,
     action: WorkoutsActions | WorkoutDaysActions | GetDataSuccess)
@@ -35,13 +36,12 @@ export const workoutsReducers = (state = initialWorkoutsState,
             };
         }
         case EWorkoutsActions.DeleteWorkout: {
+            let newMap: { [id: string]: WorkoutBean } ;
+            let workout: WorkoutBean;
+            ({ [action.payload.workoutId]: workout, ...newMap } = state.byId);
             return {
                 ...state,
-                byId:
-                    Object.entries(state.byId)
-                        .filter(([key, value]) => key !== action.payload.workoutId)
-                        .reduce((map, obj) => (map[obj[0]] = obj[1], map), {})
-
+                byId: newMap
             };
         }
         case EWorkoutDaysActions.SelectWorkoutDay: {

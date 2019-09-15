@@ -3,12 +3,13 @@ import { initialWorkoutDaysState, IWorkoutDaysState } from '../state/workoutDays
 import { EDataActions, DataActions } from '../actions/data.actions';
 import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
 import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
+import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 
 export const workoutDaysReducers = (state = initialWorkoutDaysState,
     action: WorkoutDaysActions |
-    WorkoutsActions |
-    DataActions |
-    ExerciseSetActions)
+        WorkoutsActions |
+        DataActions |
+        ExerciseSetActions)
     : IWorkoutDaysState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -24,15 +25,6 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                     ...state.byId,
                     [action.payload.day.id]: action.payload.day
                 }
-            };
-        }
-        case EWorkoutsActions.DeleteWorkout: {
-            return {
-                ...state,
-                byId:
-                    Object.entries(state.byId)
-                        .filter(([key, value]) => value.workoutId !== action.payload.workoutId)
-                        .reduce((map, obj) => (map[obj[0]] = obj[1], map), {})
             };
         }
         case EWorkoutDaysActions.AddWorkoutDay: {
@@ -91,13 +83,13 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case EWorkoutDaysActions.WorkoutDayDeleted: {
-            const workoutDayId2Delete = state.deleteSelectedWorkoutDay;
+            let newMap: { [id: string]: WorkoutDayBean };
+            let day: WorkoutDayBean;
+            ({ [state.deleteSelectedWorkoutDay]: day, ...newMap } = state.byId);
             return {
                 ...state,
                 deleteSelectedWorkoutDay: undefined,
-                byId: Object.entries(state.byId)
-                .filter(([key, value]) => key !== workoutDayId2Delete)
-                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {})
+                byId: newMap
             };
         }
         case EWorkoutDaysActions.StartFirstExercise:
@@ -118,32 +110,33 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
-        case EWorkoutDaysActions.DeleteExerciseSet: {
+        case EExerciseSetActions.DeleteExerciseSet: {
             return {
                 ...state,
                 byId: {
                     ...state.byId,
                     [action.payload.dayId]: {
                         ...state.byId[action.payload.dayId],
-                        exerciseSetIndex2Delete: action.payload.exerciseSetIndex
+                        exerciseSets: state.byId[action.payload.dayId].exerciseSets
+                            .filter(s => s !== action.payload.setId)
                     }
                 },
             };
         }
-        case EWorkoutDaysActions.ExerciseSetDeleted: {
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.payload.dayId]: {
-                        ...state.byId[action.payload.dayId],
-                        exerciseSetIndex2Delete: undefined
-                    }
-                },
-            };
-        }
+        // case EWorkoutDaysActions.ExerciseSetDeleted: {
+        //     return {
+        //         ...state,
+        //         byId: {
+        //             ...state.byId,
+        //             [action.payload.dayId]: {
+        //                 ...state.byId[action.payload.dayId],
+        //                 exerciseSetIndex2Delete: undefined
+        //             }
+        //         },
+        //     };
+        // }
         case EExerciseSetActions.AddExerciseSets: {
-            const oldSets = [ ...state.byId[action.payload.dayId].exerciseSets ];
+            const oldSets = [...state.byId[action.payload.dayId].exerciseSets];
             const newSets = action.payload.sets.map(s => s.id);
             return {
                 ...state,

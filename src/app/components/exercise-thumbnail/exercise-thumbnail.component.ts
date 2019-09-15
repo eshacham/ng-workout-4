@@ -12,7 +12,7 @@ import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 import { IAppState } from 'src/app/store/state/app.state';
 import { SelectWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
-import { ExerciseStarted, ExerciseCompleted, DeleteExerciseSet } from 'src/app/store/actions/workoutDays.actions';
+import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 import { selectexerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
 import {
@@ -21,6 +21,7 @@ import {
     SetInactiveReps,
     SetRepsCompleteState,
     SetRepsIncompleteState } from 'src/app/store/actions/exercises.actions';
+import { DeleteExerciseSet } from 'src/app/store/actions/exerciseSets.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -198,7 +199,9 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     deleteExerciseSet() {
         this.store.dispatch(new DeleteExerciseSet({
             dayId: this.workoutDayId,
-            exerciseSetIndex: this.exerciseSetIndex}));
+            setId: this.exerciseSetId,
+            exeIds: this.exerciseSet.exercises
+        }));
     }
 
     deleteExercise(index: number) {

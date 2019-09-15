@@ -3,6 +3,8 @@ import { initialExercisesState, IExercisesState } from '../state/Exercises.state
 import { EExerciseActions, ExerciseActions } from '../actions/exercises.actions';
 import { Rep } from 'src/app/models/Rep';
 import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
+import { ExerciseSet, ExerciseSetBean } from 'src/app/models/ExerciseSet';
+import { ExerciseBean } from 'src/app/models/Exercise';
 
 export const exercisesReducers = (
     state = initialExercisesState,
@@ -81,16 +83,14 @@ export const exercisesReducers = (
             };
         }
         case EExerciseSetActions.AddExerciseSets: {
+            const newExes: { id: string, exe: ExerciseBean }[] =
+            action.payload.exes.map(exe => ({id: exe.id, exe: exe}));
             return {
                 ...state,
-                byId: [...Object.entries(state.byId),
-                        ...action.payload.exes.map(exe => {
-                    return {
-                        [0]: exe.id,
-                        [1]: exe
-                    };
-                })]
-                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {})
+                byId: {
+                    ...state.byId,
+                    ...newExes.reduce((map, obj) => (map[obj.id] = obj.exe, map), {})
+                }
             };
         }
         default: {

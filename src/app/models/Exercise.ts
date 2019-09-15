@@ -42,7 +42,7 @@ export class ExerciseBean {
         this.restBetweenReps = options.restBetweenReps;
         this.restAfterExercise = options.restAfterExercise;
         this.reps = options.reps;
-        this.media.mediaUsageCounter++;
+        // this.media.mediaUsageCounter++;
         if (options.exerciseSetId) {
             this.exerciseSetId = options.exerciseSetId;
         }

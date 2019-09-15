@@ -12,7 +12,7 @@ import {
   ChangeDisplayMode,
   StartNextExercise,
   DeleteWorkoutDay,
-  ExerciseSetDeleted,
+  // ExerciseSetDeleted,
   AddWorkoutDay,
   MoveWorkoutDay,
   Direction,

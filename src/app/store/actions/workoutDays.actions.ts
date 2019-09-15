@@ -21,13 +21,12 @@ export enum EWorkoutDaysActions {
     ExerciseStarted = '[WorkoutDays] Exercise has started',
     ExerciseCompleted = '[WorkoutDays] Exercise has completed',
     ChangeDisplayMode = '[WorkoutDays] Change workout day display mode',
-    DeleteExerciseSet = '[WorkoutDays] Delete exercise set',
-    ExerciseSetDeleted = '[WorkoutDays] Eexercise set has been deleted'
+    // ExerciseSetDeleted = '[WorkoutDays] Eexercise set has been deleted'
 }
 
 export class MoveWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.MoveWorkoutDay;
-    constructor(public payload: { direction: Direction }) {}
+    constructor(public payload: { direction: Direction }) { }
 }
 
 export class WorkoutDayMoved implements Action {
@@ -39,7 +38,8 @@ export class SelectWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.SelectWorkoutDay;
     constructor(public payload: {
         workoutId: string;
-        dayId: string }) { }
+        dayId: string
+    }) { }
 }
 
 export class DeleteWorkoutDay implements Action {
@@ -63,7 +63,8 @@ export class UpdateWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.UpdateWorkoutDay;
     constructor(public payload: {
         dayId: string,
-        name: string }) { }
+        name: string
+    }) { }
 }
 
 export class WorkoutDayAdded implements Action {
@@ -71,19 +72,15 @@ export class WorkoutDayAdded implements Action {
     constructor(public payload: {
         workoutId: string,
         dayId: string,
-        index2AddFrom: number }) { }
+        index2AddFrom: number
+    }) { }
 }
 
-export class DeleteExerciseSet implements Action {
-    readonly type = EWorkoutDaysActions.DeleteExerciseSet;
-    constructor(public payload: {
-        dayId: string,
-        exerciseSetIndex: number }) { }
-}
-export class ExerciseSetDeleted implements Action {
-    readonly type = EWorkoutDaysActions.ExerciseSetDeleted;
-    constructor(public payload: { dayId: string }) { }
-}
+
+// export class ExerciseSetDeleted implements Action {
+//     readonly type = EWorkoutDaysActions.ExerciseSetDeleted;
+//     constructor(public payload: { dayId: string }) { }
+// }
 
 export class StartFirstExercise implements Action {
     readonly type = EWorkoutDaysActions.StartFirstExercise;
@@ -133,7 +130,7 @@ export type WorkoutDaysActions =
     StartNextExercise |
     ExerciseStarted |
     ExerciseCompleted |
-    ChangeDisplayMode |
-    DeleteExerciseSet |
-    ExerciseSetDeleted
+    ChangeDisplayMode
+    // DeleteExerciseSet
+    // ExerciseSetDeleted
     ;

@@ -4,6 +4,7 @@ import { ExerciseBean } from 'src/app/models/Exercise';
 
 export enum EExerciseSetActions {
     AddExerciseSets = '[Exercise Set] Add exercise set(s)',
+    DeleteExerciseSet = '[Exercise Set] Delete exercise set',
 }
 
 export class AddExerciseSets implements Action {
@@ -14,7 +15,15 @@ export class AddExerciseSets implements Action {
         exes: ExerciseBean[]
         }) {}
 }
-
+export class DeleteExerciseSet implements Action {
+    readonly type = EExerciseSetActions.DeleteExerciseSet;
+    constructor(public payload: {
+        dayId: string,
+        setId: string,
+        exeIds: string[]
+    }) { }
+}
 export type ExerciseSetActions =
-    AddExerciseSets
+    AddExerciseSets |
+    DeleteExerciseSet
     ;
