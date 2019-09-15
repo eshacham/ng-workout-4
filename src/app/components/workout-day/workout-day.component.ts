@@ -15,14 +15,15 @@ import {
   ExerciseSetDeleted,
   AddWorkoutDay,
   MoveWorkoutDay,
-  Direction
+  Direction,
+  UpdateWorkoutDay
 } from 'src/app/store/actions/workoutDays.actions';
 import {
   SelectWorkoutDayState,
   SelectExerciseSetIndex2Delete,
   selectWorkoutDay
 } from 'src/app/store/selectors/workoutDays.selectors';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 
@@ -223,16 +224,22 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   addWorkoutDay(event) {
     this.store.dispatch(new AddWorkoutDay({
-      workoutDayId: this.workoutDayId
+      dayId: this.workoutDayId
     }));
     event.stopPropagation();
   }
 
   deleteWorkoutDay(event) {
     this.store.dispatch(new DeleteWorkoutDay({
-      workoutDayId: this.workoutDayId
+      dayId: this.workoutDayId
     }));
     event.stopPropagation();
+  }
+
+  workoutDayChanged() {
+    this.store.dispatch(new UpdateWorkoutDay({
+      dayId: this.workoutDayId ,
+      name: this.name }));
   }
 
   async saveChanges() {

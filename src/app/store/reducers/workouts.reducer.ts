@@ -59,7 +59,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
             const oldDays = [...state.byId[state.selectedWorkoutId].days];
-            const newDays = oldDays.filter(d => d !== action.payload.workoutDayId);
+            const newDays = oldDays.filter(d => d !== action.payload.dayId);
             return {
                 ...state,
                 byId: {
@@ -75,7 +75,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
         case EWorkoutDaysActions.WorkoutDayAdded: {
             const oldDays = state.byId[action.payload.workoutId].days;
             const newDays = [...oldDays];
-            newDays.splice(action.payload.index2AddFrom + 1, 0, action.payload.workoutDayId);
+            newDays.splice(action.payload.index2AddFrom + 1, 0, action.payload.dayId);
             return {
                 ...state,
                 byId: {

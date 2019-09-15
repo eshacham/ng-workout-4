@@ -43,7 +43,8 @@
       </ion-label>
       <ion-input [hidden]="IsDisplayOrWorkout" type="text" no-margin
         class="ion-text-center"
-        [(ngModel)]="name">
+        [(ngModel)]="name"
+        (change)="workoutDayChanged()">
       </ion-input>
   </ion-item>
   <ion-list lines="none">

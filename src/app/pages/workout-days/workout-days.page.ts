@@ -190,7 +190,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     this.isNewDayAdded = true;
     this.store.dispatch(new WorkoutDayAdded({
       workoutId: this.workoutId,
-      workoutDayId: newDay.id,
+      dayId: newDay.id,
       index2AddFrom: index
     }));
 

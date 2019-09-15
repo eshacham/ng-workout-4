@@ -34,7 +34,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
         case EWorkoutDaysActions.AddWorkoutDay: {
             return {
                 ...state,
-                workoutDayId2AddFrom: action.payload.workoutDayId
+                workoutDayId2AddFrom: action.payload.dayId
             };
         }
         case EWorkoutDaysActions.WorkoutDayAdded: {
@@ -68,10 +68,22 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
+        case EWorkoutDaysActions.UpdateWorkoutDay: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.dayId]: {
+                        ...state.byId[action.payload.dayId],
+                        name: action.payload.name
+                    }
+                },
+            };
+        }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
             return {
                 ...state,
-                deleteSelectedWorkoutDay: action.payload.workoutDayId
+                deleteSelectedWorkoutDay: action.payload.dayId
             };
         }
         case EWorkoutDaysActions.WorkoutDayDeleted: {
@@ -107,8 +119,8 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 ...state,
                 byId: {
                     ...state.byId,
-                    [action.payload.workoutDayId]: {
-                        ...state.byId[action.payload.workoutDayId],
+                    [action.payload.dayId]: {
+                        ...state.byId[action.payload.dayId],
                         exerciseSetIndex2Delete: action.payload.exerciseSetIndex
                     }
                 },
@@ -119,8 +131,8 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 ...state,
                 byId: {
                     ...state.byId,
-                    [action.payload.workoutDayId]: {
-                        ...state.byId[action.payload.workoutDayId],
+                    [action.payload.dayId]: {
+                        ...state.byId[action.payload.dayId],
                         exerciseSetIndex2Delete: undefined
                     }
                 },

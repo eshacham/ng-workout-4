@@ -8,20 +8,21 @@ export enum Direction {
 }
 
 export enum EWorkoutDaysActions {
-    SelectWorkoutDay = '[Workouts] Select workout day',
-    DeleteWorkoutDay = '[Workouts] Delete workout day',
-    WorkoutDayDeleted = '[Workouts] Workout day has been deleted',
-    AddWorkoutDay = '[Workouts] Add workout day',
-    WorkoutDayAdded = '[Workouts] Workout day has been added',
-    MoveWorkoutDay = '[Workouts] Move workout day',
-    WorkoutDayMoved = '[Workouts] Workout day has been moved',
-    StartFirstExercise = '[Workouts] Start first exercise',
-    StartNextExercise = '[Workouts] Start next exercise',
-    ExerciseStarted = '[Workouts] Exercise has started',
-    ExerciseCompleted = '[Workouts] Exercise has completed',
-    ChangeDisplayMode = '[Workouts] Change workout day display mode',
-    DeleteExerciseSet = '[Workouts] Delete exercise set',
-    ExerciseSetDeleted = '[Workouts] Eexercise set has been deleted'
+    SelectWorkoutDay = '[WorkoutDays] Select workout day',
+    DeleteWorkoutDay = '[WorkoutDays] Delete workout day',
+    WorkoutDayDeleted = '[WorkoutDays] Workout day has been deleted',
+    AddWorkoutDay = '[WorkoutDays] Add workout day',
+    WorkoutDayAdded = '[WorkoutDays] Workout day has been added',
+    MoveWorkoutDay = '[WorkoutDays] Move workout day',
+    WorkoutDayMoved = '[WorkoutDays] Update Workout day has been moved',
+    UpdateWorkoutDay = '[WorkoutDays] Update Workout day',
+    StartFirstExercise = '[WorkoutDays] Start first exercise',
+    StartNextExercise = '[WorkoutDays] Start next exercise',
+    ExerciseStarted = '[WorkoutDays] Exercise has started',
+    ExerciseCompleted = '[WorkoutDays] Exercise has completed',
+    ChangeDisplayMode = '[WorkoutDays] Change workout day display mode',
+    DeleteExerciseSet = '[WorkoutDays] Delete exercise set',
+    ExerciseSetDeleted = '[WorkoutDays] Eexercise set has been deleted'
 }
 
 export class MoveWorkoutDay implements Action {
@@ -43,7 +44,9 @@ export class SelectWorkoutDay implements Action {
 
 export class DeleteWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.DeleteWorkoutDay;
-    constructor(public payload: { workoutDayId: string }) { }
+    constructor(public payload: {
+        dayId: string
+    }) { }
 }
 
 export class WorkoutDayDeleted implements Action {
@@ -52,26 +55,34 @@ export class WorkoutDayDeleted implements Action {
 }
 export class AddWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.AddWorkoutDay;
-    constructor(public payload: { workoutDayId: string }) { }
+    constructor(public payload: {
+        dayId: string
+    }) { }
+}
+export class UpdateWorkoutDay implements Action {
+    readonly type = EWorkoutDaysActions.UpdateWorkoutDay;
+    constructor(public payload: {
+        dayId: string,
+        name: string }) { }
 }
 
 export class WorkoutDayAdded implements Action {
     readonly type = EWorkoutDaysActions.WorkoutDayAdded;
     constructor(public payload: {
         workoutId: string,
-        workoutDayId: string,
+        dayId: string,
         index2AddFrom: number }) { }
 }
 
 export class DeleteExerciseSet implements Action {
     readonly type = EWorkoutDaysActions.DeleteExerciseSet;
     constructor(public payload: {
-        workoutDayId: string,
+        dayId: string,
         exerciseSetIndex: number }) { }
 }
 export class ExerciseSetDeleted implements Action {
     readonly type = EWorkoutDaysActions.ExerciseSetDeleted;
-    constructor(public payload: { workoutDayId: string }) { }
+    constructor(public payload: { dayId: string }) { }
 }
 
 export class StartFirstExercise implements Action {
@@ -118,6 +129,7 @@ export type WorkoutDaysActions =
     StartFirstExercise |
     MoveWorkoutDay |
     WorkoutDayMoved |
+    UpdateWorkoutDay |
     StartNextExercise |
     ExerciseStarted |
     ExerciseCompleted |
