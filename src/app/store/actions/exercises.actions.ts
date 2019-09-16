@@ -7,6 +7,7 @@ export enum EExerciseActions {
     SetRepsCompleteState = '[Exercise] Set rep complete state',
     SetRepsIncompleteState = '[Exercise] Set rep incomplete state',
     SetInactiveReps = '[Exercise] Set reps to inactive state',
+    DeleteExercise = '[Exercise] Delete exercise',
 }
 
 export class ResetReps implements Action {
@@ -38,11 +39,19 @@ export class SetRepsIncompleteState implements Action {
         incompleteIndex: number
     }) {}
 }
+export class DeleteExercise implements Action {
+    readonly type = EExerciseActions.DeleteExercise;
+    constructor(public payload: {
+        setId: string,
+        exeId: string
+    }) { }
+}
 
 export type ExerciseActions =
     ResetReps |
     SetRepsActiveState |
     SetRepsCompleteState |
     SetRepsIncompleteState |
-    SetInactiveReps
+    SetInactiveReps |
+    DeleteExercise
     ;

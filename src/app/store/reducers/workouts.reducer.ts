@@ -38,7 +38,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
         case EWorkoutsActions.DeleteWorkout: {
             let newMap: { [id: string]: WorkoutBean } ;
             let workout: WorkoutBean;
-            ({ [action.payload.workoutId]: workout, ...newMap } = state.byId);
+            ({ [action.payload.id]: workout, ...newMap } = state.byId);
             return {
                 ...state,
                 byId: newMap

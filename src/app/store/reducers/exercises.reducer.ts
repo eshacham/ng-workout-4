@@ -93,6 +93,15 @@ export const exercisesReducers = (
                 }
             };
         }
+        case EExerciseActions.DeleteExercise: {
+            let newMap: { [id: string]: ExerciseBean };
+            let exercise: ExerciseBean;
+            ({ [action.payload.exeId]: exercise, ...newMap } = state.byId);
+            return {
+                ...state,
+                byId: newMap
+            };
+        }
         default: {
             return state;
         }

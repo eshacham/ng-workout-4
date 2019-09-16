@@ -20,7 +20,8 @@ import {
     SetRepsActiveState,
     SetInactiveReps,
     SetRepsCompleteState,
-    SetRepsIncompleteState } from 'src/app/store/actions/exercises.actions';
+    SetRepsIncompleteState,
+    DeleteExercise} from 'src/app/store/actions/exercises.actions';
 import { DeleteExerciseSet } from 'src/app/store/actions/exerciseSets.actions';
 
 const MAXREPS = 5;
@@ -204,8 +205,12 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         }));
     }
 
-    deleteExercise(index: number) {
-        ExerciseBean.delete(this.exercises, index);
+    deleteExercise(id: string) {
+        this.store.dispatch(new DeleteExercise({
+            setId: this.exerciseSetId,
+            exeId: id
+        }));
+        // ExerciseBean.delete(this.exercises, index);
         if (!this.exercises.length) {
             this.deleteExerciseSet();
         }

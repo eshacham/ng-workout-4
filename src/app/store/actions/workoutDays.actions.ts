@@ -45,7 +45,8 @@ export class SelectWorkoutDay implements Action {
 export class DeleteWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.DeleteWorkoutDay;
     constructor(public payload: {
-        dayId: string
+        dayId: string,
+        sets: string[]
     }) { }
 }
 

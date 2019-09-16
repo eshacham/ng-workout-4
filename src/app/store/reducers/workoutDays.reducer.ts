@@ -27,6 +27,16 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 }
             };
         }
+        case EWorkoutsActions.DeleteWorkout: {
+            const days = action.payload.days;
+            const newMap = Object.entries(state.byId)
+                .filter(([key, val]) => !days.includes(val.id))
+                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
+            return {
+                ...state,
+                byId: newMap
+            };
+        }
         case EWorkoutDaysActions.AddWorkoutDay: {
             return {
                 ...state,
@@ -123,18 +133,6 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
-        // case EWorkoutDaysActions.ExerciseSetDeleted: {
-        //     return {
-        //         ...state,
-        //         byId: {
-        //             ...state.byId,
-        //             [action.payload.dayId]: {
-        //                 ...state.byId[action.payload.dayId],
-        //                 exerciseSetIndex2Delete: undefined
-        //             }
-        //         },
-        //     };
-        // }
         case EExerciseSetActions.AddExerciseSets: {
             const oldSets = [...state.byId[action.payload.dayId].exerciseSets];
             const newSets = action.payload.sets.map(s => s.id);

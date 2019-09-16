@@ -107,7 +107,7 @@
                 <ion-item id="item-with-image-and-button">
                     <img [src]="safeImage(exercise.media)"/>
                     <ion-button fill="clear" bottom color="dark"
-                        (click)="deleteExercise(i)">
+                        (click)="deleteExercise(exercise.id)">
                         <ion-icon slot="icon-only" name="trash"></ion-icon>
                     </ion-button>
                 </ion-item>

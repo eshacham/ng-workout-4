@@ -1,10 +1,13 @@
 import { EDataActions, DataActions } from '../actions/data.actions';
 import { initialExerciseSetsState, IExerciseSetsState } from '../state/ExerciseSets.state';
 import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
-import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
+import { ExerciseSetBean, ExerciseSetBase } from 'src/app/models/ExerciseSet';
+import { ExerciseSetAction } from 'src/app/models/enums';
+import { ExerciseActions, EExerciseActions } from '../actions/exercises.actions';
+import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.actions';
 
 export const exerciseSetsReducers = (state = initialExerciseSetsState,
-    action: DataActions | ExerciseSetActions)
+    action: DataActions | ExerciseSetActions | ExerciseActions | WorkoutDaysActions)
     : IExerciseSetsState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -15,7 +18,7 @@ export const exerciseSetsReducers = (state = initialExerciseSetsState,
         }
         case EExerciseSetActions.AddExerciseSets: {
             const newSets: { id: string, set: ExerciseSetBean }[] =
-            action.payload.sets.map(set => ({id: set.id, set: set}));
+                action.payload.sets.map(set => ({ id: set.id, set: set }));
             return {
                 ...state,
                 byId: {
@@ -24,19 +27,39 @@ export const exerciseSetsReducers = (state = initialExerciseSetsState,
                 }
             };
         }
-        // case EExerciseSetActions.DeleteExerciseSet: {
-        //     return {
-        //         ...state,
-        //         byId: {
-        //             ...state.byId,
-        //             [action.payload.dayId]: {
-        //                 ...state.byId[action.payload.dayId],
-        //                 exerciseSets: state.byId[action.payload.dayId].exerciseSets
-        //                     .filter(s => s !== action.payload.setId)
-        //             }
-        //         },
-        //     };
-        // }
+        case EExerciseActions.DeleteExercise: {
+            const oldExes = [...state.byId[action.payload.setId].exercises];
+            const newExes = oldExes.filter(exe => exe !== action.payload.exeId);
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.setId]: {
+                        ...state.byId[action.payload.setId],
+                        exercises: newExes
+                    }
+                }
+            };
+        }
+        case EExerciseSetActions.DeleteExerciseSet: {
+            let newMap: { [id: string]: ExerciseSetBean };
+            let exe: ExerciseSetBean;
+            ({ [action.payload.setId]: exe, ...newMap } = state.byId);
+            return {
+                ...state,
+                byId: newMap
+            };
+        }
+        case EWorkoutDaysActions.DeleteWorkoutDay: {
+            const sets = action.payload.sets;
+            const newMap = Object.entries(state.byId)
+                .filter(([key, val]) => !sets.includes(val.id))
+                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
+            return {
+                ...state,
+                byId: newMap
+            };
+        }
         default: {
             return state;
         }

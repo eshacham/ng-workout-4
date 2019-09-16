@@ -231,7 +231,8 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   deleteWorkoutDay(event) {
     this.store.dispatch(new DeleteWorkoutDay({
-      dayId: this.workoutDayId
+      dayId: this.workoutDayId,
+      sets: this.exerciseSets
     }));
     event.stopPropagation();
   }

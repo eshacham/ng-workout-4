@@ -50,7 +50,7 @@ export class ExerciseBean {
 
     static delete(exercises: ExerciseBean[], index: number) {
         if (exercises[index] && exercises[index].media) {
-            exercises[index].media.mediaUsageCounter--;
+            // exercises[index].media.mediaUsageCounter--;
             exercises.splice(index, 1);
         }
     }

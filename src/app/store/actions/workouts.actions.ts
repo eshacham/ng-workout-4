@@ -22,7 +22,9 @@ export class UnselectWorkout implements Action {
 
 export class DeleteWorkout implements Action {
     readonly type = EWorkoutsActions.DeleteWorkout;
-    constructor(public payload: { workoutId: string }) { }
+    constructor(public payload: {
+        id: string,
+        days: string[] }) { }
 }
 export class UpdateWorkout implements Action {
     readonly type = EWorkoutsActions.UpdateWorkout;

@@ -23,6 +23,7 @@ export class DeleteExerciseSet implements Action {
         exeIds: string[]
     }) { }
 }
+
 export type ExerciseSetActions =
     AddExerciseSets |
     DeleteExerciseSet
