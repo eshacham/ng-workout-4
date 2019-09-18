@@ -22,7 +22,7 @@ import {
     SetRepsCompleteState,
     SetRepsIncompleteState,
     DeleteExercise} from 'src/app/store/actions/exercises.actions';
-import { DeleteExerciseSet } from 'src/app/store/actions/exerciseSets.actions';
+import { DeleteExerciseSet, SwitchExercises } from 'src/app/store/actions/exerciseSets.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -192,9 +192,10 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     switchExercises(index: number) {
-        const exercise = this.exercises[index];
-        this.exercises.splice(index, 1);
-        this.exercises.splice(index + 1, 0, exercise);
+        this.store.dispatch(new SwitchExercises({
+            setId: this.exerciseSetId,
+            lowIndex: index
+        }));
     }
 
     deleteExerciseSet() {

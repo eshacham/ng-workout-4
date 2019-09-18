@@ -4,10 +4,9 @@ import { IExercisesState } from '../state/Exercises.state';
 
 export const exercisesState = (state: IAppState): IExercisesState => state.exercises;
 
-export const selectWorkoutDay = (ids: string[]) => createSelector(
+export const selectExercises = (ids: string[]) => createSelector(
     exercisesState,
     (exercises: IExercisesState) => {
-        return Object.values(exercises.byId)
-            .filter(exercise => ids.includes(exercise.id));
+        return ids.map(id => exercises.byId[id]);
     }
   );

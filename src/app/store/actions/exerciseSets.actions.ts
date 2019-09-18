@@ -5,6 +5,7 @@ import { ExerciseBean } from 'src/app/models/Exercise';
 export enum EExerciseSetActions {
     AddExerciseSets = '[Exercise Set] Add exercise set(s)',
     DeleteExerciseSet = '[Exercise Set] Delete exercise set',
+    SwitchExercises = '[Exercise Set] Switch exercises',
 }
 
 export class AddExerciseSets implements Action {
@@ -23,8 +24,16 @@ export class DeleteExerciseSet implements Action {
         exeIds: string[]
     }) { }
 }
+export class SwitchExercises implements Action {
+    readonly type = EExerciseSetActions.SwitchExercises;
+    constructor(public payload: {
+        setId: string,
+        lowIndex: number
+    }) { }
+}
 
 export type ExerciseSetActions =
     AddExerciseSets |
-    DeleteExerciseSet
+    DeleteExerciseSet |
+    SwitchExercises
     ;

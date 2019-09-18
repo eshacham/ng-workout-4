@@ -60,6 +60,26 @@ export const exerciseSetsReducers = (state = initialExerciseSetsState,
                 byId: newMap
             };
         }
+        case EExerciseSetActions.SwitchExercises: {
+            const oldExes = state.byId[action.payload.setId].exercises;
+            const from = action.payload.lowIndex;
+            const newExes = [
+                ...oldExes.slice(0, from),
+                oldExes[from + 1],
+                oldExes[from],
+                ...oldExes.slice(from + 2)
+            ];
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.setId]: {
+                        ...state.byId[action.payload.setId],
+                        exercises: newExes
+                    }
+                },
+            };
+        }
         default: {
             return state;
         }

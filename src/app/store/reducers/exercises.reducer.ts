@@ -3,7 +3,6 @@ import { initialExercisesState, IExercisesState } from '../state/Exercises.state
 import { EExerciseActions, ExerciseActions } from '../actions/exercises.actions';
 import { Rep } from 'src/app/models/Rep';
 import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
-import { ExerciseSet, ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { ExerciseBean } from 'src/app/models/Exercise';
 
 export const exercisesReducers = (

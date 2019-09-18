@@ -12,8 +12,8 @@ export const selectexerciseSet = (id: string) => createSelector(
     (exerciseSets: IExerciseSetsState, exercises: IExercisesState) => {
         const set = exerciseSets.byId[id];
         const exeIds = set.exercises;
-        const exes = Object.values(exercises.byId)
-            .filter(exercise => exeIds.includes(exercise.id));
+        const exes = exeIds.map(exeId => exercises.byId[exeId]);
+        Object.freeze(exes);
         return { set: set, exercises: exes };
     }
 );
