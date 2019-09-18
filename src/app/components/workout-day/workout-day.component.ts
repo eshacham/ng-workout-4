@@ -16,7 +16,8 @@ import {
   AddWorkoutDay,
   MoveWorkoutDay,
   Direction,
-  UpdateWorkoutDay
+  UpdateWorkoutDay,
+  ReorderExerciseSets
 } from 'src/app/store/actions/workoutDays.actions';
 import {
   SelectWorkoutDayState,
@@ -252,9 +253,11 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     const from = event.detail.from;
     const to = event.detail.to;
     console.log(`Moving item from ${from} to ${to}`);
-    const set = this.exerciseSets[from];
-    this.exerciseSets.splice(from, 1);
-    this.exerciseSets.splice(to, 0, set);
+    this.store.dispatch(new ReorderExerciseSets({
+      dayId: this.workoutDayId,
+      fromIndex: from < to ? from : to,
+      toIndex: to > from ? to : from
+    }));
     event.detail.complete(true);
   }
 }

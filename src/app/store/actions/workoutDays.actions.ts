@@ -21,7 +21,7 @@ export enum EWorkoutDaysActions {
     ExerciseStarted = '[WorkoutDays] Exercise has started',
     ExerciseCompleted = '[WorkoutDays] Exercise has completed',
     ChangeDisplayMode = '[WorkoutDays] Change workout day display mode',
-    // ExerciseSetDeleted = '[WorkoutDays] Eexercise set has been deleted'
+    ReorderExerciseSets = '[WorkoutDays] Reorder exercise sets',
 }
 
 export class MoveWorkoutDay implements Action {
@@ -77,12 +77,6 @@ export class WorkoutDayAdded implements Action {
     }) { }
 }
 
-
-// export class ExerciseSetDeleted implements Action {
-//     readonly type = EWorkoutDaysActions.ExerciseSetDeleted;
-//     constructor(public payload: { dayId: string }) { }
-// }
-
 export class StartFirstExercise implements Action {
     readonly type = EWorkoutDaysActions.StartFirstExercise;
     constructor(public payload: WorkoutDayBean) {
@@ -117,6 +111,14 @@ export class ChangeDisplayMode implements Action {
         payload.runningExerciseSetIndex = null;
     }
 }
+export class ReorderExerciseSets implements Action {
+    readonly type = EWorkoutDaysActions.ReorderExerciseSets;
+    constructor(public payload: {
+        dayId: string,
+        fromIndex: number,
+        toIndex: number,
+    }) { }
+}
 
 export type WorkoutDaysActions =
     SelectWorkoutDay |
@@ -131,7 +133,6 @@ export type WorkoutDaysActions =
     StartNextExercise |
     ExerciseStarted |
     ExerciseCompleted |
-    ChangeDisplayMode
-    // DeleteExerciseSet
-    // ExerciseSetDeleted
+    ChangeDisplayMode |
+    ReorderExerciseSets
     ;

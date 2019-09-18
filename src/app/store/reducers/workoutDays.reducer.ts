@@ -147,6 +147,28 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
+        case EWorkoutDaysActions.ReorderExerciseSets: {
+            const oldSets = state.byId[action.payload.dayId].exerciseSets;
+            const from = action.payload.fromIndex;
+            const to = action.payload.toIndex;
+            const newSets = [
+                ...oldSets.slice(0, from),
+                oldSets[to],
+                ...oldSets.slice(from + 1, to),
+                oldSets[from],
+                ...oldSets.slice(to + 1)
+            ];
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.dayId]: {
+                        ...state.byId[action.payload.dayId],
+                        exerciseSets: newSets
+                    }
+                },
+            };
+        }
         default: {
             return state;
         }
