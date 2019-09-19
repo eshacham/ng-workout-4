@@ -94,9 +94,11 @@
         <ion-row class="ion-justify-content-around">
               <ion-col *ngFor="let exercise of exercises; let i = index" no-padding>
                 <ion-item>
-                    <ion-input type="text" [(ngModel)]="exercise.name" class="ion-text-center"
-                        placeholder="Exercise Name"
-                        >
+                    <ion-input type="text"
+                        [(ngModel)]="exercise.name"
+                        (change)="exerciseChanged(i, $event)"
+                        class="ion-text-center"
+                        placeholder="Exercise Name">
                     </ion-input>
                 </ion-item>
             </ion-col>

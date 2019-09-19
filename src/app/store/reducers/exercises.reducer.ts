@@ -129,6 +129,18 @@ export const exercisesReducers = (
                 }
             };
         }
+        case EExerciseActions.UpdateExercise: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.exeId]: {
+                        ...state.byId[action.payload.exeId],
+                        name: action.payload.name
+                    }
+                }
+            };
+        }
         default: {
             return state;
         }

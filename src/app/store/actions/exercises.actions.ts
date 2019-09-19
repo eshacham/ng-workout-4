@@ -7,6 +7,7 @@ export enum EExerciseActions {
     SetRepsIncompleteState = '[Exercise] Set rep incomplete state',
     SetInactiveReps = '[Exercise] Set reps to inactive state',
     DeleteExercise = '[Exercise] Delete exercise',
+    UpdateExercise = '[Exercise] update exercise set',
     AddRep = '[Exercise] Add rep',
     DeleteRep = '[Exercise] Delete rep',
 }
@@ -45,7 +46,13 @@ export class DeleteExercise implements Action {
     constructor (public payload: {
         setId: string, exeId: string }) { }
 }
-
+export class UpdateExercise implements Action {
+    readonly type = EExerciseActions.UpdateExercise;
+    constructor(public payload: {
+        exeId: string,
+        name: string
+    }) { }
+}
 export class AddRep implements Action {
     readonly type = EExerciseActions.AddRep;
     constructor (public payload: {
@@ -69,5 +76,6 @@ export type ExerciseActions =
     SetInactiveReps |
     AddRep |
     DeleteRep |
-    DeleteExercise
+    DeleteExercise |
+    UpdateExercise
     ;

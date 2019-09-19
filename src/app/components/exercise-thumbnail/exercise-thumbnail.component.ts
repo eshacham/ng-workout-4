@@ -22,10 +22,9 @@ import {
     SetRepsCompleteState,
     SetRepsIncompleteState,
     DeleteExercise,
+    UpdateExercise,
     AddRep,
     DeleteRep,
-    // AddRep,
-    // DeleteRep
 } from 'src/app/store/actions/exercises.actions';
 import { DeleteExerciseSet, SwitchExercises } from 'src/app/store/actions/exerciseSets.actions';
 
@@ -216,10 +215,16 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             setId: this.exerciseSetId,
             exeId: id
         }));
-        // ExerciseBean.delete(this.exercises, index);
         if (!this.exercises.length) {
             this.deleteExerciseSet();
         }
+    }
+
+    exerciseChanged(index: number, event) {
+        this.store.dispatch(new UpdateExercise({
+          exeId: this.exercises[index].id,
+          name: event.target.value
+        }));
     }
 
     completeExercise() {
@@ -246,6 +251,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     get hasSet(): boolean {
         return this.exercises.length > 1;
     }
+
 
     exerciseSetSelected() {
     }
