@@ -21,7 +21,12 @@ import {
     SetInactiveReps,
     SetRepsCompleteState,
     SetRepsIncompleteState,
-    DeleteExercise} from 'src/app/store/actions/exercises.actions';
+    DeleteExercise,
+    AddRep,
+    DeleteRep,
+    // AddRep,
+    // DeleteRep
+} from 'src/app/store/actions/exercises.actions';
 import { DeleteExerciseSet, SwitchExercises } from 'src/app/store/actions/exerciseSets.actions';
 
 const MAXREPS = 5;
@@ -226,7 +231,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             exerciseSets: null,
             name: null,
             workoutId: null
-          }));
+        }));
     }
 
     isTimedRepRemaining(repIndex: number): boolean {
@@ -335,17 +340,18 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     private resetRepsState(exercise: ExerciseBean) {
-        this.store.dispatch(new ResetReps({exerciseId: exercise.id}));
+        this.store.dispatch(new ResetReps({ exerciseId: exercise.id }));
     }
 
     private setExecrciseRepsActiveState(exercise: ExerciseBean, index: number) {
         this.store.dispatch(new SetRepsActiveState({
             exerciseId: exercise.id,
-            activeIndex: index}));
+            activeIndex: index
+        }));
     }
 
     private InactiveExerciseReps(exercise: ExerciseBean) {
-        this.store.dispatch(new SetInactiveReps({exerciseId: exercise.id}));
+        this.store.dispatch(new SetInactiveReps({ exerciseId: exercise.id }));
     }
 
     private startTimedRep() {
@@ -452,10 +458,10 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this._timedRepRemaining = 0;
         if (this.exercises.length > this.activeExerciseInSetIndex + 1 &&
             this.hasIncompleteTimedRepInActiveRep) {
-                this.store.dispatch(new SetRepsCompleteState({
-                    exerciseId: this.activeExercise.id,
-                    completeIndex: this.activeRepIndex
-                }));
+            this.store.dispatch(new SetRepsCompleteState({
+                exerciseId: this.activeExercise.id,
+                completeIndex: this.activeRepIndex
+            }));
             // need to go to the next exercise with current rep
             if (shouldRest) {
                 this._timedToRestAfterCurrentRep = this.activeExercise.restBetweenReps;
@@ -506,22 +512,21 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     addRep(index: number) {
         if (!this.isMaxReps) {
-            this.exercises.forEach(set => {
-                const newRep: Rep = new Rep({
-                    weight: set.reps[index].weight,
-                    weightUnit: set.reps[index].weightUnit,
-                    times: set.reps[index].times,
-                    seconds: set.reps[index].seconds
-                });
-                set.reps.splice(index, 0, newRep);
+            this.exercises.forEach(exe => {
+                this.store.dispatch(new AddRep({
+                    exerciseId: exe.id,
+                    copyFromIndex: index }));
             });
         }
     }
 
     deleteRep(index: number) {
         if (!this.isMinReps) {
-            this.exercises.forEach(set => {
-                set.reps.splice(index, 1);
+            this.exercises.forEach(exe => {
+                this.store.dispatch(new DeleteRep({
+                    exerciseId: exe.id,
+                    indexToDelete: index
+                }));
             });
         }
     }

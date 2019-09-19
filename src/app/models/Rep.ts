@@ -65,7 +65,7 @@ export class Rep {
         return Rep.copyRepsAndSetCompleteState(reps, completeIndex, false);
     }
 
-    static copyRep(sourceRep: Rep, options: IRep): Rep {
+    static copyRep(sourceRep: Rep, options?: IRep): Rep {
         const newRep = new Rep({...sourceRep, ...options });
         return newRep;
     }

@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { ExerciseBean } from 'src/app/models/Exercise';
 
 export enum EExerciseActions {
     ResetReps = '[Exercise] Reset all reps',
@@ -8,6 +7,8 @@ export enum EExerciseActions {
     SetRepsIncompleteState = '[Exercise] Set rep incomplete state',
     SetInactiveReps = '[Exercise] Set reps to inactive state',
     DeleteExercise = '[Exercise] Delete exercise',
+    AddRep = '[Exercise] Add rep',
+    DeleteRep = '[Exercise] Delete rep',
 }
 
 export class ResetReps implements Action {
@@ -41,9 +42,22 @@ export class SetRepsIncompleteState implements Action {
 }
 export class DeleteExercise implements Action {
     readonly type = EExerciseActions.DeleteExercise;
-    constructor(public payload: {
-        setId: string,
-        exeId: string
+    constructor (public payload: {
+        setId: string, exeId: string }) { }
+}
+
+export class AddRep implements Action {
+    readonly type = EExerciseActions.AddRep;
+    constructor (public payload: {
+        copyFromIndex: number,
+        exerciseId: string,
+    }) { }
+}
+export class DeleteRep implements Action {
+    readonly type = EExerciseActions.DeleteRep;
+    constructor (public payload: {
+        indexToDelete: number,
+        exerciseId: string,
     }) { }
 }
 
@@ -53,5 +67,7 @@ export type ExerciseActions =
     SetRepsCompleteState |
     SetRepsIncompleteState |
     SetInactiveReps |
+    AddRep |
+    DeleteRep |
     DeleteExercise
     ;

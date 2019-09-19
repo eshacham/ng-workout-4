@@ -1,13 +1,13 @@
-import { EDataActions, DataActions } from '../actions/data.actions';
 import { initialExercisesState, IExercisesState } from '../state/Exercises.state';
-import { EExerciseActions, ExerciseActions } from '../actions/exercises.actions';
-import { Rep } from 'src/app/models/Rep';
+import { EDataActions, DataActions } from '../actions/data.actions';
 import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
+import { EExerciseActions, ExerciseActions } from '../actions/exercises.actions';
 import { ExerciseBean } from 'src/app/models/Exercise';
+import { Rep } from 'src/app/models/Rep';
 
 export const exercisesReducers = (
     state = initialExercisesState,
-    action: DataActions | ExerciseActions | ExerciseSetActions)
+    action: DataActions | ExerciseSetActions | ExerciseActions )
     : IExercisesState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -99,6 +99,34 @@ export const exercisesReducers = (
             return {
                 ...state,
                 byId: newMap
+            };
+        }
+        case EExerciseActions.AddRep: {
+            const newRep = Rep.copyRep(state.byId[action.payload.exerciseId]
+                .reps[action.payload.copyFromIndex]);
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.exerciseId]: {
+                        ...state.byId[action.payload.exerciseId],
+                        reps: [...state.byId[action.payload.exerciseId].reps, newRep]
+                    }
+                }
+            };
+        }
+        case EExerciseActions.DeleteRep: {
+            const newReps = [...state.byId[action.payload.exerciseId].reps];
+            newReps.splice(action.payload.indexToDelete, 1);
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.exerciseId]: {
+                        ...state.byId[action.payload.exerciseId],
+                        reps: newReps
+                    }
+                }
             };
         }
         default: {

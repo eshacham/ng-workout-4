@@ -1,12 +1,12 @@
-import { EDataActions, DataActions } from '../actions/data.actions';
 import { initialExerciseSetsState, IExerciseSetsState } from '../state/ExerciseSets.state';
-import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
-import { ExerciseSetBean, ExerciseSetBase } from 'src/app/models/ExerciseSet';
-import { ExerciseSetAction } from 'src/app/models/enums';
-import { ExerciseActions, EExerciseActions } from '../actions/exercises.actions';
+import { EDataActions, DataActions } from '../actions/data.actions';
 import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.actions';
+import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
+import { ExerciseActions, EExerciseActions } from '../actions/exercises.actions';
+import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 
-export const exerciseSetsReducers = (state = initialExerciseSetsState,
+export const exerciseSetsReducers = (
+    state = initialExerciseSetsState,
     action: DataActions | ExerciseSetActions | ExerciseActions | WorkoutDaysActions)
     : IExerciseSetsState => {
     switch (action.type) {
