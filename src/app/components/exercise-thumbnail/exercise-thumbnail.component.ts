@@ -545,11 +545,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         return this.exercises[0].reps.length === MINREPS;
     }
 
-    async presentPopover(event: Event, rep: Rep) {
+    async presentPopover(event: Event, rep: Rep, repIndex: number, exeId: string) {
         const popover = await this.popoverCtrl.create({
             component: ExerciseThumbnailPopoverComponent,
             event: event,
-            componentProps: { rep: rep }
+            componentProps: { rep: rep, exeId: exeId, repIndex: repIndex }
         });
         popover.present();
     }

@@ -141,6 +141,20 @@ export const exercisesReducers = (
                 }
             };
         }
+        case EExerciseActions.UpdateRep: {
+            const newReps = [...state.byId[action.payload.exerciseId].reps];
+            newReps[action.payload.repIndex] = action.payload.rep;
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.exerciseId]: {
+                        ...state.byId[action.payload.exerciseId],
+                        reps: newReps
+                    }
+                }
+            };
+        }
         default: {
             return state;
         }

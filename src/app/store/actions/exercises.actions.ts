@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { Rep } from 'src/app/models/Rep';
 
 export enum EExerciseActions {
     ResetReps = '[Exercise] Reset all reps',
@@ -10,6 +11,7 @@ export enum EExerciseActions {
     UpdateExercise = '[Exercise] update exercise set',
     AddRep = '[Exercise] Add rep',
     DeleteRep = '[Exercise] Delete rep',
+    UpdateRep = '[Exercise] Update rep',
 }
 
 export class ResetReps implements Action {
@@ -67,6 +69,14 @@ export class DeleteRep implements Action {
         exerciseId: string,
     }) { }
 }
+export class UpdateRep implements Action {
+    readonly type = EExerciseActions.UpdateRep;
+    constructor (public payload: {
+        rep: Rep,
+        exerciseId: string,
+        repIndex: number
+    }) { }
+}
 
 export type ExerciseActions =
     ResetReps |
@@ -77,5 +87,6 @@ export type ExerciseActions =
     AddRep |
     DeleteRep |
     DeleteExercise |
-    UpdateExercise
+    UpdateExercise |
+    UpdateRep
     ;

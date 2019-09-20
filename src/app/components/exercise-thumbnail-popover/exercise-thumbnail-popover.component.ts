@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Rep } from 'src/app/models/Rep';
 import { NavParams } from '@ionic/angular';
 import { WeightUnit } from 'src/app/models/enums';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/store/state/app.state';
+import { UpdateRep } from 'src/app/store/actions/exercises.actions';
 
 @Component({
   selector: 'app-exercise-thumbnail-popover',
@@ -10,15 +13,30 @@ import { WeightUnit } from 'src/app/models/enums';
 })
 export class ExerciseThumbnailPopoverComponent implements OnInit {
   rep: Rep;
+  exeId: string;
+  repIndex: number;
   weightUnits: string[];
 
-  constructor(private navParams: NavParams) {
+  constructor(
+    private navParams: NavParams,
+    private store: Store<IAppState>) {
   }
 
   ngOnInit() {
     this.rep = this.navParams.data.rep;
-
+    this.exeId = this.navParams.data.exeId;
+    this.repIndex = this.navParams.data.repIndex;
     this.weightUnits = Object.keys(WeightUnit).map(key => WeightUnit[key]);
+  }
+
+  exerciseRepChanged(event, prop: string) {
+    const newRep = Rep.copyRep(this.rep);
+    newRep[prop] = event.target.value;
+    this.store.dispatch(new UpdateRep({
+      exerciseId: this.exeId,
+      rep: newRep,
+      repIndex: this.repIndex
+    }));
   }
 
 }

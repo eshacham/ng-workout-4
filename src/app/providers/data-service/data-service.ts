@@ -66,10 +66,12 @@ export class DataServiceProvider {
   async initWorkouts(): Promise<WorkoutsDataMaps> {
     await this.storage.ready();
     let workoutsDataMaps = await this.storage.get(WORKOUTS_STORAGE_KEY);
-    if (!workoutsDataMaps && Object.keys(workoutsDataMaps.workouts).length === 0) {
+    if (workoutsDataMaps && workoutsDataMaps.workout && workoutsDataMaps.workout.length) {
+      if (this.isMobile) {
+        await this.UpdateImagesInWorkouts(workoutsDataMaps);
+      }
+    } else {
       workoutsDataMaps = await this.resetWorkouts();
-    } else if (this.isMobile) {
-      await this.UpdateImagesInWorkouts(workoutsDataMaps);
     }
     console.log('data-service - loaded cached workouts', Object.keys(workoutsDataMaps.workouts));
     return workoutsDataMaps;

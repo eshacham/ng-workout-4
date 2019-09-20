@@ -1,7 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { PopoverController } from '@ionic/angular';
-import { Grip } from 'src/app/models/Grip';
 import { WeightType, GripType, GripWidth, RepetitionSpeed } from 'src/app/models/enums';
 import { ExerciseVariationPopoverComponent } from '../exercise-variation-popover/exercise-variation-popover.component';
 
