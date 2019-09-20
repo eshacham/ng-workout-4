@@ -136,7 +136,7 @@ export const exercisesReducers = (
                     ...state.byId,
                     [action.payload.exeId]: {
                         ...state.byId[action.payload.exeId],
-                        name: action.payload.name
+                        ...action.payload.exercise
                     }
                 }
             };

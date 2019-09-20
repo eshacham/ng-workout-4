@@ -69,4 +69,20 @@ export class ExerciseBean {
             restAfterExercise: 20
           });
     }
+
+    static copyExercise(exe: ExerciseBean, options?: {
+        name?: string,
+        media?: ExerciseMedia,
+        theGrip?: Grip,
+        repSpeed?: RepetitionSpeed,
+        typeOfWeight?: WeightType,
+        isFavorite?: Boolean,
+        restBetweenReps?: number,
+        restAfterExercise?: number
+    }): ExerciseBean {
+        return new ExerciseBean({
+            ...exe,
+            ...options
+          });
+    }
 }

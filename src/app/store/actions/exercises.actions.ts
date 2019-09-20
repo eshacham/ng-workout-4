@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Rep } from 'src/app/models/Rep';
+import { ExerciseBean } from 'src/app/models/Exercise';
 
 export enum EExerciseActions {
     ResetReps = '[Exercise] Reset all reps',
@@ -52,7 +53,7 @@ export class UpdateExercise implements Action {
     readonly type = EExerciseActions.UpdateExercise;
     constructor(public payload: {
         exeId: string,
-        name: string
+        exercise: ExerciseBean
     }) { }
 }
 export class AddRep implements Action {

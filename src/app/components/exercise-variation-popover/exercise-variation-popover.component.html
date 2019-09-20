@@ -2,7 +2,8 @@
   <ion-item>
       <ion-label>Weight Type</ion-label>
       <ion-select interface="popover"
-          [(ngModel)]="exercise.typeOfWeight">
+          [(ngModel)]="exercise.typeOfWeight"
+          (ionChange)="exerciseChanged($event, 'typeOfWeight')">
           <ion-select-option *ngFor="let weightType of weightTypes"
               value={{weightType}}>
               {{weightType}}
@@ -12,7 +13,8 @@
   <ion-item>
       <ion-label>Grip Width</ion-label>
       <ion-select interface="popover"
-          [(ngModel)]="exercise.theGrip.width">
+          [(ngModel)]="exercise.theGrip.width"
+          (ionChange)="exerciseGripChanged($event, 'width')">
           <ion-select-option *ngFor="let gripWidth of gripWidths"
               value={{gripWidth}}>
               {{gripWidth}}
@@ -22,7 +24,8 @@
   <ion-item >
       <ion-label>Grip Type</ion-label>
       <ion-select interface="popover"
-          [(ngModel)]="exercise.theGrip.typeOfGrip">
+          [(ngModel)]="exercise.theGrip.typeOfGrip"
+          (ionChange)="exerciseGripChanged($event, 'typeOfGrip')">
           <ion-select-option *ngFor="let gripType of gripTypes"
               value={{gripType}}>
               {{gripType}}
@@ -32,7 +35,8 @@
   <ion-item>
       <ion-label>Speed</ion-label>
       <ion-select interface="popover"
-          [(ngModel)]="exercise.repSpeed">
+          [(ngModel)]="exercise.repSpeed"
+          (ionChange)="exerciseChanged($event, 'repSpeed')">
           <ion-select-option *ngFor="let speed of repSpeeds"
               value={{speed}}>
               {{speed}}

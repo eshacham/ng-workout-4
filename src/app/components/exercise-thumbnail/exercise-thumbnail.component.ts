@@ -220,10 +220,13 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         }
     }
 
-    exerciseChanged(index: number, event) {
+    exerciseChanged(index: number, event, prop) {
+        const newExe = ExerciseBean
+            .copyExercise(this.exercises[index]);
+        newExe[prop] = event.target.value;
         this.store.dispatch(new UpdateExercise({
-          exeId: this.exercises[index].id,
-          name: event.target.value
+            exeId: this.exercises[index].id,
+            exercise: newExe
         }));
     }
 
@@ -521,7 +524,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             this.exercises.forEach(exe => {
                 this.store.dispatch(new AddRep({
                     exerciseId: exe.id,
-                    copyFromIndex: index }));
+                    copyFromIndex: index
+                }));
             });
         }
     }
