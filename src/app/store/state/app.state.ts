@@ -4,6 +4,7 @@ import { IWorkoutsState, initialWorkoutsState } from './workouts.state';
 import { IWorkoutDaysState, initialWorkoutDaysState } from './workoutDays.state';
 import { IExerciseSetsState, initialExerciseSetsState } from './ExerciseSets.state';
 import { initialExercisesState, IExercisesState } from './Exercises.state';
+import { initialExercisesMediaState, IExercisesMediaState } from './ExercisesMedia.state';
 
 export interface IAppState {
   data: IDataState;
@@ -12,6 +13,7 @@ export interface IAppState {
   days: IWorkoutDaysState;
   sets: IExerciseSetsState;
   exercises: IExercisesState;
+  media: IExercisesMediaState;
 }
 
 export const initialAppState: IAppState = {
@@ -21,6 +23,7 @@ export const initialAppState: IAppState = {
   days: initialWorkoutDaysState,
   sets: initialExerciseSetsState,
   exercises: initialExercisesState,
+  media: initialExercisesMediaState,
 };
 
 export const getInitialState = (): IAppState => initialAppState;

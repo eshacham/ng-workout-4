@@ -6,6 +6,7 @@ import { workoutsReducers } from './workouts.reducer';
 import { workoutDaysReducers } from './workoutDays.reducer';
 import { exerciseSetsReducers } from './exerciseSets.reducer';
 import { exercisesReducers } from './exercises.reducer';
+import { exercisesMediaReducers } from './exerciseMedia.reducer';
 
 export const appReducers: ActionReducerMap<IAppState, any> = {
     data: dataReducers,
@@ -14,4 +15,5 @@ export const appReducers: ActionReducerMap<IAppState, any> = {
     days: workoutDaysReducers,
     sets: exerciseSetsReducers,
     exercises: exercisesReducers,
+    media: exercisesMediaReducers,
 };

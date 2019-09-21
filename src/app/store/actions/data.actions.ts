@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
+import { AllDataMaps } from 'src/app/models/DefaultWorkouts';
 import { IDataState } from '../state/data.state';
 
 export enum EDataActions {
@@ -19,7 +19,7 @@ export class GetData implements Action {
 
 export class GetDataSuccess implements Action {
     public readonly type = EDataActions.GetDataSuccess;
-    constructor (public payload: WorkoutsDataMaps) {}
+    constructor (public payload: AllDataMaps) {}
 }
 
 export class ResetWorkouts implements Action {

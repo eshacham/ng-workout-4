@@ -7,14 +7,14 @@ const workoutsState = (state: IAppState) => state.workouts;
 
 export const selectWorkouts = createSelector(
     workoutsState,
-    (workoutsMap: IWorkoutsState) => {
+    (workoutsMap: IWorkoutsState): WorkoutBean[] => {
         return Object.keys(workoutsMap.byId)
         .map(id => workoutsMap.byId[id]);
     }
 );
 export const selectWorkout = (id: string) => createSelector(
     workoutsState,
-    (workoutsMap: IWorkoutsState) => {
+    (workoutsMap: IWorkoutsState): WorkoutBean => {
         return workoutsMap.byId[id];
     }
 );

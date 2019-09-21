@@ -49,6 +49,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     private exerciseSet: ExerciseSetBean;
     private exercises: ExerciseBean[];
+    private images: ExerciseMedia[];
     private _isOpen = false;
     private _isRunning = false;
     private _isEditing = false;
@@ -124,6 +125,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 console.log('exercise-thumbnail selectexerciseSet', exerciseSet);
                 this.exerciseSet = exerciseSet.set;
                 this.exercises = exerciseSet.exercises;
+                this.images = exerciseSet.media;
             });
         this.store.select(SelectWorkoutDayState)
             .pipe(takeUntil(this.ngUnsubscribe))

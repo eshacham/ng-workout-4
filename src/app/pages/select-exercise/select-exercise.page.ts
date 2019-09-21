@@ -17,6 +17,7 @@ import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/muscles
 import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
 import { AddExerciseSets } from 'src/app/store/actions/exerciseSets.actions';
+import { selectExercisesMedia } from 'src/app/store/selectors/ExercisesMedia.selectors';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -92,16 +93,28 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.haveWorkoutsBeenReset = false;
-    this.images = await this.getImages();
-    this.store.select(selectHasImagesBeenReset)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(async (reset) => {
-        console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
-        if (reset) {
-          this.images = await this.getImages();
-          this.store.dispatch(new LoadedImages());
-        }
+    // this.images = await this.getImages();
+    this.store.select(selectExercisesMedia)
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(media => {
+      // this._images = media;
+      return media.map((image) => {
+        return {
+          isSelected: false,
+          media: image,
+        };
       });
+    });
+
+    // this.store.select(selectHasImagesBeenReset)
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe(async (reset) => {
+    //     console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
+    //     if (reset) {
+    //       this.images = await this.getImages();
+    //       this.store.dispatch(new LoadedImages());
+    //     }
+    //   });
     this.store.select(selectHasWorkoutsBeenReset)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(reset => {
@@ -132,15 +145,20 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  private async getImages(): Promise<SelectedExerciseMedia[]> {
-    const images = await this.dataService.getImages();
-    return images.map((image) => {
-      return {
-        isSelected: false,
-        media: image,
-      };
-    });
-  }
+  // private async getImages(): Promise<SelectedExerciseMedia[]> {
+  //   // const images = await this.dataService.getImages();
+  //   this.store.select(selectExercisesMedia)
+  //     .pipe(takeUntil(this.ngUnsubscribe))
+  //     .subscribe(media => {
+  //       // this._images = media;
+  //       return media.map((image) => {
+  //         return {
+  //           isSelected: false,
+  //           media: image,
+  //         };
+  //       });
+  //     });
+  // }
 
   filterImagesByMuscles(musclesFilter: Muscles[]): SelectedExerciseMedia[] {
     console.log('select-execrcise: filtering by muscles', Array.from(musclesFilter));
@@ -177,7 +195,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     if (this.isSet) {
       newSets = [this.makeNewSet(newExercises)];
     } else {
-      newSets = newExercises.map((exe) =>  this.makeNewSet([exe]));
+      newSets = newExercises.map((exe) => this.makeNewSet([exe]));
     }
     return { sets: newSets, exes: newExercises };
   }

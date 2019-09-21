@@ -11,7 +11,7 @@ import {
     UpdateWorkouts,
     WorkoutsUpdated } from '../actions/data.actions';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
-import { WorkoutsDataMaps } from 'src/app/models/DefaultWorkouts';
+import { WorkoutsDataMaps, AllDataMaps } from 'src/app/models/DefaultWorkouts';
 import { selectWorkoutsData } from '../selectors/data.selectors';
 
 @Injectable()
@@ -19,9 +19,9 @@ export class WorkoutsEffects {
     @Effect()
     getWorkouts$ = this._actions$.pipe(
         ofType<GetData>(EDataActions.GetData),
-        switchMap(async () => await this._dataService.getWorkouts()),
-        switchMap((workoutsData: WorkoutsDataMaps) => {
-            return of(new GetDataSuccess(workoutsData));
+        switchMap(async () => await this._dataService.getAllData()),
+        switchMap((allData: AllDataMaps) => {
+            return of(new GetDataSuccess(allData));
         })
     );
     @Effect()

@@ -2,9 +2,9 @@
   <div *ngSwitchCase="displayMode.Workout">
       <div [hidden]="IsRunning">
           <ion-list lines="none">
-              <ion-item *ngFor="let exercise of exercises"
+              <ion-item *ngFor="let exercise of exercises; let i = index"
                 [ngClass]="getTopBottomMarginClass(exercise)">
-                <img [src]="safeImage(exercise.media)" slot="start"/>
+                <img [src]="safeImage(images[i])" slot="start"/>
                 <ion-label>
                     <h2 class="ion-text-wrap">{{exercise.name}}</h2>
                     <app-exercise-variation class="ion-text-wrap"
@@ -22,15 +22,15 @@
       <div [hidden]="!IsRunning">
           <ion-grid>
               <ion-row class="ion-justify-content-around">
-                  <ion-col *ngFor="let exercise of exercises">
+                  <ion-col *ngFor="let exercise of exercises; let i = index">
                     <ion-label class="ion-text-wrap ion-text-center">
                         {{exercise.name}}
                     </ion-label>
                   </ion-col>
               </ion-row>
               <ion-row class="ion-justify-content-around">
-                  <ion-col *ngFor="let exercise of exercises" text-center>
-                    <img [src]="safeImage(exercise.media)" />
+                  <ion-col *ngFor="let exercise of exercises; let i = index" text-center>
+                    <img [src]="safeImage(images[i])" />
                   </ion-col>
               </ion-row>
               <ion-row class="ion-justify-content-around">
@@ -107,7 +107,7 @@
             <ion-col *ngFor="let exercise of exercises; let i = index"
                 no-padding col-with-image-and-button>
                 <ion-item id="item-with-image-and-button">
-                    <img [src]="safeImage(exercise.media)"/>
+                    <img [src]="safeImage(images[i])"/>
                     <ion-button fill="clear" bottom color="dark"
                         (click)="deleteExercise(exercise.id)">
                         <ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -202,8 +202,8 @@
   </div>
   <div *ngSwitchDefault>
       <ion-list lines="none">
-          <ion-item *ngFor="let exercise of exercises">
-            <img [src]="safeImage(exercise.media)" slot="start"/>
+          <ion-item *ngFor="let exercise of exercises; let i = index">
+            <img [src]="safeImage(images[i])" slot="start"/>
             <ion-label>
                 <h2 class="ion-text-wrap">{{exercise.name}}</h2>
                 <app-exercise-variation class="ion-text-wrap"

@@ -1,10 +1,7 @@
+import { Guid } from 'guid-typescript';
 import { ExerciseMedia } from '../models/ExerciseMedia';
+import { MediaDataMaps } from '../models/DefaultWorkouts';
 import { Muscles } from '../models/enums';
-
-export interface ExerciseMediaKV {
-    key: string;
-    value: ExerciseMedia;
-}
 
 const mediaUrl = (name: string): string => {
     return `assets/images/${name}`;
@@ -12,7 +9,7 @@ const mediaUrl = (name: string): string => {
 
 const addMedia = (map: Map<string, ExerciseMedia>, name: string, muscles: Muscles[]) => {
     const url = mediaUrl(name);
-    const media = ExerciseMedia.buildDefaultExerciseMedia(url, new Set(muscles));
+    const media = ExerciseMedia.buildDefaultExerciseMedia(Guid.raw(), url, new Set(muscles));
     map.set(url, media);
 };
 
@@ -61,6 +58,18 @@ const init = (): Map<string, ExerciseMedia> => {
 
 export const defaultExerciseMedia = init();
 
-export const getMedia = (name: string): ExerciseMedia => {
-    return defaultExerciseMedia.get(mediaUrl(name));
+export const attachMedia = (name: string): string => {
+    const media = defaultExerciseMedia.get(mediaUrl(name));
+    media.mediaUsageCounter++;
+    return media.id;
+};
+
+export const getDefaultImages = (): MediaDataMaps => {
+    const data: MediaDataMaps = {
+        media: { byId: {} }
+    };
+    Array.from(defaultExerciseMedia).map(([key, media]) => {
+        data.media.byId[media.id] = media;
+    });
+    return data;
 };

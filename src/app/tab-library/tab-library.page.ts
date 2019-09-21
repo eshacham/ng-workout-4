@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { selectHasImagesBeenReset } from '../store/selectors/data.selectors';
 import { selectLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
+import { selectExercisesMedia } from '../store/selectors/ExercisesMedia.selectors';
 
 @Component({
   selector: 'app-tab-library',
@@ -27,8 +28,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   isMobile = false;
   _useFilter = false;
-  private ngUnsubscribeForImgaeReset: Subject<void> = new Subject<void>();
-  private ngUnsubscribeForLibraryFilter: Subject<void> = new Subject<void>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private camera: Camera,
@@ -74,21 +74,25 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    console.log('tab-library ngOnInit - getting Images:');
-    this._images = await this.dataService.getImages();
-    console.log('tab-library ngOnInit - got Images:', this._images);
     this.isMobile = this.dataService.isMobile;
-    this.store.select(selectHasImagesBeenReset)
-    .pipe(takeUntil(this.ngUnsubscribeForImgaeReset))
-    .subscribe(async (reset) => {
-      console.log('tab-library redux - HasDefaultImagesBeenReset:', reset);
-      if (reset) {
-        this.images = await this.dataService.getImages();
-        this.store.dispatch(new LoadedImages());
-      }
-    });
+
+    this.store.select(selectExercisesMedia)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(media => {
+        this._images = media;
+      });
+
+    // this.store.select(selectHasImagesBeenReset)
+    // .pipe(takeUntil(this.ngUnsubscribe))
+    // .subscribe(async (reset) => {
+    //   console.log('tab-library redux - HasDefaultImagesBeenReset:', reset);
+    //   if (reset) {
+    //     this.images = await this.dataService.getImages();
+    //     this.store.dispatch(new LoadedImages());
+    //   }
+    // });
     this.store.select(selectLibraryMusclesFilterState)
-    .pipe(takeUntil(this.ngUnsubscribeForLibraryFilter))
+    .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(async (filter) => {
       console.log('tab-library-page redux - LibraryMusclesFilterState:', filter);
       this.filteredImages = this.filterImagesByMuscles(filter);
@@ -97,10 +101,8 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('onDestroy - exercise-thumbnail');
-    this.ngUnsubscribeForImgaeReset.next();
-    this.ngUnsubscribeForImgaeReset.complete();
-    this.ngUnsubscribeForLibraryFilter.next();
-    this.ngUnsubscribeForLibraryFilter.complete();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
 }
 
   async presentToast(text: string) {
@@ -166,13 +168,13 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   async deleteImage(imgEntry: ExerciseMedia, position: number) {
     await this.dataService.deleteImage(imgEntry, position);
-    this.images = await this.dataService.getImages();
+    // this.images = await this.dataService.getImages();
     this.presentToast('File removed.');
   }
 
   async updateImage(imgEntry: ExerciseMedia, position: number) {
     await this.dataService.updateImage(imgEntry, position);
-    this.images = await this.dataService.getImages();
+    // this.images = await this.dataService.getImages();
     this.presentToast('File updated.');
   }
 

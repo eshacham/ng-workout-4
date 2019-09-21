@@ -9,7 +9,7 @@ export class ExerciseBean {
     public id: string;
     public exerciseSetId?: string;
     public name: string;
-    public media: ExerciseMedia;
+    public mediaId: string;
     public theGrip: Grip = new Grip();
     public repSpeed: RepetitionSpeed;
     public typeOfWeight: WeightType;
@@ -22,7 +22,7 @@ export class ExerciseBean {
         id: string,
         exerciseSetId?: string;
         name: string,
-        media: ExerciseMedia,
+        mediaId: string,
         theGrip?: Grip,
         repSpeed: RepetitionSpeed,
         typeOfWeight?: WeightType,
@@ -34,7 +34,7 @@ export class ExerciseBean {
     ) {
         this.id = options.id;
         this.name = options.name;
-        this.media = options.media;
+        this.mediaId = options.mediaId;
         this.theGrip = options.theGrip || new Grip();
         this.repSpeed = options.repSpeed || RepetitionSpeed.NA;
         this.typeOfWeight = options.typeOfWeight || WeightType.NoWeight;
@@ -42,14 +42,13 @@ export class ExerciseBean {
         this.restBetweenReps = options.restBetweenReps;
         this.restAfterExercise = options.restAfterExercise;
         this.reps = options.reps;
-        // this.media.mediaUsageCounter++;
         if (options.exerciseSetId) {
             this.exerciseSetId = options.exerciseSetId;
         }
     }
 
     static delete(exercises: ExerciseBean[], index: number) {
-        if (exercises[index] && exercises[index].media) {
+        if (exercises[index] && exercises[index].mediaId) {
             // exercises[index].media.mediaUsageCounter--;
             exercises.splice(index, 1);
         }
@@ -59,7 +58,7 @@ export class ExerciseBean {
         return new ExerciseBean({
             id: id,
             name: media.name,
-            media: media,
+            mediaId: media.id,
             reps: [new Rep({
                 times: 1
               })],
