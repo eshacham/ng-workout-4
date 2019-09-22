@@ -29,9 +29,11 @@
       <ion-thumbnail slot="start">
         <ion-img [src]="img.media.ionicPath"></ion-img>
       </ion-thumbnail>
-      <ion-label>
-        {{ img.media.name }}
-      </ion-label>
+      <ion-input type='text' id="highZ"
+          placeholder="Exercise Name"
+          [(ngModel)]="img.media.name"
+          (ionChange)="setImageName($event, img)">
+      </ion-input>
       <ion-checkbox slot="end" [(ngModel)]="img.isSelected"></ion-checkbox>
     </ion-item>
   </ion-list>
@@ -41,7 +43,7 @@
 <ion-footer>
   <ion-toolbar>
     <ion-buttons slot="start" *ngIf="!haveWorkoutsBeenReset">
-        <ion-button fill="clear"  (click)="addExercise()"
+        <ion-button fill="clear" (click)="addExercise()"
           [disabled]="isAddExerciseDisabled">
           <ion-icon slot="start" name="add-circle"></ion-icon>
           Add Exercises

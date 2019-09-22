@@ -21,6 +21,7 @@ import { selectExercisesMedia } from 'src/app/store/selectors/ExercisesMedia.sel
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
+  newName?: string;
   media: ExerciseMedia;
 }
 
@@ -154,6 +155,10 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     return images;
   }
 
+  setImageName(event, image: SelectedExerciseMedia) {
+    image.newName = event.target.value;
+  }
+
   addExercise() {
     if (this.haveWorkoutsBeenReset) {
       console.log('select-exercise: Workouts have been reset! Can\'t update it now');
@@ -172,7 +177,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     let newSets: ExerciseSetBean[];
     let newExercises: ExerciseBean[];
     newExercises = this.selectedImages
-      .map(image => ExerciseBean.defaultExerciseBean(Guid.raw(), image.media));
+      .map(image => ExerciseBean.defaultExerciseBean(
+        Guid.raw(), image.media, { name: image.newName }));
     if (this.isSet) {
       newSets = [this.makeNewSet(newExercises)];
     } else {

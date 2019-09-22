@@ -54,10 +54,14 @@ export class ExerciseBean {
         }
     }
 
-    static defaultExerciseBean(id: string, media: ExerciseMedia): ExerciseBean {
+    static defaultExerciseBean(
+        id: string,
+        media: ExerciseMedia,
+        options?: { name: string }
+        ): ExerciseBean {
         return new ExerciseBean({
             id: id,
-            name: media.name,
+            name: options && options.name ? options.name : media.name,
             mediaId: media.id,
             reps: [new Rep({
                 times: 1
