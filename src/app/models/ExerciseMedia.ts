@@ -27,10 +27,15 @@ export class ExerciseMedia {
     this.mediaUsageCounter = 0;
     console.log('constructed exercise media as', this.name);
   }
-  static buildDefaultExerciseMedia(id: string, url: string, muscles: Set<Muscles>): ExerciseMedia {
+  static buildDefaultExerciseMedia(
+    id: string,
+    name: string,
+    url: string,
+    muscles: Set<Muscles>
+    ): ExerciseMedia {
     const image = new ExerciseMedia({
       id: id,
-      name: url.substr(url.lastIndexOf('/') + 1),
+      name: name,
       ionicPath: url,
       nativePath: url,
       isDefault: true,

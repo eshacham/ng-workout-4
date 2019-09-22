@@ -9,8 +9,8 @@ const mediaUrl = (name: string): string => {
 
 const addMedia = (map: Map<string, ExerciseMedia>, name: string, muscles: Muscles[]) => {
     const url = mediaUrl(name);
-    const media = ExerciseMedia.buildDefaultExerciseMedia(Guid.raw(), url, new Set(muscles));
-    map.set(url, media);
+    const media = ExerciseMedia.buildDefaultExerciseMedia(name, name, url, new Set(muscles));
+    map.set(media.id, media);
 };
 
 const init = (): Map<string, ExerciseMedia> => {
@@ -58,8 +58,8 @@ const init = (): Map<string, ExerciseMedia> => {
 
 export const defaultExerciseMedia = init();
 
-export const attachMedia = (name: string): string => {
-    const media = defaultExerciseMedia.get(mediaUrl(name));
+export const attachMedia = (id: string): string => {
+    const media = defaultExerciseMedia.get(id);
     media.mediaUsageCounter++;
     return media.id;
 };
