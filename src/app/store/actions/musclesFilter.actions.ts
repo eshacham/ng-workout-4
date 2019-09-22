@@ -16,11 +16,11 @@ export class SetExerciseMuscleFilter implements Action {
 }
 export class AddExerciseMuscleFilter implements Action {
     readonly type = EMusclesFilterActions.AddExerciseMuscleFilter;
-    constructor (public muscle: Muscles) {}
+    constructor (public payload: { muscle: Muscles, mediaId: string}) {}
 }
 export class DeleteExerciseMuscleFilter implements Action {
     readonly type = EMusclesFilterActions.DeleteExerciseMuscleFilter;
-    constructor (public muscle: Muscles) {}
+    constructor (public payload: { muscle: Muscles, mediaId: string}) {}
 }
 export class SetLibraryMuscleFilter implements Action {
     readonly type = EMusclesFilterActions.SetLibraryMuscleFilter;

@@ -87,6 +87,7 @@ export class SelectMusclePage implements OnInit, OnDestroy {
             this.store.select(selectMedia(this.muscleFilterUsage.mediaId))
               .pipe(take(1))
               .subscribe(image => {
+                console.log('select-muscle redux - muscleFilterUsage:', image);
                 this.muscleFilterUsage.mediaName = image.name;
                 this.store.dispatch(new SetExerciseMuscleFilter(image.muscles));
               });
@@ -154,14 +155,18 @@ export class SelectMusclePage implements OnInit, OnDestroy {
     if (this.isFilteringLibrary) {
       this.store.dispatch(new AddLibraryMuscleFilter(muscle));
     } else {
-      this.store.dispatch(new AddExerciseMuscleFilter(muscle));
+      this.store.dispatch(new AddExerciseMuscleFilter({
+        muscle: muscle, mediaId: this.muscleFilterUsage.mediaId
+      }));
     }
   }
   deleteMuscleFromFilter(muscle: Muscles) {
     if (this.isFilteringLibrary) {
       this.store.dispatch(new DeleteLibraryMuscleFilter(muscle));
     } else {
-      this.store.dispatch(new DeleteExerciseMuscleFilter(muscle));
+      this.store.dispatch(new DeleteExerciseMuscleFilter({
+        muscle: muscle, mediaId: this.muscleFilterUsage.mediaId
+      }));
     }
   }
 

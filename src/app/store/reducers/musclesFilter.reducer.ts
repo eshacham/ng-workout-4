@@ -21,7 +21,7 @@ export const musclesFilterReducers = (state = initialMusclesFilterState, action:
                 ...state,
                 exerciseMusclesFilter: [
                     ...state.exerciseMusclesFilter,
-                    action.muscle
+                    action.payload.muscle
                 ]
             };
         }
@@ -37,13 +37,15 @@ export const musclesFilterReducers = (state = initialMusclesFilterState, action:
         case EMusclesFilterActions.DeleteExerciseMuscleFilter: {
             return {
                 ...state,
-                exerciseMusclesFilter: state.exerciseMusclesFilter.filter(m => m !== action.muscle)
+                exerciseMusclesFilter: state.exerciseMusclesFilter
+                .filter(m => m !== action.payload.muscle)
             };
         }
         case EMusclesFilterActions.DeleteLibraryMuscleFilter: {
             return {
                 ...state,
-                libraryMusclesFilter: state.libraryMusclesFilter.filter(m => m !== action.muscle)
+                libraryMusclesFilter: state.libraryMusclesFilter
+                .filter(m => m !== action.muscle)
             };
         }
         default: {
