@@ -9,21 +9,24 @@ import {
     EDataActions,
     GetDataSuccess,
     UpdateWorkouts,
-    WorkoutsUpdated } from '../actions/data.actions';
+    WorkoutsUpdated,
+    UpdateImages,
+    ImagesUpdated} from '../actions/data.actions';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
-import { WorkoutsDataMaps, AllDataMaps } from 'src/app/models/DefaultWorkouts';
-import { selectWorkoutsData } from '../selectors/data.selectors';
+import { AllDataMaps } from 'src/app/models/DefaultWorkouts';
+import { selectWorkoutsData, selectImagesData } from '../selectors/data.selectors';
 
 @Injectable()
 export class WorkoutsEffects {
     @Effect()
-    getWorkouts$ = this._actions$.pipe(
+    getAllData$ = this._actions$.pipe(
         ofType<GetData>(EDataActions.GetData),
         switchMap(async () => await this._dataService.getAllData()),
         switchMap((allData: AllDataMaps) => {
             return of(new GetDataSuccess(allData));
         })
     );
+
     @Effect()
     saveWorkouts$ = this._actions$.pipe(
         ofType<UpdateWorkouts>(EDataActions.UpdateWorkouts),
@@ -35,6 +38,16 @@ export class WorkoutsEffects {
         })
     );
 
+    @Effect()
+    saveImages$ = this._actions$.pipe(
+        ofType<UpdateImages>(EDataActions.UpdateImages),
+        map(action => action),
+        withLatestFrom(this._store.pipe(select(selectImagesData))),
+        switchMap(([action, imagessData]) => {
+            this._dataService.saveImages(imagessData);
+            return of(new ImagesUpdated());
+        })
+    );
 constructor(
     private _dataService: DataServiceProvider,
     private _actions$: Actions,

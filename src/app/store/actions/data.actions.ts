@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
 import { AllDataMaps } from 'src/app/models/DefaultWorkouts';
-import { IDataState } from '../state/data.state';
 
 export enum EDataActions {
     GetData = '[Data] Get app data',
@@ -8,8 +7,8 @@ export enum EDataActions {
     ResetWorkouts = '[Data] Reset workouts',
     UpdateWorkouts = '[Data] Update workouts',
     WorkoutsUpdated = '[Data] Workouts have been updated',
-    // LoadedWorkouts = '[Data] Loaded workouts',
     ResetImages = '[Data] Reset images',
+    UpdateImages = '[Data] Update images',
     ImagesUpdated = '[Data] Images have been updated',
     LoadedImages = '[Data] Loaded images',
 }
@@ -19,45 +18,47 @@ export class GetData implements Action {
 
 export class GetDataSuccess implements Action {
     public readonly type = EDataActions.GetDataSuccess;
-    constructor (public payload: AllDataMaps) {}
+    constructor(public payload: AllDataMaps) { }
 }
 
 export class ResetWorkouts implements Action {
     readonly type = EDataActions.ResetWorkouts;
-    constructor () {}
+    constructor() { }
 }
-// export class LoadedWorkouts implements Action {
-//     readonly type = EDataActions.LoadedWorkouts;
-//     constructor () {}
-// }
+
 export class UpdateWorkouts implements Action {
     readonly type = EDataActions.UpdateWorkouts;
-    constructor () {}
+    constructor() { }
 }
+
 export class WorkoutsUpdated implements Action {
     readonly type = EDataActions.WorkoutsUpdated;
-    constructor () {}
+    constructor() { }
 }
 export class ResetImages implements Action {
     readonly type = EDataActions.ResetImages;
-    constructor () {}
+    constructor() { }
+}
+export class UpdateImages implements Action {
+    readonly type = EDataActions.UpdateImages;
+    constructor() { }
 }
 export class ImagesUpdated implements Action {
     readonly type = EDataActions.ImagesUpdated;
-    constructor () {}
+    constructor() { }
 }
 export class LoadedImages implements Action {
     readonly type = EDataActions.LoadedImages;
-    constructor () {}
+    constructor() { }
 }
 
 export type DataActions =
-GetData |
-GetDataSuccess |
-ResetWorkouts |
-// LoadedWorkouts |
-WorkoutsUpdated |
-ResetImages |
-ImagesUpdated |
-LoadedImages
-;
+    GetData |
+    GetDataSuccess |
+    ResetWorkouts |
+    WorkoutsUpdated |
+    ResetImages |
+    UpdateImages |
+    ImagesUpdated |
+    LoadedImages
+    ;

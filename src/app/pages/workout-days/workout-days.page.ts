@@ -5,9 +5,8 @@ import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { IonSlides as Slides, NavController } from '@ionic/angular';
 import { IAppState } from 'src/app/store/state/app.state';
-import { WorkoutBean } from '../../models/Workout';
 import { WorkoutDay } from '../../models/WorkoutDay';
-import { SelectWorkout, UnselectWorkout } from 'src/app/store/actions/workouts.actions';
+import { UnselectWorkout } from 'src/app/store/actions/workouts.actions';
 import {
   SelectWorkoutDay,
   WorkoutDayDeleted,
@@ -17,7 +16,6 @@ import {
 } from 'src/app/store/actions/workoutDays.actions';
 import { selectCurrentWorkoutSelectedDayId, selectCurrentWorkout } from 'src/app/store/selectors/workouts.selectors';
 import { selectWorkoutDayId2Delete } from 'src/app/store/selectors/workoutDays.selectors';
-import { selectHasWorkoutsBeenReset } from 'src/app/store/selectors/data.selectors';
 import { SelectWorkoutDayId2AddFrom, SelectworkoutDayMoveDirection } from 'src/app/store/selectors/workoutDays.selectors';
 import { Guid } from 'guid-typescript';
 import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
@@ -51,7 +49,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private navCtrl: NavController,
     private cdr: ChangeDetectorRef,
     private store: Store<IAppState>) {
     this.isNewDayAdded = false;
@@ -73,15 +70,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           }
         }
       });
-    // this.store.select(selectHasWorkoutsBeenReset)
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe(async (reset) => {
-    //     console.log('workout days redux - HasDefaultWorkoutsBeenReset:', reset);
-    //     if (reset) {
-    //       console.log('workout-days: Workouts have been reset!: got to go back to workouts ');
-    //       await this.navCtrl.navigateBack('/tabs/tab-workouts');
-    //     }
-    //   });
+
     this.store.select(selectWorkoutDayId2Delete)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (dayId) => {

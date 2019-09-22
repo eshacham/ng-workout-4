@@ -12,7 +12,6 @@ import {
   ChangeDisplayMode,
   StartNextExercise,
   DeleteWorkoutDay,
-  // ExerciseSetDeleted,
   AddWorkoutDay,
   MoveWorkoutDay,
   Direction,
@@ -26,7 +25,6 @@ import {
 } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
-import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 
 @Component({
   selector: 'app-workout-day',
@@ -198,14 +196,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         break;
     }
     this.DispatchChangeDisplayMode();
-  }
-
-  async deleteExerciseSet(exerciseSetIndex: number) {
-    // ExerciseSet.delete(this.exerciseSets, exerciseSetIndex);
-    // await this.saveChanges();
-    // this.store.dispatch(new ExerciseSetDeleted({
-    //   workoutDayId: this.workoutDayId
-    // }));
   }
 
   async selectExerciseToAdd(event) {

@@ -12,12 +12,11 @@ import { ToastService } from '../providers/toast-service/toast.service';
 import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
-import { LoadedImages } from '../store/actions/data.actions';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { selectHasImagesBeenReset } from '../store/selectors/data.selectors';
 import { selectLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
 import { selectExercisesMedia } from '../store/selectors/ExercisesMedia.selectors';
+import { UpdateImages } from '../store/actions/data.actions';
 
 @Component({
   selector: 'app-tab-library',
@@ -105,7 +104,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
 }
 
-  async presentToast(text: string) {
+  private async presentToast(text: string) {
     this.toastService.presentToast(text);
   }
 
@@ -134,7 +133,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     return this.isMobile;
   }
 
-  async takePicture(sourceType: PictureSourceType) {
+  private async takePicture(sourceType: PictureSourceType) {
     const options: CameraOptions = {
       quality: 100,
       sourceType: sourceType,
@@ -157,9 +156,11 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     await this.copyFileToLocalDir(ImagePath, imageName, `${new Date().getTime()}.jpg`);
   }
 
-  async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
+  private async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
     try {
-      await this.dataService.addImage(imagePath, imageName, newImageName);
+      // await this.dataService.addImage(imagePath, imageName, newImageName);
+      /// todo : send a command to update the image
+      this.store.dispatch(new UpdateImages());
     } catch (error) {
       console.log('Error storing new image:', error);
       this.presentToast('Error storing new image');
@@ -167,14 +168,16 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   async deleteImage(imgEntry: ExerciseMedia, position: number) {
-    await this.dataService.deleteImage(imgEntry, position);
-    // this.images = await this.dataService.getImages();
+    // await this.dataService.deleteImage(imgEntry, position);
+    /// todo : send a command to update the image
+    this.store.dispatch(new UpdateImages());
     this.presentToast('File removed.');
   }
 
   async updateImage(imgEntry: ExerciseMedia, position: number) {
-    await this.dataService.updateImage(imgEntry, position);
-    // this.images = await this.dataService.getImages();
+    // await this.dataService.updateImage(imgEntry, position);
+    /// todo : send a command to update the image
+    this.store.dispatch(new UpdateImages());
     this.presentToast('File updated.');
   }
 
@@ -204,10 +207,10 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   filterImagesByMuscles(musclesFilter: Muscles[]): ExerciseMedia[] {
-    console.log('tab-library: filtering by muscles', Array.from(musclesFilter));
     if (musclesFilter.length === 0) {
       return [];
     }
+    console.log('tab-library-page: filtering by muscles', Array.from(musclesFilter));
     const images = this._images.filter((image) => {
       const intersection =
         image.muscles.filter(imageMuscle => musclesFilter.includes(imageMuscle));

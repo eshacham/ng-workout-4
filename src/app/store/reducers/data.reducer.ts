@@ -18,7 +18,6 @@ export const dataReducers =
             };
         }
         case EDataActions.WorkoutsUpdated: {
-        // case EDataActions.LoadedWorkouts: {
             return {
                 ...state,
                 hasWorkoutsBeenReset: false

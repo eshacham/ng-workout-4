@@ -1,4 +1,3 @@
-import { Guid } from 'guid-typescript';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
@@ -13,9 +12,9 @@ import { AllDataMaps, WorkoutsDataMaps, MediaDataMaps } from 'src/app/models/Def
 import { IAppState } from '../../store/state/app.state';
 import {
   ResetWorkouts,
-  WorkoutsUpdated,
   ResetImages,
-  ImagesUpdated,
+  UpdateWorkouts,
+  UpdateImages,
 } from 'src/app/store/actions/data.actions';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
@@ -25,7 +24,6 @@ const IMAGES_STORAGE_KEY = 'my_images';
 export class DataServiceProvider {
 
   private _images: ExerciseMedia[];
-  // private hasDataBeenLoaded = false;
 
   constructor(
     private platform: Platform,
@@ -33,13 +31,6 @@ export class DataServiceProvider {
     private webview: WebView,
     private storage: Storage,
     private store: Store<IAppState>) {
-    // this._images = [];
-    // this.store.select(selectHasDataBeenLoaded)
-    //   .subscribe(async loaded => {
-    //     if (loaded) {
-    //       this.hasDataBeenLoaded = loaded;
-    //     }
-    //   });
     console.log('data-service - constructor');
   }
 
@@ -59,12 +50,12 @@ export class DataServiceProvider {
 
     imagesData = await this.getImagesData();
     if (!imagesData) {
-      imagesData = await this.initDefaultImages();
-      workoutsData = await this.initDefaultWorkouts();
+      imagesData = this.initDefaultImages();
+      workoutsData = this.initDefaultWorkouts();
     } else {
       workoutsData = await this.getWorkoutsData();
       if (!workoutsData) {
-        workoutsData = await this.initDefaultWorkouts();
+        workoutsData = this.initDefaultWorkouts();
       } else {
         if (this.isMobile) {
           this.UpdateImagesInWorkouts(imagesData);
@@ -77,57 +68,53 @@ export class DataServiceProvider {
     return data;
   }
 
-  private async getImagesData() {
+  private async getImagesData(): Promise<MediaDataMaps> {
     await this.storage.ready();
     const data: MediaDataMaps = await this.storage.get(IMAGES_STORAGE_KEY);
-    if (data && data.media && data.media.byId.length) {
-      return <MediaDataMaps>data;
-    }
-  }
-
-  private async initDefaultImages(): Promise<MediaDataMaps> {
-    const data = getDefaultImages();
-    console.log(`initialized and saved ${data.media.byId.length} default images`, data.media.byId);
-    await this.saveImages(data, true);
     return data;
   }
 
-  private async getWorkoutsData() {
+  private initDefaultImages(): MediaDataMaps {
+    const data: MediaDataMaps = getDefaultImages();
+    console.log(`initialized and saved ${Object.keys(data.media.byId).length} default images`, data.media.byId);
+    this.saveImages(data, true);
+    return data;
+  }
+
+  private async getWorkoutsData(): Promise<WorkoutsDataMaps> {
     await this.storage.ready();
     const data: WorkoutsDataMaps = await this.storage.get(WORKOUTS_STORAGE_KEY);
-    if (data && data.workouts && data.workouts.byId.length) {
-      return <WorkoutsDataMaps>data;
-    }
-  }
-
-  private async initDefaultWorkouts(): Promise<WorkoutsDataMaps> {
-    const data = getDefaultWorkouts();
-    console.log(`initialized and saved ${data.workouts.byId.length} default workouts`, data.workouts.byId);
-    await this.saveWorkouts(data, true);
     return data;
   }
 
-  private async UpdateImagesInWorkouts(mediaDataMaps: MediaDataMaps) {
-    const images = mediaDataMaps.media.byId;
-    for (const image of Object.values(images).filter(i => !i.isDefault)) {
-      if (image.nativePath.indexOf(this.file.dataDirectory) < 0) {
-        const oldPath = image.nativePath;
-        const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
-        image.nativePath = this.file.dataDirectory + name;
-        image.ionicPath = this.getIonicPath(image.nativePath);
-        console.log(`update images media path from ${oldPath} to ${image.nativePath}`);
-      }
-    }
-    await this.saveImages(mediaDataMaps, true);
+  private initDefaultWorkouts(): WorkoutsDataMaps {
+    const data = getDefaultWorkouts();
+    console.log(`initialized and saved ${Object.keys(data.workouts.byId).length} default workouts`, data.workouts.byId);
+    this.saveWorkouts(data, true);
+    return data;
   }
 
-  private async saveImages(images: MediaDataMaps, imagesHaveBeenReset: boolean = false) {
+  private UpdateImagesInWorkouts(mediaDataMaps: MediaDataMaps) {
+    const imagesToUpdate = Object.values(mediaDataMaps.media.byId)
+      .filter(i => !i.isDefault && i.nativePath.indexOf(this.file.dataDirectory) < 0);
+    for (const image of imagesToUpdate) {
+      const oldPath = image.nativePath;
+      const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
+      image.nativePath = this.file.dataDirectory + name;
+      image.ionicPath = this.getIonicPath(image.nativePath);
+      console.log(`update images media path from ${oldPath} to ${image.nativePath}`);
+    }
+    if (imagesToUpdate.length) {
+      this.saveImages(mediaDataMaps, true);
+    }
+  }
+
+  async saveImages(images: MediaDataMaps, imagesHaveBeenReset: boolean = false) {
     await this.storage.ready();
     await this.storage.set(IMAGES_STORAGE_KEY, images);
+    console.log('images have been saved');
     if (imagesHaveBeenReset) {
       this.store.dispatch(new ResetImages());
-    } else {
-      this.store.dispatch(new ImagesUpdated());
     }
   }
 
@@ -137,8 +124,6 @@ export class DataServiceProvider {
     console.log('workouts have been saved');
     if (haveWorkoutsBeenReset) {
       this.store.dispatch(new ResetWorkouts());
-    } else {
-      this.store.dispatch(new WorkoutsUpdated());
     }
   }
 
@@ -163,15 +148,6 @@ export class DataServiceProvider {
     if (imageToSet) {
       return imageToSet.muscles;
     }
-  }
-
-  async setImageMuscles(name: string, exerciseMuscleFilter: Muscles[]) {
-    // const imageToSet = this._images.filter(image => image.name === name)[0];
-    // if (imageToSet) {
-    //   imageToSet.muscles = exerciseMuscleFilter;
-    //   console.log(`data service - setImageMuscles found ${name}`, imageToSet.muscles);
-    //   await this.saveImages();
-    // }
   }
 
   async addImage(origImagePath: string, origImageName: string, newImageName: string) {

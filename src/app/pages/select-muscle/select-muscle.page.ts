@@ -14,6 +14,7 @@ import {
 import { takeUntil, take } from 'rxjs/operators';
 import { selectLibraryMusclesFilterState, selectExerciseMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import { selectMedia } from 'src/app/store/selectors/ExercisesMedia.selectors';
+import { UpdateImages } from 'src/app/store/actions/data.actions';
 
 interface MuscleElements {
   muscle: Muscles;
@@ -78,22 +79,22 @@ export class SelectMusclePage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<IAppState>) {
-      this.initMuscleGroups();
+    this.initMuscleGroups();
 
-      this.subs = this.route.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.muscleFilterUsage = this.router.getCurrentNavigation().extras.state.muscleFilterUsage;
-          if (this.isSettingMedia) {
-            this.store.select(selectMedia(this.muscleFilterUsage.mediaId))
-              .pipe(take(1))
-              .subscribe(image => {
-                console.log('select-muscle redux - muscleFilterUsage:', image);
-                this.muscleFilterUsage.mediaName = image.name;
-                this.store.dispatch(new SetExerciseMuscleFilter(image.muscles));
-              });
-          }
+    this.subs = this.route.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.muscleFilterUsage = this.router.getCurrentNavigation().extras.state.muscleFilterUsage;
+        if (this.isSettingMedia) {
+          this.store.select(selectMedia(this.muscleFilterUsage.mediaId))
+            .pipe(take(1))
+            .subscribe(image => {
+              console.log('select-muscle redux - muscleFilterUsage:', image);
+              this.muscleFilterUsage.mediaName = image.name;
+              this.store.dispatch(new SetExerciseMuscleFilter(image.muscles));
+            });
         }
-      });
+      }
+    });
   }
 
   ngOnInit() {
@@ -158,6 +159,7 @@ export class SelectMusclePage implements OnInit, OnDestroy {
       this.store.dispatch(new AddExerciseMuscleFilter({
         muscle: muscle, mediaId: this.muscleFilterUsage.mediaId
       }));
+      this.store.dispatch(new UpdateImages());
     }
   }
   deleteMuscleFromFilter(muscle: Muscles) {
@@ -167,13 +169,13 @@ export class SelectMusclePage implements OnInit, OnDestroy {
       this.store.dispatch(new DeleteExerciseMuscleFilter({
         muscle: muscle, mediaId: this.muscleFilterUsage.mediaId
       }));
+      this.store.dispatch(new UpdateImages());
     }
   }
 
   private getMuscleElements(muscle: Muscles) {
     const query = `g#${Muscles[muscle]} > path`;
     const elements = document.querySelectorAll(query);
-    console.log('muscles found: ', elements);
     return elements;
   }
 
