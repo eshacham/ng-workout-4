@@ -25,8 +25,7 @@ import { UpdateImages } from '../store/actions/data.actions';
 })
 export class TabLibraryPage implements OnInit, OnDestroy {
 
-  isMobile = false;
-  _useFilter = false;
+  private musclesFilter: Muscles[];
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
@@ -45,11 +44,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   _images: ExerciseMedia[];
   get images(): ExerciseMedia[] {
-    if (this.useFilter) {
-      return this.filteredImages;
-    } else {
       return this._images;
-    }
   }
   set images(images: ExerciseMedia[]) {
     this._images = images;
@@ -63,6 +58,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this._filteredImages = images;
   }
 
+  _useFilter = false;
   get useFilter(): boolean {
     return this._useFilter;
   }
@@ -72,13 +68,23 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     }
   }
 
+  get filteredMusclesCount() {
+    return this.musclesFilter.length;
+  }
+
+  isMobile = false;
+  get IsMobile() {
+    return this.isMobile;
+  }
+
   async ngOnInit() {
     this.isMobile = this.dataService.isMobile;
 
     this.store.select(selectExercisesMedia)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(media => {
-        this._images = media;
+        this.images = media;
+        this.useFilter = this._useFilter;
       });
 
     // this.store.select(selectHasImagesBeenReset)
@@ -91,18 +97,18 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     //   }
     // });
     this.store.select(selectLibraryMusclesFilterState)
-    .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async (filter) => {
-      console.log('tab-library-page redux - LibraryMusclesFilterState:', filter);
-      this.filteredImages = this.filterImagesByMuscles(filter);
-    });
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(async (filter) => {
+        console.log('tab-library-page redux - LibraryMusclesFilterState:', filter);
+        this.musclesFilter = filter;
+      });
   }
 
   ngOnDestroy() {
     console.log('onDestroy - exercise-thumbnail');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-}
+  }
 
   private async presentToast(text: string) {
     this.toastService.presentToast(text);
@@ -127,10 +133,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     const actionSheet = await this.actionSheetController.create(options);
     console.log('presenting action sheet...');
     await actionSheet.present();
-  }
-
-  get IsMobile() {
-    return this.isMobile;
   }
 
   private async takePicture(sourceType: PictureSourceType) {
@@ -206,14 +208,17 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this.router.navigate(['select-muscle'], extra);
   }
 
-  filterImagesByMuscles(musclesFilter: Muscles[]): ExerciseMedia[] {
-    if (musclesFilter.length === 0) {
+  getFilteredImages(): ExerciseMedia[] {
+    if (!this.useFilter) {
+      return this.images;
+    }
+    if (this.filteredMusclesCount === 0) {
       return [];
     }
-    console.log('tab-library-page: filtering by muscles', Array.from(musclesFilter));
+    console.log('tab-library-page: filtering by muscles', Array.from(this.musclesFilter));
     const images = this._images.filter((image) => {
       const intersection =
-        image.muscles.filter(imageMuscle => musclesFilter.includes(imageMuscle));
+        image.muscles.filter(imageMuscle => this.musclesFilter.includes(imageMuscle));
       return (intersection.length > 0);
     });
     return images;

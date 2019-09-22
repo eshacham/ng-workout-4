@@ -16,6 +16,7 @@
         <ion-button [disabled]="!useFilter" fill="clear"
           (click)="selectMuscle()" >
           <ion-icon slot="end" name="body"></ion-icon>
+          <ion-badge slot="end">{{filteredMusclesCount}}</ion-badge>
           Select Muscles
         </ion-button>
     </ion-buttons>
@@ -25,7 +26,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let img of images; index as pos" class="ion-text-wrap">
+    <ion-item *ngFor="let img of getFilteredImages(); index as pos" class="ion-text-wrap">
       <ion-thumbnail slot="start">
         <ion-img [src]="img.ionicPath"></ion-img>
       </ion-thumbnail>
