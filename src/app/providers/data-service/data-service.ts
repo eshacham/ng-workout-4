@@ -72,8 +72,8 @@ export class DataServiceProvider {
       }
     }
     data = { ...workoutsData, ...imagesData };
-    console.log('data-service - loaded cached workouts', Object.keys(data.workouts));
-    console.log('data-service - loaded cached images', Object.keys(data.media));
+    console.log('data-service - loaded cached workouts', Object.keys(data.workouts.byId));
+    console.log('data-service - loaded cached images', Object.keys(data.media.byId));
     return data;
   }
 

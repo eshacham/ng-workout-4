@@ -184,7 +184,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
       state: {
         muscleFilterUsage: {
           for: MuscleFilterFor.SetExerciseMedia,
-          mediaName: imgEntry.name
+          mediaId: imgEntry.id
         }
       }
     };
