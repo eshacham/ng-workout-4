@@ -52,13 +52,14 @@ export const exerciseSetsReducers = (
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
             const sets = action.payload.sets;
-            const newMap = Object.entries(state.byId)
+            let newMap: {[id: string]: ExerciseSetBean };
+            newMap = !sets ? null : Object.entries(state.byId)
                 .filter(([key, val]) => !sets.includes(val.id))
                 .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
-            return {
+            return sets ? {
                 ...state,
                 byId: newMap
-            };
+            } : state;
         }
         case EExerciseSetActions.SwitchExercises: {
             const oldExes = state.byId[action.payload.setId].exercises;

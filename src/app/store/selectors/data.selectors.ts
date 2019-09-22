@@ -42,11 +42,6 @@ export const selectImagesData = createSelector(
     }
 );
 
-// export const selectHasDataBeenLoaded = createSelector(
-//     dataState,
-//     (state: IDataState) => state.hasDataBeenLoaded
-// );
-
 export const selectHasImagesBeenReset = createSelector(
     dataState,
     (state: IDataState) => state.hasImagesBeenReset
