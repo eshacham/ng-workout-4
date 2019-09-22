@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { selectLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
 import { selectExercisesMedia } from '../store/selectors/ExercisesMedia.selectors';
 import { UpdateImages } from '../store/actions/data.actions';
+import { UpdateExerciseMedia } from '../store/actions/exercisesMedia.actions';
 
 @Component({
   selector: 'app-tab-library',
@@ -169,16 +170,16 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     }
   }
 
-  async deleteImage(imgEntry: ExerciseMedia, position: number) {
+  async deleteImage(event, imgEntry: ExerciseMedia) {
     // await this.dataService.deleteImage(imgEntry, position);
     /// todo : send a command to update the image
     this.store.dispatch(new UpdateImages());
     this.presentToast('File removed.');
   }
 
-  async updateImage(imgEntry: ExerciseMedia, position: number) {
-    // await this.dataService.updateImage(imgEntry, position);
-    /// todo : send a command to update the image
+  updateImage(event , image: ExerciseMedia) {
+    console.log(`tab-library-page redux - update image id ${image.id} name with ${event.target.value}` );
+    this.store.dispatch(new UpdateExerciseMedia({mediaId: image.id, name: event.target.value}));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File updated.');
   }
@@ -215,7 +216,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     if (this.filteredMusclesCount === 0) {
       return [];
     }
-    console.log('tab-library-page: filtering by muscles', Array.from(this.musclesFilter));
     const images = this._images.filter((image) => {
       const intersection =
         image.muscles.filter(imageMuscle => this.musclesFilter.includes(imageMuscle));

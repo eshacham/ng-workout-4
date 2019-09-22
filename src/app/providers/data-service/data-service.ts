@@ -15,6 +15,7 @@ import {
   ResetImages,
   UpdateWorkouts,
   UpdateImages,
+  GetData,
 } from 'src/app/store/actions/data.actions';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
@@ -50,12 +51,12 @@ export class DataServiceProvider {
 
     imagesData = await this.getImagesData();
     if (!imagesData) {
-      imagesData = this.initDefaultImages();
-      workoutsData = this.initDefaultWorkouts();
+      imagesData = await this.initDefaultImages();
+      workoutsData = await this.initDefaultWorkouts();
     } else {
       workoutsData = await this.getWorkoutsData();
       if (!workoutsData) {
-        workoutsData = this.initDefaultWorkouts();
+        workoutsData = await this.initDefaultWorkouts();
       } else {
         if (this.isMobile) {
           this.UpdateImagesInWorkouts(imagesData);
@@ -74,10 +75,10 @@ export class DataServiceProvider {
     return data;
   }
 
-  private initDefaultImages(): MediaDataMaps {
+  private async initDefaultImages(): Promise<MediaDataMaps> {
     const data: MediaDataMaps = getDefaultImages();
     console.log(`initialized and saved ${Object.keys(data.media.byId).length} default images`, data.media.byId);
-    this.saveImages(data, true);
+    await this.saveImages(data, true);
     return data;
   }
 
@@ -87,10 +88,10 @@ export class DataServiceProvider {
     return data;
   }
 
-  private initDefaultWorkouts(): WorkoutsDataMaps {
+  private async initDefaultWorkouts(): Promise<WorkoutsDataMaps> {
     const data = getDefaultWorkouts();
     console.log(`initialized and saved ${Object.keys(data.workouts.byId).length} default workouts`, data.workouts.byId);
-    this.saveWorkouts(data, true);
+    await this.saveWorkouts(data, true);
     return data;
   }
 
@@ -130,7 +131,7 @@ export class DataServiceProvider {
   async resetImages() {
     await this.storage.ready();
     await this.storage.remove(IMAGES_STORAGE_KEY);
-    await this.initDefaultImages();
+    this.store.dispatch(new GetData());
     console.log('images have been reset');
     /// todo: dispatch both images and workouts reset - use effects
   }
@@ -138,7 +139,7 @@ export class DataServiceProvider {
   async resetWorkouts() {
     await this.storage.ready();
     await this.storage.remove(WORKOUTS_STORAGE_KEY);
-    await this.initDefaultWorkouts();
+    this.store.dispatch(new GetData());
     console.log('workouts have been reset to default workouts');
     /// todo: dispatch workouts reset - use effects
   }

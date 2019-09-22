@@ -1,10 +1,11 @@
 import { initialExercisesMediaState, IExercisesMediaState } from '../state/ExercisesMedia.state';
 import { EDataActions, DataActions } from '../actions/data.actions';
 import { EMusclesFilterActions, MusclesFilterActions } from '../actions/musclesFilter.actions';
+import { EExerciseMediaActions, ExerciseMediaActions } from '../actions/exercisesMedia.actions';
 
 export const exercisesMediaReducers = (
     state = initialExercisesMediaState,
-    action: DataActions | MusclesFilterActions)
+    action: DataActions | MusclesFilterActions | ExerciseMediaActions)
     : IExercisesMediaState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -35,6 +36,18 @@ export const exercisesMediaReducers = (
                     [action.payload.mediaId]: {
                         ...state.byId[action.payload.mediaId],
                         muscles: newMuscles
+                    }
+                }
+            };
+        }
+        case EExerciseMediaActions.UpdateExerciseMedia: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.mediaId]: {
+                        ...state.byId[action.payload.mediaId],
+                        name: action.payload.name
                     }
                 }
             };
