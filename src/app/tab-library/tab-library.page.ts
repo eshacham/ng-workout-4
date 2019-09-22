@@ -51,14 +51,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this._images = images;
   }
 
-  _filteredImages: ExerciseMedia[];
-  get filteredImages(): ExerciseMedia[] {
-    return this._filteredImages;
-  }
-  set filteredImages(images: ExerciseMedia[]) {
-    this._filteredImages = images;
-  }
-
   _useFilter = false;
   get useFilter(): boolean {
     return this._useFilter;
@@ -85,7 +77,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(media => {
         this.images = media;
-        this.useFilter = this._useFilter;
+        // this.useFilter = this._useFilter;
       });
 
     // this.store.select(selectHasImagesBeenReset)
@@ -106,7 +98,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('onDestroy - exercise-thumbnail');
+    console.log('onDestroy - tab-library-page');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

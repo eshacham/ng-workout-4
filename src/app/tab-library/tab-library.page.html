@@ -26,7 +26,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let img of getFilteredImages(); index as pos" class="ion-text-wrap">
+    <ion-item *ngFor="let img of getFilteredImages()" class="ion-text-wrap">
       <ion-thumbnail slot="start">
         <ion-img [src]="img.ionicPath"></ion-img>
       </ion-thumbnail>
@@ -38,7 +38,7 @@
         <ion-icon slot="icon-only" name="body"></ion-icon>
         <ion-badge [color]="img.muscles.length ? 'primary' : 'danger'">{{img.muscles.length}}</ion-badge>
       </ion-button>
-      <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
+      <ion-button slot="end" fill="clear" (click)="deleteImage(img)">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
         <ion-badge>{{img.mediaUsageCounter}}</ion-badge>
       </ion-button>

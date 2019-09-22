@@ -11,7 +11,7 @@ import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
 import { IAppState } from '../../store/state/app.state';
 import { Subscription, Subject } from 'rxjs';
 import { LoadedImages } from '../../store/actions/data.actions';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { selectHasImagesBeenReset, selectHasWorkoutsBeenReset } from 'src/app/store/selectors/data.selectors';
 import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
@@ -35,7 +35,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   isSet = false;
   haveWorkoutsBeenReset = false;
   lastSelectedWorkoutDayId?: string;
-  subs: Subscription;
+  private musclesFilter: Muscles[];
+  private subs: Subscription;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
@@ -51,22 +52,10 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
   _images: SelectedExerciseMedia[];
   get images(): SelectedExerciseMedia[] {
-    if (this.useFilter) {
-      return this.filteredImages;
-    } else {
-      return this._images;
-    }
+    return this._images;
   }
   set images(images: SelectedExerciseMedia[]) {
     this._images = images;
-  }
-
-  _filteredImages: SelectedExerciseMedia[];
-  get filteredImages(): SelectedExerciseMedia[] {
-    return this._filteredImages;
-  }
-  set filteredImages(images: SelectedExerciseMedia[]) {
-    this._filteredImages = images;
   }
 
   _useFilter = false;
@@ -79,6 +68,10 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     }
   }
 
+  get filteredMusclesCount() {
+    return this.musclesFilter.length;
+  }
+
   get selectedImages(): SelectedExerciseMedia[] {
     return this._images.filter(i => i.isSelected);
   }
@@ -88,22 +81,20 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   }
 
   get isAddExerciseDisabled(): boolean {
-    return this.haveWorkoutsBeenReset || !this.hasSelecteion;
+    return !this.hasSelecteion;
   }
 
   async ngOnInit() {
-    this.haveWorkoutsBeenReset = false;
-    // this.images = await this.getImages();
     this.store.select(selectExercisesMedia)
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(media => {
-      // this._images = media;
-      return media.map((image) => {
+      this.images = media.map((image) => {
         return {
           isSelected: false,
           media: image,
         };
       });
+      // this.useFilter = this._useFilter;
     });
 
     // this.store.select(selectHasImagesBeenReset)
@@ -115,20 +106,23 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     //       this.store.dispatch(new LoadedImages());
     //     }
     //   });
+
     this.store.select(selectHasWorkoutsBeenReset)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(reset => {
         console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
         this.haveWorkoutsBeenReset = reset;
       });
+
     this.store.select(selectLibraryMusclesFilterState)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (filter) => {
         console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
-        this.filteredImages = this.filterImagesByMuscles(filter);
+        this.musclesFilter = filter;
       });
+
     this.store.select(selectCurrentWorkoutSelectedDayId)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(take(1))
       .subscribe(async (selectedWorkoutDayState) => {
         if (selectedWorkoutDayState && this.workoutId === selectedWorkoutDayState.workoutId) {
           const workoutDayId = selectedWorkoutDayState.dayId;
@@ -145,29 +139,16 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  // private async getImages(): Promise<SelectedExerciseMedia[]> {
-  //   // const images = await this.dataService.getImages();
-  //   this.store.select(selectExercisesMedia)
-  //     .pipe(takeUntil(this.ngUnsubscribe))
-  //     .subscribe(media => {
-  //       // this._images = media;
-  //       return media.map((image) => {
-  //         return {
-  //           isSelected: false,
-  //           media: image,
-  //         };
-  //       });
-  //     });
-  // }
-
-  filterImagesByMuscles(musclesFilter: Muscles[]): SelectedExerciseMedia[] {
-    console.log('select-execrcise: filtering by muscles', Array.from(musclesFilter));
-    if (musclesFilter.length === 0) {
+  getFilteredImages(): SelectedExerciseMedia[] {
+    if (!this.useFilter) {
+      return this.images;
+    }
+    if (this.filteredMusclesCount === 0) {
       return [];
     }
     const images = this._images.filter((image) => {
       const intersection =
-        image.media.muscles.filter(imageMuscle => musclesFilter.includes(imageMuscle));
+        image.media.muscles.filter(imageMuscle => this.musclesFilter.includes(imageMuscle));
       return (intersection.length > 0);
     });
     return images;
