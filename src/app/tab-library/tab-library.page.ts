@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 import { selectLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
 import { selectExercisesMedia } from '../store/selectors/ExercisesMedia.selectors';
 import { UpdateImages } from '../store/actions/data.actions';
-import { UpdateExerciseMedia } from '../store/actions/exercisesMedia.actions';
+import { UpdateExerciseMedia, AddExerciseMedia, DeleteExerciseMedia } from '../store/actions/exercisesMedia.actions';
 
 @Component({
   selector: 'app-tab-library',
@@ -143,8 +143,8 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   private async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
     try {
-      // await this.dataService.addImage(imagePath, imageName, newImageName);
-      /// todo : send a command to update the image
+      const newImage = await this.dataService.addImage(imagePath, imageName, newImageName);
+      this.store.dispatch(new AddExerciseMedia({exerciseMedia: newImage }));
       this.store.dispatch(new UpdateImages());
     } catch (error) {
       console.log('Error storing new image:', error);
@@ -152,9 +152,9 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     }
   }
 
-  async deleteImage(event, imgEntry: ExerciseMedia) {
-    // await this.dataService.deleteImage(imgEntry, position);
-    /// todo : send a command to update the image
+  async deleteImage(imgEntry: ExerciseMedia) {
+    await this.dataService.deleteImage(imgEntry);
+    this.store.dispatch(new DeleteExerciseMedia({mediaId: imgEntry.id}));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File removed.');
   }

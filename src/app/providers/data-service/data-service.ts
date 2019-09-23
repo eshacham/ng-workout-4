@@ -17,6 +17,7 @@ import {
   UpdateImages,
   GetData,
 } from 'src/app/store/actions/data.actions';
+import { Guid } from 'guid-typescript';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -149,38 +150,30 @@ export class DataServiceProvider {
     }
   }
 
-  async addImage(origImagePath: string, origImageName: string, newImageName: string) {
-    // await this.file.copyFile(origImagePath, origImageName, this.file.dataDirectory, newImageName);
-    // const nativePath = this.file.dataDirectory + newImageName;
-    // console.log(`new image ${origImagePath}/${origImageName} has been copied to ${nativePath}`);
+  async addImage(origImagePath: string, origImageName: string, newImageName: string):
+  Promise<ExerciseMedia> {
+    await this.file.copyFile(origImagePath, origImageName, this.file.dataDirectory, newImageName);
+    const nativePath = this.file.dataDirectory + newImageName;
+    console.log(`new image ${origImagePath}/${origImageName} has been copied to ${nativePath}`);
 
-    // const newEntry: ExerciseMedia = new ExerciseMedia({
-    //   id: Guid.raw(),
-    //   name: newImageName,
-    //   ionicPath: this.getIonicPath(nativePath),
-    //   nativePath: nativePath,
-    //   isDefault: false,
-    //   muscles: new Set(),
-    // });
-    // console.log('adding image', newEntry);
-    // this._images.push(newEntry);
-    // await this.saveImages();
+    const newEntry: ExerciseMedia = new ExerciseMedia({
+      id: Guid.raw(),
+      name: newImageName,
+      ionicPath: this.getIonicPath(nativePath),
+      nativePath: nativePath,
+      isDefault: false,
+      muscles: new Set(),
+    });
+    return newEntry;
   }
 
-  async deleteImage(image: ExerciseMedia, position: number) {
-    // const imageToRemove = this._images.splice(position, 1)[0];
-    // await this.saveImages();
-    // if (this.isMobile && !imageToRemove.isDefault) {
-    //   const path = image.nativePath.substr(0, image.nativePath.lastIndexOf('/') + 1);
-    //   const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
-    //   console.log(`deleting image file ${path}/${name}`);
-    //   await this.file.removeFile(path, name);
-    // }
-  }
-
-  async updateImage(imgEntry: ExerciseMedia, position: number) {
-    // await this.saveImages();
-    // console.log(`updated image name ${imgEntry.name} as ${this._images[position].ionicPath}`);
+  async deleteImage(image: ExerciseMedia) {
+    if (this.isMobile && !image.isDefault) {
+      const path = image.nativePath.substr(0, image.nativePath.lastIndexOf('/') + 1);
+      const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
+      console.log(`deleting image file ${path}/${name}`);
+      await this.file.removeFile(path, name);
+    }
   }
 
   getIonicPath(img: string) {
