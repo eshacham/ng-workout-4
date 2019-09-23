@@ -106,7 +106,7 @@ export class DataServiceProvider {
       console.log(`update images media path from ${oldPath} to ${image.nativePath}`);
     }
     if (imagesToUpdate.length) {
-      this.saveImages(mediaDataMaps, true);
+      this.saveImages(mediaDataMaps);
     }
   }
 
@@ -133,7 +133,6 @@ export class DataServiceProvider {
     await this.storage.remove(IMAGES_STORAGE_KEY);
     this.store.dispatch(new GetData());
     console.log('images have been reset');
-    /// todo: dispatch both images and workouts reset - use effects
   }
 
   async resetWorkouts() {
@@ -141,7 +140,6 @@ export class DataServiceProvider {
     await this.storage.remove(WORKOUTS_STORAGE_KEY);
     this.store.dispatch(new GetData());
     console.log('workouts have been reset to default workouts');
-    /// todo: dispatch workouts reset - use effects
   }
 
   getExerciseMusclesFilterFromImage(name: string): Muscles[] {
