@@ -77,18 +77,8 @@ export class TabLibraryPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(media => {
         this.images = media;
-        // this.useFilter = this._useFilter;
       });
 
-    // this.store.select(selectHasImagesBeenReset)
-    // .pipe(takeUntil(this.ngUnsubscribe))
-    // .subscribe(async (reset) => {
-    //   console.log('tab-library redux - HasDefaultImagesBeenReset:', reset);
-    //   if (reset) {
-    //     this.images = await this.dataService.getImages();
-    //     this.store.dispatch(new LoadedImages());
-    //   }
-    // });
     this.store.select(selectLibraryMusclesFilterState)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (filter) => {

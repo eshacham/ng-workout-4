@@ -42,11 +42,19 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-buttons slot="start" *ngIf="!haveWorkoutsBeenReset">
-        <ion-button fill="clear" (click)="addExercise()"
+    <ion-buttons slot="start">
+
+        <ion-button *ngIf="!haveWorkoutsBeenReset" fill="clear"
+          (click)="addExercise()"
           [disabled]="isAddExerciseDisabled">
           <ion-icon slot="start" name="add-circle"></ion-icon>
-          Add Exercises
+          Add Exercise(s)
+        </ion-button>
+
+        <ion-button *ngIf="haveWorkoutsBeenReset" fill="clear"
+          (click)="goBack()">
+          <ion-icon slot="start" name="arrow-back"></ion-icon>
+          Back to Workout
         </ion-button>
 
       </ion-buttons>

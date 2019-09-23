@@ -3,16 +3,14 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
-import { ExerciseSet, ExerciseSetBean } from 'src/app/models/ExerciseSet';
+import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { ExerciseBean } from 'src/app/models/Exercise';
-import { Rep } from 'src/app/models/Rep';
-import { Muscles, RepetitionSpeed } from 'src/app/models/enums';
+import { Muscles } from 'src/app/models/enums';
 import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
 import { IAppState } from '../../store/state/app.state';
 import { Subscription, Subject } from 'rxjs';
-import { LoadedImages } from '../../store/actions/data.actions';
 import { takeUntil, take } from 'rxjs/operators';
-import { selectHasImagesBeenReset, selectHasWorkoutsBeenReset } from 'src/app/store/selectors/data.selectors';
+import { selectHasWorkoutsBeenReset } from 'src/app/store/selectors/data.selectors';
 import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
@@ -43,7 +41,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private dataService: DataServiceProvider,
     private store: Store<IAppState>) {
     this._images = [];
     this.subs = this.route.params.subscribe(params => {
@@ -95,18 +92,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
           media: image,
         };
       });
-      // this.useFilter = this._useFilter;
     });
-
-    // this.store.select(selectHasImagesBeenReset)
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe(async (reset) => {
-    //     console.log('select exercise redux - HasDefaultImagesBeenReset:', reset);
-    //     if (reset) {
-    //       this.images = await this.getImages();
-    //       this.store.dispatch(new LoadedImages());
-    //     }
-    //   });
 
     this.store.select(selectHasWorkoutsBeenReset)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -160,10 +146,6 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   }
 
   addExercise() {
-    if (this.haveWorkoutsBeenReset) {
-      console.log('select-exercise: Workouts have been reset! Can\'t update it now');
-      return;
-    }
     const { sets, exes } = this.getNewSets();
     this.store.dispatch(new AddExerciseSets({
       dayId: this.lastSelectedWorkoutDayId,
@@ -171,6 +153,11 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       exes: exes
     }));
     this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  goBack() {
+    console.log('select-exercise: Workouts have been reset! Can\'t update it now');
+    this.router.navigate(['']);
   }
 
   getNewSets(): { sets: ExerciseSetBean[], exes: ExerciseBean[] } {

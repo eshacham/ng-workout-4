@@ -45,7 +45,6 @@ export enum MuscleFilterFor {
 })
 export class SelectMusclePage implements OnInit, OnDestroy {
 
-
   subs: Subscription;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
