@@ -1,9 +1,9 @@
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { Workout } from '../models/Workout';
-import { getDefaultWorkouts } from '../constants/defaultWorkouts';
+import { getDefaultWorkoutsMaps } from '../constants/defaultWorkouts';
 
-export const defaultFirstWorkout = getDefaultWorkouts().workouts[0];
+export const defaultFirstWorkout = getDefaultWorkoutsMaps().workouts[0];
 
 export class PlatformMock {
   public ready(): Promise<any> {

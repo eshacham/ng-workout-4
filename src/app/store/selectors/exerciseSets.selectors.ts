@@ -3,7 +3,7 @@ import { IAppState } from '../state/app.state';
 import { IExerciseSetsState } from '../state/ExerciseSets.state';
 import { IExercisesState } from '../state/Exercises.state';
 import { IExercisesMediaState } from '../state/ExercisesMedia.state';
-import { ExerciseSet, ExerciseSetBean } from 'src/app/models/ExerciseSet';
+import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 
@@ -26,7 +26,7 @@ export const selectexerciseSet = (id: string) => createSelector(
             const exeIds = set.exercises;
             exes = exeIds.map(exeId => exercises.byId[exeId]);
             const mediaIds = exes.map(e => e.mediaId);
-            medias = mediaIds.map(mediaId => media.byId[mediaId]);
+            medias = mediaIds.map(mediaId => media ? media.byId[mediaId] : null);
             Object.freeze(exes);
             Object.freeze(medias);
         }

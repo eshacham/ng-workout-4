@@ -6,17 +6,11 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
 import { ExerciseMedia } from '../../models/ExerciseMedia';
 import { Muscles } from '../../models/enums';
-import { getDefaultWorkouts } from '../../constants/defaultWorkouts';
+import { getDefaultWorkoutsMaps } from '../../constants/defaultWorkouts';
 import { getDefaultImages } from '../../constants/defaultExerciseMedia';
 import { AllDataMaps, WorkoutsDataMaps, MediaDataMaps } from 'src/app/models/DefaultWorkouts';
 import { IAppState } from '../../store/state/app.state';
-import {
-  ResetWorkouts,
-  ResetImages,
-  UpdateWorkouts,
-  UpdateImages,
-  GetData,
-} from 'src/app/store/actions/data.actions';
+import { ResetWorkouts, ResetImages, GetData} from 'src/app/store/actions/data.actions';
 import { Guid } from 'guid-typescript';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
@@ -65,8 +59,10 @@ export class DataServiceProvider {
       }
     }
     data = { ...workoutsData, ...imagesData };
-    console.log('data-service - loaded cached workouts', Object.keys(data.workouts.byId));
-    console.log('data-service - loaded cached images', Object.keys(data.media.byId));
+    if (data.workouts && data.media) {
+      console.log('data-service - loaded cached workouts', Object.keys(data.workouts.byId));
+      console.log('data-service - loaded cached images', Object.keys(data.media.byId));
+    }
     return data;
   }
 
@@ -90,7 +86,7 @@ export class DataServiceProvider {
   }
 
   private async initDefaultWorkouts(): Promise<WorkoutsDataMaps> {
-    const data = getDefaultWorkouts();
+    const data = getDefaultWorkoutsMaps();
     console.log(`initialized and saved ${Object.keys(data.workouts.byId).length} default workouts`, data.workouts.byId);
     await this.saveWorkouts(data, true);
     return data;

@@ -1,4 +1,3 @@
-import { Guid } from 'guid-typescript';
 import { ExerciseMedia } from '../models/ExerciseMedia';
 import { MediaDataMaps } from '../models/DefaultWorkouts';
 import { Muscles } from '../models/enums';
@@ -13,7 +12,7 @@ const addMedia = (map: Map<string, ExerciseMedia>, name: string, muscles: Muscle
     map.set(media.id, media);
 };
 
-const init = (): Map<string, ExerciseMedia> => {
+const buildExercisesMediaMap = (): Map<string, ExerciseMedia> => {
     const exercises = new Map<string, ExerciseMedia>();
     addMedia(exercises, 'BenchPressWideGrip.jpeg', [Muscles.Chest]);
     addMedia(exercises, 'BenchPressNarrowGrip.png', [Muscles.Chest]);
@@ -56,10 +55,16 @@ const init = (): Map<string, ExerciseMedia> => {
     return exercises;
 };
 
-export const defaultExerciseMedia = init();
+let _defaultExerciseMedia: Map<string, ExerciseMedia>;
+const getDefaultExerciseMedia = (): Map<string, ExerciseMedia> => {
+    if (!_defaultExerciseMedia) {
+        _defaultExerciseMedia = buildExercisesMediaMap();
+    }
+    return _defaultExerciseMedia;
+};
 
 export const attachMedia = (id: string): string => {
-    const media = defaultExerciseMedia.get(id);
+    const media = getDefaultExerciseMedia().get(id);
     media.mediaUsageCounter++;
     return media.id;
 };
@@ -68,7 +73,7 @@ export const getDefaultImages = (): MediaDataMaps => {
     const data: MediaDataMaps = {
         media: { byId: {} }
     };
-    Array.from(defaultExerciseMedia).map(([key, media]) => {
+    Array.from(getDefaultExerciseMedia()).map(([key, media]) => {
         data.media.byId[media.id] = media;
     });
     return data;

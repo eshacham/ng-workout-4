@@ -17,7 +17,8 @@ export const SelectWorkoutDayState = createSelector(
   workoutDaysState,
   selectCurrentWorkoutSelectedDayId,
   (days: IWorkoutDaysState, selectedWorkoutDayState: {workoutId: string, dayId: string}) =>
-    (selectedWorkoutDayState && selectedWorkoutDayState.dayId) ? days.byId[selectedWorkoutDayState.dayId] : null
+    (selectedWorkoutDayState && selectedWorkoutDayState.dayId) ?
+    days.byId[selectedWorkoutDayState.dayId] : null
 );
 
 export const SelectWorkoutDayId2AddFrom = createSelector(

@@ -11,7 +11,7 @@ export const exercisesMediaReducers = (
         case EDataActions.GetDataSuccess: {
             return {
                 ...state,
-                byId: action.payload.media.byId,
+                byId: action.payload.media ? action.payload.media.byId : null,
             };
         }
         case EMusclesFilterActions.AddExerciseMuscleFilter: {
