@@ -28,15 +28,15 @@ export class WorkoutDay extends WorkoutDayBase {
         this.exerciseSets = options.exerciseSets;
     }
 
-    static delete(days: WorkoutDay[], index: number) {
-        const day = days[index];
-        if (day && day.exerciseSets.length) {
-            day.exerciseSets.forEach((_, idx) => {
-                ExerciseSet.delete(day.exerciseSets, idx);
-            });
-        }
-        days.splice(index, 1);
-    }
+    // static delete(days: WorkoutDay[], index: number) {
+    //     const day = days[index];
+    //     if (day && day.exerciseSets.length) {
+    //         day.exerciseSets.forEach((_, idx) => {
+    //             ExerciseSet.delete(day.exerciseSets, idx);
+    //         });
+    //     }
+    //     days.splice(index, 1);
+    // }
 }
 
 export class WorkoutDayBean extends WorkoutDayBase {
@@ -44,7 +44,7 @@ export class WorkoutDayBean extends WorkoutDayBase {
     runningExerciseSetIndex?: number;
     displayMode?: DisplayMode;
     runningState?: RunningState;
-    exerciseSetIndex2Delete?: number;
+    // exerciseSetIndex2Delete?: number;
     workoutId?: string;
 
     constructor(options: {
@@ -54,7 +54,7 @@ export class WorkoutDayBean extends WorkoutDayBase {
         runningExerciseSetIndex?: number,
         displayMode?: DisplayMode,
         runningState?: RunningState,
-        exerciseSetIndex2Delete?: number,
+        // exerciseSetIndex2Delete?: number,
         workoutId?: string;
     }) {
         super(options);
@@ -64,7 +64,7 @@ export class WorkoutDayBean extends WorkoutDayBase {
         this.runningExerciseSetIndex = options.runningExerciseSetIndex;
         this.displayMode = options.displayMode;
         this.runningState = options.runningState;
-        this.exerciseSetIndex2Delete = options.exerciseSetIndex2Delete;
+        // this.exerciseSetIndex2Delete = options.exerciseSetIndex2Delete;
         if (options.workoutId) {
             this.workoutId = options.workoutId;
         }

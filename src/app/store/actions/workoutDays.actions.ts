@@ -72,7 +72,7 @@ export class WorkoutDayAdded implements Action {
     readonly type = EWorkoutDaysActions.WorkoutDayAdded;
     constructor(public payload: {
         workoutId: string,
-        dayId: string,
+        day: WorkoutDayBean,
         index2AddFrom: number
     }) { }
 }

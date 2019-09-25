@@ -30,10 +30,10 @@ export const SelectworkoutDayMoveDirection = createSelector(
   (workoutDays: IWorkoutDaysState) => workoutDays.workoutDayMoveState
 );
 
-export const SelectExerciseSetIndex2Delete = createSelector(
-  SelectWorkoutDayState,
-  (day: WorkoutDayBean) => day ? day.exerciseSetIndex2Delete : null
-);
+// export const SelectExerciseSetIndex2Delete = createSelector(
+//   SelectWorkoutDayState,
+//   (day: WorkoutDayBean) => day ? day.exerciseSetIndex2Delete : null
+// );
 
 export const selectWorkoutDayId2Delete = createSelector(
   workoutDaysState,

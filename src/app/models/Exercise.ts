@@ -4,15 +4,13 @@ import { Grip } from './Grip';
 import { Rep } from './Rep';
 import { ExerciseMedia } from './ExerciseMedia';
 
-export class ExerciseBean {
-
+export class Exercise  {
     public id: string;
-    public exerciseSetId?: string;
     public name: string;
     public mediaId: string;
-    public theGrip: Grip = new Grip();
+    public theGrip: Grip;
     public repSpeed: RepetitionSpeed;
-    public typeOfWeight: WeightType;
+    public typeOfWeight?: WeightType;
     public isFavorite: Boolean;
     public reps: Rep[];
     public restBetweenReps: number;
@@ -20,7 +18,41 @@ export class ExerciseBean {
 
     constructor(options: {
         id: string,
-        exerciseSetId?: string;
+        name: string,
+        mediaId: string,
+        theGrip?: Grip,
+        repSpeed: RepetitionSpeed,
+        typeOfWeight?: WeightType,
+        isFavorite: Boolean,
+        reps: Rep[],
+        restBetweenReps: number,
+        restAfterExercise: number,
+    }) {
+        this.id = options.id;
+        this.name = options.name;
+        this.mediaId = options.mediaId;
+        this.theGrip = options.theGrip || new Grip();
+        this.repSpeed = options.repSpeed;
+        if (options.typeOfWeight) {
+            this.typeOfWeight = options.typeOfWeight;
+        }
+        this.isFavorite = options.isFavorite;
+        this.reps = options.reps;
+        this.restBetweenReps = options.restBetweenReps;
+        this.restAfterExercise = options.restAfterExercise;
+    }
+}
+export class ExerciseBean extends Exercise {
+
+    public workoutId: string;
+    public dayId: string;
+    public setId: string;
+
+    constructor(options: {
+        id: string,
+        workoutId: string;
+        dayId: string;
+        setId: string;
         name: string,
         mediaId: string,
         theGrip?: Grip,
@@ -32,45 +64,41 @@ export class ExerciseBean {
         restAfterExercise: number
     }
     ) {
-        this.id = options.id;
-        this.name = options.name;
-        this.mediaId = options.mediaId;
-        this.theGrip = options.theGrip || new Grip();
-        this.repSpeed = options.repSpeed || RepetitionSpeed.NA;
-        this.typeOfWeight = options.typeOfWeight || WeightType.NoWeight;
-        this.isFavorite = options.isFavorite;
-        this.restBetweenReps = options.restBetweenReps;
-        this.restAfterExercise = options.restAfterExercise;
-        this.reps = options.reps;
-        if (options.exerciseSetId) {
-            this.exerciseSetId = options.exerciseSetId;
-        }
+        super(options);
+        this.workoutId = options.workoutId;
+        this.dayId = options.dayId;
+        this.setId = options.setId;
     }
 
-    static delete(exercises: ExerciseBean[], index: number) {
-        if (exercises[index] && exercises[index].mediaId) {
-            // exercises[index].media.mediaUsageCounter--;
-            exercises.splice(index, 1);
-        }
-    }
+    // static delete(exercises: ExerciseBean[], index: number) {
+    //     if (exercises[index] && exercises[index].mediaId) {
+    //         exercises.splice(index, 1);
+    //     }
+    // }
 
     static defaultExerciseBean(
         id: string,
+        setId: string,
+        dayId: string,
+        workoutId: string,
         media: ExerciseMedia,
         options?: { name: string }
-        ): ExerciseBean {
+    ): ExerciseBean {
         return new ExerciseBean({
             id: id,
+            setId: setId,
+            dayId: dayId,
+            workoutId: workoutId,
             name: options && options.name ? options.name : media.name,
             mediaId: media.id,
             reps: [new Rep({
                 times: 1
-              })],
+            })],
             repSpeed: RepetitionSpeed.OneOne,
             isFavorite: false,
             restBetweenReps: 20,
-            restAfterExercise: 20
-          });
+            restAfterExercise: 20,
+        });
     }
 
     static copyExercise(exe: ExerciseBean, options?: {
@@ -86,6 +114,15 @@ export class ExerciseBean {
         return new ExerciseBean({
             ...exe,
             ...options
-          });
+        });
+    }
+
+    static makeBean(exe: Exercise, workoutId, dayId, setId): ExerciseBean {
+        return {
+            ...exe,
+            workoutId: workoutId,
+            dayId: dayId,
+            setId: setId
+        };
     }
 }

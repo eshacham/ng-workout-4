@@ -47,6 +47,10 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             return {
                 ...state,
                 workoutDayId2AddFrom: undefined,
+                byId: {
+                    ...state.byId,
+                    [action.payload.day.id]: action.payload.day
+                }
             };
         }
         case EWorkoutDaysActions.MoveWorkoutDay: {
@@ -134,7 +138,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case EExerciseSetActions.AddExerciseSets: {
-            const oldSets = [...state.byId[action.payload.dayId].exerciseSets];
+            const oldSets = state.byId[action.payload.dayId].exerciseSets;
             const newSets = action.payload.sets.map(s => s.id);
             return {
                 ...state,
@@ -142,7 +146,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                     ...state.byId,
                     [action.payload.dayId]: {
                         ...state.byId[action.payload.dayId],
-                        exerciseSets: oldSets.concat(newSets)
+                        exerciseSets: [...oldSets, ...newSets]
                     }
                 },
             };

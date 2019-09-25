@@ -1,10 +1,10 @@
 import { Guid } from 'guid-typescript';
 import { GripType, GripWidth, RepetitionSpeed, WeightType, WeightUnit } from '../models/enums';
-import { WorkoutsDataMaps } from '../models/DefaultWorkouts';
+import { WorkoutsDataMaps } from '../models/interfaces';
 import { Workout, WorkoutBean } from '../models/Workout';
 import { WorkoutDay, WorkoutDayBean } from '../models/WorkoutDay';
 import { ExerciseSet, ExerciseSetBean } from '../models/ExerciseSet';
-import { ExerciseBean } from '../models/Exercise';
+import { Exercise, ExerciseBean } from '../models/Exercise';
 import { Grip } from '../models/Grip';
 import { Rep } from '../models/Rep';
 import { attachMedia } from './defaultExerciseMedia';
@@ -23,7 +23,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bench Press, Wide Grip',
                                     mediaId: attachMedia('BenchPressWideGrip.jpeg'),
@@ -57,14 +57,14 @@ const buildDefaultWorkouts = () => {
                                         })
                                     ],
                                     restBetweenReps: 20,
-                                    restAfterExercise: 20
+                                    restAfterExercise: 20,
                                 })
                             ]
                         }),
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Seated Rope Cable Row',
                                     mediaId: attachMedia('SeatedRopeCableRow.png'),
@@ -95,7 +95,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Wrist Curl',
                                     mediaId: attachMedia('DumbbellWristCurl.png'),
@@ -131,7 +131,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Triceps Pushdown, Overhand Grip',
                                     mediaId: attachMedia('CableTricepsPushdownOverheadGrip.png'),
@@ -170,7 +170,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Biceps Curl, Underhand Grip',
                                     mediaId: attachMedia('CableBicepsCurlUnderhandGrip.png'),
@@ -209,7 +209,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Leg Raise Machine',
                                     mediaId: attachMedia('LegRaiseMachine.png'),
@@ -245,7 +245,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Leg Curl',
                                     mediaId: attachMedia('CableLegCurl.png'),
@@ -281,7 +281,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Crossfit Situps',
                                     mediaId: attachMedia('CrossfitSitup.png'),
@@ -306,7 +306,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cross Body Crunch',
                                     mediaId: attachMedia('CrossBodyCrunch.png'),
@@ -338,7 +338,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bench Press, Narrow Grip',
                                     mediaId: attachMedia('BenchPressNarrowGrip.png'),
@@ -369,7 +369,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Bench Press, Rotating Grip',
                                     mediaId: attachMedia('DumbbellBenshPressRotatingGrip.png'),
@@ -400,7 +400,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Bench Press, Rotating Grip',
                                     mediaId: attachMedia('DumbbellBenshPressRotatingGrip.png'),
@@ -436,7 +436,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Fly',
                                     mediaId: attachMedia('CableFly.png'),
@@ -475,7 +475,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Fly',
                                     mediaId: attachMedia('DumbbellFly.png'),
@@ -510,7 +510,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Horizontal Row, Inclined Prone',
                                     mediaId: attachMedia('DumbbellHorizontalRowInclineProne.png'),
@@ -546,7 +546,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Tricpes Extensions, Seated',
                                     mediaId: attachMedia('DumbbellTricepsExtensionSeated.png'),
@@ -579,7 +579,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Inclined Pushup, Narrow Grip',
                                     mediaId: attachMedia('InclinePushupNarrowGrip.jpg'),
@@ -609,7 +609,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Reverse Cable Fly, On Flat Bench',
                                     mediaId: attachMedia('ReverseCableFlyOnFlatBench.png'),
@@ -644,7 +644,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Situps',
                                     mediaId: attachMedia('Situps.png'),
@@ -670,7 +670,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Situps with Weight Above Head',
                                     mediaId: attachMedia('SitupsWithWeightAboveHead.png'),
@@ -702,7 +702,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Russian Twist',
                                     mediaId: attachMedia('RussianTwist.png'),
@@ -734,7 +734,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                     mediaId: attachMedia('CabelLatPulldownBehindNeckWideGrip.png'),
@@ -770,7 +770,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Decline Dumbbell Pullover',
                                     mediaId: attachMedia('DeclineDumbbellPullover.png'),
@@ -812,7 +812,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Arm Circles',
                                     mediaId: attachMedia('DumbbellArmCircles.png'),
@@ -848,7 +848,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Machine Row Medium Grip',
                                     mediaId: attachMedia('MachineRowMediumGrip.png'),
@@ -880,7 +880,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dummbell Biceps Curl Standing Underhand Grip',
                                     mediaId: attachMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
@@ -916,7 +916,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Shrug',
                                     mediaId: attachMedia('CableShrug.png'),
@@ -952,7 +952,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dragon Flags',
                                     mediaId: attachMedia('DragonFlags.png'),
@@ -978,7 +978,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Decline Situps',
                                     mediaId: attachMedia('DeclineSitups.png'),
@@ -1005,7 +1005,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cross Body Crunch',
                                     mediaId: attachMedia('CrossBodyCrunch.png'),
@@ -1031,7 +1031,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Lying Scissors Kicks',
                                     mediaId: attachMedia('LyingScissorsKicks.png'),
@@ -1065,7 +1065,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Walking Lunge with Side Weights',
                                     mediaId: attachMedia('WalkingLungeWithSideWeights.png'),
@@ -1098,7 +1098,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Abduction',
                                     mediaId: attachMedia('CableAbduction.png'),
@@ -1124,7 +1124,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Adduction',
                                     mediaId: attachMedia('CableAdduction.png'),
@@ -1156,7 +1156,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Leg Curl',
                                     mediaId: attachMedia('CableLegCurl.png'),
@@ -1187,7 +1187,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Calf Raise',
                                     mediaId: attachMedia('CableCalfRaise.png'),
@@ -1218,7 +1218,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bodyweight Flutter Kicks',
                                     mediaId: attachMedia('BodyweightFlutterKicks.png'),
@@ -1243,7 +1243,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Weighted Situps',
                                     mediaId: attachMedia('WeightedSitups.png'),
@@ -1274,7 +1274,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Plank',
                                     mediaId: attachMedia('Plank.png'),
@@ -1299,7 +1299,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Twist',
                                     mediaId: attachMedia('Twist.png'),
@@ -1337,7 +1337,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bench Press, Wide Grip',
                                     mediaId: attachMedia('BenchPressWideGrip.jpeg'),
@@ -1379,7 +1379,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Seated Rope Cable Row',
                                     mediaId: attachMedia('SeatedRopeCableRow.png'),
@@ -1411,7 +1411,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Wrist Curl',
                                     mediaId: attachMedia('DumbbellWristCurl.png'),
@@ -1448,7 +1448,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Triceps Pushdown, Overhand Grip',
                                     mediaId: attachMedia('CableTricepsPushdownOverheadGrip.png'),
@@ -1488,7 +1488,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Biceps Curl, Underhand Grip',
                                     mediaId: attachMedia('CableBicepsCurlUnderhandGrip.png'),
@@ -1528,7 +1528,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Leg Raise Machine',
                                     mediaId: attachMedia('LegRaiseMachine.png'),
@@ -1565,7 +1565,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Leg Curl',
                                     mediaId: attachMedia('CableLegCurl.png'),
@@ -1601,7 +1601,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Crossfit Situps',
                                     mediaId: attachMedia('CrossfitSitup.png'),
@@ -1627,7 +1627,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cross Body Crunch',
                                     mediaId: attachMedia('CrossBodyCrunch.png'),
@@ -1660,7 +1660,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bench Press, Narrow Grip',
                                     mediaId: attachMedia('BenchPressNarrowGrip.png'),
@@ -1692,7 +1692,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Bench Press, Rotating Grip',
                                     mediaId: attachMedia('DumbbellBenshPressRotatingGrip.png'),
@@ -1724,7 +1724,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Bench Press, Rotating Grip',
                                     mediaId: attachMedia('DumbbellBenshPressRotatingGrip.png'),
@@ -1761,7 +1761,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Fly',
                                     mediaId: attachMedia('CableFly.png'),
@@ -1801,7 +1801,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Fly',
                                     mediaId: attachMedia('DumbbellFly.png'),
@@ -1837,7 +1837,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Horizontal Row, Inclined Prone',
                                     mediaId: attachMedia('DumbbellHorizontalRowInclineProne.png'),
@@ -1873,7 +1873,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Tricpes Extensions, Seated',
                                     mediaId: attachMedia('DumbbellTricepsExtensionSeated.png'),
@@ -1906,7 +1906,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Inclined Pushup, Narrow Grip',
                                     mediaId: attachMedia('InclinePushupNarrowGrip.jpg'),
@@ -1936,7 +1936,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Reverse Cable Fly, On Flat Bench',
                                     mediaId: attachMedia('ReverseCableFlyOnFlatBench.png'),
@@ -1971,7 +1971,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Situps',
                                     mediaId: attachMedia('Situps.png'),
@@ -1997,7 +1997,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Situps with Weight Above Head',
                                     mediaId: attachMedia('SitupsWithWeightAboveHead.png'),
@@ -2029,7 +2029,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Russian Twist',
                                     mediaId: attachMedia('RussianTwist.png'),
@@ -2061,7 +2061,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                     mediaId: attachMedia('CabelLatPulldownBehindNeckWideGrip.png'),
@@ -2097,7 +2097,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Decline Dumbbell Pullover',
                                     mediaId: attachMedia('DeclineDumbbellPullover.png'),
@@ -2139,7 +2139,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Arm Circles',
                                     mediaId: attachMedia('DumbbellArmCircles.png'),
@@ -2175,7 +2175,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Machine Row Medium Grip',
                                     mediaId: attachMedia('MachineRowMediumGrip.png'),
@@ -2207,7 +2207,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dummbell Biceps Curl Standing Underhand Grip',
                                     mediaId: attachMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
@@ -2243,7 +2243,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Shrug',
                                     mediaId: attachMedia('CableShrug.png'),
@@ -2279,7 +2279,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dragon Flags',
                                     mediaId: attachMedia('DragonFlags.png'),
@@ -2305,7 +2305,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Decline Situps',
                                     mediaId: attachMedia('DeclineSitups.png'),
@@ -2332,7 +2332,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cross Body Crunch',
                                     mediaId: attachMedia('CrossBodyCrunch.png'),
@@ -2358,7 +2358,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Lying Scissors Kicks',
                                     mediaId: attachMedia('LyingScissorsKicks.png'),
@@ -2391,7 +2391,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Walking Lunge with Side Weights',
                                     mediaId: attachMedia('WalkingLungeWithSideWeights.png'),
@@ -2424,7 +2424,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Abduction',
                                     mediaId: attachMedia('CableAbduction.png'),
@@ -2450,7 +2450,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Adduction',
                                     mediaId: attachMedia('CableAdduction.png'),
@@ -2482,7 +2482,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Leg Curl',
                                     mediaId: attachMedia('CableLegCurl.png'),
@@ -2513,7 +2513,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Calf Raise',
                                     mediaId: attachMedia('CableCalfRaise.png'),
@@ -2544,7 +2544,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bodyweight Flutter Kicks',
                                     mediaId: attachMedia('BodyweightFlutterKicks.png'),
@@ -2569,7 +2569,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Weighted Situps',
                                     mediaId: attachMedia('WeightedSitups.png'),
@@ -2600,7 +2600,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Plank',
                                     mediaId: attachMedia('Plank.png'),
@@ -2626,7 +2626,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Twist',
                                     mediaId: attachMedia('Twist.png'),
@@ -2664,7 +2664,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bench Press, Wide Grip',
                                     mediaId: attachMedia('BenchPressWideGrip.jpeg'),
@@ -2706,7 +2706,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Seated Rope Cable Row',
                                     mediaId: attachMedia('SeatedRopeCableRow.png'),
@@ -2738,7 +2738,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Wrist Curl',
                                     mediaId: attachMedia('DumbbellWristCurl.png'),
@@ -2775,7 +2775,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Triceps Pushdown, Overhand Grip',
                                     mediaId: attachMedia('CableTricepsPushdownOverheadGrip.png'),
@@ -2815,7 +2815,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Biceps Curl, Underhand Grip',
                                     mediaId: attachMedia('CableBicepsCurlUnderhandGrip.png'),
@@ -2855,7 +2855,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Leg Raise Machine',
                                     mediaId: attachMedia('LegRaiseMachine.png'),
@@ -2892,7 +2892,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Leg Curl',
                                     mediaId: attachMedia('CableLegCurl.png'),
@@ -2928,7 +2928,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Crossfit Situps',
                                     mediaId: attachMedia('CrossfitSitup.png'),
@@ -2954,7 +2954,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cross Body Crunch',
                                     mediaId: attachMedia('CrossBodyCrunch.png'),
@@ -2987,7 +2987,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bench Press, Narrow Grip',
                                     mediaId: attachMedia('BenchPressNarrowGrip.png'),
@@ -3019,7 +3019,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Bench Press, Rotating Grip',
                                     mediaId: attachMedia('DumbbellBenshPressRotatingGrip.png'),
@@ -3051,7 +3051,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Bench Press, Rotating Grip',
                                     mediaId: attachMedia('DumbbellBenshPressRotatingGrip.png'),
@@ -3088,7 +3088,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Fly',
                                     mediaId: attachMedia('CableFly.png'),
@@ -3128,7 +3128,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Fly',
                                     mediaId: attachMedia('DumbbellFly.png'),
@@ -3164,7 +3164,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Horizontal Row, Inclined Prone',
                                     mediaId: attachMedia('DumbbellHorizontalRowInclineProne.png'),
@@ -3200,7 +3200,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Tricpes Extensions, Seated',
                                     mediaId: attachMedia('DumbbellTricepsExtensionSeated.png'),
@@ -3233,7 +3233,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Inclined Pushup, Narrow Grip',
                                     mediaId: attachMedia('InclinePushupNarrowGrip.jpg'),
@@ -3263,7 +3263,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Reverse Cable Fly, On Flat Bench',
                                     mediaId: attachMedia('ReverseCableFlyOnFlatBench.png'),
@@ -3298,7 +3298,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Situps',
                                     mediaId: attachMedia('Situps.png'),
@@ -3324,7 +3324,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Situps with Weight Above Head',
                                     mediaId: attachMedia('SitupsWithWeightAboveHead.png'),
@@ -3356,7 +3356,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Russian Twist',
                                     mediaId: attachMedia('RussianTwist.png'),
@@ -3388,7 +3388,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                     mediaId: attachMedia('CabelLatPulldownBehindNeckWideGrip.png'),
@@ -3424,7 +3424,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Decline Dumbbell Pullover',
                                     mediaId: attachMedia('DeclineDumbbellPullover.png'),
@@ -3466,7 +3466,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Arm Circles',
                                     mediaId: attachMedia('DumbbellArmCircles.png'),
@@ -3502,7 +3502,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Machine Row Medium Grip',
                                     mediaId: attachMedia('MachineRowMediumGrip.png'),
@@ -3534,7 +3534,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dummbell Biceps Curl Standing Underhand Grip',
                                     mediaId: attachMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
@@ -3570,7 +3570,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Shrug',
                                     mediaId: attachMedia('CableShrug.png'),
@@ -3606,7 +3606,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dragon Flags',
                                     mediaId: attachMedia('DragonFlags.png'),
@@ -3632,7 +3632,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Decline Situps',
                                     mediaId: attachMedia('DeclineSitups.png'),
@@ -3659,7 +3659,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cross Body Crunch',
                                     mediaId: attachMedia('CrossBodyCrunch.png'),
@@ -3685,7 +3685,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Lying Scissors Kicks',
                                     mediaId: attachMedia('LyingScissorsKicks.png'),
@@ -3718,7 +3718,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Walking Lunge with Side Weights',
                                     mediaId: attachMedia('WalkingLungeWithSideWeights.png'),
@@ -3751,7 +3751,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Abduction',
                                     mediaId: attachMedia('CableAbduction.png'),
@@ -3777,7 +3777,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Adduction',
                                     mediaId: attachMedia('CableAdduction.png'),
@@ -3809,7 +3809,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Leg Curl',
                                     mediaId: attachMedia('CableLegCurl.png'),
@@ -3840,7 +3840,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Calf Raise',
                                     mediaId: attachMedia('CableCalfRaise.png'),
@@ -3871,7 +3871,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bodyweight Flutter Kicks',
                                     mediaId: attachMedia('BodyweightFlutterKicks.png'),
@@ -3896,7 +3896,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Weighted Situps',
                                     mediaId: attachMedia('WeightedSitups.png'),
@@ -3927,7 +3927,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Plank',
                                     mediaId: attachMedia('Plank.png'),
@@ -3953,7 +3953,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Twist',
                                     mediaId: attachMedia('Twist.png'),
@@ -3991,7 +3991,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bench Press, Wide Grip',
                                     mediaId: attachMedia('BenchPressWideGrip.jpeg'),
@@ -4033,7 +4033,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Seated Rope Cable Row',
                                     mediaId: attachMedia('SeatedRopeCableRow.png'),
@@ -4065,7 +4065,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Wrist Curl',
                                     mediaId: attachMedia('DumbbellWristCurl.png'),
@@ -4102,7 +4102,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Triceps Pushdown, Overhand Grip',
                                     mediaId: attachMedia('CableTricepsPushdownOverheadGrip.png'),
@@ -4142,7 +4142,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Biceps Curl, Underhand Grip',
                                     mediaId: attachMedia('CableBicepsCurlUnderhandGrip.png'),
@@ -4182,7 +4182,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Leg Raise Machine',
                                     mediaId: attachMedia('LegRaiseMachine.png'),
@@ -4219,7 +4219,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Leg Curl',
                                     mediaId: attachMedia('CableLegCurl.png'),
@@ -4255,7 +4255,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Crossfit Situps',
                                     mediaId: attachMedia('CrossfitSitup.png'),
@@ -4281,7 +4281,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cross Body Crunch',
                                     mediaId: attachMedia('CrossBodyCrunch.png'),
@@ -4314,7 +4314,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bench Press, Narrow Grip',
                                     mediaId: attachMedia('BenchPressNarrowGrip.png'),
@@ -4346,7 +4346,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Bench Press, Rotating Grip',
                                     mediaId: attachMedia('DumbbellBenshPressRotatingGrip.png'),
@@ -4378,7 +4378,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Bench Press, Rotating Grip',
                                     mediaId: attachMedia('DumbbellBenshPressRotatingGrip.png'),
@@ -4415,7 +4415,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Fly',
                                     mediaId: attachMedia('CableFly.png'),
@@ -4455,7 +4455,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Fly',
                                     mediaId: attachMedia('DumbbellFly.png'),
@@ -4491,7 +4491,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Horizontal Row, Inclined Prone',
                                     mediaId: attachMedia('DumbbellHorizontalRowInclineProne.png'),
@@ -4527,7 +4527,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Tricpes Extensions, Seated',
                                     mediaId: attachMedia('DumbbellTricepsExtensionSeated.png'),
@@ -4560,7 +4560,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Inclined Pushup, Narrow Grip',
                                     mediaId: attachMedia('InclinePushupNarrowGrip.jpg'),
@@ -4590,7 +4590,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Reverse Cable Fly, On Flat Bench',
                                     mediaId: attachMedia('ReverseCableFlyOnFlatBench.png'),
@@ -4625,7 +4625,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Situps',
                                     mediaId: attachMedia('Situps.png'),
@@ -4651,7 +4651,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Situps with Weight Above Head',
                                     mediaId: attachMedia('SitupsWithWeightAboveHead.png'),
@@ -4683,7 +4683,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Russian Twist',
                                     mediaId: attachMedia('RussianTwist.png'),
@@ -4715,7 +4715,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cabel Lat Pulldown, Behind Neck Wide Grip',
                                     mediaId: attachMedia('CabelLatPulldownBehindNeckWideGrip.png'),
@@ -4751,7 +4751,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Decline Dumbbell Pullover',
                                     mediaId: attachMedia('DeclineDumbbellPullover.png'),
@@ -4793,7 +4793,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dumbbell Arm Circles',
                                     mediaId: attachMedia('DumbbellArmCircles.png'),
@@ -4829,7 +4829,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Machine Row Medium Grip',
                                     mediaId: attachMedia('MachineRowMediumGrip.png'),
@@ -4861,7 +4861,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dummbell Biceps Curl Standing Underhand Grip',
                                     mediaId: attachMedia('DummbellBicepsCurlStandingUnderhandGrip.png'),
@@ -4897,7 +4897,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Shrug',
                                     mediaId: attachMedia('CableShrug.png'),
@@ -4933,7 +4933,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Dragon Flags',
                                     mediaId: attachMedia('DragonFlags.png'),
@@ -4958,7 +4958,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Decline Situps',
                                     mediaId: attachMedia('DeclineSitups.png'),
@@ -4984,7 +4984,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cross Body Crunch',
                                     mediaId: attachMedia('CrossBodyCrunch.png'),
@@ -5010,7 +5010,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Lying Scissors Kicks',
                                     mediaId: attachMedia('LyingScissorsKicks.png'),
@@ -5042,7 +5042,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Walking Lunge with Side Weights',
                                     mediaId: attachMedia('WalkingLungeWithSideWeights.png'),
@@ -5075,7 +5075,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Abduction',
                                     mediaId: attachMedia('CableAbduction.png'),
@@ -5101,7 +5101,7 @@ const buildDefaultWorkouts = () => {
                                     restBetweenReps: 20,
                                     restAfterExercise: 20
                                 }),
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Adduction',
                                     mediaId: attachMedia('CableAdduction.png'),
@@ -5133,7 +5133,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Leg Curl',
                                     mediaId: attachMedia('CableLegCurl.png'),
@@ -5164,7 +5164,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Cable Calf Raise',
                                     mediaId: attachMedia('CableCalfRaise.png'),
@@ -5195,7 +5195,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Bodyweight Flutter Kicks',
                                     mediaId: attachMedia('BodyweightFlutterKicks.png'),
@@ -5220,7 +5220,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Weighted Situps',
                                     mediaId: attachMedia('WeightedSitups.png'),
@@ -5251,7 +5251,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Plank',
                                     mediaId: attachMedia('Plank.png'),
@@ -5277,7 +5277,7 @@ const buildDefaultWorkouts = () => {
                         new ExerciseSet({
                             id: Guid.raw(),
                             exercises: [
-                                new ExerciseBean({
+                                new Exercise({
                                     id: Guid.raw(),
                                     name: 'Twist',
                                     mediaId: attachMedia('Twist.png'),
@@ -5326,9 +5326,9 @@ export const getDefaultWorkoutsMaps = (): WorkoutsDataMaps => {
         for (const day of workout.days) {
             workoutsData.days.byId[`${day.id}`] = WorkoutDayBean.makeBean(day, workout.id);
             for (const set of day.exerciseSets) {
-                workoutsData.sets.byId[`${set.id}`] = ExerciseSetBean.makeBean(set, day.id);
+                workoutsData.sets.byId[`${set.id}`] = ExerciseSetBean.makeBean(set, workout.id, day.id);
                 for (const exe of set.exercises) {
-                    workoutsData.exercises.byId[`${exe.id}`] = exe;
+                    workoutsData.exercises.byId[`${exe.id}`] = ExerciseBean.makeBean(exe, workout.id, day.id, set.id);
                 }
             }
         }

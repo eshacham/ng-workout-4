@@ -20,7 +20,7 @@ import {
 } from 'src/app/store/actions/workoutDays.actions';
 import {
   SelectWorkoutDayState,
-  SelectExerciseSetIndex2Delete,
+  // SelectExerciseSetIndex2Delete,
   selectWorkoutDay
 } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil } from 'rxjs/operators';
@@ -90,17 +90,18 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     this.store.select(SelectWorkoutDayState)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(state => {
-        if (state && isNaN(state.exerciseSetIndex2Delete)) {
+        // if (state && isNaN(state.exerciseSetIndex2Delete)) {
+        if (state) {
           this.handleWorkoutDayStateChange(state);
         }
       });
-    this.store.select(SelectExerciseSetIndex2Delete)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(index => {
-        if (index || index === 0) {
-          this.deleteExerciseSet(index);
-        }
-      });
+    // this.store.select(SelectExerciseSetIndex2Delete)
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe(index => {
+    //     if (index || index === 0) {
+    //       this.deleteExerciseSet(index);
+    //     }
+    //   });
   }
 
   ngOnDestroy() {

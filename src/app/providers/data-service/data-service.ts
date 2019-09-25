@@ -8,7 +8,7 @@ import { ExerciseMedia } from '../../models/ExerciseMedia';
 import { Muscles } from '../../models/enums';
 import { getDefaultWorkoutsMaps } from '../../constants/defaultWorkouts';
 import { getDefaultImages } from '../../constants/defaultExerciseMedia';
-import { AllDataMaps, WorkoutsDataMaps, MediaDataMaps } from 'src/app/models/DefaultWorkouts';
+import { AllDataMaps, WorkoutsDataMaps, MediaDataMaps } from 'src/app/models/interfaces';
 import { IAppState } from '../../store/state/app.state';
 import { ResetWorkouts, ResetImages, GetData} from 'src/app/store/actions/data.actions';
 import { Guid } from 'guid-typescript';

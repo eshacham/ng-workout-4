@@ -13,7 +13,7 @@ import {
     UpdateImages,
     ImagesUpdated} from '../actions/data.actions';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
-import { AllDataMaps } from 'src/app/models/DefaultWorkouts';
+import { AllDataMaps } from 'src/app/models/interfaces';
 import { selectWorkoutsData, selectImagesData } from '../selectors/data.selectors';
 
 @Injectable()

@@ -5,7 +5,7 @@ import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { IonSlides as Slides, NavController } from '@ionic/angular';
 import { IAppState } from 'src/app/store/state/app.state';
-import { WorkoutDay } from '../../models/WorkoutDay';
+import { WorkoutDay, WorkoutDayBean } from '../../models/WorkoutDay';
 import { UnselectWorkout } from 'src/app/store/actions/workouts.actions';
 import {
   SelectWorkoutDay,
@@ -168,10 +168,11 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
 
   private async addWorkoutDay(currentWorkoutDayId: string) {
     const newId = Guid.raw();
-    const newDay = new WorkoutDay({
+    const newDay = new WorkoutDayBean({
       id: newId,
       name: 'new workout day',
-      exerciseSets: []
+      exerciseSets: [],
+      workoutId: this.workoutId
     });
     const index = this.getWorkoutDayIndexById(currentWorkoutDayId);
     const last = this.days.length - 1 === index;
@@ -179,14 +180,17 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     this.isNewDayAdded = true;
     this.store.dispatch(new WorkoutDayAdded({
       workoutId: this.workoutId,
-      dayId: newDay.id,
+      day: newDay,
       index2AddFrom: index
     }));
 
-    await this.slides.update();
-    if (last) {
-      await this.slides.slideTo(this.days.length - 1);
+    if (this.slides) {
+      await this.slides.update();
+      if (last) {
+        await this.slides.slideTo(this.days.length - 1);
+      }
     }
+
     this.store.dispatch(new SelectWorkoutDay(
       {
         workoutId: this.workoutId,

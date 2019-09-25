@@ -1,5 +1,5 @@
 import { ExerciseMedia } from '../models/ExerciseMedia';
-import { MediaDataMaps } from '../models/DefaultWorkouts';
+import { MediaDataMaps } from '../models/interfaces';
 import { Muscles } from '../models/enums';
 
 const mediaUrl = (name: string): string => {
