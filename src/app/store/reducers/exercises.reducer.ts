@@ -4,10 +4,16 @@ import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets
 import { EExerciseActions, ExerciseActions } from '../actions/exercises.actions';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
+import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
+import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.actions';
 
 export const exercisesReducers = (
     state = initialExercisesState,
-    action: DataActions | ExerciseSetActions | ExerciseActions )
+    action: DataActions |
+            ExerciseSetActions |
+            ExerciseActions |
+            WorkoutsActions |
+            WorkoutDaysActions)
     : IExercisesState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -153,6 +159,28 @@ export const exercisesReducers = (
                         reps: newReps
                     }
                 }
+            };
+        }
+        case EWorkoutsActions.DeleteWorkout: {
+            const workoutId2Delete = action.payload.id;
+            let newMap: {[id: string]: ExerciseBean };
+            newMap = Object.entries(state.byId)
+                .filter(([key, val]) => val.workoutId !== workoutId2Delete)
+                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
+            return {
+                ...state,
+                byId: newMap
+            };
+        }
+        case EWorkoutDaysActions.DeleteWorkoutDay: {
+            const dayId2Delete = action.payload.dayId;
+            let newMap: {[id: string]: ExerciseBean };
+            newMap = Object.entries(state.byId)
+                .filter(([key, val]) => val.dayId !== dayId2Delete)
+                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
+            return {
+                ...state,
+                byId: newMap
             };
         }
         default: {

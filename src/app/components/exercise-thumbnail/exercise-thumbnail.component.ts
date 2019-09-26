@@ -207,8 +207,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     deleteExerciseSet() {
         this.store.dispatch(new DeleteExerciseSet({
             dayId: this.workoutDayId,
-            setId: this.exerciseSetId,
-            exeIds: this.exerciseSet.exercises
+            setId: this.exerciseSetId
         }));
     }
 

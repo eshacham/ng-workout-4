@@ -4,10 +4,15 @@ import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.
 import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
 import { ExerciseActions, EExerciseActions } from '../actions/exercises.actions';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
+import { EWorkoutsActions, WorkoutsActions } from '../actions/workouts.actions';
 
 export const exerciseSetsReducers = (
     state = initialExerciseSetsState,
-    action: DataActions | ExerciseSetActions | ExerciseActions | WorkoutDaysActions)
+    action: DataActions |
+            ExerciseSetActions |
+            ExerciseActions |
+            WorkoutDaysActions |
+            WorkoutsActions)
     : IExerciseSetsState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -51,15 +56,26 @@ export const exerciseSetsReducers = (
             };
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
-            const sets = action.payload.sets;
+            const sets2Delete = action.payload.sets;
             let newMap: {[id: string]: ExerciseSetBean };
-            newMap = !sets ? null : Object.entries(state.byId)
-                .filter(([key, val]) => !sets.includes(val.id))
+            newMap = !sets2Delete ? null : Object.entries(state.byId)
+                .filter(([key, val]) => !sets2Delete.includes(val.id))
                 .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
-            return sets ? {
+            return sets2Delete ? {
                 ...state,
                 byId: newMap
             } : state;
+        }
+        case EWorkoutsActions.DeleteWorkout: {
+            const workoutId2Delete = action.payload.id;
+            let newMap: {[id: string]: ExerciseSetBean };
+            newMap = Object.entries(state.byId)
+                .filter(([key, val]) => val.workoutId !== workoutId2Delete)
+                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
+            return {
+                ...state,
+                byId: newMap
+            };
         }
         case EExerciseSetActions.SwitchExercises: {
             const oldExes = state.byId[action.payload.setId].exercises;

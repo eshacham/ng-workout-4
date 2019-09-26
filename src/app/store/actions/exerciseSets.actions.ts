@@ -21,7 +21,6 @@ export class DeleteExerciseSet implements Action {
     constructor(public payload: {
         dayId: string,
         setId: string,
-        exeIds: string[]
     }) { }
 }
 export class SwitchExercises implements Action {
