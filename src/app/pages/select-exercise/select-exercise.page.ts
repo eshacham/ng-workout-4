@@ -165,14 +165,13 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     let newExercises: ExerciseBean[];
     let setIds: string[];
 
-
     if (this.isSet) {
       setIds = [Guid.raw()];
-      newExercises = this.makeNewExercises(newExercises, setIds);
+      newExercises = this.makeNewExercises(setIds);
       newSets = [this.makeNewSet(newExercises, this.workoutId, this.lastSelectedWorkoutDayId, setIds[0])];
     } else {
-      setIds = newExercises.map(e => Guid.raw());
-      newExercises = this.makeNewExercises(newExercises, setIds);
+      setIds = this.selectedImages.map(_ => Guid.raw());
+      newExercises = this.makeNewExercises(setIds);
       newSets = newExercises.map((exe, index) => {
         return this.makeNewSet([exe], this.workoutId, this.lastSelectedWorkoutDayId, setIds[index]);
       });
@@ -180,11 +179,16 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     return { sets: newSets, exes: newExercises };
   }
 
-  private makeNewExercises(newExercises: ExerciseBean[], setIds) {
-    newExercises = this.selectedImages
+  private makeNewExercises(setIds: string[]) {
+    const newExercises = this.selectedImages
       .map((image, index) => {
         return ExerciseBean.defaultExerciseBean(
-          Guid.raw(), setIds[index], this.lastSelectedWorkoutDayId, this.workoutId, image.media, { name: image.newName });
+          Guid.raw(),
+          this.isSet ? setIds[0] : setIds[index],
+          this.lastSelectedWorkoutDayId,
+          this.workoutId,
+          image.media,
+          { name: image.newName });
       });
     return newExercises;
   }
