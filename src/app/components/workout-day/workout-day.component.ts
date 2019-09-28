@@ -21,7 +21,7 @@ import {
 import { SelectWorkoutDayState, selectWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil, take } from 'rxjs/operators';
 import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
-import { selectMediaIdsBySets } from 'src/app/store/selectors/exercises.selectors';
+import { selectMediaIdsByDay } from 'src/app/store/selectors/exercises.selectors';
 import { UpdateBulkExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
 
 @Component({
@@ -220,7 +220,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkoutDay(event) {
-    this.store.select(selectMediaIdsBySets(this.exerciseSets))
+    this.store.select(selectMediaIdsByDay(this.workoutDayId))
       .pipe(take(1))
       .subscribe(mediaIds => {
         if (mediaIds.length) {

@@ -11,12 +11,22 @@ export const selectExercises = (ids: string[]) => createSelector(
     }
   );
 
-export const selectMediaIdsBySets = (setIds: string[]) => createSelector(
+export const selectMediaIdsByDay = (dayId: string) => createSelector(
     exercisesState,
     (exercises: IExercisesState) => {
         const exesArray = Object.entries(exercises.byId);
         const mediaIds = exesArray
-                .filter(([key, val]) => setIds.includes(val.setId))
+                .filter(([key, val]) => val.dayId === dayId)
+                .map(([key, val]) => val.mediaId);
+        return mediaIds;
+    }
+);
+export const selectMediaIdsByWorkout = (workoutId: string) => createSelector(
+    exercisesState,
+    (exercises: IExercisesState) => {
+        const exesArray = Object.entries(exercises.byId);
+        const mediaIds = exesArray
+                .filter(([key, val]) => val.workoutId === workoutId)
                 .map(([key, val]) => val.mediaId);
         return mediaIds;
     }
