@@ -54,7 +54,7 @@ export class DataServiceProvider {
         workoutsData = await this.initDefaultWorkouts();
       } else {
         if (this.isMobile) {
-          this.UpdateImagesInWorkouts(imagesData);
+          this.AssertImagesPath(imagesData);
         }
       }
     }
@@ -92,7 +92,7 @@ export class DataServiceProvider {
     return data;
   }
 
-  private UpdateImagesInWorkouts(mediaDataMaps: MediaDataMaps) {
+  private AssertImagesPath(mediaDataMaps: MediaDataMaps) {
     const imagesToUpdate = Object.values(mediaDataMaps.media.byId)
       .filter(i => !i.isDefault && i.nativePath.indexOf(this.file.dataDirectory) < 0);
     for (const image of imagesToUpdate) {

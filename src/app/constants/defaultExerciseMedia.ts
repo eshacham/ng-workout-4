@@ -63,7 +63,7 @@ const getDefaultExerciseMedia = (): Map<string, ExerciseMedia> => {
     return _defaultExerciseMedia;
 };
 
-export const attachMedia = (id: string): string => {
+export const attachMedia2Exercise = (id: string): string => {
     const media = getDefaultExerciseMedia().get(id);
     media.mediaUsageCounter++;
     return media.id;

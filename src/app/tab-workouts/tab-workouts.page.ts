@@ -9,6 +9,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { GetData, UpdateWorkouts } from '../store/actions/data.actions';
 import { selectWorkouts } from '../store/selectors/workouts.selectors';
+import { selectHasWorkoutsBeenReset, selectHasImagesBeenReset } from '../store/selectors/data.selectors';
+import { log } from 'util';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -35,6 +37,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     this.store.select(selectWorkouts)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(workouts => {
+        console.log('tab-workouts selectWorkouts', workouts);
         this.workouts = workouts;
       });
   }

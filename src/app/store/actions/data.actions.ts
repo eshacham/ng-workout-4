@@ -4,13 +4,13 @@ import { AllDataMaps } from 'src/app/models/interfaces';
 export enum EDataActions {
     GetData = '[Data] Get app data',
     GetDataSuccess = '[Data] Get app data success',
-    ResetWorkouts = '[Data] Reset workouts',
+    WorkoutsReset = '[Data] Workouts have ben reset',
     UpdateWorkouts = '[Data] Update workouts',
     WorkoutsUpdated = '[Data] Workouts have been updated',
-    ResetImages = '[Data] Reset images',
+    ImagesReset = '[Data] Images have been reset',
     UpdateImages = '[Data] Update images',
     ImagesUpdated = '[Data] Images have been updated',
-    LoadedImages = '[Data] Loaded images',
+    LoadedImages = '[Data] Images have been loaded',
 }
 export class GetData implements Action {
     public readonly type = EDataActions.GetData;
@@ -22,7 +22,7 @@ export class GetDataSuccess implements Action {
 }
 
 export class ResetWorkouts implements Action {
-    readonly type = EDataActions.ResetWorkouts;
+    readonly type = EDataActions.WorkoutsReset;
     constructor() { }
 }
 
@@ -36,7 +36,7 @@ export class WorkoutsUpdated implements Action {
     constructor() { }
 }
 export class ResetImages implements Action {
-    readonly type = EDataActions.ResetImages;
+    readonly type = EDataActions.ImagesReset;
     constructor() { }
 }
 export class UpdateImages implements Action {

@@ -11,7 +11,7 @@ export const dataReducers =
                 hasDataBeenLoaded: true,
             };
         }
-        case EDataActions.ResetWorkouts: {
+        case EDataActions.WorkoutsReset: {
             return {
                 ...state,
                 hasWorkoutsBeenReset: true
@@ -23,7 +23,7 @@ export const dataReducers =
                 hasWorkoutsBeenReset: false
             };
         }
-        case EDataActions.ResetImages: {
+        case EDataActions.ImagesReset: {
             return {
                 ...state,
                 hasImagesBeenReset: true

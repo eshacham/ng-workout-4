@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ThemeServiceProvider } from '../providers/theme-service/theme-service';
 import { DataServiceProvider } from '../providers/data-service/data-service';
+import { Router } from '@angular/router';
 
 interface Theme  {
   name: string;
@@ -16,6 +17,7 @@ interface Theme  {
 export class TabSettingsPage {
   constructor (
     private themeService: ThemeServiceProvider,
+    private router: Router,
     private dataServiceProvider: DataServiceProvider) {}
 
   selectedSegment = 'themes';
@@ -54,9 +56,11 @@ export class TabSettingsPage {
 
   async resetWorkouts() {
     await this.dataServiceProvider.resetWorkouts();
+    this.router.navigate(['']);
   }
 
   async resetImages() {
     await this.dataServiceProvider.resetImages();
+    this.router.navigate(['']);
   }
 }

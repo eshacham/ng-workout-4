@@ -45,7 +45,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   _images: ExerciseMedia[];
   get images(): ExerciseMedia[] {
-      return this._images;
+    return this._images;
   }
   set images(images: ExerciseMedia[]) {
     this._images = images;
@@ -144,7 +144,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   private async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
     try {
       const newImage = await this.dataService.addImage(imagePath, imageName, newImageName);
-      this.store.dispatch(new AddExerciseMedia({exerciseMedia: newImage }));
+      this.store.dispatch(new AddExerciseMedia({ exerciseMedia: newImage }));
       this.store.dispatch(new UpdateImages());
     } catch (error) {
       console.log('Error storing new image:', error);
@@ -154,14 +154,14 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   async deleteImage(imgEntry: ExerciseMedia) {
     await this.dataService.deleteImage(imgEntry);
-    this.store.dispatch(new DeleteExerciseMedia({mediaId: imgEntry.id}));
+    this.store.dispatch(new DeleteExerciseMedia({ mediaId: imgEntry.id }));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File removed.');
   }
 
-  updateImage(event , image: ExerciseMedia) {
-    console.log(`tab-library-page redux - update image id ${image.id} name with ${event.target.value}` );
-    this.store.dispatch(new UpdateExerciseMedia({mediaId: image.id, name: event.target.value}));
+  updateImage(event, image: ExerciseMedia) {
+    console.log(`tab-library-page redux - update image id ${image.id} name with ${event.target.value}`);
+    this.store.dispatch(new UpdateExerciseMedia({ mediaId: image.id, name: event.target.value }));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File updated.');
   }
