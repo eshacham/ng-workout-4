@@ -10,3 +10,14 @@ export const selectExercises = (ids: string[]) => createSelector(
         return ids.map(id => exercises.byId[id]);
     }
   );
+
+export const selectMediaIdsBySets = (setIds: string[]) => createSelector(
+    exercisesState,
+    (exercises: IExercisesState) => {
+        const exesArray = Object.entries(exercises.byId);
+        const mediaIds = exesArray
+                .filter(([key, val]) => setIds.includes(val.setId))
+                .map(([key, val]) => val.mediaId);
+        return mediaIds;
+    }
+);

@@ -18,13 +18,11 @@ import {
   UpdateWorkoutDay,
   ReorderExerciseSets
 } from 'src/app/store/actions/workoutDays.actions';
-import {
-  SelectWorkoutDayState,
-  // SelectExerciseSetIndex2Delete,
-  selectWorkoutDay
-} from 'src/app/store/selectors/workoutDays.selectors';
-import { takeUntil } from 'rxjs/operators';
-import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
+import { SelectWorkoutDayState, selectWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
+import { takeUntil, take } from 'rxjs/operators';
+import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
+import { selectMediaIdsBySets } from 'src/app/store/selectors/exercises.selectors';
+import { UpdateBulkExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
 
 @Component({
   selector: 'app-workout-day',
@@ -90,18 +88,18 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     this.store.select(SelectWorkoutDayState)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(state => {
-        // if (state && isNaN(state.exerciseSetIndex2Delete)) {
         if (state) {
           this.handleWorkoutDayStateChange(state);
         }
       });
-    // this.store.select(SelectExerciseSetIndex2Delete)
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe(index => {
-    //     if (index || index === 0) {
-    //       this.deleteExerciseSet(index);
-    //     }
-    //   });
+  }
+
+  decreseMediasUsage(mediaIds) {
+    this.store.dispatch(new UpdateBulkExerciseMedia({
+      ids: mediaIds,
+      mediaUsageCounterInc: -1
+    }));
+    this.store.dispatch(new UpdateImages());
   }
 
   ngOnDestroy() {
@@ -222,17 +220,25 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkoutDay(event) {
-    this.store.dispatch(new DeleteWorkoutDay({
-      dayId: this.workoutDayId,
-      sets: this.exerciseSets
-    }));
+    this.store.select(selectMediaIdsBySets(this.exerciseSets))
+      .pipe(take(1))
+      .subscribe(mediaIds => {
+        if (mediaIds.length) {
+          this.decreseMediasUsage(mediaIds);
+        }
+        this.store.dispatch(new DeleteWorkoutDay({
+          dayId: this.workoutDayId,
+          sets: this.exerciseSets
+        }));
+      });
     event.stopPropagation();
   }
 
   workoutDayChanged() {
     this.store.dispatch(new UpdateWorkoutDay({
-      dayId: this.workoutDayId ,
-      name: this.name }));
+      dayId: this.workoutDayId,
+      name: this.name
+    }));
   }
 
   async saveChanges() {

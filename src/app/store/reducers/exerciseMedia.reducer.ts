@@ -55,6 +55,21 @@ export const exercisesMediaReducers = (
                 }
             };
         }
+        case EExerciseMediaActions.UpdateBulkExerciseMedia: {
+            const ids2Update = action.payload.ids;
+            const incFacotr = action.payload.mediaUsageCounterInc;
+            const mediasArray = Object.entries(state.byId);
+            const newMap = mediasArray
+                .reduce((map, obj) => (map[obj[0]] =
+                    (ids2Update.includes(obj[0]))
+                        ? { ...obj[1], mediaUsageCounter: obj[1].mediaUsageCounter + incFacotr }
+                        : obj[1],
+                    map), {});
+            return {
+                ...state,
+                byId: newMap
+            };
+        }
         default: {
             return state;
         }

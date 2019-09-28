@@ -174,13 +174,14 @@ export const exercisesReducers = (
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
             const dayId2Delete = action.payload.dayId;
+            const exesArray = Object.entries(state.byId);
             let newMap: {[id: string]: ExerciseBean };
-            newMap = Object.entries(state.byId)
+            newMap = exesArray
                 .filter(([key, val]) => val.dayId !== dayId2Delete)
                 .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
             return {
                 ...state,
-                byId: newMap
+                byId: newMap,
             };
         }
         default: {

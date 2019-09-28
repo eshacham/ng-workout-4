@@ -4,6 +4,7 @@ import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 export enum EExerciseMediaActions {
     AddExerciseMedia = '[ExerciseMedia] Add exercise media',
     UpdateExerciseMedia = '[ExerciseMedia] Update exercise media',
+    UpdateBulkExerciseMedia = '[ExerciseMedia] Update bulk exercise medias',
     DeleteExerciseMedia = '[ExerciseMedia] Delete exercise media',
 }
 
@@ -21,6 +22,13 @@ export class UpdateExerciseMedia implements Action {
         mediaUsageCounterInc?: number
     }) { }
 }
+export class UpdateBulkExerciseMedia implements Action {
+    readonly type = EExerciseMediaActions.UpdateBulkExerciseMedia;
+    constructor(public payload: {
+        ids: string[],
+        mediaUsageCounterInc?: number
+    }) { }
+}
 export class DeleteExerciseMedia implements Action {
     readonly type = EExerciseMediaActions.DeleteExerciseMedia;
     constructor (public payload: {
@@ -28,9 +36,9 @@ export class DeleteExerciseMedia implements Action {
     }) { }
 }
 
-
 export type ExerciseMediaActions =
     AddExerciseMedia |
     UpdateExerciseMedia |
+    UpdateBulkExerciseMedia |
     DeleteExerciseMedia
     ;
