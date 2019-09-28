@@ -154,14 +154,14 @@ export class TabLibraryPage implements OnInit, OnDestroy {
 
   async deleteImage(imgEntry: ExerciseMedia) {
     await this.dataService.deleteImage(imgEntry);
-    this.store.dispatch(new DeleteExerciseMedia({ mediaId: imgEntry.id }));
+    this.store.dispatch(new DeleteExerciseMedia({ id: imgEntry.id }));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File removed.');
   }
 
   updateImage(event, image: ExerciseMedia) {
     console.log(`tab-library-page redux - update image id ${image.id} name with ${event.target.value}`);
-    this.store.dispatch(new UpdateExerciseMedia({ mediaId: image.id, name: event.target.value }));
+    this.store.dispatch(new UpdateExerciseMedia({ id: image.id, name: event.target.value }));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File updated.');
   }

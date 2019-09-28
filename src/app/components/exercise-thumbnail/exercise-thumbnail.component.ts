@@ -27,6 +27,7 @@ import {
     DeleteRep,
 } from 'src/app/store/actions/exercises.actions';
 import { DeleteExerciseSet, SwitchExercises } from 'src/app/store/actions/exerciseSets.actions';
+import { UpdateExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -211,14 +212,18 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         }));
     }
 
-    deleteExercise(id: string) {
+    deleteExercise(exercise: ExerciseBean) {
         this.store.dispatch(new DeleteExercise({
             setId: this.exerciseSetId,
-            exeId: id
+            exeId: exercise.id
         }));
         if (!this.exercises.length) {
             this.deleteExerciseSet();
         }
+        this.store.dispatch(new UpdateExerciseMedia({
+            id: exercise.mediaId,
+            mediaUsageCounterInc: -1
+        }));
     }
 
     exerciseChanged(index: number, event, prop) {

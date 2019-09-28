@@ -16,14 +16,15 @@ export class AddExerciseMedia implements Action {
 export class UpdateExerciseMedia implements Action {
     readonly type = EExerciseMediaActions.UpdateExerciseMedia;
     constructor(public payload: {
-        mediaId: string,
-        name: string
+        id: string,
+        name?: string,
+        mediaUsageCounterInc?: number
     }) { }
 }
 export class DeleteExerciseMedia implements Action {
     readonly type = EExerciseMediaActions.DeleteExerciseMedia;
     constructor (public payload: {
-        mediaId: string,
+        id: string,
     }) { }
 }
 

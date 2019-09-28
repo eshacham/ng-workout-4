@@ -16,15 +16,16 @@ export class ExerciseMedia {
     ionicPath: string,
     nativePath: string,
     isDefault: boolean,
-    muscles: Set<Muscles>
-  }) {
+    muscles: Set<Muscles>,
+    mediaUsageCounter?: number
+    }) {
     this.id = option.id;
     this.name = option.name;
     this.ionicPath = option.ionicPath;
     this.nativePath = option.nativePath;
     this.isDefault = option.isDefault;
     this.muscles = Array.from(option.muscles.values());
-    this.mediaUsageCounter = 0;
+    this.mediaUsageCounter = this.mediaUsageCounter || 0;
     console.log('constructed exercise media as', this.name);
   }
   static buildDefaultExerciseMedia(

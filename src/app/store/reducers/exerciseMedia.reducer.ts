@@ -41,13 +41,16 @@ export const exercisesMediaReducers = (
             };
         }
         case EExerciseMediaActions.UpdateExerciseMedia: {
+            const mediaUsageCounterUpdate = action.payload.mediaUsageCounterInc || 0;
+            const mediaUsageCounter = state.byId[action.payload.id].mediaUsageCounter + mediaUsageCounterUpdate;
             return {
                 ...state,
                 byId: {
                     ...state.byId,
-                    [action.payload.mediaId]: {
-                        ...state.byId[action.payload.mediaId],
-                        name: action.payload.name
+                    [action.payload.id]: {
+                        ...state.byId[action.payload.id],
+                        name: action.payload.name || state.byId[action.payload.id].name,
+                        mediaUsageCounter: mediaUsageCounter
                     }
                 }
             };
