@@ -12,8 +12,8 @@ import {
   DeleteExerciseMuscleFilter
 } from '../../store/actions/musclesFilter.actions';
 import { takeUntil, take } from 'rxjs/operators';
-import { selectLibraryMusclesFilterState, selectExerciseMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
-import { selectMedia } from 'src/app/store/selectors/ExercisesMedia.selectors';
+import { getLibraryMusclesFilterState, getExerciseMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
+import { getExerciseMedia } from 'src/app/store/selectors/ExercisesMedia.selectors';
 import { UpdateImages } from 'src/app/store/actions/data.actions';
 
 interface MuscleElements {
@@ -84,7 +84,7 @@ export class SelectMusclePage implements OnInit, OnDestroy {
       if (this.router.getCurrentNavigation().extras.state) {
         this.muscleFilterUsage = this.router.getCurrentNavigation().extras.state.muscleFilterUsage;
         if (this.isSettingMedia) {
-          this.store.select(selectMedia(this.muscleFilterUsage.mediaId))
+          this.store.select(getExerciseMedia(this.muscleFilterUsage.mediaId))
             .pipe(take(1))
             .subscribe(image => {
               console.log('select-muscle redux - muscleFilterUsage:', image);
@@ -103,14 +103,14 @@ export class SelectMusclePage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     if (this.isFilteringLibrary) {
-      this.store.select(selectLibraryMusclesFilterState)
+      this.store.select(getLibraryMusclesFilterState)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((filter) => {
           console.log('select-muscle redux - LibraryMusclesFilterState:', filter);
           this.SelectedMuscles = this.showSelectedMuscles(filter);
         });
     } else {
-      this.store.select(selectExerciseMusclesFilterState)
+      this.store.select(getExerciseMusclesFilterState)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((filter) => {
           console.log('select-muscle redux - selectExerciseMusclesFilterState:', filter);

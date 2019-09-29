@@ -5,7 +5,7 @@ import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 
 const exerciseMediaState = (state: IAppState) => state.media;
 
-export const selectExercisesMedia = createSelector(
+export const getExercisesMedias = createSelector(
   exerciseMediaState,
     (mediaMap: IExercisesMediaState): ExerciseMedia[] => {
         return Object.keys(mediaMap.byId)
@@ -13,7 +13,7 @@ export const selectExercisesMedia = createSelector(
     }
 );
 
-export const selectMedia = (id: string) => createSelector(
+export const getExerciseMedia = (id: string) => createSelector(
   exerciseMediaState,
   (mediaMap: IExercisesMediaState): ExerciseMedia => {
       return mediaMap.byId[id];

@@ -77,7 +77,7 @@ export const exerciseSetsReducers = (
                 byId: newMap
             };
         }
-        case EExerciseSetActions.SwitchExercises: {
+        case EExerciseSetActions.SwitchExercisesInSet: {
             const oldExes = state.byId[action.payload.setId].exercises;
             const from = action.payload.lowIndex;
             const newExes = [

@@ -5,11 +5,10 @@ import { WorkoutBean } from '../models/Workout';
 import { DisplayMode } from '../models/enums';
 import { IAppState } from '../store/state/app.state';
 import { AddWorkout } from '../store/actions/workouts.actions';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { GetData, UpdateWorkouts } from '../store/actions/data.actions';
-import { selectWorkouts } from '../store/selectors/workouts.selectors';
-import { selectHasDataBeenReset, selectHasDataBeenLoaded } from '../store/selectors/data.selectors';
+import { UpdateWorkouts } from '../store/actions/data.actions';
+import { getWorkouts } from '../store/selectors/workouts.selectors';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -31,7 +30,7 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.select(selectWorkouts)
+    this.store.select(getWorkouts)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(workouts => {
         console.log('tab-workouts selectWorkouts', workouts);

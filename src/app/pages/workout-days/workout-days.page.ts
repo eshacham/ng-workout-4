@@ -14,9 +14,9 @@ import {
   Direction,
   WorkoutDayMoved
 } from 'src/app/store/actions/workoutDays.actions';
-import { selectCurrentWorkoutSelectedDayId, selectCurrentWorkout } from 'src/app/store/selectors/workouts.selectors';
-import { selectWorkoutDayId2Delete } from 'src/app/store/selectors/workoutDays.selectors';
-import { SelectWorkoutDayId2AddFrom, SelectworkoutDayMoveDirection } from 'src/app/store/selectors/workoutDays.selectors';
+import { getCurrentWorkoutSelectedDayId, getCurrentWorkout } from 'src/app/store/selectors/workouts.selectors';
+import { getWorkoutDayId2Delete } from 'src/app/store/selectors/workoutDays.selectors';
+import { getWorkoutDayId2AddFrom, getWorkoutDayMoveDirection } from 'src/app/store/selectors/workoutDays.selectors';
 import { Guid } from 'guid-typescript';
 import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
 
@@ -60,7 +60,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.store.select(selectCurrentWorkout)
+    this.store.select(getCurrentWorkout)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (workout) => {
         if (workout) {
@@ -73,7 +73,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         }
       });
 
-    this.store.select(selectWorkoutDayId2Delete)
+    this.store.select(getWorkoutDayId2Delete)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (dayId) => {
         if (dayId) {
@@ -92,7 +92,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           await this.saveChanges();
         }
       });
-    this.store.select(SelectWorkoutDayId2AddFrom)
+    this.store.select(getWorkoutDayId2AddFrom)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (dayId) => {
         console.log(`workout-days ${this.workoutId} - SelectWorkoutId2AddDay ${dayId}`);
@@ -100,7 +100,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           await this.addWorkoutDay(dayId);
         }
       });
-    this.store.select(SelectworkoutDayMoveDirection)
+    this.store.select(getWorkoutDayMoveDirection)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (direction) => {
         console.log(`workout-days ${this.workoutId} - SelectworkoutDayMoveDirection ${direction}`);
@@ -113,7 +113,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    this.store.select(selectCurrentWorkoutSelectedDayId)
+    this.store.select(getCurrentWorkoutSelectedDayId)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (selectedWorkoutDayState) => {
         if (!(this.slides && this.days && selectedWorkoutDayState &&

@@ -10,12 +10,12 @@ import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
 import { IAppState } from '../../store/state/app.state';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
-import { selectHasDataBeenReset } from 'src/app/store/selectors/data.selectors';
-import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
-import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
+import { getHasDataBeenReset } from 'src/app/store/selectors/data.selectors';
+import { getLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
+import { getCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
 import { AddExerciseSets } from 'src/app/store/actions/exerciseSets.actions';
-import { selectExercisesMedia } from 'src/app/store/selectors/ExercisesMedia.selectors';
+import { getExercisesMedias } from 'src/app/store/selectors/ExercisesMedia.selectors';
 
 interface SelectedExerciseMedia {
   isSelected: boolean;
@@ -83,7 +83,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.store.select(selectExercisesMedia)
+    this.store.select(getExercisesMedias)
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(media => {
       this.images = media.map((image) => {
@@ -94,21 +94,21 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       });
     });
 
-    this.store.select(selectHasDataBeenReset)
+    this.store.select(getHasDataBeenReset)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(reset => {
         console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
         this.haveWorkoutsBeenReset = reset;
       });
 
-    this.store.select(selectLibraryMusclesFilterState)
+    this.store.select(getLibraryMusclesFilterState)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (filter) => {
         console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
         this.musclesFilter = filter;
       });
 
-    this.store.select(selectCurrentWorkoutSelectedDayId)
+    this.store.select(getCurrentWorkoutSelectedDayId)
       .pipe(take(1))
       .subscribe(async (selectedWorkoutDayState) => {
         if (selectedWorkoutDayState && this.workoutId === selectedWorkoutDayState.workoutId) {

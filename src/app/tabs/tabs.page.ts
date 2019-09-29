@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemeServiceProvider } from '../providers/theme-service/theme-service';
-import { selectHasDataBeenLoaded } from '../store/selectors/data.selectors';
+import { getHasDataBeenLoaded } from '../store/selectors/data.selectors';
 import { take } from 'rxjs/operators';
 import { GetData } from '../store/actions/data.actions';
 import { Store } from '@ngrx/store';
@@ -19,7 +19,7 @@ export class TabsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(selectHasDataBeenLoaded)
+    this.store.select(getHasDataBeenLoaded)
       .pipe(take(1))
       .subscribe(loaded => {
         if (!loaded) {

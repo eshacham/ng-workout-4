@@ -7,9 +7,9 @@ import { DisplayMode } from 'src/app/models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
 import { DeleteWorkout, UpdateWorkout, SelectWorkout } from 'src/app/store/actions/workouts.actions';
 import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
-import { selectWorkout } from 'src/app/store/selectors/workouts.selectors';
-import { selectMediaIdsByWorkout } from 'src/app/store/selectors/exercises.selectors';
-import { UpdateBulkExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
+import { getWorkout } from 'src/app/store/selectors/workouts.selectors';
+import { getMediaIdsByWorkout } from 'src/app/store/selectors/exercises.selectors';
+import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
 
 @Component({
   selector: 'app-workout-card',
@@ -31,7 +31,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.select(selectWorkout(this.workoutId))
+    this.store.select(getWorkout(this.workoutId))
       .pipe(take(1))
       .subscribe(workout => {
         if (workout) {
@@ -62,7 +62,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkout() {
-    this.store.select(selectMediaIdsByWorkout(this.workoutId))
+    this.store.select(getMediaIdsByWorkout(this.workoutId))
       .pipe(take(1))
       .subscribe(mediaIds => {
         if (mediaIds.length) {
@@ -77,7 +77,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   decreseMediasUsage(mediaIds) {
-    this.store.dispatch(new UpdateBulkExerciseMedia({
+    this.store.dispatch(new UpdateExerciseMediaUsage({
       ids: mediaIds,
       mediaUsageCounterInc: -1
     }));

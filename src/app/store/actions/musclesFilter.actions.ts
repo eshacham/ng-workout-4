@@ -5,7 +5,6 @@ export enum EMusclesFilterActions {
     SetExerciseMuscleFilter = '[Muscle Filter] Set exercise\'s filter',
     AddExerciseMuscleFilter = '[Muscle Filter] Add muscle to exercise',
     DeleteExerciseMuscleFilter = '[Muscle Filter] Delete muscle from exercise',
-    SetLibraryMuscleFilter = '[Muscle Filter] Set library\'s filter',
     AddLibraryMuscleFilter = '[Muscle Filter] Add muscle to library',
     DeleteLibraryMuscleFilter = '[Muscle Filter] Delete muscle from library',
 }
@@ -22,10 +21,7 @@ export class DeleteExerciseMuscleFilter implements Action {
     readonly type = EMusclesFilterActions.DeleteExerciseMuscleFilter;
     constructor (public payload: { muscle: Muscles, mediaId: string}) {}
 }
-export class SetLibraryMuscleFilter implements Action {
-    readonly type = EMusclesFilterActions.SetLibraryMuscleFilter;
-    constructor (public muscles: Muscles[]) {}
-}
+
 export class AddLibraryMuscleFilter implements Action {
     readonly type = EMusclesFilterActions.AddLibraryMuscleFilter;
     constructor (public muscle: Muscles) {}
@@ -39,7 +35,6 @@ export type MusclesFilterActions =
 SetExerciseMuscleFilter |
 AddExerciseMuscleFilter |
 DeleteExerciseMuscleFilter |
-SetLibraryMuscleFilter |
 AddLibraryMuscleFilter |
 DeleteLibraryMuscleFilter
 ;

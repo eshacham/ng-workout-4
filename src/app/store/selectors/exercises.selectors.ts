@@ -4,14 +4,7 @@ import { IExercisesState } from '../state/Exercises.state';
 
 export const exercisesState = (state: IAppState): IExercisesState => state.exercises;
 
-export const selectExercises = (ids: string[]) => createSelector(
-    exercisesState,
-    (exercises: IExercisesState) => {
-        return ids.map(id => exercises.byId[id]);
-    }
-  );
-
-export const selectMediaIdsByDay = (dayId: string) => createSelector(
+export const getMediaIdsByDay = (dayId: string) => createSelector(
     exercisesState,
     (exercises: IExercisesState) => {
         const exesArray = Object.entries(exercises.byId);
@@ -21,7 +14,7 @@ export const selectMediaIdsByDay = (dayId: string) => createSelector(
         return mediaIds;
     }
 );
-export const selectMediaIdsByWorkout = (workoutId: string) => createSelector(
+export const getMediaIdsByWorkout = (workoutId: string) => createSelector(
     exercisesState,
     (exercises: IExercisesState) => {
         const exesArray = Object.entries(exercises.byId);

@@ -14,7 +14,7 @@ import {
     ImagesUpdated} from '../actions/data.actions';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { AllDataMaps } from 'src/app/models/interfaces';
-import { selectWorkoutsData, selectImagesData } from '../selectors/data.selectors';
+import { getWorkoutsData, getImagesData } from '../selectors/data.selectors';
 
 @Injectable()
 export class WorkoutsEffects {
@@ -31,7 +31,7 @@ export class WorkoutsEffects {
     saveWorkouts$ = this._actions$.pipe(
         ofType<UpdateWorkouts>(EDataActions.UpdateWorkouts),
         map(action => action),
-        withLatestFrom(this._store.pipe(select(selectWorkoutsData))),
+        withLatestFrom(this._store.pipe(select(getWorkoutsData))),
         switchMap(([action, workoutsData]) => {
             this._dataService.saveWorkouts(workoutsData);
             return of(new WorkoutsUpdated());
@@ -42,7 +42,7 @@ export class WorkoutsEffects {
     saveImages$ = this._actions$.pipe(
         ofType<UpdateImages>(EDataActions.UpdateImages),
         map(action => action),
-        withLatestFrom(this._store.pipe(select(selectImagesData))),
+        withLatestFrom(this._store.pipe(select(getImagesData))),
         switchMap(([action, imagessData]) => {
             this._dataService.saveImages(imagessData);
             return of(new ImagesUpdated());

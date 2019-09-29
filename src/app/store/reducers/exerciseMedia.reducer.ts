@@ -61,7 +61,7 @@ export const exercisesMediaReducers = (
                 }
             };
         }
-        case EExerciseMediaActions.UpdateBulkExerciseMedia: {
+        case EExerciseMediaActions.UpdateExerciseMediaUsage: {
             const ids2Update = action.payload.ids;
             const incFacotr = action.payload.mediaUsageCounterInc;
             const mediasArray = Object.entries(state.byId);

@@ -14,7 +14,7 @@ const setsState = (state: IAppState) => state.sets;
 const exercisesState = (state: IAppState) => state.exercises;
 const mediaState = (state: IAppState) => state.media;
 
-export const selectWorkoutsData = createSelector(
+export const getWorkoutsData = createSelector(
     workoutsState,
     daysState,
     setsState,
@@ -32,7 +32,7 @@ export const selectWorkoutsData = createSelector(
         return data;
     }
 );
-export const selectImagesData = createSelector(
+export const getImagesData = createSelector(
     mediaState,
     (media: IExercisesMediaState) => {
         const data = {
@@ -42,12 +42,12 @@ export const selectImagesData = createSelector(
     }
 );
 
-export const selectHasDataBeenReset = createSelector(
+export const getHasDataBeenReset = createSelector(
     dataState,
     (state: IDataState) => state.hasDataBeenReset
 );
 
-export const selectHasDataBeenLoaded = createSelector(
+export const getHasDataBeenLoaded = createSelector(
     dataState,
     (state: IDataState) => state.hasDataBeenLoaded
 );

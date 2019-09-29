@@ -18,11 +18,11 @@ import {
   UpdateWorkoutDay,
   ReorderExerciseSets
 } from 'src/app/store/actions/workoutDays.actions';
-import { SelectWorkoutDayState, selectWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
+import { getWorkoutDayState, getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil, take } from 'rxjs/operators';
 import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
-import { selectMediaIdsByDay } from 'src/app/store/selectors/exercises.selectors';
-import { UpdateBulkExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
+import { getMediaIdsByDay } from 'src/app/store/selectors/exercises.selectors';
+import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
 
 @Component({
   selector: 'app-workout-day',
@@ -76,7 +76,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
       this.fabEdit.activated = true;
       this.DisplayMode = DisplayMode.Edit;
     }
-    this.store.select(selectWorkoutDay(this.workoutDayId))
+    this.store.select(getWorkoutDay(this.workoutDayId))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(workoutDay => {
         if (workoutDay) {
@@ -85,7 +85,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
           this.name = workoutDay.name;
         }
       });
-    this.store.select(SelectWorkoutDayState)
+    this.store.select(getWorkoutDayState)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(state => {
         if (state) {
@@ -95,7 +95,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   decreseMediasUsage(mediaIds) {
-    this.store.dispatch(new UpdateBulkExerciseMedia({
+    this.store.dispatch(new UpdateExerciseMediaUsage({
       ids: mediaIds,
       mediaUsageCounterInc: -1
     }));
@@ -220,7 +220,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkoutDay(event) {
-    this.store.select(selectMediaIdsByDay(this.workoutDayId))
+    this.store.select(getMediaIdsByDay(this.workoutDayId))
       .pipe(take(1))
       .subscribe(mediaIds => {
         if (mediaIds.length) {

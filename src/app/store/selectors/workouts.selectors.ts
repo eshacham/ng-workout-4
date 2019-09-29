@@ -5,38 +5,33 @@ import { WorkoutBean } from 'src/app/models/Workout';
 
 const workoutsState = (state: IAppState) => state.workouts;
 
-export const selectWorkouts = createSelector(
+export const getWorkouts = createSelector(
     workoutsState,
     (workoutsMap: IWorkoutsState): WorkoutBean[] => {
         return Object.keys(workoutsMap.byId)
         .map(id => workoutsMap.byId[id]);
     }
 );
-export const selectWorkout = (id: string) => createSelector(
+export const getWorkout = (id: string) => createSelector(
     workoutsState,
     (workoutsMap: IWorkoutsState): WorkoutBean => {
         return workoutsMap.byId[id];
     }
 );
 
-export const selectCurrentWorkoutId = createSelector(
+export const getCurrentWorkoutId = createSelector(
   workoutsState,
   (workouts: IWorkoutsState) => workouts.selectedWorkoutId
 );
 
-export const SelectWorkoutId2Delete = createSelector(
+export const getCurrentWorkout = createSelector(
   workoutsState,
-  (workouts: IWorkoutsState) => workouts ? workouts.workoutId2Delete : null
-);
-
-export const selectCurrentWorkout = createSelector(
-  workoutsState,
-  selectCurrentWorkoutId,
+  getCurrentWorkoutId,
   (workouts: IWorkoutsState, workoutId: string) => workouts.byId[workoutId]
 );
 
-export const selectCurrentWorkoutSelectedDayId = createSelector(
-  selectCurrentWorkout,
+export const getCurrentWorkoutSelectedDayId = createSelector(
+  getCurrentWorkout,
   (workout: WorkoutBean) => workout ? {
     workoutId: workout.id,
     dayId: workout.selectedWorkoutDayId

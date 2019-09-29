@@ -11,7 +11,7 @@ export const exerciseSetsState = (state: IAppState): IExerciseSetsState => state
 export const exercisesState = (state: IAppState): IExercisesState => state.exercises;
 export const exercisesMediaState = (state: IAppState): IExercisesMediaState => state.media;
 
-export const selectexerciseSet = (id: string) => createSelector(
+export const getExerciseSet = (id: string) => createSelector(
     exerciseSetsState,
     exercisesState,
     exercisesMediaState,

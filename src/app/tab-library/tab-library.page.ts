@@ -12,13 +12,12 @@ import { ToastService } from '../providers/toast-service/toast.service';
 import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { selectLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
-import { selectExercisesMedia } from '../store/selectors/ExercisesMedia.selectors';
-import { UpdateImages, GetData } from '../store/actions/data.actions';
+import { getLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
+import { getExercisesMedias } from '../store/selectors/ExercisesMedia.selectors';
+import { UpdateImages } from '../store/actions/data.actions';
 import { UpdateExerciseMedia, AddExerciseMedia, DeleteExerciseMedia } from '../store/actions/exercisesMedia.actions';
-import { selectHasDataBeenReset, selectHasDataBeenLoaded } from '../store/selectors/data.selectors';
 
 @Component({
   selector: 'app-tab-library',
@@ -74,13 +73,13 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.isMobile = this.dataService.isMobile;
 
-    this.store.select(selectExercisesMedia)
+    this.store.select(getExercisesMedias)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(media => {
         this.images = media;
       });
 
-    this.store.select(selectLibraryMusclesFilterState)
+    this.store.select(getLibraryMusclesFilterState)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((filter) => {
         console.log('tab-library-page redux - LibraryMusclesFilterState:', filter);

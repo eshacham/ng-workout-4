@@ -11,10 +11,10 @@ import { Rep } from 'src/app/models/Rep';
 import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover/exercise-thumbnail-popover.component';
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 import { IAppState } from 'src/app/store/state/app.state';
-import { SelectWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
+import { getWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
 import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
-import { selectexerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
+import { getExerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
 import {
     ResetReps,
     SetRepsActiveState,
@@ -26,7 +26,7 @@ import {
     AddRep,
     DeleteRep,
 } from 'src/app/store/actions/exercises.actions';
-import { DeleteExerciseSet, SwitchExercises } from 'src/app/store/actions/exerciseSets.actions';
+import { DeleteExerciseSet, SwitchExercisesInSet } from 'src/app/store/actions/exerciseSets.actions';
 import { UpdateExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
 
 const MAXREPS = 5;
@@ -120,7 +120,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.select(selectexerciseSet(this.exerciseSetId))
+        this.store.select(getExerciseSet(this.exerciseSetId))
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(exerciseSet => {
                 console.log('exercise-thumbnail selectexerciseSet', exerciseSet);
@@ -128,7 +128,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 this.exercises = exerciseSet.exercises;
                 this.images = exerciseSet.media;
             });
-        this.store.select(SelectWorkoutDayState)
+        this.store.select(getWorkoutDayState)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(state => {
                 if (state) {
@@ -199,7 +199,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     switchExercises(index: number) {
-        this.store.dispatch(new SwitchExercises({
+        this.store.dispatch(new SwitchExercisesInSet({
             setId: this.exerciseSetId,
             lowIndex: index
         }));
