@@ -10,7 +10,7 @@ import { MuscleFilterFor } from '../select-muscle/select-muscle.page';
 import { IAppState } from '../../store/state/app.state';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
-import { selectHasWorkoutsBeenReset } from 'src/app/store/selectors/data.selectors';
+import { selectHasDataBeenReset } from 'src/app/store/selectors/data.selectors';
 import { selectLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
 import { selectCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
@@ -94,7 +94,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
       });
     });
 
-    this.store.select(selectHasWorkoutsBeenReset)
+    this.store.select(selectHasDataBeenReset)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(reset => {
         console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
