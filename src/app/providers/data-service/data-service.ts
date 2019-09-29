@@ -10,7 +10,7 @@ import { getDefaultWorkoutsMaps } from '../../constants/defaultWorkouts';
 import { getDefaultImages } from '../../constants/defaultExerciseMedia';
 import { AllDataMaps, WorkoutsDataMaps, MediaDataMaps } from 'src/app/models/interfaces';
 import { IAppState } from '../../store/state/app.state';
-import { ResetWorkouts, ResetImages, GetData} from 'src/app/store/actions/data.actions';
+import { DataReset, GetData} from 'src/app/store/actions/data.actions';
 import { Guid } from 'guid-typescript';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
@@ -45,19 +45,17 @@ export class DataServiceProvider {
     await this.displayPlatform();
 
     imagesData = await this.getImagesData();
-    if (!imagesData) {
+    workoutsData = await this.getWorkoutsData();
+    if (!imagesData || !workoutsData) {
       imagesData = await this.initDefaultImages();
       workoutsData = await this.initDefaultWorkouts();
+      this.store.dispatch(new DataReset());
     } else {
-      workoutsData = await this.getWorkoutsData();
-      if (!workoutsData) {
-        workoutsData = await this.initDefaultWorkouts();
-      } else {
-        if (this.isMobile) {
+      if (this.isMobile) {
           this.AssertImagesPath(imagesData);
         }
-      }
     }
+
     data = { ...workoutsData, ...imagesData };
     if (data.workouts && data.media) {
       console.log('data-service - loaded cached workouts', Object.keys(data.workouts.byId));
@@ -75,7 +73,7 @@ export class DataServiceProvider {
   private async initDefaultImages(): Promise<MediaDataMaps> {
     const data: MediaDataMaps = getDefaultImages();
     console.log(`initialized and saved ${Object.keys(data.media.byId).length} default images`, data.media.byId);
-    await this.saveImages(data, true);
+    await this.saveImages(data);
     return data;
   }
 
@@ -88,7 +86,7 @@ export class DataServiceProvider {
   private async initDefaultWorkouts(): Promise<WorkoutsDataMaps> {
     const data = getDefaultWorkoutsMaps();
     console.log(`initialized and saved ${Object.keys(data.workouts.byId).length} default workouts`, data.workouts.byId);
-    await this.saveWorkouts(data, true);
+    await this.saveWorkouts(data);
     return data;
   }
 
@@ -107,36 +105,24 @@ export class DataServiceProvider {
     }
   }
 
-  async saveImages(images: MediaDataMaps, imagesHaveBeenReset: boolean = false) {
+  async saveImages(images: MediaDataMaps) {
     await this.storage.ready();
     await this.storage.set(IMAGES_STORAGE_KEY, images);
     console.log('images have been saved');
-    if (imagesHaveBeenReset) {
-      this.store.dispatch(new ResetImages());
-    }
   }
 
-  async saveWorkouts(workoutsDataMaps: WorkoutsDataMaps, haveWorkoutsBeenReset: boolean = false) {
+  async saveWorkouts(workoutsDataMaps: WorkoutsDataMaps) {
     await this.storage.ready();
     await this.storage.set(WORKOUTS_STORAGE_KEY, workoutsDataMaps);
     console.log('workouts have been saved');
-    if (haveWorkoutsBeenReset) {
-      this.store.dispatch(new ResetWorkouts());
-    }
   }
 
-  async resetImages() {
+  async resetData() {
     await this.storage.ready();
     await this.storage.remove(IMAGES_STORAGE_KEY);
-    this.store.dispatch(new GetData());
-    console.log('images have been reset');
-  }
-
-  async resetWorkouts() {
-    await this.storage.ready();
     await this.storage.remove(WORKOUTS_STORAGE_KEY);
     this.store.dispatch(new GetData());
-    console.log('workouts have been reset to default workouts');
+    console.log('images and workouts have been reset');
   }
 
   getExerciseMusclesFilterFromImage(name: string): Muscles[] {

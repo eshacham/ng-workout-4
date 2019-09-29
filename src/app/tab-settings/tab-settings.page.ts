@@ -54,13 +54,9 @@ export class TabSettingsPage {
     console.log('Segment changed', this.selectedSegment);
   }
 
-  async resetWorkouts() {
-    await this.dataServiceProvider.resetWorkouts();
+  async resetData() {
+    await this.dataServiceProvider.resetData();
     this.router.navigate(['']);
   }
 
-  async resetImages() {
-    await this.dataServiceProvider.resetImages();
-    this.router.navigate(['']);
-  }
 }

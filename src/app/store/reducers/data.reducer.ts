@@ -11,29 +11,17 @@ export const dataReducers =
                 hasDataBeenLoaded: true,
             };
         }
-        case EDataActions.WorkoutsReset: {
+        case EDataActions.DataReset: {
             return {
                 ...state,
-                hasWorkoutsBeenReset: true
-            };
-        }
-        case EDataActions.WorkoutsUpdated: {
-            return {
-                ...state,
-                hasWorkoutsBeenReset: false
-            };
-        }
-        case EDataActions.ImagesReset: {
-            return {
-                ...state,
-                hasImagesBeenReset: true
+                hasDataBeenReset: true
             };
         }
         case EDataActions.ImagesUpdated:
-        case EDataActions.LoadedImages: {
+        case EDataActions.WorkoutsUpdated: {
             return {
                 ...state,
-                hasImagesBeenReset: false
+                hasDataBeenReset: false
             };
         }
         default: {

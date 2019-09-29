@@ -22,17 +22,12 @@
 
   <ion-list *ngIf="selectedSegment==='workouts'" lines="none">
     <ion-item>
-      <ion-button expand="full" (click)="resetWorkouts()">
+      <ion-button expand="full" (click)="resetData()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
-        Reset Workouts
+        Reset Data
       </ion-button>
     </ion-item>
-    <ion-item>
-      <ion-button expand="full" (click)="resetImages()">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-        Reset Images
-      </ion-button>
-    </ion-item>
+
   </ion-list>
 
   <ion-list *ngIf="selectedSegment==='themes'"

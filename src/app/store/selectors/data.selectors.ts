@@ -42,12 +42,7 @@ export const selectImagesData = createSelector(
     }
 );
 
-export const selectHasImagesBeenReset = createSelector(
-    dataState,
-    (state: IDataState) => state.hasImagesBeenReset
-);
-
 export const selectHasWorkoutsBeenReset = createSelector(
     dataState,
-    (state: IDataState) => state.hasWorkoutsBeenReset
+    (state: IDataState) => state.hasDataBeenReset
 );
