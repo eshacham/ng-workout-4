@@ -2,10 +2,15 @@ import { initialExercisesMediaState, IExercisesMediaState } from '../state/Exerc
 import { EDataActions, DataActions } from '../actions/data.actions';
 import { EMusclesFilterActions, MusclesFilterActions } from '../actions/musclesFilter.actions';
 import { EExerciseMediaActions, ExerciseMediaActions } from '../actions/exercisesMedia.actions';
+import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
 
 export const exercisesMediaReducers = (
     state = initialExercisesMediaState,
-    action: DataActions | MusclesFilterActions | ExerciseMediaActions)
+    action:
+        DataActions |
+        MusclesFilterActions |
+        ExerciseMediaActions |
+        ExerciseSetActions)
     : IExercisesMediaState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -63,6 +68,20 @@ export const exercisesMediaReducers = (
                 .reduce((map, obj) => (map[obj[0]] =
                     (ids2Update.includes(obj[0]))
                         ? { ...obj[1], mediaUsageCounter: obj[1].mediaUsageCounter + incFacotr }
+                        : obj[1],
+                    map), {});
+            return {
+                ...state,
+                byId: newMap
+            };
+        }
+        case EExerciseSetActions.AddExerciseSets: {
+            const ids2Update = action.payload.exes.map(exe => exe.mediaId);
+            const mediasArray = Object.entries(state.byId);
+            const newMap = mediasArray
+                .reduce((map, obj) => (map[obj[0]] =
+                    (ids2Update.includes(obj[0]))
+                        ? { ...obj[1], mediaUsageCounter: obj[1].mediaUsageCounter + 1 }
                         : obj[1],
                     map), {});
             return {

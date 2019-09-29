@@ -46,7 +46,8 @@ export class DataServiceProvider {
 
     imagesData = await this.getImagesData();
     workoutsData = await this.getWorkoutsData();
-    if (!imagesData || !workoutsData) {
+    if (!imagesData || !imagesData.media || !imagesData.media.byId ||
+        !workoutsData || !workoutsData.workouts || !workoutsData.workouts.byId) {
       imagesData = await this.initDefaultImages();
       workoutsData = await this.initDefaultWorkouts();
       this.store.dispatch(new DataReset());
