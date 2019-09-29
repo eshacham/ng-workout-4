@@ -3,6 +3,7 @@ import { EDataActions, DataActions } from '../actions/data.actions';
 import { EMusclesFilterActions, MusclesFilterActions } from '../actions/musclesFilter.actions';
 import { EExerciseMediaActions, ExerciseMediaActions } from '../actions/exercisesMedia.actions';
 import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
+import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 
 export const exercisesMediaReducers = (
     state = initialExercisesMediaState,
@@ -84,6 +85,15 @@ export const exercisesMediaReducers = (
                         ? { ...obj[1], mediaUsageCounter: obj[1].mediaUsageCounter + 1 }
                         : obj[1],
                     map), {});
+            return {
+                ...state,
+                byId: newMap
+            };
+        }
+        case EExerciseMediaActions.DeleteExerciseMedia: {
+            let newMap: { [id: string]: ExerciseMedia };
+            let media: ExerciseMedia;
+            ({ [action.payload.id]: media, ...newMap } = state.byId);
             return {
                 ...state,
                 byId: newMap
