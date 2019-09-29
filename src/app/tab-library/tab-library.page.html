@@ -38,9 +38,8 @@
         <ion-icon slot="icon-only" name="body"></ion-icon>
         <ion-badge [color]="img.muscles.length ? 'primary' : 'danger'">{{img.muscles.length}}</ion-badge>
       </ion-button>
-      <ion-button [disabled]="!IsMobile" slot="end" fill="clear"
-        (click)="deleteImage(img)">
-        <ion-icon *ngIf="IsMobile" slot="icon-only" name="trash"></ion-icon>
+      <ion-button slot="end" fill="clear" (click)="deleteImage(img)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
         <ion-badge>{{img.mediaUsageCounter}}</ion-badge>
       </ion-button>
     </ion-item>
