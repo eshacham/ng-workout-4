@@ -43,6 +43,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       type: 'bullets',
       clickable: false,
       el: '.swiper-pagination',
+      cssMode: true,
+      longSwipes: false,
     },
     noSwipingSelector: 'ion-range, ion-reorder, ion-fab, ion-button'
   };
