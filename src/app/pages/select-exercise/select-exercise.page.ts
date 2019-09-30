@@ -11,7 +11,7 @@ import { IAppState } from '../../store/state/app.state';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { getHasDataBeenReset } from 'src/app/store/selectors/data.selectors';
-import { getLibraryMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
+import { getLibraryMusclesFilter } from 'src/app/store/selectors/musclesFilter.selectors';
 import { getCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
 import { AddExerciseSets } from 'src/app/store/actions/exerciseSets.actions';
@@ -101,7 +101,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
         this.haveWorkoutsBeenReset = reset;
       });
 
-    this.store.select(getLibraryMusclesFilterState)
+    this.store.select(getLibraryMusclesFilter)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (filter) => {
         console.log('select-exercise redux - LibraryMusclesFilterState:', filter);

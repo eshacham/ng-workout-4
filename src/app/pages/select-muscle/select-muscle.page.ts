@@ -12,7 +12,7 @@ import {
   DeleteExerciseMuscleFilter
 } from '../../store/actions/musclesFilter.actions';
 import { takeUntil, take } from 'rxjs/operators';
-import { getLibraryMusclesFilterState, getExerciseMusclesFilterState } from 'src/app/store/selectors/musclesFilter.selectors';
+import { getLibraryMusclesFilter, getExerciseMusclesFilter } from 'src/app/store/selectors/musclesFilter.selectors';
 import { getExerciseMedia } from 'src/app/store/selectors/ExercisesMedia.selectors';
 import { UpdateImages } from 'src/app/store/actions/data.actions';
 
@@ -87,7 +87,7 @@ export class SelectMusclePage implements OnInit, OnDestroy {
           this.store.select(getExerciseMedia(this.muscleFilterUsage.mediaId))
             .pipe(take(1))
             .subscribe(image => {
-              console.log('select-muscle redux - muscleFilterUsage:', image);
+              console.log('select-muscle - getExerciseMedia:', image);
               this.muscleFilterUsage.mediaName = image.name;
               this.store.dispatch(new SetExerciseMuscleFilter(image.muscles));
             });
@@ -103,17 +103,17 @@ export class SelectMusclePage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     if (this.isFilteringLibrary) {
-      this.store.select(getLibraryMusclesFilterState)
+      this.store.select(getLibraryMusclesFilter)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((filter) => {
-          console.log('select-muscle redux - LibraryMusclesFilterState:', filter);
+          console.log('select-muscle - getLibraryMusclesFilter:', filter);
           this.SelectedMuscles = this.showSelectedMuscles(filter);
         });
     } else {
-      this.store.select(getExerciseMusclesFilterState)
+      this.store.select(getExerciseMusclesFilter)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((filter) => {
-          console.log('select-muscle redux - selectExerciseMusclesFilterState:', filter);
+          console.log('select-muscle - getExerciseMusclesFilter:', filter);
           this.SelectedMuscles = this.showSelectedMuscles(filter);
         });
     }
@@ -155,6 +155,8 @@ export class SelectMusclePage implements OnInit, OnDestroy {
     if (this.isFilteringLibrary) {
       this.store.dispatch(new AddLibraryMuscleFilter(muscle));
     } else {
+      console.log('addMuscleToFilter - ', muscle);
+
       this.store.dispatch(new AddExerciseMuscleFilter({
         muscle: muscle, mediaId: this.muscleFilterUsage.mediaId
       }));

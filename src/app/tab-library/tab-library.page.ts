@@ -14,7 +14,7 @@ import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { getLibraryMusclesFilterState } from '../store/selectors/musclesFilter.selectors';
+import { getLibraryMusclesFilter } from '../store/selectors/musclesFilter.selectors';
 import { getExercisesMedias } from '../store/selectors/ExercisesMedia.selectors';
 import { UpdateImages } from '../store/actions/data.actions';
 import { UpdateExerciseMedia, AddExerciseMedia, DeleteExerciseMedia } from '../store/actions/exercisesMedia.actions';
@@ -79,7 +79,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
         this.images = media;
       });
 
-    this.store.select(getLibraryMusclesFilterState)
+    this.store.select(getLibraryMusclesFilter)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((filter) => {
         console.log('tab-library-page redux - LibraryMusclesFilterState:', filter);

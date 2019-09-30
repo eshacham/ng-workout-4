@@ -4,11 +4,11 @@ import { IMusclesFilterState } from '../state/musclesFilter.state';
 
 export const musclesFilterState = (state: IAppState) => state.musclesFilter;
 
-export const getExerciseMusclesFilterState = createSelector(
+export const getExerciseMusclesFilter = createSelector(
   musclesFilterState,
   (state: IMusclesFilterState) => state.exerciseMusclesFilter
 );
-export const getLibraryMusclesFilterState = createSelector(
+export const getLibraryMusclesFilter = createSelector(
   musclesFilterState,
   (state: IMusclesFilterState) => state.libraryMusclesFilter
 );
