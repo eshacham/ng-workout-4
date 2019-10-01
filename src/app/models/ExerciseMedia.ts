@@ -1,6 +1,7 @@
 import { Muscles } from './enums';
+import { Bean } from './interfaces';
 
-export class ExerciseMedia {
+export class ExerciseMedia implements Bean {
 
   public id: string;
   public name: string;

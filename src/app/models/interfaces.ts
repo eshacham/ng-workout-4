@@ -22,3 +22,7 @@ export interface AllDataMaps {
 export interface MediaDataMaps {
     media: { byId: { [id: string]: ExerciseMedia } };
 }
+
+export interface Bean {
+    id: string;
+}

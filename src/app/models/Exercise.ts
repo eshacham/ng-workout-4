@@ -3,8 +3,9 @@ import { RepetitionSpeed, WeightType } from './enums';
 import { Grip } from './Grip';
 import { Rep } from './Rep';
 import { ExerciseMedia } from './ExerciseMedia';
+import { Bean } from './interfaces';
 
-export class Exercise  {
+export class Exercise implements Bean {
     public id: string;
     public name: string;
     public mediaId: string;

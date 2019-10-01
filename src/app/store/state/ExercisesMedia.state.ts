@@ -1,7 +1,7 @@
 import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
+import { IState } from './generics';
 
-export interface IExercisesMediaState {
-    byId: { [id: string]: ExerciseMedia };
+export interface IExercisesMediaState extends IState<ExerciseMedia> {
 }
 
 export const initialExercisesMediaState: IExercisesMediaState = {

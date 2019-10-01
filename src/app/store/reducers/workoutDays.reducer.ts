@@ -3,7 +3,7 @@ import { initialWorkoutDaysState, IWorkoutDaysState } from '../state/workoutDays
 import { EDataActions, DataActions } from '../actions/data.actions';
 import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
 import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
-import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
+import { removeItemsFromMapByIds, removeItemFromMap } from './utils';
 
 export const workoutDaysReducers = (state = initialWorkoutDaysState,
     action: WorkoutDaysActions |
@@ -28,10 +28,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case EWorkoutsActions.DeleteWorkout: {
-            const days = action.payload.days;
-            const newMap = Object.entries(state.byId)
-                .filter(([key, val]) => !days.includes(val.id))
-                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
+            const newMap = removeItemsFromMapByIds(action.payload.days, state);
             return {
                 ...state,
                 byId: newMap
@@ -72,7 +69,6 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                     ...state.byId,
                     [action.payload.dayId]: {
                         workoutId: action.payload.workoutId,
-                        id: action.payload.dayId,
                         ...state.byId[action.payload.dayId],
                     }
                 },
@@ -97,13 +93,10 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case EWorkoutDaysActions.WorkoutDayDeleted: {
-            let newMap: { [id: string]: WorkoutDayBean };
-            let day: WorkoutDayBean;
-            ({ [state.deleteSelectedWorkoutDay]: day, ...newMap } = state.byId);
             return {
                 ...state,
                 deleteSelectedWorkoutDay: undefined,
-                byId: newMap
+                byId: removeItemFromMap(state.deleteSelectedWorkoutDay, state)
             };
         }
         case EWorkoutDaysActions.StartFirstExercise:

@@ -1,7 +1,7 @@
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
+import { IState } from './generics';
 
-export interface IExerciseSetsState {
-    byId: { [id: string]: ExerciseSetBean };
+export interface IExerciseSetsState extends IState<ExerciseSetBean> {
 }
 
 export const initialExerciseSetsState: IExerciseSetsState = {

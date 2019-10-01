@@ -1,9 +1,9 @@
 import { WorkoutBean } from 'src/app/models/Workout';
+import { IState } from './generics';
 
-export interface IWorkoutsState {
+export interface IWorkoutsState extends IState<WorkoutBean> {
     selectedWorkoutId: string;
     workoutId2Delete?: string;
-    byId: { [id: string]: WorkoutBean };
 }
 
 export const initialWorkoutsState: IWorkoutsState = {

@@ -1,6 +1,7 @@
 import { Exercise } from './Exercise';
+import { Bean } from './interfaces';
 
-export class ExerciseSetBase {
+export class ExerciseSetBase implements Bean {
     public id: string;
 
     constructor(options: { id: string }) {
@@ -14,16 +15,6 @@ export class ExerciseSet extends ExerciseSetBase {
         super(options);
         this.exercises = options.exercises;
     }
-
-    // static delete(exerciseSets: ExerciseSet[], index: number) {
-    //     const set = exerciseSets[index];
-    //     if (set && set.exercises.length) {
-    //         set.exercises.forEach((_, idx) => {
-    //             ExerciseBean.delete(set.exercises, idx);
-    //         });
-    //     }
-    //     exerciseSets.splice(index, 1);
-    // }
 }
 export class ExerciseSetBean extends ExerciseSetBase {
     public exercises: string[];

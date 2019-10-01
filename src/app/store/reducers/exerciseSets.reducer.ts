@@ -5,6 +5,7 @@ import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets
 import { ExerciseActions, EExerciseActions } from '../actions/exercises.actions';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { EWorkoutsActions, WorkoutsActions } from '../actions/workouts.actions';
+import { removeItemFromMap, removeItemsFromMapByIds, removeItemsFromMapByPredicate, newMapFromItems } from './utils';
 
 export const exerciseSetsReducers = (
     state = initialExerciseSetsState,
@@ -22,18 +23,16 @@ export const exerciseSetsReducers = (
             };
         }
         case EExerciseSetActions.AddExerciseSets: {
-            const newSets: { id: string, set: ExerciseSetBean }[] =
-                action.payload.sets.map(set => ({ id: set.id, set: set }));
             return {
                 ...state,
                 byId: {
                     ...state.byId,
-                    ...newSets.reduce((map, obj) => (map[obj.id] = obj.set, map), {})
+                    ...newMapFromItems<ExerciseSetBean>(action.payload.sets)
                 }
             };
         }
         case EExerciseActions.DeleteExercise: {
-            const oldExes = [...state.byId[action.payload.setId].exercises];
+            const oldExes = state.byId[action.payload.setId].exercises;
             const newExes = oldExes.filter(exe => exe !== action.payload.exeId);
             return {
                 ...state,
@@ -47,34 +46,21 @@ export const exerciseSetsReducers = (
             };
         }
         case EExerciseSetActions.DeleteExerciseSet: {
-            let newMap: { [id: string]: ExerciseSetBean };
-            let exe: ExerciseSetBean;
-            ({ [action.payload.setId]: exe, ...newMap } = state.byId);
             return {
                 ...state,
-                byId: newMap
+                byId: removeItemFromMap(action.payload.setId, state)
             };
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
-            const sets2Delete = action.payload.sets;
-            let newMap: {[id: string]: ExerciseSetBean };
-            newMap = !sets2Delete ? null : Object.entries(state.byId)
-                .filter(([key, val]) => !sets2Delete.includes(val.id))
-                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
-            return sets2Delete ? {
-                ...state,
-                byId: newMap
-            } : state;
-        }
-        case EWorkoutsActions.DeleteWorkout: {
-            const workoutId2Delete = action.payload.id;
-            let newMap: {[id: string]: ExerciseSetBean };
-            newMap = Object.entries(state.byId)
-                .filter(([key, val]) => val.workoutId !== workoutId2Delete)
-                .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});
             return {
                 ...state,
-                byId: newMap
+                byId: removeItemsFromMapByIds(action.payload.sets, state)
+            };
+        }
+        case EWorkoutsActions.DeleteWorkout: {
+            return {
+                ...state,
+                byId: removeItemsFromMapByPredicate(([key, val]) => val.workoutId !== action.payload.id, state)
             };
         }
         case EExerciseSetActions.SwitchExercisesInSet: {

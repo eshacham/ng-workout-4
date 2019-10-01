@@ -1,11 +1,11 @@
 import { Direction } from '../actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
+import { IState } from './generics';
 
-export interface IWorkoutDaysState {
+export interface IWorkoutDaysState extends IState<WorkoutDayBean> {
     workoutDayId2AddFrom?: string;
     deleteSelectedWorkoutDay?: string;
     workoutDayMoveState?: Direction;
-    byId: { [id: string]: WorkoutDayBean };
 }
 
 export const initialWorkoutDaysState: IWorkoutDaysState = {

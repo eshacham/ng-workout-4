@@ -1,11 +1,11 @@
 import { WorkoutsActions, EWorkoutsActions, } from '../actions/workouts.actions';
 import { initialWorkoutsState, IWorkoutsState } from '../state/workouts.state';
 import { EWorkoutDaysActions, WorkoutDaysActions, Direction } from '../actions/workoutDays.actions';
-import { GetDataSuccess, EDataActions } from '../actions/data.actions';
-import { WorkoutBean } from 'src/app/models/Workout';
+import { EDataActions, DataActions } from '../actions/data.actions';
+import { removeItemFromMap, moveItemInArray } from './utils';
 
 export const workoutsReducers = (state = initialWorkoutsState,
-    action: WorkoutsActions | WorkoutDaysActions | GetDataSuccess)
+    action: WorkoutsActions | WorkoutDaysActions | DataActions)
     : IWorkoutsState => {
     switch (action.type) {
         case EDataActions.GetDataSuccess: {
@@ -36,12 +36,10 @@ export const workoutsReducers = (state = initialWorkoutsState,
             };
         }
         case EWorkoutsActions.DeleteWorkout: {
-            let newMap: { [id: string]: WorkoutBean } ;
-            let workout: WorkoutBean;
-            ({ [action.payload.id]: workout, ...newMap } = state.byId);
+            const workoutId = action.payload.id;
             return {
                 ...state,
-                byId: newMap
+                byId: removeItemFromMap(workoutId, state)
             };
         }
         case EWorkoutDaysActions.SelectWorkoutDay: {
@@ -51,14 +49,13 @@ export const workoutsReducers = (state = initialWorkoutsState,
                     ...state.byId,
                     [action.payload.workoutId]: {
                         ...state.byId[action.payload.workoutId],
-                        id: action.payload.workoutId,
                         selectedWorkoutDayId: action.payload.dayId,
                     }
                 },
             };
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
-            const oldDays = [...state.byId[state.selectedWorkoutId].days];
+            const oldDays = state.byId[state.selectedWorkoutId].days;
             const newDays = oldDays.filter(d => d !== action.payload.dayId);
             return {
                 ...state,
@@ -88,11 +85,11 @@ export const workoutsReducers = (state = initialWorkoutsState,
             };
         }
         case EWorkoutDaysActions.MoveWorkoutDay: {
-            const oldDays = state.byId[state.selectedWorkoutId].days;
+            const newDays = [...state.byId[state.selectedWorkoutId].days];
             const idfDay2Move = state.byId[state.selectedWorkoutId].selectedWorkoutDayId;
-            const indexOfDay2Move = oldDays.indexOf(idfDay2Move);
+            const indexOfDay2Move = newDays.indexOf(idfDay2Move);
             const offset = action.payload.direction === Direction.Forward ? 1 : -1;
-            const newDays = moveDayByDirection(oldDays, indexOfDay2Move, offset);
+            moveItemInArray(newDays, indexOfDay2Move, offset);
             return {
                 ...state,
                 byId: {
@@ -118,9 +115,3 @@ export const workoutsReducers = (state = initialWorkoutsState,
         }
     }
 };
-function moveDayByDirection(oldDays: string[], index: number, offset: number) {
-    const newDays = [...oldDays];
-    const day2Move = newDays.splice(index, 1)[0];
-    newDays.splice(index + offset, 0, day2Move);
-    return newDays;
-}
