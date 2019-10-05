@@ -5322,13 +5322,13 @@ export const getDefaultWorkoutsMaps = (): WorkoutsDataMaps => {
         exercises: { byId: {} },
     };
     for (const workout of getDefaultWorkouts()) {
-        workoutsData.workouts.byId[`${workout.id}`] = WorkoutBean.makeBean(workout);
+        workoutsData.workouts.byId[`${workout.id}`] = workout.toBean();
         for (const day of workout.days) {
-            workoutsData.days.byId[`${day.id}`] = WorkoutDayBean.makeBean(day, workout.id);
+            workoutsData.days.byId[`${day.id}`] = day.toBean(workout.id);
             for (const set of day.exerciseSets) {
-                workoutsData.sets.byId[`${set.id}`] = ExerciseSetBean.makeBean(set, workout.id, day.id);
+                workoutsData.sets.byId[`${set.id}`] = set.toBean(workout.id, day.id);
                 for (const exe of set.exercises) {
-                    workoutsData.exercises.byId[`${exe.id}`] = ExerciseBean.makeBean(exe, workout.id, day.id, set.id);
+                    workoutsData.exercises.byId[`${exe.id}`] = exe.toBean(workout.id, day.id, set.id);
                 }
             }
         }

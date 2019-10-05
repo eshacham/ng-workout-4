@@ -5,7 +5,7 @@ import { IExercisesState } from '../state/Exercises.state';
 import { IExercisesMediaState } from '../state/ExercisesMedia.state';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { ExerciseBean } from 'src/app/models/Exercise';
-import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
+import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 
 export const exerciseSetsState = (state: IAppState): IExerciseSetsState => state.sets;
 export const exercisesState = (state: IAppState): IExercisesState => state.exercises;
@@ -20,7 +20,7 @@ export const getExerciseSet = (id: string) => createSelector(
         media: IExercisesMediaState) => {
         let set: ExerciseSetBean;
         let exes: ExerciseBean[];
-        let medias: ExerciseMedia[];
+        let medias: ExerciseMediaBean[];
         set = exerciseSets.byId[id];
         if (set) {
             const exeIds = set.exercises;

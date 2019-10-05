@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
-import { ExerciseMedia } from '../../models/ExerciseMedia';
+import { ExerciseMediaBean } from '../../models/ExerciseMedia';
 import { Muscles } from '../../models/enums';
 import { getDefaultWorkoutsMaps } from '../../constants/defaultWorkouts';
 import { getDefaultImages } from '../../constants/defaultExerciseMedia';
@@ -19,7 +19,7 @@ const IMAGES_STORAGE_KEY = 'my_images';
 @Injectable()
 export class DataServiceProvider {
 
-  private _images: ExerciseMedia[];
+  private _images: ExerciseMediaBean[];
 
   constructor(
     private platform: Platform,
@@ -133,12 +133,12 @@ export class DataServiceProvider {
   }
 
   async addImage(origImagePath: string, origImageName: string, newImageName: string):
-  Promise<ExerciseMedia> {
+  Promise<ExerciseMediaBean> {
     await this.file.copyFile(origImagePath, origImageName, this.file.dataDirectory, newImageName);
     const nativePath = this.file.dataDirectory + newImageName;
     console.log(`new image ${origImagePath}/${origImageName} has been copied to ${nativePath}`);
 
-    const newEntry: ExerciseMedia = new ExerciseMedia({
+    const newEntry: ExerciseMediaBean = new ExerciseMediaBean({
       id: Guid.raw(),
       name: newImageName,
       ionicPath: this.getIonicPath(nativePath),
@@ -149,7 +149,7 @@ export class DataServiceProvider {
     return newEntry;
   }
 
-  async deleteImage(image: ExerciseMedia) {
+  async deleteImage(image: ExerciseMediaBean) {
     if (this.isMobile && !image.isDefault) {
       const path = image.nativePath.substr(0, image.nativePath.lastIndexOf('/') + 1);
       const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);

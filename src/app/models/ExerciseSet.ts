@@ -1,4 +1,4 @@
-import { Exercise } from './Exercise';
+import { Exercise, ExerciseBean } from './Exercise';
 import { Bean } from './interfaces';
 
 export class ExerciseSetBase implements Bean {
@@ -14,6 +14,14 @@ export class ExerciseSet extends ExerciseSetBase {
     constructor(options: { id: string, exercises: Exercise[] }) {
         super(options);
         this.exercises = options.exercises;
+    }
+    toBean(workoutId: string, dayId: string): ExerciseSetBean {
+        return {
+            ...this,
+            exercises: this.exercises.map(e => e.id),
+            workoutId: workoutId,
+            workoutDayId: dayId
+        };
     }
 }
 export class ExerciseSetBean extends ExerciseSetBase {
@@ -32,13 +40,17 @@ export class ExerciseSetBean extends ExerciseSetBase {
         this.workoutDayId = options.dayId;
         this.workoutId = options.workoutId;
     }
-
-    static makeBean(set: ExerciseSet, workoutId, dayId): ExerciseSetBean {
-        return {
-            ...set,
-            exercises: set.exercises.map(e => e.id),
-            workoutId: workoutId,
-            workoutDayId: dayId
-        };
+    static create(options: {
+        id: string,
+        workoutId: string,
+        dayId: string,
+        exercises: ExerciseBean[]
+    }) {
+        return new ExerciseSetBean({
+            id: options.id,
+            workoutId: options.workoutId,
+            dayId: options.dayId,
+            exercises: options.exercises.map(exe => exe.id)
+        });
     }
 }

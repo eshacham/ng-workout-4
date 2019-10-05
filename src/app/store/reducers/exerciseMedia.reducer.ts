@@ -3,7 +3,6 @@ import { EDataActions, DataActions } from '../actions/data.actions';
 import { EMusclesFilterActions, MusclesFilterActions } from '../actions/musclesFilter.actions';
 import { EExerciseMediaActions, ExerciseMediaActions } from '../actions/exercisesMedia.actions';
 import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
-import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
 import { removeItemFromMap } from './utils';
 
 export const exercisesMediaReducers = (

@@ -1,4 +1,4 @@
-import { ExerciseMedia } from '../models/ExerciseMedia';
+import { ExerciseMediaBean } from '../models/ExerciseMedia';
 import { MediaDataMaps } from '../models/interfaces';
 import { Muscles } from '../models/enums';
 
@@ -6,14 +6,14 @@ const mediaUrl = (name: string): string => {
     return `assets/images/${name}`;
 };
 
-const addMedia = (map: Map<string, ExerciseMedia>, name: string, muscles: Muscles[]) => {
+const addMedia = (map: Map<string, ExerciseMediaBean>, name: string, muscles: Muscles[]) => {
     const url = mediaUrl(name);
-    const media = ExerciseMedia.buildDefaultExerciseMedia(name, name, url, new Set(muscles));
+    const media = ExerciseMediaBean.create(name, name, url, new Set(muscles));
     map.set(media.id, media);
 };
 
-const buildExercisesMediaMap = (): Map<string, ExerciseMedia> => {
-    const exercises = new Map<string, ExerciseMedia>();
+const buildExercisesMediaMap = (): Map<string, ExerciseMediaBean> => {
+    const exercises = new Map<string, ExerciseMediaBean>();
     addMedia(exercises, 'BenchPressWideGrip.jpeg', [Muscles.Chest]);
     addMedia(exercises, 'BenchPressNarrowGrip.png', [Muscles.Chest]);
     addMedia(exercises, 'BodyweightFlutterKicks.png', [Muscles.Glutes, Muscles.Hamstrings]);
@@ -55,8 +55,8 @@ const buildExercisesMediaMap = (): Map<string, ExerciseMedia> => {
     return exercises;
 };
 
-let _defaultExerciseMedia: Map<string, ExerciseMedia>;
-const getDefaultExerciseMedia = (): Map<string, ExerciseMedia> => {
+let _defaultExerciseMedia: Map<string, ExerciseMediaBean>;
+const getDefaultExerciseMedia = (): Map<string, ExerciseMediaBean> => {
     if (!_defaultExerciseMedia) {
         _defaultExerciseMedia = buildExercisesMediaMap();
     }

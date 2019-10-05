@@ -1,7 +1,7 @@
 import { Muscles } from './enums';
 import { Bean } from './interfaces';
 
-export class ExerciseMedia implements Bean {
+export class ExerciseMediaBean implements Bean {
 
   public id: string;
   public name: string;
@@ -11,7 +11,7 @@ export class ExerciseMedia implements Bean {
   public muscles: Array<Muscles>;
   public mediaUsageCounter: number;
 
-  constructor (option: {
+  constructor(option: {
     id: string,
     name: string,
     ionicPath: string,
@@ -19,7 +19,7 @@ export class ExerciseMedia implements Bean {
     isDefault: boolean,
     muscles: Set<Muscles>,
     mediaUsageCounter?: number
-    }) {
+  }) {
     this.id = option.id;
     this.name = option.name;
     this.ionicPath = option.ionicPath;
@@ -27,15 +27,15 @@ export class ExerciseMedia implements Bean {
     this.isDefault = option.isDefault;
     this.muscles = Array.from(option.muscles.values());
     this.mediaUsageCounter = this.mediaUsageCounter || 0;
-    console.log('constructed exercise media as', this.name);
   }
-  static buildDefaultExerciseMedia(
+
+  static create(
     id: string,
     name: string,
     url: string,
     muscles: Set<Muscles>
-    ): ExerciseMedia {
-    const image = new ExerciseMedia({
+  ): ExerciseMediaBean {
+    return new ExerciseMediaBean({
       id: id,
       name: name,
       ionicPath: url,
@@ -43,6 +43,5 @@ export class ExerciseMedia implements Bean {
       isDefault: true,
       muscles: muscles
     });
-    return image;
   }
 }

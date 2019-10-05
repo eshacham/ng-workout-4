@@ -7,7 +7,7 @@ import { File, FileEntry } from '@ionic-native/File/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { LoadingOptions } from '@ionic/core';
 import { DataServiceProvider } from '../providers/data-service/data-service';
-import { ExerciseMedia } from '../models/ExerciseMedia';
+import { ExerciseMediaBean } from '../models/ExerciseMedia';
 import { ToastService } from '../providers/toast-service/toast.service';
 import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
@@ -43,11 +43,11 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this._images = [];
   }
 
-  _images: ExerciseMedia[];
-  get images(): ExerciseMedia[] {
+  _images: ExerciseMediaBean[];
+  get images(): ExerciseMediaBean[] {
     return this._images;
   }
-  set images(images: ExerciseMedia[]) {
+  set images(images: ExerciseMediaBean[]) {
     this._images = images;
   }
 
@@ -152,21 +152,21 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     }
   }
 
-  async deleteImage(imgEntry: ExerciseMedia) {
+  async deleteImage(imgEntry: ExerciseMediaBean) {
     await this.dataService.deleteImage(imgEntry);
     this.store.dispatch(new DeleteExerciseMedia({ id: imgEntry.id }));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File removed.');
   }
 
-  updateImage(event, image: ExerciseMedia) {
-    console.log(`tab-library-page redux - update image id ${image.id} name with ${event.target.value}`);
+  updateImage(event, image: ExerciseMediaBean) {
+    console.log(`tab-library-page - updating image (id ${image.id}) name to ${event.target.value}`);
     this.store.dispatch(new UpdateExerciseMedia({ id: image.id, name: event.target.value }));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File updated.');
   }
 
-  async setMuscle(imgEntry: ExerciseMedia) {
+  async setMuscle(imgEntry: ExerciseMediaBean) {
     const extra: NavigationExtras = {
       relativeTo: this.route,
       state: {
@@ -191,7 +191,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this.router.navigate(['select-muscle'], extra);
   }
 
-  getFilteredImages(): ExerciseMedia[] {
+  getFilteredImages(): ExerciseMediaBean[] {
     if (!this.useFilter) {
       return this.images;
     }
@@ -206,7 +206,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     return images;
   }
 
-  async startUpload(imgEntry: ExerciseMedia) {
+  async startUpload(imgEntry: ExerciseMediaBean) {
     try {
       const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.nativePath);
       (<FileEntry>entry).file(file => this.readFile(file));

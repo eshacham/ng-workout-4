@@ -1,8 +1,8 @@
 import { ExerciseSet } from './ExerciseSet';
 import { DisplayMode, RunningState } from './enums';
-import { Guid } from 'guid-typescript';
+import { Bean } from './interfaces';
 
-export class WorkoutDayBase {
+export class WorkoutDayBase implements Bean {
     public id: string;
     public name: string;
 
@@ -27,16 +27,13 @@ export class WorkoutDay extends WorkoutDayBase {
         super(options);
         this.exerciseSets = options.exerciseSets;
     }
-
-    // static delete(days: WorkoutDay[], index: number) {
-    //     const day = days[index];
-    //     if (day && day.exerciseSets.length) {
-    //         day.exerciseSets.forEach((_, idx) => {
-    //             ExerciseSet.delete(day.exerciseSets, idx);
-    //         });
-    //     }
-    //     days.splice(index, 1);
-    // }
+    toBean(workoutId: string): WorkoutDayBean {
+        return {
+            ...this,
+            exerciseSets: this.exerciseSets.map(s => s.id),
+            workoutId: workoutId
+        };
+    }
 }
 
 export class WorkoutDayBean extends WorkoutDayBase {
@@ -44,7 +41,6 @@ export class WorkoutDayBean extends WorkoutDayBase {
     runningExerciseSetIndex?: number;
     displayMode?: DisplayMode;
     runningState?: RunningState;
-    // exerciseSetIndex2Delete?: number;
     workoutId?: string;
 
     constructor(options: {
@@ -54,7 +50,6 @@ export class WorkoutDayBean extends WorkoutDayBase {
         runningExerciseSetIndex?: number,
         displayMode?: DisplayMode,
         runningState?: RunningState,
-        // exerciseSetIndex2Delete?: number,
         workoutId?: string;
     }) {
         super(options);
@@ -64,27 +59,20 @@ export class WorkoutDayBean extends WorkoutDayBase {
         this.runningExerciseSetIndex = options.runningExerciseSetIndex;
         this.displayMode = options.displayMode;
         this.runningState = options.runningState;
-        // this.exerciseSetIndex2Delete = options.exerciseSetIndex2Delete;
         if (options.workoutId) {
             this.workoutId = options.workoutId;
         }
-
     }
 
-    static newBean(workoutId: string) {
+    static create(options: {
+        id: string
+        workoutId: string
+    }) {
         return new WorkoutDayBean({
-            id: Guid.raw(),
+            id: options.id,
             name: 'new workout day',
             exerciseSets: [],
-            workoutId: workoutId
+            workoutId: options.workoutId
         });
-    }
-
-    static makeBean(day: WorkoutDay, workoutId: string): WorkoutDayBean {
-        return {
-            ...day,
-            exerciseSets: day.exerciseSets.map(s => s.id),
-            workoutId: workoutId
-        };
     }
 }

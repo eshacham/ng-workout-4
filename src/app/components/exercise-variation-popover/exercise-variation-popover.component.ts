@@ -31,7 +31,7 @@ export class ExerciseVariationPopoverComponent implements OnInit {
     this.repSpeeds = Object.keys(RepetitionSpeed).map(key => RepetitionSpeed[key]);
   }
   exerciseChanged(event, prop: string) {
-    const newExe = ExerciseBean.copyExercise(this.exercise);
+    const newExe = ExerciseBean.copy(this.exercise);
     newExe[prop] = event.target.value;
     this.store.dispatch(new UpdateExercise({
       exeId: this.exercise.id,
@@ -39,7 +39,7 @@ export class ExerciseVariationPopoverComponent implements OnInit {
     }));
   }
   exerciseGripChanged(event, prop: string) {
-    const newExe = ExerciseBean.copyExercise(this.exercise);
+    const newExe = ExerciseBean.copy(this.exercise);
     const newGrip = {...newExe.theGrip };
     newGrip[prop] = event.target.value;
     newExe.theGrip = newGrip;

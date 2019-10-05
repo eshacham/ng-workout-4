@@ -9,7 +9,7 @@ import { DisplayMode, WeightUnit, RunningState } from 'src/app/models/enums';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover/exercise-thumbnail-popover.component';
-import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
+import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { IAppState } from 'src/app/store/state/app.state';
 import { getWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
 import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
@@ -50,7 +50,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     private exerciseSet: ExerciseSetBean;
     private exercises: ExerciseBean[];
-    private images: ExerciseMedia[];
+    private images: ExerciseMediaBean[];
     private _isOpen = false;
     private _isRunning = false;
     private _isEditing = false;
@@ -143,7 +143,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
-    safeImage(media: ExerciseMedia): SafeUrl {
+    safeImage(media: ExerciseMediaBean): SafeUrl {
         if (media) {
             return this.domSanitizer.bypassSecurityTrustUrl(media.ionicPath);
         }
@@ -228,7 +228,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     exerciseChanged(index: number, event, prop) {
         const newExe = ExerciseBean
-            .copyExercise(this.exercises[index]);
+            .copy(this.exercises[index]);
         newExe[prop] = event.target.value;
         this.store.dispatch(new UpdateExercise({
             exeId: this.exercises[index].id,

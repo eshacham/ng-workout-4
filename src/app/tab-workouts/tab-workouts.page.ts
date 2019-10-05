@@ -9,6 +9,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UpdateWorkouts } from '../store/actions/data.actions';
 import { getWorkouts } from '../store/selectors/workouts.selectors';
+import { Guid } from 'guid-typescript';
+import { WorkoutDayBean } from '../models/WorkoutDay';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -69,8 +71,9 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   async addWorkout(event: any) {
     event.stopPropagation();
-    const data = WorkoutBean.newBean();
-    this.store.dispatch(new AddWorkout(data));
+    const workout = WorkoutBean.create({id: Guid.raw(), dayId: Guid.raw()});
+    const day = WorkoutDayBean.create({id: Guid.raw(), workoutId: workout.id});
+    this.store.dispatch(new AddWorkout({workout, day}));
     await new Promise(() => setTimeout(() => {
       this.DisplayMode = DisplayMode.Edit;
       this.store.dispatch(new UpdateWorkouts());

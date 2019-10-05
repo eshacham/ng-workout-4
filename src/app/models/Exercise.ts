@@ -2,7 +2,7 @@
 import { RepetitionSpeed, WeightType } from './enums';
 import { Grip } from './Grip';
 import { Rep } from './Rep';
-import { ExerciseMedia } from './ExerciseMedia';
+import { ExerciseMediaBean } from './ExerciseMedia';
 import { Bean } from './interfaces';
 
 export class Exercise implements Bean {
@@ -42,6 +42,16 @@ export class Exercise implements Bean {
         this.restBetweenReps = options.restBetweenReps;
         this.restAfterExercise = options.restAfterExercise;
     }
+
+    toBean(workoutId: string, dayId: string, setId: string)
+        : ExerciseBean {
+        return {
+            ...this,
+            workoutId: workoutId,
+            dayId: dayId,
+            setId: setId
+        };
+    }
 }
 export class ExerciseBean extends Exercise {
 
@@ -71,27 +81,21 @@ export class ExerciseBean extends Exercise {
         this.setId = options.setId;
     }
 
-    // static delete(exercises: ExerciseBean[], index: number) {
-    //     if (exercises[index] && exercises[index].mediaId) {
-    //         exercises.splice(index, 1);
-    //     }
-    // }
-
-    static defaultExerciseBean(
+    static create(
         id: string,
         setId: string,
         dayId: string,
         workoutId: string,
-        media: ExerciseMedia,
-        options?: { name: string }
+        mediaId: string,
+        name: string
     ): ExerciseBean {
         return new ExerciseBean({
             id: id,
             setId: setId,
             dayId: dayId,
             workoutId: workoutId,
-            name: options && options.name ? options.name : media.name,
-            mediaId: media.id,
+            name: name,
+            mediaId: mediaId,
             reps: [new Rep({
                 times: 1
             })],
@@ -102,9 +106,9 @@ export class ExerciseBean extends Exercise {
         });
     }
 
-    static copyExercise(exe: ExerciseBean, options?: {
+    static copy(bean: ExerciseBean, options?: {
         name?: string,
-        media?: ExerciseMedia,
+        media?: ExerciseMediaBean,
         theGrip?: Grip,
         repSpeed?: RepetitionSpeed,
         typeOfWeight?: WeightType,
@@ -113,17 +117,8 @@ export class ExerciseBean extends Exercise {
         restAfterExercise?: number
     }): ExerciseBean {
         return new ExerciseBean({
-            ...exe,
+            ...bean,
             ...options
         });
-    }
-
-    static makeBean(exe: Exercise, workoutId, dayId, setId): ExerciseBean {
-        return {
-            ...exe,
-            workoutId: workoutId,
-            dayId: dayId,
-            setId: setId
-        };
     }
 }

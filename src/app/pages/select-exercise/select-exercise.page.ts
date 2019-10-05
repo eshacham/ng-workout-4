@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
-import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
+import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { Muscles } from 'src/app/models/enums';
@@ -20,7 +20,7 @@ import { getExercisesMedias } from 'src/app/store/selectors/ExercisesMedia.selec
 interface SelectedExerciseMedia {
   isSelected: boolean;
   newName?: string;
-  media: ExerciseMedia;
+  media: ExerciseMediaBean;
 }
 
 @Component({
@@ -182,13 +182,13 @@ export class SelectExercisePage implements OnInit, OnDestroy {
   private makeNewExercises(setIds: string[]) {
     const newExercises = this.selectedImages
       .map((image, index) => {
-        return ExerciseBean.defaultExerciseBean(
+        return ExerciseBean.create(
           Guid.raw(),
           this.isSet ? setIds[0] : setIds[index],
           this.lastSelectedWorkoutDayId,
           this.workoutId,
-          image.media,
-          { name: image.newName });
+          image.media.id,
+          image.newName);
       });
     return newExercises;
   }
@@ -198,11 +198,11 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     workoutId: string,
     dayId: string,
     id: string): ExerciseSetBean {
-    return new ExerciseSetBean({
+    return ExerciseSetBean.create({
       id: id,
-      dayId: dayId,
       workoutId: workoutId,
-      exercises: newExercises.map(exe => exe.id)
+      exercises: newExercises,
+      dayId: dayId,
     });
   }
 

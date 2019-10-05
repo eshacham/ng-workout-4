@@ -1,7 +1,7 @@
-import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
+import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { IState } from './generics';
 
-export interface IExercisesMediaState extends IState<ExerciseMedia> {
+export interface IExercisesMediaState extends IState<ExerciseMediaBean> {
 }
 
 export const initialExercisesMediaState: IExercisesMediaState = {

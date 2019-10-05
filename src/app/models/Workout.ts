@@ -1,7 +1,7 @@
-import { WorkoutDay, WorkoutDayBean } from './WorkoutDay';
-import { Guid } from 'guid-typescript';
+import { WorkoutDay} from './WorkoutDay';
+import { Bean } from './interfaces';
 
-export class WorkoutBase {
+export class WorkoutBase implements Bean {
     public id: string;
     public name: string;
     public description: string;
@@ -24,6 +24,12 @@ export class Workout extends WorkoutBase {
         super(options);
         this.days = options.days;
     }
+    toBean(): WorkoutBean {
+        return {
+            ...this,
+            days: this.days.map(d => d.id),
+        };
+    }
 }
 export class WorkoutBean extends WorkoutBase {
     public days?: string[];
@@ -37,22 +43,12 @@ export class WorkoutBean extends WorkoutBase {
         this.days = options.days;
     }
 
-    static newBean() {
-        const id = Guid.raw();
-        const day = WorkoutDayBean.newBean(id);
-        const workout = new WorkoutBean({
-            id: id,
+    static create(options: {id: string, dayId: string}) {
+        return new WorkoutBean({
+            id: options.id,
             name: 'new workout',
             description: 'describe the workout',
-            days: [ day.id ]
+            days: [ options.dayId ]
         });
-        return { workout: workout, day: day };
-    }
-
-    static makeBean(workout: Workout): WorkoutBean {
-        return {
-            ...workout,
-            days: workout.days.map(d => d.id),
-        };
     }
 }

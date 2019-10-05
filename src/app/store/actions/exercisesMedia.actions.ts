@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ExerciseMedia } from 'src/app/models/ExerciseMedia';
+import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 
 export enum EExerciseMediaActions {
     AddExerciseMedia = '[ExerciseMedia] Add exercise media',
@@ -11,7 +11,7 @@ export enum EExerciseMediaActions {
 export class AddExerciseMedia implements Action {
     readonly type = EExerciseMediaActions.AddExerciseMedia;
     constructor (public payload: {
-        exerciseMedia: ExerciseMedia,
+        exerciseMedia: ExerciseMediaBean,
     }) { }
 }
 export class UpdateExerciseMedia implements Action {
