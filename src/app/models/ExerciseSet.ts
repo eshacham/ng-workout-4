@@ -15,10 +15,10 @@ export class ExerciseSet extends ExerciseSetBase {
         super(options);
         this.exercises = options.exercises;
     }
-    toBean(workoutId: string, dayId: string): ExerciseSetBean {
+    static toBean(set: ExerciseSet, workoutId: string, dayId: string): ExerciseSetBean {
         return {
-            ...this,
-            exercises: this.exercises.map(e => e.id),
+            ...set,
+            exercises: set.exercises.map(e => e.id),
             workoutId: workoutId,
             workoutDayId: dayId
         };

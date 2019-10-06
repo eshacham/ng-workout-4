@@ -43,10 +43,10 @@ export class Exercise implements Bean {
         this.restAfterExercise = options.restAfterExercise;
     }
 
-    toBean(workoutId: string, dayId: string, setId: string)
+    static toBean(exe: Exercise, workoutId: string, dayId: string, setId: string)
         : ExerciseBean {
         return {
-            ...this,
+            ...exe,
             workoutId: workoutId,
             dayId: dayId,
             setId: setId

@@ -1,10 +1,10 @@
 import { Guid } from 'guid-typescript';
 import { GripType, GripWidth, RepetitionSpeed, WeightType, WeightUnit } from '../models/enums';
 import { WorkoutsDataMaps } from '../models/interfaces';
-import { Workout, WorkoutBean } from '../models/Workout';
-import { WorkoutDay, WorkoutDayBean } from '../models/WorkoutDay';
-import { ExerciseSet, ExerciseSetBean } from '../models/ExerciseSet';
-import { Exercise, ExerciseBean } from '../models/Exercise';
+import { Workout } from '../models/Workout';
+import { WorkoutDay } from '../models/WorkoutDay';
+import { ExerciseSet } from '../models/ExerciseSet';
+import { Exercise } from '../models/Exercise';
 import { Grip } from '../models/Grip';
 import { Rep } from '../models/Rep';
 import { attachMedia2Exercise } from './defaultExerciseMedia';
@@ -5313,7 +5313,6 @@ const getDefaultWorkouts = (): Workout[] => {
     }
     return _defaultWorkouts;
 };
-
 export const getDefaultWorkoutsMaps = (): WorkoutsDataMaps => {
     const workoutsData: WorkoutsDataMaps = {
         workouts: { byId: {} },
@@ -5322,13 +5321,13 @@ export const getDefaultWorkoutsMaps = (): WorkoutsDataMaps => {
         exercises: { byId: {} },
     };
     for (const workout of getDefaultWorkouts()) {
-        workoutsData.workouts.byId[`${workout.id}`] = workout.toBean();
+        workoutsData.workouts.byId[`${workout.id}`] = Workout.toBean(workout);
         for (const day of workout.days) {
-            workoutsData.days.byId[`${day.id}`] = day.toBean(workout.id);
+            workoutsData.days.byId[`${day.id}`] = WorkoutDay.toBean(day, workout.id);
             for (const set of day.exerciseSets) {
-                workoutsData.sets.byId[`${set.id}`] = set.toBean(workout.id, day.id);
+                workoutsData.sets.byId[`${set.id}`] = ExerciseSet.toBean(set, workout.id, day.id);
                 for (const exe of set.exercises) {
-                    workoutsData.exercises.byId[`${exe.id}`] = exe.toBean(workout.id, day.id, set.id);
+                    workoutsData.exercises.byId[`${exe.id}`] = Exercise.toBean(exe, workout.id, day.id, set.id);
                 }
             }
         }

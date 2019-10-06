@@ -24,10 +24,10 @@ export class Workout extends WorkoutBase {
         super(options);
         this.days = options.days;
     }
-    toBean(): WorkoutBean {
+    static toBean(workout: Workout): WorkoutBean {
         return {
-            ...this,
-            days: this.days.map(d => d.id),
+            ...workout,
+            days: workout.days.map(d => d.id),
         };
     }
 }
