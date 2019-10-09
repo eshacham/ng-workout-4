@@ -11,7 +11,7 @@ import { Rep } from 'src/app/models/Rep';
 import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover/exercise-thumbnail-popover.component';
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { IAppState } from 'src/app/store/state/app.state';
-import { getWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
+import { getSelectedWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
 import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 import { getExerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
@@ -60,7 +60,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     @Input() workoutDayId: string;
     @Input() exerciseSetId: string;
     @Input() exerciseSetIndex: number;
-    @Input() isDayInEditMode: boolean;
 
     get activeExercise(): ExerciseBean {
         return this.exercises[this.activeExerciseInSetIndex];
@@ -99,7 +98,9 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     set IsEditing(val: boolean) {
         this._isEditing = val;
     }
-
+    get isDayInEditMode(): boolean {
+        return this.DisplayMode === DisplayMode.Edit;
+    }
     get DisplayMode(): DisplayMode {
         return this._displayMode;
     }
@@ -128,7 +129,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 this.exercises = exerciseSet.exercises;
                 this.images = exerciseSet.media;
             });
-        this.store.select(getWorkoutDayState)
+        this.store.select(getSelectedWorkoutDayState)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(state => {
                 if (state) {
@@ -154,30 +155,37 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     handleWorkoutDayStateChange(state: WorkoutDayBean) {
-        if (state.id !== this.workoutDayId) {
-            return;
-        }
-        this.DisplayMode = state.displayMode;
-        if (state.runningState === RunningState.NA ||
-            state.runningExerciseSetIndex !== this.exerciseSetIndex) {
-            this.IsRunning = false;
-            this.stopRepTimer();
-            this.stopRestTimer();
-            return;
-        }
-        if (state.runningState === RunningState.Starting &&
-            state.runningExerciseSetIndex === this.exerciseSetIndex) {
-            this.startWorkout();
-            this.store.dispatch(new ExerciseStarted({
-                id: this.workoutDayId,
-                runningExerciseSetIndex: this.exerciseSetIndex,
-                displayMode: DisplayMode.Workout,
-                runningState: RunningState.Started,
-                exerciseSets: null,
-                name: null,
-                workoutId: null
-            }));
-            return;
+        console.log('exercise-thumbnail - handleWorkoutDayStateChange', this.DisplayMode);
+
+        if (state.id === this.workoutDayId) {
+            this.DisplayMode = state.displayMode;
+            if (state.runningState === RunningState.NA ||
+                state.runningExerciseSetIndex !== this.exerciseSetIndex) {
+                this.IsRunning = false;
+                this.stopRepTimer();
+                this.stopRestTimer();
+                return;
+            }
+            if (state.runningState === RunningState.Starting &&
+                state.runningExerciseSetIndex === this.exerciseSetIndex) {
+                this.startWorkout();
+                this.store.dispatch(new ExerciseStarted({
+                    id: this.workoutDayId,
+                    runningExerciseSetIndex: this.exerciseSetIndex,
+                    displayMode: DisplayMode.Workout,
+                    runningState: RunningState.Started,
+                    exerciseSets: null,
+                    name: null,
+                    workoutId: null
+                }));
+                return;
+            }
+        } else {
+            if (state.runningState === RunningState.Starting) {
+                this.IsRunning = false;
+                this.stopRepTimer();
+                this.stopRestTimer();
+            }
         }
     }
 

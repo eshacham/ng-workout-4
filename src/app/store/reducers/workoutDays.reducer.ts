@@ -34,16 +34,16 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 byId: newMap
             };
         }
+        // case EWorkoutDaysActions.AddWorkoutDay: {
+        //     return {
+        //         ...state,
+        //         workoutDayId2AddFrom: action.payload.dayId
+        //     };
+        // }
         case EWorkoutDaysActions.AddWorkoutDay: {
             return {
                 ...state,
-                workoutDayId2AddFrom: action.payload.dayId
-            };
-        }
-        case EWorkoutDaysActions.WorkoutDayAdded: {
-            return {
-                ...state,
-                workoutDayId2AddFrom: undefined,
+                // workoutDayId2AddFrom: undefined,
                 byId: {
                     ...state.byId,
                     [action.payload.day.id]: action.payload.day
@@ -62,18 +62,18 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 workoutDayMoveState: undefined
             };
         }
-        case EWorkoutDaysActions.SelectWorkoutDay: {
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.payload.dayId]: {
-                        workoutId: action.payload.workoutId,
-                        ...state.byId[action.payload.dayId],
-                    }
-                },
-            };
-        }
+        // case EWorkoutDaysActions.SelectWorkoutDay: {
+        //     return {
+        //         ...state,
+        //         byId: {
+        //             ...state.byId,
+        //             [action.payload.dayId]: {
+        //                 ...state.byId[action.payload.dayId],
+        //                 workoutId: action.payload.workoutId,
+        //             }
+        //         },
+        //     };
+        // }
         case EWorkoutDaysActions.UpdateWorkoutDay: {
             return {
                 ...state,

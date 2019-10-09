@@ -34,6 +34,6 @@ export const getCurrentWorkoutSelectedDayId = createSelector(
   getCurrentWorkout,
   (workout: WorkoutBean) => workout ? {
     workoutId: workout.id,
-    dayId: workout.selectedWorkoutDayId
+    dayId: workout.selectedWorkoutDayId || workout.days[0]
   } : null
 );

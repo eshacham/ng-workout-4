@@ -12,7 +12,7 @@ export enum EWorkoutDaysActions {
     DeleteWorkoutDay = '[WorkoutDays] Delete workout day',
     WorkoutDayDeleted = '[WorkoutDays] Workout day has been deleted',
     AddWorkoutDay = '[WorkoutDays] Add workout day',
-    WorkoutDayAdded = '[WorkoutDays] Workout day has been added',
+    // WorkoutDayAdded = '[WorkoutDays] Workout day has been added',
     MoveWorkoutDay = '[WorkoutDays] Move workout day',
     WorkoutDayMoved = '[WorkoutDays] Update Workout day has been moved',
     UpdateWorkoutDay = '[WorkoutDays] Update Workout day',
@@ -46,7 +46,7 @@ export class DeleteWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.DeleteWorkoutDay;
     constructor(public payload: {
         dayId: string,
-        sets: string[]
+        // sets: string[]
     }) { }
 }
 
@@ -54,12 +54,12 @@ export class WorkoutDayDeleted implements Action {
     readonly type = EWorkoutDaysActions.WorkoutDayDeleted;
     constructor() { }
 }
-export class AddWorkoutDay implements Action {
-    readonly type = EWorkoutDaysActions.AddWorkoutDay;
-    constructor(public payload: {
-        dayId: string
-    }) { }
-}
+// export class AddWorkoutDay implements Action {
+//     readonly type = EWorkoutDaysActions.AddWorkoutDay;
+//     constructor(public payload: {
+//         dayId: string
+//     }) { }
+// }
 export class UpdateWorkoutDay implements Action {
     readonly type = EWorkoutDaysActions.UpdateWorkoutDay;
     constructor(public payload: {
@@ -68,8 +68,8 @@ export class UpdateWorkoutDay implements Action {
     }) { }
 }
 
-export class WorkoutDayAdded implements Action {
-    readonly type = EWorkoutDaysActions.WorkoutDayAdded;
+export class AddWorkoutDay implements Action {
+    readonly type = EWorkoutDaysActions.AddWorkoutDay;
     constructor(public payload: {
         workoutId: string,
         day: WorkoutDayBean,
@@ -123,7 +123,6 @@ export class ReorderExerciseSets implements Action {
 export type WorkoutDaysActions =
     SelectWorkoutDay |
     DeleteWorkoutDay |
-    WorkoutDayAdded |
     AddWorkoutDay |
     WorkoutDayDeleted |
     StartFirstExercise |

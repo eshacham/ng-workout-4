@@ -1,27 +1,18 @@
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { IonFab } from '@ionic/angular';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { WorkoutDayBean } from '../../models/WorkoutDay';
 import { DisplayMode, RunningState } from '../../models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
 import {
-  StartFirstExercise,
-  ChangeDisplayMode,
   StartNextExercise,
-  DeleteWorkoutDay,
-  AddWorkoutDay,
-  MoveWorkoutDay,
-  Direction,
   UpdateWorkoutDay,
   ReorderExerciseSets
 } from 'src/app/store/actions/workoutDays.actions';
-import { getWorkoutDayState, getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
-import { takeUntil, take } from 'rxjs/operators';
+import { getSelectedWorkoutDayState, getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
+import { takeUntil } from 'rxjs/operators';
 import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
-import { getMediaIdsByDay } from 'src/app/store/selectors/exercises.selectors';
 import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
 
 @Component({
@@ -33,13 +24,10 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   runningExerciseSetIndex?: number;
   displayMode = DisplayMode;
-  private _displayMode: DisplayMode = DisplayMode.Display;
+
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private exerciseSets: string[];
   private name: string;
-
-  @ViewChild('fabWorkout') fabWorkout: IonFab;
-  @ViewChild('fabEdit') fabEdit: IonFab;
 
   @Input() workoutDayId: string;
   @Input() isLastDayActive: boolean;
@@ -48,12 +36,11 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   @Input() isNewDayAdded: boolean;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
     private store: Store<IAppState>) {
     this.runningExerciseSetIndex = null;
   }
 
+  private _displayMode: DisplayMode = DisplayMode.Display;
   get DisplayMode(): DisplayMode {
     return this._displayMode;
   }
@@ -68,12 +55,11 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   get IsDisplayMode() { return this._displayMode === DisplayMode.Display; }
   get IsWorkoutMode() { return this._displayMode === DisplayMode.Workout; }
   get IsDisplayOrWorkout() { return this.IsWorkoutMode || this.IsDisplayMode; }
-  get IsDisplayOrEdit() { return this.IsEditMode || this.IsDisplayMode; }
+  // get IsDisplayOrEdit() { return this.IsEditMode || this.IsDisplayMode; }
 
   ngOnInit() {
-    console.log(`workout-day ${this.workoutDayId} ngOnInit - this.isNewDayAdded ${this.isNewDayAdded}`);
+    // console.log(`workout-day ${this.workoutDayId} ngOnInit - this.isNewDayAdded ${this.isNewDayAdded}`);
     if (this.isNewDayAdded) {
-      this.fabEdit.activated = true;
       this.DisplayMode = DisplayMode.Edit;
     }
     this.store.select(getWorkoutDay(this.workoutDayId))
@@ -85,11 +71,11 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
           this.name = workoutDay.name;
         }
       });
-    this.store.select(getWorkoutDayState)
+    this.store.select(getSelectedWorkoutDayState)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(state => {
         if (state) {
-          this.handleWorkoutDayStateChange(state);
+          this.handleSelectedWorkoutDayStateChange(state);
         }
       });
   }
@@ -108,7 +94,10 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  handleWorkoutDayStateChange(state: WorkoutDayBean) {
+  handleSelectedWorkoutDayStateChange(state: WorkoutDayBean) {
+    if (state.id === this.workoutDayId) {
+      this.DisplayMode = state.displayMode;
+    }
     switch (state.runningState) {
       case RunningState.Completed:
         if (state.id === this.workoutDayId) {
@@ -133,42 +122,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         break;
       default:
     }
-
-    if (state.runningState === RunningState.Started) {
-
-    }
-  }
-
-  DispatchChangeDisplayMode() {
-    this.store.dispatch(new ChangeDisplayMode({
-      id: this.workoutDayId,
-      runningExerciseSetIndex: null,
-      displayMode: this.DisplayMode,
-      runningState: RunningState.NA,
-      exerciseSets: null,
-      name: null
-    }));
-  }
-
-  startWorkoutToggler() {
-    switch (this.DisplayMode) {
-      case DisplayMode.Display:
-      case DisplayMode.Edit:
-        this.DisplayMode = DisplayMode.Workout;
-        this.store.dispatch(new StartFirstExercise({
-          id: this.workoutDayId,
-          runningExerciseSetIndex: 0,
-          displayMode: DisplayMode.Workout,
-          runningState: RunningState.Starting,
-          exerciseSets: null,
-          name: null
-        }));
-        break;
-      case DisplayMode.Workout:
-        this.DisplayMode = DisplayMode.Display;
-        this.DispatchChangeDisplayMode();
-        break;
-    }
   }
 
   stopWorkout() {
@@ -180,58 +133,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
       case DisplayMode.Edit:
         break;
     }
-    this.DispatchChangeDisplayMode();
-  }
-
-  async editWorkoutToggler() {
-    switch (this.DisplayMode) {
-      case DisplayMode.Workout:
-      case DisplayMode.Display:
-        this.DisplayMode = DisplayMode.Edit;
-        break;
-      case DisplayMode.Edit:
-        this.DisplayMode = DisplayMode.Display;
-        await this.saveChanges();
-        break;
-    }
-    this.DispatchChangeDisplayMode();
-  }
-
-  async selectExerciseToAdd(event) {
-    this.router.navigate(['select-exercise'], { relativeTo: this.route });
-    event.stopPropagation();
-  }
-
-  moveForwardWorkoutDay(event) {
-    this.store.dispatch(new MoveWorkoutDay({ direction: Direction.Forward }));
-    event.stopPropagation();
-  }
-
-  moveBackWorkoutDay(event) {
-    this.store.dispatch(new MoveWorkoutDay({ direction: Direction.Backword }));
-    event.stopPropagation();
-  }
-
-  addWorkoutDay(event) {
-    this.store.dispatch(new AddWorkoutDay({
-      dayId: this.workoutDayId
-    }));
-    event.stopPropagation();
-  }
-
-  deleteWorkoutDay(event) {
-    this.store.select(getMediaIdsByDay(this.workoutDayId))
-      .pipe(take(1))
-      .subscribe(mediaIds => {
-        if (mediaIds.length) {
-          this.decreseMediasUsage(mediaIds);
-        }
-        this.store.dispatch(new DeleteWorkoutDay({
-          dayId: this.workoutDayId,
-          sets: this.exerciseSets
-        }));
-      });
-    event.stopPropagation();
   }
 
   workoutDayChanged() {

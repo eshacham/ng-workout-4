@@ -54,7 +54,8 @@ export const exerciseSetsReducers = (
         case EWorkoutDaysActions.DeleteWorkoutDay: {
             return {
                 ...state,
-                byId: removeItemsFromMapByIds(action.payload.sets, state)
+                byId: removeItemsFromMapByPredicate(([key, val]) => val.dayId !== action.payload.dayId, state),
+
             };
         }
         case EWorkoutsActions.DeleteWorkout: {
