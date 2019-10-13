@@ -58,12 +58,12 @@
         </ion-fab-list>
     </ion-fab>
 
-  <ion-slides #slider pager='true' *ngIf="days"
+  <ion-slides #slider pager='true'
     [options]="slideOpts"
     (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let day of days">
         <app-workout-day
-        [workoutDayId]="day"
+        [dayId]="day"
         [isLastDayActive]="isLastDayActive"
         [isFirstDayActive]="isFirstDayActive"
         [isOneDayOnly]="isOneDayOnly"

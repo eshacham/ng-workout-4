@@ -6,12 +6,11 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser/';
 import { PopoverController } from '@ionic/angular';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { DisplayMode, WeightUnit, RunningState } from 'src/app/models/enums';
-import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { Rep } from 'src/app/models/Rep';
 import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover/exercise-thumbnail-popover.component';
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { IAppState } from 'src/app/store/state/app.state';
-import { getSelectedWorkoutDayState } from 'src/app/store/selectors/workoutDays.selectors';
+import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 import { getExerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
@@ -48,7 +47,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     displayMode = DisplayMode;
     weightUnit = WeightUnit;
 
-    private exerciseSet: ExerciseSetBean;
     private exercises: ExerciseBean[];
     private images: ExerciseMediaBean[];
     private _isOpen = false;
@@ -57,7 +55,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     private _displayMode: DisplayMode = DisplayMode.Display;
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    @Input() workoutDayId: string;
+    @Input() dayId: string;
     @Input() exerciseSetId: string;
     @Input() exerciseSetIndex: number;
 
@@ -125,15 +123,14 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(exerciseSet => {
                 console.log('exercise-thumbnail selectexerciseSet', exerciseSet);
-                this.exerciseSet = exerciseSet.set;
                 this.exercises = exerciseSet.exercises;
                 this.images = exerciseSet.media;
             });
-        this.store.select(getSelectedWorkoutDayState)
+        this.store.select(getWorkoutDay(this.dayId))
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(state => {
-                if (state) {
-                    this.handleWorkoutDayStateChange(state);
+            .subscribe(day => {
+                if (day) {
+                    this.handleWorkoutDayStateChange(day);
                 }
             });
     }
@@ -154,23 +151,23 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.IsOpen = !this.IsOpen;
     }
 
-    handleWorkoutDayStateChange(state: WorkoutDayBean) {
+    handleWorkoutDayStateChange(day: WorkoutDayBean) {
         console.log('exercise-thumbnail - handleWorkoutDayStateChange', this.DisplayMode);
 
-        if (state.id === this.workoutDayId) {
-            this.DisplayMode = state.displayMode;
-            if (state.runningState === RunningState.NA ||
-                state.runningExerciseSetIndex !== this.exerciseSetIndex) {
+        if (day.id === this.dayId) {
+            this.DisplayMode = day.displayMode;
+            if (day.runningState === RunningState.NA ||
+                day.runningExerciseSetIndex !== this.exerciseSetIndex) {
                 this.IsRunning = false;
                 this.stopRepTimer();
                 this.stopRestTimer();
                 return;
             }
-            if (state.runningState === RunningState.Starting &&
-                state.runningExerciseSetIndex === this.exerciseSetIndex) {
+            if (day.runningState === RunningState.Starting &&
+                day.runningExerciseSetIndex === this.exerciseSetIndex) {
                 this.startWorkout();
                 this.store.dispatch(new ExerciseStarted({
-                    id: this.workoutDayId,
+                    id: this.dayId,
                     runningExerciseSetIndex: this.exerciseSetIndex,
                     displayMode: DisplayMode.Workout,
                     runningState: RunningState.Started,
@@ -181,7 +178,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 return;
             }
         } else {
-            if (state.runningState === RunningState.Starting) {
+            if (day.runningState === RunningState.Starting) {
                 this.IsRunning = false;
                 this.stopRepTimer();
                 this.stopRestTimer();
@@ -196,7 +193,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     runExercise() {
         this.startWorkout();
         this.store.dispatch(new ExerciseStarted({
-            id: this.workoutDayId,
+            id: this.dayId,
             runningExerciseSetIndex: this.exerciseSetIndex,
             displayMode: DisplayMode.Workout,
             runningState: RunningState.Started,
@@ -215,7 +212,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     deleteExerciseSet() {
         this.store.dispatch(new DeleteExerciseSet({
-            dayId: this.workoutDayId,
+            dayId: this.dayId,
             setId: this.exerciseSetId
         }));
     }
@@ -246,7 +243,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     completeExercise() {
         this.store.dispatch(new ExerciseCompleted({
-            id: this.workoutDayId,
+            id: this.dayId,
             runningExerciseSetIndex: this.exerciseSetIndex,
             displayMode: DisplayMode.Workout,
             runningState: RunningState.Completed,

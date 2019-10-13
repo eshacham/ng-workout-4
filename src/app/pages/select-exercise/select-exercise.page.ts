@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { ExerciseBean } from 'src/app/models/Exercise';
@@ -12,7 +11,7 @@ import { Subscription, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { getHasDataBeenReset } from 'src/app/store/selectors/data.selectors';
 import { getLibraryMusclesFilter } from 'src/app/store/selectors/musclesFilter.selectors';
-import { getCurrentWorkoutSelectedDayId } from 'src/app/store/selectors/workouts.selectors';
+import { getCurrentWorkout } from 'src/app/store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
 import { AddExerciseSets } from 'src/app/store/actions/exerciseSets.actions';
 import { getExercisesMedias } from 'src/app/store/selectors/ExercisesMedia.selectors';
@@ -108,13 +107,13 @@ export class SelectExercisePage implements OnInit, OnDestroy {
         this.musclesFilter = filter;
       });
 
-    this.store.select(getCurrentWorkoutSelectedDayId)
+    this.store.select(getCurrentWorkout)
       .pipe(take(1))
-      .subscribe(async (selectedWorkoutDayState) => {
-        if (selectedWorkoutDayState && this.workoutId === selectedWorkoutDayState.workoutId) {
-          const workoutDayId = selectedWorkoutDayState.dayId;
-          this.lastSelectedWorkoutDayId = workoutDayId;
-          console.log('select-exercise - selectCurrentWorkoutSelectedDayId:', workoutDayId);
+      .subscribe(async (currentWorkout) => {
+        if (currentWorkout && this.workoutId === currentWorkout.workout.id) {
+          const dayId = currentWorkout.selectedDayId;
+          this.lastSelectedWorkoutDayId = dayId;
+          console.log('select-exercise - selectCurrentWorkoutSelectedDayId:', dayId);
         }
       });
   }

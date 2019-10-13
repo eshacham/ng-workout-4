@@ -6,17 +6,17 @@ import { WorkoutBean } from 'src/app/models/Workout';
 const workoutsState = (state: IAppState) => state.workouts;
 
 export const getWorkouts = createSelector(
-    workoutsState,
-    (workoutsMap: IWorkoutsState): WorkoutBean[] => {
-        return Object.keys(workoutsMap.byId)
-        .map(id => workoutsMap.byId[id]);
-    }
+  workoutsState,
+  (workoutsMap: IWorkoutsState): WorkoutBean[] => {
+    return Object.keys(workoutsMap.byId)
+      .map(id => workoutsMap.byId[id]);
+  }
 );
 export const getWorkout = (id: string) => createSelector(
-    workoutsState,
-    (workoutsMap: IWorkoutsState): WorkoutBean => {
-        return workoutsMap.byId[id];
-    }
+  workoutsState,
+  (workoutsMap: IWorkoutsState): WorkoutBean => {
+    return workoutsMap.byId[id];
+  }
 );
 
 export const getCurrentWorkoutId = createSelector(
@@ -27,13 +27,15 @@ export const getCurrentWorkoutId = createSelector(
 export const getCurrentWorkout = createSelector(
   workoutsState,
   getCurrentWorkoutId,
-  (workouts: IWorkoutsState, workoutId: string) => workouts.byId[workoutId]
-);
-
-export const getCurrentWorkoutSelectedDayId = createSelector(
-  getCurrentWorkout,
-  (workout: WorkoutBean) => workout ? {
-    workoutId: workout.id,
-    dayId: workout.selectedWorkoutDayId || workout.days[0]
-  } : null
+  (workouts: IWorkoutsState, workoutId: string) => {
+    const workout = workouts.byId[workoutId];
+    if (!workout) {
+      return { workout: null, selectedDayId: null };
+    } else {
+      return {
+        workout: workout,
+        selectedDayId: workout.selectedWorkoutDayId || workout.days[0]
+      };
+    }
+  }
 );

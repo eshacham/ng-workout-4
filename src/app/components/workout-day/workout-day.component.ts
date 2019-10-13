@@ -10,7 +10,7 @@ import {
   UpdateWorkoutDay,
   ReorderExerciseSets
 } from 'src/app/store/actions/workoutDays.actions';
-import { getSelectedWorkoutDayState, getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
+import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil } from 'rxjs/operators';
 import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
 import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
@@ -29,7 +29,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   private exerciseSets: string[];
   private name: string;
 
-  @Input() workoutDayId: string;
+  @Input() dayId: string;
   @Input() isLastDayActive: boolean;
   @Input() isFirstDayActive: boolean;
   @Input() isOneDayOnly: boolean;
@@ -55,27 +55,19 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   get IsDisplayMode() { return this._displayMode === DisplayMode.Display; }
   get IsWorkoutMode() { return this._displayMode === DisplayMode.Workout; }
   get IsDisplayOrWorkout() { return this.IsWorkoutMode || this.IsDisplayMode; }
-  // get IsDisplayOrEdit() { return this.IsEditMode || this.IsDisplayMode; }
 
   ngOnInit() {
-    // console.log(`workout-day ${this.workoutDayId} ngOnInit - this.isNewDayAdded ${this.isNewDayAdded}`);
     if (this.isNewDayAdded) {
       this.DisplayMode = DisplayMode.Edit;
     }
-    this.store.select(getWorkoutDay(this.workoutDayId))
+    this.store.select(getWorkoutDay(this.dayId))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(workoutDay => {
         if (workoutDay) {
-          console.log(`workout-day ${this.workoutDayId} selectWorkoutDay`, workoutDay);
+          console.log(`workout-day ${this.dayId} getWorkoutDay`, workoutDay);
           this.exerciseSets = workoutDay.exerciseSets;
           this.name = workoutDay.name;
-        }
-      });
-    this.store.select(getSelectedWorkoutDayState)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(state => {
-        if (state) {
-          this.handleSelectedWorkoutDayStateChange(state);
+          this.handleSelectedWorkoutDayStateChange(workoutDay);
         }
       });
   }
@@ -89,18 +81,18 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log(`workout-day ${this.workoutDayId} onDestroy`);
+    console.log(`workout-day ${this.dayId} onDestroy`);
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
   handleSelectedWorkoutDayStateChange(state: WorkoutDayBean) {
-    if (state.id === this.workoutDayId) {
+    if (state.id === this.dayId) {
       this.DisplayMode = state.displayMode;
     }
     switch (state.runningState) {
       case RunningState.Completed:
-        if (state.id === this.workoutDayId) {
+        if (state.id === this.dayId) {
           if (state.runningExerciseSetIndex + 1 < this.exerciseSets.length) {
             this.store.dispatch(new StartNextExercise({
               id: state.id,
@@ -116,7 +108,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         }
         break;
       case RunningState.Started:
-        if (state.id !== this.workoutDayId) {
+        if (state.id !== this.dayId) {
           this.stopWorkout();
         }
         break;
@@ -137,7 +129,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   workoutDayChanged() {
     this.store.dispatch(new UpdateWorkoutDay({
-      dayId: this.workoutDayId,
+      dayId: this.dayId,
       name: this.name
     }));
   }
@@ -152,7 +144,7 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
     const to = event.detail.to;
     console.log(`Moving item from ${from} to ${to}`);
     this.store.dispatch(new ReorderExerciseSets({
-      dayId: this.workoutDayId,
+      dayId: this.dayId,
       fromIndex: from < to ? from : to,
       toIndex: to > from ? to : from
     }));

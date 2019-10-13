@@ -17,9 +17,9 @@ export function removeItemsFromMapByIds<T>(ids: string[], state: IState<T>) {
     return newMap;
 }
 
-type myPredicate = ([key, val]) => boolean;
+type MapPredicate = ([key, val]) => boolean;
 
-export function removeItemsFromMapByPredicate<T>(predicate: myPredicate, state: IState<T>) {
+export function removeItemsFromMapByPredicate<T>(predicate: MapPredicate, state: IState<T>) {
     const newMap = Object.entries(state.byId)
         .filter(predicate)
         .reduce((map, obj) => (map[obj[0]] = obj[1], map), {});

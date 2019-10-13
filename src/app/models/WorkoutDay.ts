@@ -31,7 +31,9 @@ export class WorkoutDay extends WorkoutDayBase {
         return {
             ...day,
             exerciseSets: day.exerciseSets.map(s => s.id),
-            workoutId: workoutId
+            workoutId: workoutId,
+            displayMode: DisplayMode.Display,
+            runningState: RunningState.NA
         };
     }
 }
@@ -39,8 +41,8 @@ export class WorkoutDay extends WorkoutDayBase {
 export class WorkoutDayBean extends WorkoutDayBase {
     public exerciseSets: string[];
     runningExerciseSetIndex?: number;
-    displayMode?: DisplayMode;
-    runningState?: RunningState;
+    displayMode: DisplayMode;
+    runningState: RunningState;
     workoutId?: string;
 
     constructor(options: {
@@ -57,8 +59,8 @@ export class WorkoutDayBean extends WorkoutDayBase {
             this.exerciseSets = options.exerciseSets;
         }
         this.runningExerciseSetIndex = options.runningExerciseSetIndex;
-        this.displayMode = options.displayMode;
-        this.runningState = options.runningState;
+        this.displayMode = options.displayMode || DisplayMode.Display;
+        this.runningState = options.runningState || RunningState.NA;
         if (options.workoutId) {
             this.workoutId = options.workoutId;
         }

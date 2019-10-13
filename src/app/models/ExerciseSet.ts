@@ -20,14 +20,14 @@ export class ExerciseSet extends ExerciseSetBase {
             ...set,
             exercises: set.exercises.map(e => e.id),
             workoutId: workoutId,
-            workoutDayId: dayId
+            dayId: dayId
         };
     }
 }
 export class ExerciseSetBean extends ExerciseSetBase {
     public exercises: string[];
     public workoutId: string;
-    public workoutDayId: string;
+    public dayId: string;
 
     constructor(options: {
         id: string,
@@ -37,7 +37,7 @@ export class ExerciseSetBean extends ExerciseSetBase {
     }) {
         super(options);
         this.exercises = options.exercises;
-        this.workoutDayId = options.dayId;
+        this.dayId = options.dayId;
         this.workoutId = options.workoutId;
     }
     static create(options: {

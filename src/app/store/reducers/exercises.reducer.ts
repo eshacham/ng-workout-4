@@ -161,15 +161,17 @@ export const exercisesReducers = (
             };
         }
         case EWorkoutsActions.DeleteWorkout: {
+            const workoutId = action.payload.id;
             return {
                 ...state,
-                byId: removeItemsFromMapByPredicate(([key, val]) => val.workoutId !== action.payload.id, state)
+                byId: removeItemsFromMapByPredicate(([key, val]) => val.workoutId !== workoutId, state)
             };
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
+            const dayId = action.payload.dayId;
             return {
                 ...state,
-                byId: removeItemsFromMapByPredicate(([key, val]) => val.dayId !== action.payload.dayId, state),
+                byId: removeItemsFromMapByPredicate(([key, val]) => val.dayId !== dayId, state),
             };
         }
         default: {

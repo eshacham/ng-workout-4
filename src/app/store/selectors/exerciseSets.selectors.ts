@@ -25,8 +25,8 @@ export const getExerciseSet = (id: string) => createSelector(
         if (set) {
             const exeIds = set.exercises;
             exes = exeIds.map(exeId => exercises.byId[exeId]);
-            const mediaIds = exes.map(e => e.mediaId);
-            medias = mediaIds.map(mediaId => media ? media.byId[mediaId] : null);
+            const mediaIds = exes.map(e => e ? e.mediaId : null);
+            medias = mediaIds.map(mediaId => media && media.byId ? media.byId[mediaId] : null);
             Object.freeze(exes);
             Object.freeze(medias);
         }

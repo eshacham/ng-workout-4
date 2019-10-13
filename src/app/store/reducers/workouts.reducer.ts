@@ -55,8 +55,12 @@ export const workoutsReducers = (state = initialWorkoutsState,
             };
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
+            const dayId2Delete = action.payload.dayId;
             const oldDays = state.byId[state.selectedWorkoutId].days;
-            const newDays = oldDays.filter(d => d !== action.payload.dayId);
+            const newDays = oldDays.filter(d => d !== dayId2Delete);
+            const dayIndex2Delete = oldDays.indexOf(dayId2Delete);
+            const newDayIndex2Select = dayIndex2Delete === 0 ? 0 : dayIndex2Delete - 1;
+            const newDayId2Select = newDays[newDayIndex2Select];
             return {
                 ...state,
                 byId: {
@@ -64,7 +68,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
                     [state.selectedWorkoutId]: {
                         ...state.byId[state.selectedWorkoutId],
                         days: newDays,
-                        selectedWorkoutDayId: undefined,
+                        selectedWorkoutDayId: newDayId2Select,
                     }
                 },
             };
@@ -86,7 +90,8 @@ export const workoutsReducers = (state = initialWorkoutsState,
         }
         case EWorkoutDaysActions.MoveWorkoutDay: {
             const newDays = [...state.byId[state.selectedWorkoutId].days];
-            const idfDay2Move = state.byId[state.selectedWorkoutId].selectedWorkoutDayId;
+            const idfDay2Move = state.byId[state.selectedWorkoutId].selectedWorkoutDayId ||
+                                state.byId[state.selectedWorkoutId].days[0];
             const indexOfDay2Move = newDays.indexOf(idfDay2Move);
             const offset = action.payload.direction === Direction.Forward ? 1 : -1;
             moveItemInArray(newDays, indexOfDay2Move, offset);

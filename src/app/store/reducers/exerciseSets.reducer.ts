@@ -5,7 +5,7 @@ import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets
 import { ExerciseActions, EExerciseActions } from '../actions/exercises.actions';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { EWorkoutsActions, WorkoutsActions } from '../actions/workouts.actions';
-import { removeItemFromMap, removeItemsFromMapByIds, removeItemsFromMapByPredicate, newMapFromItems } from './utils';
+import { removeItemFromMap, removeItemsFromMapByPredicate, newMapFromItems } from './utils';
 
 export const exerciseSetsReducers = (
     state = initialExerciseSetsState,
@@ -52,16 +52,18 @@ export const exerciseSetsReducers = (
             };
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
+            const dayId = action.payload.dayId;
             return {
                 ...state,
-                byId: removeItemsFromMapByPredicate(([key, val]) => val.dayId !== action.payload.dayId, state),
+                byId: removeItemsFromMapByPredicate(([key, val]) => val.dayId !== dayId, state),
 
             };
         }
         case EWorkoutsActions.DeleteWorkout: {
+            const workoutId = action.payload.id;
             return {
                 ...state,
-                byId: removeItemsFromMapByPredicate(([key, val]) => val.workoutId !== action.payload.id, state)
+                byId: removeItemsFromMapByPredicate(([key, val]) => val.workoutId !== workoutId, state)
             };
         }
         case EExerciseSetActions.SwitchExercisesInSet: {

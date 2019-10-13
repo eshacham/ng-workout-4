@@ -34,16 +34,9 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 byId: newMap
             };
         }
-        // case EWorkoutDaysActions.AddWorkoutDay: {
-        //     return {
-        //         ...state,
-        //         workoutDayId2AddFrom: action.payload.dayId
-        //     };
-        // }
         case EWorkoutDaysActions.AddWorkoutDay: {
             return {
                 ...state,
-                // workoutDayId2AddFrom: undefined,
                 byId: {
                     ...state.byId,
                     [action.payload.day.id]: action.payload.day
@@ -62,18 +55,6 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 workoutDayMoveState: undefined
             };
         }
-        // case EWorkoutDaysActions.SelectWorkoutDay: {
-        //     return {
-        //         ...state,
-        //         byId: {
-        //             ...state.byId,
-        //             [action.payload.dayId]: {
-        //                 ...state.byId[action.payload.dayId],
-        //                 workoutId: action.payload.workoutId,
-        //             }
-        //         },
-        //     };
-        // }
         case EWorkoutDaysActions.UpdateWorkoutDay: {
             return {
                 ...state,
@@ -89,14 +70,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
         case EWorkoutDaysActions.DeleteWorkoutDay: {
             return {
                 ...state,
-                deleteSelectedWorkoutDay: action.payload.dayId
-            };
-        }
-        case EWorkoutDaysActions.WorkoutDayDeleted: {
-            return {
-                ...state,
-                deleteSelectedWorkoutDay: undefined,
-                byId: removeItemFromMap(state.deleteSelectedWorkoutDay, state)
+                byId: removeItemFromMap(action.payload.dayId, state)
             };
         }
         case EWorkoutDaysActions.StartFirstExercise:
