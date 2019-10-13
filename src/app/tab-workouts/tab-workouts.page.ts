@@ -71,8 +71,10 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   async addWorkout(event: any) {
     event.stopPropagation();
-    const workout = WorkoutBean.create({id: Guid.raw(), dayId: Guid.raw()});
-    const day = WorkoutDayBean.create({id: Guid.raw(), workoutId: workout.id});
+    const newWorkoutId = Guid.raw();
+    const newDayId = Guid.raw();
+    const workout = WorkoutBean.create({id: newWorkoutId, dayId: newDayId});
+    const day = WorkoutDayBean.create({id: newDayId, workoutId: newWorkoutId});
     this.store.dispatch(new AddWorkout({workout, day}));
     await new Promise(() => setTimeout(() => {
       this.DisplayMode = DisplayMode.Edit;
