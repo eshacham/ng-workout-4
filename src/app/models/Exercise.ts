@@ -11,7 +11,7 @@ export class Exercise implements Bean {
     public mediaId: string;
     public theGrip: Grip;
     public repSpeed: RepetitionSpeed;
-    public typeOfWeight?: WeightType;
+    public typeOfWeight: WeightType;
     public isFavorite: Boolean;
     public reps: Rep[];
     public restBetweenReps: number;
@@ -34,9 +34,8 @@ export class Exercise implements Bean {
         this.mediaId = options.mediaId;
         this.theGrip = options.theGrip || new Grip();
         this.repSpeed = options.repSpeed;
-        if (options.typeOfWeight) {
-            this.typeOfWeight = options.typeOfWeight;
-        }
+        this.typeOfWeight = options.typeOfWeight || WeightType.NoWeight;
+
         this.isFavorite = options.isFavorite;
         this.reps = options.reps;
         this.restBetweenReps = options.restBetweenReps;
