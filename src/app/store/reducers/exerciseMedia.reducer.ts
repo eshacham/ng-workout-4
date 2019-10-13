@@ -99,6 +99,16 @@ export const exercisesMediaReducers = (
                 byId: removeItemFromMap(action.payload.id, state)
             };
         }
+        case EExerciseMediaActions.AddExerciseMedia: {
+            const newId = action.payload.exerciseMedia.id;
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [newId]: action.payload.exerciseMedia
+                }
+            };
+        }
         default: {
             return state;
         }
