@@ -36,7 +36,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   days: string[];
   name: string;
   workoutId: string;
-  isNewDayAdded: boolean;
   subs: Subscription;
   activeDayIndex = 0;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -62,7 +61,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private store: Store<IAppState>) {
-    this.isNewDayAdded = false;
     this.subs = this.route.params.subscribe(params => {
       this.workoutId = params.id;
     });
@@ -82,7 +80,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       this._displayMode = val;
     }
   }
-
 
   ngOnInit() {
     this.store.select(getCurrentWorkout)
@@ -195,12 +192,12 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       id: newId,
       name: 'new workout day',
       exerciseSets: [],
-      workoutId: this.workoutId
+      workoutId: this.workoutId,
+      displayMode: DisplayMode.Edit
     });
     const index = this.activeDayIndex;
     const islast = this.days.length - 1 === index;
     console.log(`workout-days ${this.workoutId} splicing (insert) at ${index}`);
-    this.isNewDayAdded = true;
     this.fabEdit.activated = true;
     this.store.dispatch(new AddWorkoutDay({
       workoutId: this.workoutId,
@@ -220,8 +217,10 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         workoutId: this.workoutId,
         dayId: newId
       }));
+
     await this.saveChanges();
     event.stopPropagation();
+
   }
 
   async deleteWorkoutDay(event) {
@@ -332,6 +331,5 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     this.router.navigate(['select-exercise'], { relativeTo: this.route });
     event.stopPropagation();
   }
-
 
 }

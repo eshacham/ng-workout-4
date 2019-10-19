@@ -33,7 +33,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   @Input() isLastDayActive: boolean;
   @Input() isFirstDayActive: boolean;
   @Input() isOneDayOnly: boolean;
-  @Input() isNewDayAdded: boolean;
 
   constructor(
     private store: Store<IAppState>) {
@@ -57,9 +56,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   get IsDisplayOrWorkout() { return this.IsWorkoutMode || this.IsDisplayMode; }
 
   ngOnInit() {
-    if (this.isNewDayAdded) {
-      this.DisplayMode = DisplayMode.Edit;
-    }
     this.store.select(getWorkoutDay(this.dayId))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(workoutDay => {
@@ -87,9 +83,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   handleSelectedWorkoutDayStateChange(state: WorkoutDayBean) {
-    if (state.id === this.dayId) {
-      this.DisplayMode = state.displayMode;
-    }
     switch (state.runningState) {
       case RunningState.Completed:
         if (state.id === this.dayId) {
@@ -100,30 +93,19 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
               displayMode: DisplayMode.Workout,
               runningState: RunningState.Starting,
               exerciseSets: null,
-              name: null
+              name: null,
             }));
           } else {
-            this.stopWorkout();
+            // this.stopWorkout();
           }
         }
         break;
       case RunningState.Started:
         if (state.id !== this.dayId) {
-          this.stopWorkout();
+          // this.stopWorkout();
         }
         break;
       default:
-    }
-  }
-
-  stopWorkout() {
-    switch (this.DisplayMode) {
-      case DisplayMode.Workout:
-        this.DisplayMode = DisplayMode.Display;
-        break;
-      case DisplayMode.Display:
-      case DisplayMode.Edit:
-        break;
     }
   }
 
