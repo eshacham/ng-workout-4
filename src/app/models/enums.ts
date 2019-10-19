@@ -35,8 +35,7 @@ export enum DisplayMode {
     Workout
 }
 export enum RunningState {
-    Starting,
-    // Started,
+    Running,
     Completed,
     NA
 }

@@ -6,10 +6,10 @@ import { WorkoutDayBean } from '../../models/WorkoutDay';
 import { DisplayMode, RunningState } from '../../models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
 import {
-  StartNextExercise,
+  StartExercise,
   UpdateWorkoutDay,
   ReorderExerciseSets,
-  ChangeDisplayMode,
+  StopExercise,
 } from 'src/app/store/actions/workoutDays.actions';
 import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil } from 'rxjs/operators';
@@ -84,19 +84,19 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   handleSelectedWorkoutDayStateChange(state: WorkoutDayBean) {
-    if (state.runningState === RunningState.Completed &&
-        state.displayMode === DisplayMode.Workout) {
+    if (state.displayMode === DisplayMode.Workout &&
+        state.runningState === RunningState.Completed) {
       if (state.runningExerciseSetIndex + 1 < this.exerciseSets.length) {
-        this.store.dispatch(new StartNextExercise({
+        this.store.dispatch(new StartExercise({
           id: state.id,
           runningExerciseSetIndex: state.runningExerciseSetIndex + 1,
           displayMode: DisplayMode.Workout,
-          runningState: RunningState.Starting,
+          runningState: RunningState.Running,
           exerciseSets: null,
           name: null,
         }));
       } else {
-        this.store.dispatch(new ChangeDisplayMode({
+        this.store.dispatch(new StopExercise({
           id: this.dayId,
           runningState: RunningState.NA,
           displayMode: DisplayMode.Display,

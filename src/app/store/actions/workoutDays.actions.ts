@@ -16,8 +16,8 @@ export enum EWorkoutDaysActions {
     UpdateWorkoutDay = '[WorkoutDays] Update Workout day',
 
     StartFirstExercise = '[WorkoutDays] Start first exercise',
-    StartNextExercise = '[WorkoutDays] Start next exercise',
-    // ExerciseStarted = '[WorkoutDays] Exercise has started',
+    StartExercise = '[WorkoutDays] Start an exercise',
+    StopExercise = '[WorkoutDays] Exercise should stop',
     ExerciseCompleted = '[WorkoutDays] Exercise has completed',
     ChangeDisplayMode = '[WorkoutDays] Change workout day display mode',
 
@@ -73,19 +73,19 @@ export class StartFirstExercise implements Action {
         payload.displayMode = DisplayMode.Workout;
     }
 }
-export class StartNextExercise implements Action {
-    readonly type = EWorkoutDaysActions.StartNextExercise;
+export class StartExercise implements Action {
+    readonly type = EWorkoutDaysActions.StartExercise;
     constructor(public payload: WorkoutDayBean) {
         payload.displayMode = DisplayMode.Workout;
     }
 }
-// export class ExerciseStarted implements Action {
-//     readonly type = EWorkoutDaysActions.ExerciseStarted;
-//     constructor(public payload: WorkoutDayBean) {
-//         payload.runningState = RunningState.Started;
-//         payload.displayMode = DisplayMode.Workout;
-//     }
-// }
+export class StopExercise implements Action {
+    readonly type = EWorkoutDaysActions.StopExercise;
+    constructor(public payload: WorkoutDayBean) {
+        payload.runningState = RunningState.NA;
+        payload.displayMode = DisplayMode.Display;
+    }
+}
 export class ExerciseCompleted implements Action {
     readonly type = EWorkoutDaysActions.ExerciseCompleted;
     constructor(public payload: WorkoutDayBean) {
@@ -117,8 +117,8 @@ export type WorkoutDaysActions =
     MoveWorkoutDay |
     WorkoutDayMoved |
     UpdateWorkoutDay |
-    StartNextExercise |
-    // ExerciseStarted |
+    StartExercise |
+    StopExercise |
     ExerciseCompleted |
     ChangeDisplayMode |
     ReorderExerciseSets

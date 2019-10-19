@@ -15,7 +15,8 @@ import {
   StartFirstExercise,
   ChangeDisplayMode,
   DeleteWorkoutDay,
-  MoveWorkoutDay
+  MoveWorkoutDay,
+  StopExercise
 } from 'src/app/store/actions/workoutDays.actions';
 import { getCurrentWorkout } from 'src/app/store/selectors/workouts.selectors';
 import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
@@ -277,10 +278,12 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           id: this.activeDayId,
           runningExerciseSetIndex: 0,
           displayMode: DisplayMode.Workout,
-          runningState: RunningState.Starting,
+          runningState: RunningState.Running,
           exerciseSets: null,
           name: null
         }));
+        this.days.filter(dayId => dayId !== this.activeDayId)
+          .forEach(dayId => this.DispatchStopExercise(dayId));
         break;
       case DisplayMode.Workout:
         this.DisplayMode = DisplayMode.Display;
@@ -289,11 +292,21 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     }
   }
 
-  DispatchChangeDisplayMode() {
+  DispatchChangeDisplayMode(dayId: string = null) {
     this.store.dispatch(new ChangeDisplayMode({
-      id: this.activeDayId,
+      id: dayId || this.activeDayId,
       runningExerciseSetIndex: null,
       displayMode: this.DisplayMode,
+      runningState: RunningState.NA,
+      exerciseSets: null,
+      name: null
+    }));
+  }
+
+  DispatchStopExercise(dayId: string) {
+    this.store.dispatch(new StopExercise({
+      id: dayId,
+      runningExerciseSetIndex: null,
       runningState: RunningState.NA,
       exerciseSets: null,
       name: null

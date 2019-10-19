@@ -4,6 +4,7 @@ import { EDataActions, DataActions } from '../actions/data.actions';
 import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
 import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
 import { removeItemsFromMapByIds, removeItemFromMap } from './utils';
+import { DisplayMode } from 'src/app/models/enums';
 
 export const workoutDaysReducers = (state = initialWorkoutDaysState,
     action: WorkoutDaysActions |
@@ -74,9 +75,8 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case EWorkoutDaysActions.StartFirstExercise:
-        case EWorkoutDaysActions.StartNextExercise:
+        case EWorkoutDaysActions.StartExercise:
         case EWorkoutDaysActions.ExerciseCompleted:
-        // case EWorkoutDaysActions.ExerciseStarted:
         case EWorkoutDaysActions.ChangeDisplayMode: {
             return {
                 ...state,
@@ -86,6 +86,22 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                         ...state.byId[action.payload.id],
                         runningExerciseSetIndex: action.payload.runningExerciseSetIndex,
                         displayMode: action.payload.displayMode,
+                        runningState: action.payload.runningState
+                    }
+                },
+            };
+        }
+        case EWorkoutDaysActions.StopExercise: {
+            let oldDisplayMode = state.byId[action.payload.id].displayMode || DisplayMode.Display;
+            oldDisplayMode = oldDisplayMode === DisplayMode.Workout ? DisplayMode.Display : oldDisplayMode;
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.payload.id]: {
+                        ...state.byId[action.payload.id],
+                        runningExerciseSetIndex: action.payload.runningExerciseSetIndex,
+                        displayMode: oldDisplayMode,
                         runningState: action.payload.runningState
                     }
                 },

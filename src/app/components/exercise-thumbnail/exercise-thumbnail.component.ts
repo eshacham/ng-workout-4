@@ -11,7 +11,6 @@ import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { IAppState } from 'src/app/store/state/app.state';
 import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
-// import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 import { getExerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
 import {
@@ -27,7 +26,7 @@ import {
 } from 'src/app/store/actions/exercises.actions';
 import { DeleteExerciseSet, SwitchExercisesInSet } from 'src/app/store/actions/exerciseSets.actions';
 import { UpdateExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
-import { StartFirstExercise, StartNextExercise, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
+import { StartExercise, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -160,19 +159,10 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             this.IsRunning = false;
             this.stopRepTimer();
             this.stopRestTimer();
-        } else if (day.runningState === RunningState.Starting &&
+        } else if (day.runningState === RunningState.Running &&
             day.runningExerciseSetIndex === this.exerciseSetIndex) {
             console.log('exercise-thumbnail - handleWorkoutDayStateChange: starting workout', this.activeExercise.name);
             this.startWorkout();
-            // this.store.dispatch(new ExerciseStarted({
-            //     id: this.dayId,
-            //     runningExerciseSetIndex: this.exerciseSetIndex,
-            //     displayMode: DisplayMode.Workout,
-            //     runningState: RunningState.Started,
-            //     exerciseSets: null,
-            //     name: null,
-            //     workoutId: null
-            // }));
         }
     }
 
@@ -182,11 +172,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     runExercise() {
         this.startWorkout();
-        this.store.dispatch(new StartNextExercise({
+        this.store.dispatch(new StartExercise({
             id: this.dayId,
             runningExerciseSetIndex: this.exerciseSetIndex,
             displayMode: DisplayMode.Workout,
-            runningState: RunningState.Starting,
+            runningState: RunningState.Running,
             exerciseSets: null,
             name: null,
             workoutId: null
