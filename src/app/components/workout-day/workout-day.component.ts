@@ -84,7 +84,8 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   handleSelectedWorkoutDayStateChange(state: WorkoutDayBean) {
-    if (state.runningState === RunningState.Completed) {
+    if (state.runningState === RunningState.Completed &&
+        state.displayMode === DisplayMode.Workout) {
       if (state.runningExerciseSetIndex + 1 < this.exerciseSets.length) {
         this.store.dispatch(new StartNextExercise({
           id: state.id,

@@ -76,7 +76,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
         case EWorkoutDaysActions.StartFirstExercise:
         case EWorkoutDaysActions.StartNextExercise:
         case EWorkoutDaysActions.ExerciseCompleted:
-        case EWorkoutDaysActions.ExerciseStarted:
+        // case EWorkoutDaysActions.ExerciseStarted:
         case EWorkoutDaysActions.ChangeDisplayMode: {
             return {
                 ...state,

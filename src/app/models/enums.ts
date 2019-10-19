@@ -36,7 +36,7 @@ export enum DisplayMode {
 }
 export enum RunningState {
     Starting,
-    Started,
+    // Started,
     Completed,
     NA
 }

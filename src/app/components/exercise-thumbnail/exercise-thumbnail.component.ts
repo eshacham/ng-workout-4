@@ -11,7 +11,7 @@ import { ExerciseThumbnailPopoverComponent } from '../exercise-thumbnail-popover
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { IAppState } from 'src/app/store/state/app.state';
 import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
-import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
+// import { ExerciseStarted, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 import { getExerciseSet } from 'src/app/store/selectors/exerciseSets.selectors';
 import {
@@ -27,6 +27,7 @@ import {
 } from 'src/app/store/actions/exercises.actions';
 import { DeleteExerciseSet, SwitchExercisesInSet } from 'src/app/store/actions/exerciseSets.actions';
 import { UpdateExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
+import { StartFirstExercise, StartNextExercise, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -152,7 +153,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     handleWorkoutDayStateChange(day: WorkoutDayBean) {
-
         this.DisplayMode = day.displayMode;
         if (day.runningState === RunningState.NA ||
             day.runningExerciseSetIndex !== this.exerciseSetIndex) {
@@ -182,11 +182,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     runExercise() {
         this.startWorkout();
-        this.store.dispatch(new ExerciseStarted({
+        this.store.dispatch(new StartNextExercise({
             id: this.dayId,
             runningExerciseSetIndex: this.exerciseSetIndex,
             displayMode: DisplayMode.Workout,
-            runningState: RunningState.Started,
+            runningState: RunningState.Starting,
             exerciseSets: null,
             name: null,
             workoutId: null
@@ -255,7 +255,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     get hasSet(): boolean {
         return this.exercises.length > 1;
     }
-
 
     exerciseSetSelected() {
     }
