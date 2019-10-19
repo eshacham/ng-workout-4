@@ -152,37 +152,27 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     handleWorkoutDayStateChange(day: WorkoutDayBean) {
-        console.log('exercise-thumbnail - handleWorkoutDayStateChange', this.DisplayMode);
 
-        if (day.id === this.dayId) {
-            this.DisplayMode = day.displayMode;
-            if (day.runningState === RunningState.NA ||
-                day.runningExerciseSetIndex !== this.exerciseSetIndex) {
-                this.IsRunning = false;
-                this.stopRepTimer();
-                this.stopRestTimer();
-                return;
-            }
-            if (day.runningState === RunningState.Starting &&
-                day.runningExerciseSetIndex === this.exerciseSetIndex) {
-                this.startWorkout();
-                this.store.dispatch(new ExerciseStarted({
-                    id: this.dayId,
-                    runningExerciseSetIndex: this.exerciseSetIndex,
-                    displayMode: DisplayMode.Workout,
-                    runningState: RunningState.Started,
-                    exerciseSets: null,
-                    name: null,
-                    workoutId: null
-                }));
-                return;
-            }
-        } else {
-            if (day.runningState === RunningState.Starting) {
-                this.IsRunning = false;
-                this.stopRepTimer();
-                this.stopRestTimer();
-            }
+        this.DisplayMode = day.displayMode;
+        if (day.runningState === RunningState.NA ||
+            day.runningExerciseSetIndex !== this.exerciseSetIndex) {
+            console.log('exercise-thumbnail - handleWorkoutDayStateChange: stoping workout', this.activeExercise.name);
+            this.IsRunning = false;
+            this.stopRepTimer();
+            this.stopRestTimer();
+        } else if (day.runningState === RunningState.Starting &&
+            day.runningExerciseSetIndex === this.exerciseSetIndex) {
+            console.log('exercise-thumbnail - handleWorkoutDayStateChange: starting workout', this.activeExercise.name);
+            this.startWorkout();
+            // this.store.dispatch(new ExerciseStarted({
+            //     id: this.dayId,
+            //     runningExerciseSetIndex: this.exerciseSetIndex,
+            //     displayMode: DisplayMode.Workout,
+            //     runningState: RunningState.Started,
+            //     exerciseSets: null,
+            //     name: null,
+            //     workoutId: null
+            // }));
         }
     }
 
@@ -245,7 +235,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ExerciseCompleted({
             id: this.dayId,
             runningExerciseSetIndex: this.exerciseSetIndex,
-            displayMode: DisplayMode.Workout,
+            displayMode: DisplayMode.Display,
             runningState: RunningState.Completed,
             exerciseSets: null,
             name: null,

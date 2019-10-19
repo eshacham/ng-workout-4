@@ -8,7 +8,8 @@ import { IAppState } from 'src/app/store/state/app.state';
 import {
   StartNextExercise,
   UpdateWorkoutDay,
-  ReorderExerciseSets
+  ReorderExerciseSets,
+  ChangeDisplayMode,
 } from 'src/app/store/actions/workoutDays.actions';
 import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil } from 'rxjs/operators';
@@ -83,29 +84,25 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
   }
 
   handleSelectedWorkoutDayStateChange(state: WorkoutDayBean) {
-    switch (state.runningState) {
-      case RunningState.Completed:
-        if (state.id === this.dayId) {
-          if (state.runningExerciseSetIndex + 1 < this.exerciseSets.length) {
-            this.store.dispatch(new StartNextExercise({
-              id: state.id,
-              runningExerciseSetIndex: state.runningExerciseSetIndex + 1,
-              displayMode: DisplayMode.Workout,
-              runningState: RunningState.Starting,
-              exerciseSets: null,
-              name: null,
-            }));
-          } else {
-            // this.stopWorkout();
-          }
-        }
-        break;
-      case RunningState.Started:
-        if (state.id !== this.dayId) {
-          // this.stopWorkout();
-        }
-        break;
-      default:
+    if (state.runningState === RunningState.Completed) {
+      if (state.runningExerciseSetIndex + 1 < this.exerciseSets.length) {
+        this.store.dispatch(new StartNextExercise({
+          id: state.id,
+          runningExerciseSetIndex: state.runningExerciseSetIndex + 1,
+          displayMode: DisplayMode.Workout,
+          runningState: RunningState.Starting,
+          exerciseSets: null,
+          name: null,
+        }));
+      } else {
+        this.store.dispatch(new ChangeDisplayMode({
+          id: this.dayId,
+          runningState: RunningState.NA,
+          displayMode: DisplayMode.Display,
+          exerciseSets: null,
+          name: null,
+        }));
+      }
     }
   }
 
