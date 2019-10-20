@@ -4,11 +4,14 @@ import { AllDataMaps } from 'src/app/models/interfaces';
 export enum DataActionsTypes {
     GetData = '[Data] Get app data',
     GetDataSuccess = '[Data] Get app data success',
+    GetDataError = '[Data] Get app data error',
     DataReset = '[Data] Data have been reset',
     UpdateWorkouts = '[Data] Update workouts',
-    WorkoutsUpdated = '[Data] Workouts have been updated',
+    WorkoutsSavedSuccess = '[Data] Workouts have been updated',
+    WorkoutsSavedError = '[Data] Workouts saved error',
     UpdateImages = '[Data] Update images',
-    ImagesUpdated = '[Data] Images have been updated',
+    ImagesSavedSuccess = '[Data] Images have been updated',
+    ImagesSavedError = '[Data] Images saved error',
 }
 export class GetData implements Action {
     public readonly type = DataActionsTypes.GetData;
@@ -17,6 +20,10 @@ export class GetData implements Action {
 export class GetDataSuccess implements Action {
     public readonly type = DataActionsTypes.GetDataSuccess;
     constructor(public payload: AllDataMaps) { }
+}
+export class GetDataError implements Action {
+    public readonly type = DataActionsTypes.GetDataError;
+    constructor() { }
 }
 
 export class DataReset implements Action {
@@ -29,8 +36,12 @@ export class UpdateWorkouts implements Action {
     constructor() { }
 }
 
-export class WorkoutsUpdated implements Action {
-    readonly type = DataActionsTypes.WorkoutsUpdated;
+export class WorkoutsSavedSuccess implements Action {
+    readonly type = DataActionsTypes.WorkoutsSavedSuccess;
+    constructor() { }
+}
+export class WorkoutsSavedError implements Action {
+    readonly type = DataActionsTypes.WorkoutsSavedError;
     constructor() { }
 }
 
@@ -38,16 +49,23 @@ export class UpdateImages implements Action {
     readonly type = DataActionsTypes.UpdateImages;
     constructor() { }
 }
-export class ImagesUpdated implements Action {
-    readonly type = DataActionsTypes.ImagesUpdated;
+export class ImagesSavedSuccess implements Action {
+    readonly type = DataActionsTypes.ImagesSavedSuccess;
+    constructor() { }
+}
+export class ImagesSavedError implements Action {
+    readonly type = DataActionsTypes.ImagesSavedError;
     constructor() { }
 }
 
 export type DataActions =
     GetData |
     GetDataSuccess |
+    GetDataError |
     DataReset |
-    WorkoutsUpdated |
+    WorkoutsSavedSuccess |
+    WorkoutsSavedError |
     UpdateImages |
-    ImagesUpdated
+    ImagesSavedSuccess |
+    ImagesSavedError
     ;

@@ -17,8 +17,8 @@ export const dataReducers =
                 hasDataBeenReset: true
             };
         }
-        case DataActionsTypes.ImagesUpdated:
-        case DataActionsTypes.WorkoutsUpdated: {
+        case DataActionsTypes.ImagesSavedSuccess:
+        case DataActionsTypes.WorkoutsSavedSuccess: {
             return {
                 ...state,
                 hasDataBeenReset: false
