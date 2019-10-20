@@ -115,9 +115,11 @@ export class ExerciseBean extends Exercise {
         restBetweenReps?: number,
         restAfterExercise?: number
     }): ExerciseBean {
+        const newGrip = {...bean.theGrip};
         return new ExerciseBean({
             ...bean,
-            ...options
+            ...options,
+            theGrip: newGrip
         });
     }
 }
