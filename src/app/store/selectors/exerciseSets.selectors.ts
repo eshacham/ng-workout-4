@@ -19,8 +19,8 @@ export const getExerciseSet = (id: string) => createSelector(
         exercises: IExercisesState,
         media: IExercisesMediaState) => {
         let set: ExerciseSetBean;
-        let exes: ExerciseBean[];
-        let medias: ExerciseMediaBean[];
+        let exes: ExerciseBean[] = [];
+        let medias: ExerciseMediaBean[] = [];
         set = exerciseSets.byId[id];
         if (set) {
             const exeIds = set.exercises;

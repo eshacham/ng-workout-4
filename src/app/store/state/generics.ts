@@ -1,5 +1,3 @@
 export interface IState<T> {
-    byId: {
-        [id: string]: T;
-    };
+    byId: Record<string, T>;
 }

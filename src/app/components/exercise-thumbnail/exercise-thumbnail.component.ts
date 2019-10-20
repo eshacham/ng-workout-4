@@ -153,17 +153,23 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
 
     handleWorkoutDayStateChange(day: WorkoutDayBean) {
         this.DisplayMode = day.displayMode;
+        let activeExerciseName: string;
+        if (this.activeExercise) {
+            activeExerciseName = this.activeExercise.name;
+        }
+        let state: string;
         if (day.runningState === RunningState.NA ||
             day.runningExerciseSetIndex !== this.exerciseSetIndex) {
-            console.log('exercise-thumbnail - handleWorkoutDayStateChange: stoping workout', this.activeExercise.name);
+            state = 'soping';
             this.IsRunning = false;
             this.stopRepTimer();
             this.stopRestTimer();
         } else if (day.runningState === RunningState.Running &&
             day.runningExerciseSetIndex === this.exerciseSetIndex) {
-            console.log('exercise-thumbnail - handleWorkoutDayStateChange: starting workout', this.activeExercise.name);
+            state = 'starting';
             this.startWorkout();
         }
+        console.log(`exercise-thumbnail - handleWorkoutDayStateChange: ${state} workout`, activeExerciseName);
     }
 
     toggleEditExercise() {
@@ -500,7 +506,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     }
 
     get activeRep(): Rep {
-        return this.activeExercise.reps[this.activeRepIndex];
+        return this.activeExercise ? this.activeExercise.reps[this.activeRepIndex] : null;
     }
 
     addRep(index: number) {

@@ -1,11 +1,8 @@
 import { IState } from '../state/generics';
 import { Bean } from 'src/app/models/interfaces';
-export function removeItemFromMap<T>(itemId: string, state: IState<T>): {
-    [id: string]: T;
-} {
-    let mapWithoutItem: {
-        [id: string]: T;
-    };
+
+export function removeItemFromMap<T>(itemId: string, state: IState<T>): Record<string, T> {
+    let mapWithoutItem: Record<string, T>;
     let item: T;
     ({ [itemId]: item, ...mapWithoutItem } = state.byId);
     return mapWithoutItem;
