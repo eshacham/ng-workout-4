@@ -159,9 +159,9 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this.presentToast('File removed.');
   }
 
-  updateImage(event, image: ExerciseMediaBean) {
-    console.log(`tab-library-page - updating image (id ${image.id}) name to ${event.target.value}`);
-    this.store.dispatch(new UpdateExerciseMedia({ id: image.id, name: event.target.value }));
+  updateImage(value: string, image: ExerciseMediaBean) {
+    console.log(`tab-library-page - updating image (id ${image.id}) name to ${value}`);
+    this.store.dispatch(new UpdateExerciseMedia({ id: image.id, name: value }));
     this.store.dispatch(new UpdateImages());
     this.presentToast('File updated.');
   }

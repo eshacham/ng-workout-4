@@ -211,12 +211,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         }));
     }
 
-    exerciseChanged(index: number, event, prop) {
+    exerciseChanged(index: number, value: string | number, prop: string) {
         const newExe = ExerciseBean
             .copy(this.exercises[index]);
-        newExe[prop] = event.target.value;
+        newExe[prop] = value;
         this.store.dispatch(new UpdateExercise({
-            exeId: this.exercises[index].id,
             exercise: newExe
         }));
     }

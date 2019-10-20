@@ -140,8 +140,8 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     return images;
   }
 
-  setImageName(event, image: SelectedExerciseMedia) {
-    image.newName = event.target.value;
+  setImageName(value: string, image: SelectedExerciseMedia) {
+    image.newName = value;
   }
 
   addExercise() {

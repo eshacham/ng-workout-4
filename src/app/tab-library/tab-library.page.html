@@ -32,7 +32,7 @@
       </ion-thumbnail>
       <ion-input type='text' [(ngModel)]="img.name"
                  placeholder="Exercise Name"
-                 (ionChange)="updateImage($event, img)">
+                 (ionChange)="updateImage($event.target.value, img)">
       </ion-input>
       <ion-button slot="end" fill="clear" (click)="setMuscle(img)">
         <ion-icon slot="icon-only" name="body"></ion-icon>
