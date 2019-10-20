@@ -17,7 +17,7 @@ import { AllDataMaps } from 'src/app/models/interfaces';
 import { getWorkoutsData, getImagesData } from '../selectors/data.selectors';
 
 @Injectable()
-export class WorkoutsEffects {
+export class DataEffects {
     @Effect()
     getAllData$ = this._actions$.pipe(
         ofType<GetData>(EDataActions.GetData),

@@ -10,7 +10,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { AppRoutingModule } from './app-routing.module';
-import { WorkoutsEffects } from './store/effects/data.effects';
+import { DataEffects } from './store/effects/data.effects';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { appReducers } from './store/reducers/appReducers';
@@ -31,7 +31,7 @@ export const metaReducers: MetaReducer<IAppState>[] = !environment.production
     IonicStorageModule.forRoot(),
     AppRoutingModule,
     StoreModule.forRoot(appReducers, { metaReducers }),
-    EffectsModule.forRoot([WorkoutsEffects]),
+    EffectsModule.forRoot([DataEffects]),
     !environment.production ?
       StoreDevtoolsModule.instrument() : [],
   ],
