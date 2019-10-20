@@ -96,14 +96,14 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.store.select(getHasDataBeenReset)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(reset => {
-        console.log('select exercise redux - HasDefaultWorkoutsBeenReset:', reset);
+        console.log('select exercise redux - getHasDataBeenReset:', reset);
         this.haveWorkoutsBeenReset = reset;
       });
 
     this.store.select(getLibraryMusclesFilter)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (filter) => {
-        console.log('select-exercise redux - LibraryMusclesFilterState:', filter);
+        console.log('select-exercise redux - getLibraryMusclesFilter:', filter);
         this.musclesFilter = filter;
       });
 
@@ -113,7 +113,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
         if (currentWorkout && this.workoutId === currentWorkout.workout.id) {
           const dayId = currentWorkout.selectedDayId;
           this.lastSelectedWorkoutDayId = dayId;
-          console.log('select-exercise - selectCurrentWorkoutSelectedDayId:', dayId);
+          console.log('select-exercise - getCurrentWorkout:', dayId);
         }
       });
   }

@@ -9,8 +9,8 @@ export const getMediaIdsByDay = (dayId: string) => createSelector(
     (exercises: IExercisesState) => {
         const exesArray = Object.entries(exercises.byId);
         const mediaIds = exesArray
-                .filter(([key, val]) => val.dayId === dayId)
-                .map(([key, val]) => val.mediaId);
+                .filter(([_, exercise]) => exercise.dayId === dayId)
+                .map(([_, exercise]) => exercise.mediaId);
         return mediaIds;
     }
 );
@@ -19,8 +19,8 @@ export const getMediaIdsByWorkout = (workoutId: string) => createSelector(
     (exercises: IExercisesState) => {
         const exesArray = Object.entries(exercises.byId);
         const mediaIds = exesArray
-                .filter(([key, val]) => val.workoutId === workoutId)
-                .map(([key, val]) => val.mediaId);
+                .filter(([_, exercise]) => exercise.workoutId === workoutId)
+                .map(([_, exercise]) => exercise.mediaId);
         return mediaIds;
     }
 );

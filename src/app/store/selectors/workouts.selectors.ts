@@ -3,7 +3,7 @@ import { IAppState } from '../state/app.state';
 import { IWorkoutsState } from '../state/workouts.state';
 import { WorkoutBean } from 'src/app/models/Workout';
 
-const workoutsState = (state: IAppState) => state.workouts;
+export const workoutsState = (state: IAppState) => state.workouts;
 
 export const getWorkouts = createSelector(
   workoutsState,
@@ -29,13 +29,7 @@ export const getCurrentWorkout = createSelector(
   getCurrentWorkoutId,
   (workouts: IWorkoutsState, workoutId: string) => {
     const workout = workouts.byId[workoutId];
-    if (!workout) {
-      return { workout: null, selectedDayId: null };
-    } else {
-      return {
-        workout: workout,
-        selectedDayId: workout.selectedWorkoutDayId || workout.days[0]
-      };
-    }
+    const selectedDayId = workout ? workout.selectedWorkoutDayId || workout.days[0] : null;
+    return { workout: workout, selectedDayId: selectedDayId };
   }
 );

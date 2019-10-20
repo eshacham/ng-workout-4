@@ -6,15 +6,15 @@ import { IExercisesMediaState } from '../state/ExercisesMedia.state';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
+import { exercisesState } from './exercises.selectors';
+import { mediaState } from './ExercisesMedia.selectors';
 
-export const exerciseSetsState = (state: IAppState): IExerciseSetsState => state.sets;
-export const exercisesState = (state: IAppState): IExercisesState => state.exercises;
-export const exercisesMediaState = (state: IAppState): IExercisesMediaState => state.media;
+export const setsState = (state: IAppState): IExerciseSetsState => state.sets;
 
 export const getExerciseSet = (id: string) => createSelector(
-    exerciseSetsState,
+    setsState,
     exercisesState,
-    exercisesMediaState,
+    mediaState,
     (exerciseSets: IExerciseSetsState,
         exercises: IExercisesState,
         media: IExercisesMediaState) => {

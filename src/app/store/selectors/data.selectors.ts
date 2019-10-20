@@ -6,13 +6,13 @@ import { IWorkoutDaysState } from '../state/workoutDays.state';
 import { IExerciseSetsState } from '../state/ExerciseSets.state';
 import { IExercisesState } from '../state/Exercises.state';
 import { IExercisesMediaState } from '../state/ExercisesMedia.state';
+import { workoutsState } from './workouts.selectors';
+import { exercisesState } from './exercises.selectors';
+import { daysState } from './workoutDays.selectors';
+import { setsState } from './exerciseSets.selectors';
+import { mediaState } from './ExercisesMedia.selectors';
 
 const dataState = (state: IAppState) => state.data;
-const workoutsState = (state: IAppState) => state.workouts;
-const daysState = (state: IAppState) => state.days;
-const setsState = (state: IAppState) => state.sets;
-const exercisesState = (state: IAppState) => state.exercises;
-const mediaState = (state: IAppState) => state.media;
 
 export const getWorkoutsData = createSelector(
     workoutsState,
@@ -22,24 +22,16 @@ export const getWorkoutsData = createSelector(
     (workouts: IWorkoutsState,
         days: IWorkoutDaysState,
         sets: IExerciseSetsState,
-        exercises: IExercisesState) => {
-        const data = {
+        exercises: IExercisesState) => ({
             workouts: workouts,
             days: days,
             sets: sets,
             exercises: exercises,
-        };
-        return data;
-    }
+        })
 );
 export const getImagesData = createSelector(
     mediaState,
-    (media: IExercisesMediaState) => {
-        const data = {
-            media: media,
-        };
-        return data;
-    }
+    (media: IExercisesMediaState) => ({ media: media })
 );
 
 export const getHasDataBeenReset = createSelector(
