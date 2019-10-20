@@ -31,9 +31,12 @@ export const metaReducers: MetaReducer<IAppState>[] = !environment.production
     IonicStorageModule.forRoot(),
     AppRoutingModule,
     StoreModule.forRoot(appReducers, { metaReducers }),
+    StoreDevtoolsModule.instrument({
+      name: 'ng-workouts-4 DevTools',
+      maxAge: 25,
+      logOnly: environment.production
+    }),
     EffectsModule.forRoot([DataEffects]),
-    !environment.production ?
-      StoreDevtoolsModule.instrument() : [],
   ],
   providers: [
     StatusBar,
