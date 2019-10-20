@@ -1,10 +1,10 @@
 import { initialExerciseSetsState, IExerciseSetsState } from '../state/ExerciseSets.state';
-import { EDataActions, DataActions } from '../actions/data.actions';
-import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.actions';
-import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
-import { ExerciseActions, EExerciseActions } from '../actions/exercises.actions';
+import { DataActionsTypes, DataActions } from '../actions/data.actions';
+import { WorkoutDaysActionsTypes, WorkoutDaysActions } from '../actions/workoutDays.actions';
+import { ExerciseSetActions, ExerciseSetActionsTypes } from '../actions/exerciseSets.actions';
+import { ExerciseActions, ExerciseActionsTypes } from '../actions/exercises.actions';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
-import { EWorkoutsActions, WorkoutsActions } from '../actions/workouts.actions';
+import { WorkoutsActionsTypes, WorkoutsActions } from '../actions/workouts.actions';
 import { removeItemFromMap, filterMapByRecordPredicate, createMapFromBeanArray } from './utils';
 
 export const exerciseSetsReducers = (
@@ -16,13 +16,13 @@ export const exerciseSetsReducers = (
             WorkoutsActions)
     : IExerciseSetsState => {
     switch (action.type) {
-        case EDataActions.GetDataSuccess: {
+        case DataActionsTypes.GetDataSuccess: {
             return {
                 ...state,
                 byId: action.payload.sets.byId,
             };
         }
-        case EExerciseSetActions.AddExerciseSets: {
+        case ExerciseSetActionsTypes.AddExerciseSets: {
             return {
                 ...state,
                 byId: {
@@ -31,7 +31,7 @@ export const exerciseSetsReducers = (
                 }
             };
         }
-        case EExerciseActions.DeleteExercise: {
+        case ExerciseActionsTypes.DeleteExercise: {
             const oldExes = state.byId[action.payload.setId].exercises;
             const newExes = oldExes.filter(exe => exe !== action.payload.exeId);
             return {
@@ -45,13 +45,13 @@ export const exerciseSetsReducers = (
                 }
             };
         }
-        case EExerciseSetActions.DeleteExerciseSet: {
+        case ExerciseSetActionsTypes.DeleteExerciseSet: {
             return {
                 ...state,
                 byId: removeItemFromMap(action.payload.setId, state)
             };
         }
-        case EWorkoutDaysActions.DeleteWorkoutDay: {
+        case WorkoutDaysActionsTypes.DeleteWorkoutDay: {
             const dayId = action.payload.dayId;
             return {
                 ...state,
@@ -59,14 +59,14 @@ export const exerciseSetsReducers = (
 
             };
         }
-        case EWorkoutsActions.DeleteWorkout: {
+        case WorkoutsActionsTypes.DeleteWorkout: {
             const workoutId = action.payload.id;
             return {
                 ...state,
                 byId: filterMapByRecordPredicate(([key, val]) => val.workoutId !== workoutId, state)
             };
         }
-        case EExerciseSetActions.SwitchExercisesInSet: {
+        case ExerciseSetActionsTypes.SwitchExercisesInSet: {
             const oldExes = state.byId[action.payload.setId].exercises;
             const from = action.payload.lowIndex;
             const newExes = [

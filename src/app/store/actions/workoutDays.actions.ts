@@ -7,7 +7,7 @@ export enum Direction {
     Backword = 2
 }
 
-export enum EWorkoutDaysActions {
+export enum WorkoutDaysActionsTypes {
     SelectWorkoutDay = '[WorkoutDays] Select workout day',
     DeleteWorkoutDay = '[WorkoutDays] Delete workout day',
     AddWorkoutDay = '[WorkoutDays] Add workout day',
@@ -25,17 +25,17 @@ export enum EWorkoutDaysActions {
 }
 
 export class MoveWorkoutDay implements Action {
-    readonly type = EWorkoutDaysActions.MoveWorkoutDay;
+    readonly type = WorkoutDaysActionsTypes.MoveWorkoutDay;
     constructor(public payload: { direction: Direction }) { }
 }
 
 export class WorkoutDayMoved implements Action {
-    readonly type = EWorkoutDaysActions.WorkoutDayMoved;
+    readonly type = WorkoutDaysActionsTypes.WorkoutDayMoved;
     constructor() { }
 }
 
 export class SelectWorkoutDay implements Action {
-    readonly type = EWorkoutDaysActions.SelectWorkoutDay;
+    readonly type = WorkoutDaysActionsTypes.SelectWorkoutDay;
     constructor(public payload: {
         workoutId: string;
         dayId: string
@@ -43,14 +43,14 @@ export class SelectWorkoutDay implements Action {
 }
 
 export class DeleteWorkoutDay implements Action {
-    readonly type = EWorkoutDaysActions.DeleteWorkoutDay;
+    readonly type = WorkoutDaysActionsTypes.DeleteWorkoutDay;
     constructor(public payload: {
         dayId: string,
     }) { }
 }
 
 export class UpdateWorkoutDay implements Action {
-    readonly type = EWorkoutDaysActions.UpdateWorkoutDay;
+    readonly type = WorkoutDaysActionsTypes.UpdateWorkoutDay;
     constructor(public payload: {
         dayId: string,
         name: string
@@ -58,7 +58,7 @@ export class UpdateWorkoutDay implements Action {
 }
 
 export class AddWorkoutDay implements Action {
-    readonly type = EWorkoutDaysActions.AddWorkoutDay;
+    readonly type = WorkoutDaysActionsTypes.AddWorkoutDay;
     constructor(public payload: {
         workoutId: string,
         day: WorkoutDayBean,
@@ -76,7 +76,7 @@ export interface ChangeWorkoutDayState {
 }
 
 export class StartFirstExercise implements Action {
-    readonly type = EWorkoutDaysActions.StartFirstExercise;
+    readonly type = WorkoutDaysActionsTypes.StartFirstExercise;
     constructor(public payload: ChangeWorkoutDayState) {
         payload.runningExerciseSetIndex = 0;
         payload.displayMode = DisplayMode.Workout;
@@ -84,28 +84,28 @@ export class StartFirstExercise implements Action {
     }
 }
 export class StartExercise implements Action {
-    readonly type = EWorkoutDaysActions.StartExercise;
+    readonly type = WorkoutDaysActionsTypes.StartExercise;
     constructor(public payload: ChangeWorkoutDayState) {
         payload.displayMode = DisplayMode.Workout;
         payload.runningState = RunningState.Running;
     }
 }
 export class StopExercise implements Action {
-    readonly type = EWorkoutDaysActions.StopExercise;
+    readonly type = WorkoutDaysActionsTypes.StopExercise;
     constructor(public payload: ChangeWorkoutDayState) {
         payload.runningState = RunningState.NA;
         payload.displayMode = DisplayMode.Display;
     }
 }
 export class ExerciseCompleted implements Action {
-    readonly type = EWorkoutDaysActions.ExerciseCompleted;
+    readonly type = WorkoutDaysActionsTypes.ExerciseCompleted;
     constructor(public payload: WorkoutDayBean) {
         payload.runningState = RunningState.Completed;
         payload.displayMode = DisplayMode.Workout;
     }
 }
 export class ChangeDisplayMode implements Action {
-    readonly type = EWorkoutDaysActions.ChangeDisplayMode;
+    readonly type = WorkoutDaysActionsTypes.ChangeDisplayMode;
 
     constructor(public payload: ChangeWorkoutDayState) {
         payload.runningState = RunningState.NA;
@@ -113,7 +113,7 @@ export class ChangeDisplayMode implements Action {
     }
 }
 export class ReorderExerciseSets implements Action {
-    readonly type = EWorkoutDaysActions.ReorderExerciseSets;
+    readonly type = WorkoutDaysActionsTypes.ReorderExerciseSets;
     constructor(public payload: {
         dayId: string,
         fromIndex: number,

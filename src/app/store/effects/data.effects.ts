@@ -6,7 +6,7 @@ import { switchMap, map, withLatestFrom } from 'rxjs/operators';
 import { IAppState } from '../state/app.state';
 import {
     GetData,
-    EDataActions,
+    DataActionsTypes,
     GetDataSuccess,
     UpdateWorkouts,
     WorkoutsUpdated,
@@ -20,7 +20,7 @@ import { getWorkoutsData, getImagesData } from '../selectors/data.selectors';
 export class DataEffects {
     @Effect()
     getAllData$ = this._actions$.pipe(
-        ofType<GetData>(EDataActions.GetData),
+        ofType<GetData>(DataActionsTypes.GetData),
         switchMap(async () => await this._dataService.getAllData()),
         switchMap((allData: AllDataMaps) => {
             return of(new GetDataSuccess(allData));
@@ -29,7 +29,7 @@ export class DataEffects {
 
     @Effect()
     saveWorkouts$ = this._actions$.pipe(
-        ofType<UpdateWorkouts>(EDataActions.UpdateWorkouts),
+        ofType<UpdateWorkouts>(DataActionsTypes.UpdateWorkouts),
         map(action => action),
         withLatestFrom(this._store.pipe(select(getWorkoutsData))),
         switchMap(([action, workoutsData]) => {
@@ -40,7 +40,7 @@ export class DataEffects {
 
     @Effect()
     saveImages$ = this._actions$.pipe(
-        ofType<UpdateImages>(EDataActions.UpdateImages),
+        ofType<UpdateImages>(DataActionsTypes.UpdateImages),
         map(action => action),
         withLatestFrom(this._store.pipe(select(getImagesData))),
         switchMap(([action, imagessData]) => {

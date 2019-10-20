@@ -1,24 +1,24 @@
-import { DataActions, EDataActions } from '../actions/data.actions';
+import { DataActions, DataActionsTypes } from '../actions/data.actions';
 import { IDataState, initialDataState } from '../state/data.state';
 
 export const dataReducers =
 (state = initialDataState, action: DataActions)
 : IDataState => {
     switch (action.type) {
-        case EDataActions.GetDataSuccess: {
+        case DataActionsTypes.GetDataSuccess: {
             return {
                 ...state,
                 hasDataBeenLoaded: true,
             };
         }
-        case EDataActions.DataReset: {
+        case DataActionsTypes.DataReset: {
             return {
                 ...state,
                 hasDataBeenReset: true
             };
         }
-        case EDataActions.ImagesUpdated:
-        case EDataActions.WorkoutsUpdated: {
+        case DataActionsTypes.ImagesUpdated:
+        case DataActionsTypes.WorkoutsUpdated: {
             return {
                 ...state,
                 hasDataBeenReset: false

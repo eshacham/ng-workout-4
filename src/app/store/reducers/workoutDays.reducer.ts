@@ -1,8 +1,8 @@
-import { WorkoutDaysActions, EWorkoutDaysActions } from '../actions/workoutDays.actions';
+import { WorkoutDaysActions, WorkoutDaysActionsTypes } from '../actions/workoutDays.actions';
 import { initialWorkoutDaysState, IWorkoutDaysState } from '../state/workoutDays.state';
-import { EDataActions, DataActions } from '../actions/data.actions';
-import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
-import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
+import { DataActionsTypes, DataActions } from '../actions/data.actions';
+import { WorkoutsActions, WorkoutsActionsTypes } from '../actions/workouts.actions';
+import { ExerciseSetActions, ExerciseSetActionsTypes } from '../actions/exerciseSets.actions';
 import { filterMapByIds, removeItemFromMap } from './utils';
 import { DisplayMode } from 'src/app/models/enums';
 
@@ -13,13 +13,13 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
         ExerciseSetActions)
     : IWorkoutDaysState => {
     switch (action.type) {
-        case EDataActions.GetDataSuccess: {
+        case DataActionsTypes.GetDataSuccess: {
             return {
                 ...state,
                 byId: action.payload.days.byId,
             };
         }
-        case EWorkoutsActions.AddWorkout: {
+        case WorkoutsActionsTypes.AddWorkout: {
             return {
                 ...state,
                 byId: {
@@ -28,14 +28,14 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 }
             };
         }
-        case EWorkoutsActions.DeleteWorkout: {
+        case WorkoutsActionsTypes.DeleteWorkout: {
             const newMap = filterMapByIds(action.payload.days, state);
             return {
                 ...state,
                 byId: newMap
             };
         }
-        case EWorkoutDaysActions.AddWorkoutDay: {
+        case WorkoutDaysActionsTypes.AddWorkoutDay: {
             return {
                 ...state,
                 byId: {
@@ -44,19 +44,19 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 }
             };
         }
-        case EWorkoutDaysActions.MoveWorkoutDay: {
+        case WorkoutDaysActionsTypes.MoveWorkoutDay: {
             return {
                 ...state,
                 workoutDayMoveState: action.payload.direction
             };
         }
-        case EWorkoutDaysActions.WorkoutDayMoved: {
+        case WorkoutDaysActionsTypes.WorkoutDayMoved: {
             return {
                 ...state,
                 workoutDayMoveState: undefined
             };
         }
-        case EWorkoutDaysActions.UpdateWorkoutDay: {
+        case WorkoutDaysActionsTypes.UpdateWorkoutDay: {
             return {
                 ...state,
                 byId: {
@@ -68,16 +68,16 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
-        case EWorkoutDaysActions.DeleteWorkoutDay: {
+        case WorkoutDaysActionsTypes.DeleteWorkoutDay: {
             return {
                 ...state,
                 byId: removeItemFromMap(action.payload.dayId, state)
             };
         }
-        case EWorkoutDaysActions.StartFirstExercise:
-        case EWorkoutDaysActions.StartExercise:
-        case EWorkoutDaysActions.ExerciseCompleted:
-        case EWorkoutDaysActions.ChangeDisplayMode: {
+        case WorkoutDaysActionsTypes.StartFirstExercise:
+        case WorkoutDaysActionsTypes.StartExercise:
+        case WorkoutDaysActionsTypes.ExerciseCompleted:
+        case WorkoutDaysActionsTypes.ChangeDisplayMode: {
             return {
                 ...state,
                 byId: {
@@ -91,7 +91,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
-        case EWorkoutDaysActions.StopExercise: {
+        case WorkoutDaysActionsTypes.StopExercise: {
             let oldDisplayMode = state.byId[action.payload.id].displayMode || DisplayMode.Display;
             oldDisplayMode = oldDisplayMode === DisplayMode.Workout ? DisplayMode.Display : oldDisplayMode;
             return {
@@ -107,7 +107,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
-        case EExerciseSetActions.DeleteExerciseSet: {
+        case ExerciseSetActionsTypes.DeleteExerciseSet: {
             return {
                 ...state,
                 byId: {
@@ -120,7 +120,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
-        case EExerciseSetActions.AddExerciseSets: {
+        case ExerciseSetActionsTypes.AddExerciseSets: {
             const oldSets = state.byId[action.payload.dayId].exerciseSets;
             const newSets = action.payload.sets.map(s => s.id);
             return {
@@ -134,7 +134,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
-        case EWorkoutDaysActions.ReorderExerciseSets: {
+        case WorkoutDaysActionsTypes.ReorderExerciseSets: {
             const oldSets = state.byId[action.payload.dayId].exerciseSets;
             const from = action.payload.fromIndex;
             const to = action.payload.toIndex;

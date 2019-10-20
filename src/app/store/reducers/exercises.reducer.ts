@@ -1,11 +1,11 @@
 import { initialExercisesState, IExercisesState } from '../state/Exercises.state';
-import { EDataActions, DataActions } from '../actions/data.actions';
-import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
-import { EExerciseActions, ExerciseActions } from '../actions/exercises.actions';
+import { DataActionsTypes, DataActions } from '../actions/data.actions';
+import { ExerciseSetActionsTypes, ExerciseSetActions } from '../actions/exerciseSets.actions';
+import { ExerciseActionsTypes, ExerciseActions } from '../actions/exercises.actions';
 import { ExerciseBean } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
-import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
-import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.actions';
+import { WorkoutsActions, WorkoutsActionsTypes } from '../actions/workouts.actions';
+import { WorkoutDaysActionsTypes, WorkoutDaysActions } from '../actions/workoutDays.actions';
 import { createMapFromBeanArray, removeItemFromMap, filterMapByRecordPredicate } from './utils';
 
 export const exercisesReducers = (
@@ -17,13 +17,13 @@ export const exercisesReducers = (
             WorkoutDaysActions)
     : IExercisesState => {
     switch (action.type) {
-        case EDataActions.GetDataSuccess: {
+        case DataActionsTypes.GetDataSuccess: {
             return {
                 ...state,
                 byId: action.payload.exercises.byId,
             };
         }
-        case EExerciseActions.ResetReps: {
+        case ExerciseActionsTypes.ResetReps: {
             const newReps = Rep.copyRepsAndReset(state.byId[action.payload.exerciseId].reps);
             return {
                 ...state,
@@ -36,7 +36,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseActions.SetRepsActiveState: {
+        case ExerciseActionsTypes.SetRepsActiveState: {
             const newReps = Rep.copyRepsAndSetToActive(state.byId[action.payload.exerciseId].reps, action.payload.activeIndex);
             return {
                 ...state,
@@ -49,7 +49,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseActions.SetRepsCompleteState: {
+        case ExerciseActionsTypes.SetRepsCompleteState: {
             const newReps = Rep.copyRepsAndSetToComplete(state.byId[action.payload.exerciseId].reps, action.payload.completeIndex);
             return {
                 ...state,
@@ -62,7 +62,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseActions.SetRepsIncompleteState: {
+        case ExerciseActionsTypes.SetRepsIncompleteState: {
             const newReps = Rep.copyRepsAndSetToIncomplete(state.byId[action.payload.exerciseId].reps, action.payload.incompleteIndex);
             return {
                 ...state,
@@ -75,7 +75,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseActions.SetInactiveReps: {
+        case ExerciseActionsTypes.SetInactiveReps: {
             const newReps = Rep.copyRepsAndSetToInactive(state.byId[action.payload.exerciseId].reps);
             return {
                 ...state,
@@ -88,7 +88,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseSetActions.AddExerciseSets: {
+        case ExerciseSetActionsTypes.AddExerciseSets: {
             return {
                 ...state,
                 byId: {
@@ -97,13 +97,13 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseActions.DeleteExercise: {
+        case ExerciseActionsTypes.DeleteExercise: {
             return {
                 ...state,
                 byId: removeItemFromMap(action.payload.exeId, state)
             };
         }
-        case EExerciseActions.AddRep: {
+        case ExerciseActionsTypes.AddRep: {
             const exeId = action.payload.exerciseId;
             const newRep = Rep.copyRep(state.byId[exeId]
                 .reps[action.payload.copyFromIndex]);
@@ -118,7 +118,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseActions.DeleteRep: {
+        case ExerciseActionsTypes.DeleteRep: {
             const exeId = action.payload.exerciseId;
             const newReps = [...state.byId[exeId].reps];
             newReps.splice(action.payload.indexToDelete, 1);
@@ -133,7 +133,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseActions.UpdateExercise: {
+        case ExerciseActionsTypes.UpdateExercise: {
             return {
                 ...state,
                 byId: {
@@ -145,7 +145,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EExerciseActions.UpdateRep: {
+        case ExerciseActionsTypes.UpdateRep: {
             const exeId = action.payload.exerciseId;
             const newReps = [...state.byId[exeId].reps];
             newReps[action.payload.repIndex] = action.payload.rep;
@@ -160,14 +160,14 @@ export const exercisesReducers = (
                 }
             };
         }
-        case EWorkoutsActions.DeleteWorkout: {
+        case WorkoutsActionsTypes.DeleteWorkout: {
             const workoutId = action.payload.id;
             return {
                 ...state,
                 byId: filterMapByRecordPredicate(([key, val]) => val.workoutId !== workoutId, state)
             };
         }
-        case EWorkoutDaysActions.DeleteWorkoutDay: {
+        case WorkoutDaysActionsTypes.DeleteWorkoutDay: {
             const dayId = action.payload.dayId;
             return {
                 ...state,

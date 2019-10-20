@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Muscles } from '../../models/enums';
 
-export enum EMusclesFilterActions {
+export enum MusclesFilterActionsTypes {
     SetExerciseMuscleFilter = '[Muscle Filter] Set exercise\'s filter',
     AddExerciseMuscleFilter = '[Muscle Filter] Add muscle to exercise',
     DeleteExerciseMuscleFilter = '[Muscle Filter] Delete muscle from exercise',
@@ -10,24 +10,24 @@ export enum EMusclesFilterActions {
 }
 
 export class SetExerciseMuscleFilter implements Action {
-    readonly type = EMusclesFilterActions.SetExerciseMuscleFilter;
+    readonly type = MusclesFilterActionsTypes.SetExerciseMuscleFilter;
     constructor (public muscles: Muscles[]) {}
 }
 export class AddExerciseMuscleFilter implements Action {
-    readonly type = EMusclesFilterActions.AddExerciseMuscleFilter;
+    readonly type = MusclesFilterActionsTypes.AddExerciseMuscleFilter;
     constructor (public payload: { muscle: Muscles, mediaId: string}) {}
 }
 export class DeleteExerciseMuscleFilter implements Action {
-    readonly type = EMusclesFilterActions.DeleteExerciseMuscleFilter;
+    readonly type = MusclesFilterActionsTypes.DeleteExerciseMuscleFilter;
     constructor (public payload: { muscle: Muscles, mediaId: string}) {}
 }
 
 export class AddLibraryMuscleFilter implements Action {
-    readonly type = EMusclesFilterActions.AddLibraryMuscleFilter;
+    readonly type = MusclesFilterActionsTypes.AddLibraryMuscleFilter;
     constructor (public muscle: Muscles) {}
 }
 export class DeleteLibraryMuscleFilter implements Action {
-    readonly type = EMusclesFilterActions.DeleteLibraryMuscleFilter;
+    readonly type = MusclesFilterActionsTypes.DeleteLibraryMuscleFilter;
     constructor (public muscle: Muscles) {}
 }
 

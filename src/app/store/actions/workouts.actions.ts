@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 import { WorkoutBean } from 'src/app/models/Workout';
 import { WorkoutDayBean } from 'src/app/models/WorkoutDay';
 
-export enum EWorkoutsActions {
+export enum WorkoutsActionsTypes {
     SelectWorkout = '[Workouts] Select workout',
     UnselectWorkout = '[Workouts] Unselect workout',
     DeleteWorkout = '[Workouts] Delete workout',
@@ -12,27 +12,27 @@ export enum EWorkoutsActions {
 }
 
 export class SelectWorkout implements Action {
-    readonly type = EWorkoutsActions.SelectWorkout;
+    readonly type = WorkoutsActionsTypes.SelectWorkout;
     constructor(public payload: { workoutId: string }) { }
 }
 export class UnselectWorkout implements Action {
-    readonly type = EWorkoutsActions.UnselectWorkout;
+    readonly type = WorkoutsActionsTypes.UnselectWorkout;
     constructor() { }
 }
 
 export class DeleteWorkout implements Action {
-    readonly type = EWorkoutsActions.DeleteWorkout;
+    readonly type = WorkoutsActionsTypes.DeleteWorkout;
     constructor(public payload: {
         id: string,
         days: string[] }) { }
 }
 export class UpdateWorkout implements Action {
-    readonly type = EWorkoutsActions.UpdateWorkout;
+    readonly type = WorkoutsActionsTypes.UpdateWorkout;
     constructor(public payload: { workout: WorkoutBean }) { }
 }
 
 export class AddWorkout implements Action {
-    readonly type = EWorkoutsActions.AddWorkout;
+    readonly type = WorkoutsActionsTypes.AddWorkout;
     constructor(public payload: { workout: WorkoutBean, day: WorkoutDayBean }) { }
 }
 

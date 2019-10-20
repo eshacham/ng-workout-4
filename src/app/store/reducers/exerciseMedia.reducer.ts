@@ -1,8 +1,8 @@
 import { initialExercisesMediaState, IExercisesMediaState } from '../state/ExercisesMedia.state';
-import { EDataActions, DataActions } from '../actions/data.actions';
-import { EMusclesFilterActions, MusclesFilterActions } from '../actions/musclesFilter.actions';
-import { EExerciseMediaActions, ExerciseMediaActions } from '../actions/exercisesMedia.actions';
-import { EExerciseSetActions, ExerciseSetActions } from '../actions/exerciseSets.actions';
+import { DataActionsTypes, DataActions } from '../actions/data.actions';
+import { MusclesFilterActionsTypes, MusclesFilterActions } from '../actions/musclesFilter.actions';
+import { ExerciseMediaActionsTypes, ExerciseMediaActions } from '../actions/exercisesMedia.actions';
+import { ExerciseSetActionsTypes, ExerciseSetActions } from '../actions/exerciseSets.actions';
 import { removeItemFromMap } from './utils';
 
 export const exercisesMediaReducers = (
@@ -14,13 +14,13 @@ export const exercisesMediaReducers = (
         ExerciseSetActions)
     : IExercisesMediaState => {
     switch (action.type) {
-        case EDataActions.GetDataSuccess: {
+        case DataActionsTypes.GetDataSuccess: {
             return {
                 ...state,
                 byId: action.payload.media ? action.payload.media.byId : null,
             };
         }
-        case EMusclesFilterActions.AddExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.AddExerciseMuscleFilter: {
             const mediaId = action.payload.mediaId;
             return {
                 ...state,
@@ -33,7 +33,7 @@ export const exercisesMediaReducers = (
                 }
             };
         }
-        case EMusclesFilterActions.DeleteExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.DeleteExerciseMuscleFilter: {
             const mediaId = action.payload.mediaId;
             const oldMuscles = state.byId[mediaId].muscles;
             const newMuscles = oldMuscles.filter(m => m !== action.payload.muscle);
@@ -48,7 +48,7 @@ export const exercisesMediaReducers = (
                 }
             };
         }
-        case EExerciseMediaActions.UpdateExerciseMedia: {
+        case ExerciseMediaActionsTypes.UpdateExerciseMedia: {
             const mediaId = action.payload.id;
             const mediaUsageCounterUpdate = action.payload.mediaUsageCounterInc || 0;
             const mediaUsageCounter = state.byId[mediaId].mediaUsageCounter + mediaUsageCounterUpdate;
@@ -64,7 +64,7 @@ export const exercisesMediaReducers = (
                 }
             };
         }
-        case EExerciseMediaActions.UpdateExerciseMediaUsage: {
+        case ExerciseMediaActionsTypes.UpdateExerciseMediaUsage: {
             const ids2Update = action.payload.ids;
             const incFactor = action.payload.mediaUsageCounterInc;
             const mediasArray = Object.entries(state.byId);
@@ -79,7 +79,7 @@ export const exercisesMediaReducers = (
                 byId: newMap
             };
         }
-        case EExerciseSetActions.AddExerciseSets: {
+        case ExerciseSetActionsTypes.AddExerciseSets: {
             const ids2Update = action.payload.exes.map(exe => exe.mediaId);
             const mediasArray = Object.entries(state.byId);
             const newMap = mediasArray
@@ -93,13 +93,13 @@ export const exercisesMediaReducers = (
                 byId: newMap
             };
         }
-        case EExerciseMediaActions.DeleteExerciseMedia: {
+        case ExerciseMediaActionsTypes.DeleteExerciseMedia: {
             return {
                 ...state,
                 byId: removeItemFromMap(action.payload.id, state)
             };
         }
-        case EExerciseMediaActions.AddExerciseMedia: {
+        case ExerciseMediaActionsTypes.AddExerciseMedia: {
             const newId = action.payload.exerciseMedia.id;
             return {
                 ...state,

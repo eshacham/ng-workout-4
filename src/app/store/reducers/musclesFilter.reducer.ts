@@ -1,16 +1,16 @@
-import {MusclesFilterActions, EMusclesFilterActions} from '../actions/musclesFilter.actions';
+import {MusclesFilterActions, MusclesFilterActionsTypes} from '../actions/musclesFilter.actions';
 import { IMusclesFilterState, initialMusclesFilterState } from '../state/musclesFilter.state';
 
 export const musclesFilterReducers = (state = initialMusclesFilterState, action: MusclesFilterActions)
 : IMusclesFilterState => {
     switch (action.type) {
-        case EMusclesFilterActions.SetExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.SetExerciseMuscleFilter: {
             return {
                 ...state,
                 exerciseMusclesFilter: action.muscles
             };
         }
-        case EMusclesFilterActions.AddExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.AddExerciseMuscleFilter: {
             return {
                 ...state,
                 exerciseMusclesFilter: [
@@ -19,7 +19,7 @@ export const musclesFilterReducers = (state = initialMusclesFilterState, action:
                 ]
             };
         }
-        case EMusclesFilterActions.AddLibraryMuscleFilter: {
+        case MusclesFilterActionsTypes.AddLibraryMuscleFilter: {
             return {
                 ...state,
                 libraryMusclesFilter: [
@@ -28,14 +28,14 @@ export const musclesFilterReducers = (state = initialMusclesFilterState, action:
                 ]
             };
         }
-        case EMusclesFilterActions.DeleteExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.DeleteExerciseMuscleFilter: {
             return {
                 ...state,
                 exerciseMusclesFilter: state.exerciseMusclesFilter
                 .filter(m => m !== action.payload.muscle)
             };
         }
-        case EMusclesFilterActions.DeleteLibraryMuscleFilter: {
+        case MusclesFilterActionsTypes.DeleteLibraryMuscleFilter: {
             return {
                 ...state,
                 libraryMusclesFilter: state.libraryMusclesFilter

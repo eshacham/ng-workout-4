@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 
-export enum EExerciseMediaActions {
+export enum ExerciseMediaActionsTypes {
     AddExerciseMedia = '[ExerciseMedia] Add exercise media',
     UpdateExerciseMedia = '[ExerciseMedia] Update exercise media',
     UpdateExerciseMediaUsage = '[ExerciseMedia] Update exercise medias usage',
@@ -9,13 +9,13 @@ export enum EExerciseMediaActions {
 }
 
 export class AddExerciseMedia implements Action {
-    readonly type = EExerciseMediaActions.AddExerciseMedia;
+    readonly type = ExerciseMediaActionsTypes.AddExerciseMedia;
     constructor (public payload: {
         exerciseMedia: ExerciseMediaBean,
     }) { }
 }
 export class UpdateExerciseMedia implements Action {
-    readonly type = EExerciseMediaActions.UpdateExerciseMedia;
+    readonly type = ExerciseMediaActionsTypes.UpdateExerciseMedia;
     constructor(public payload: {
         id: string,
         name?: string,
@@ -23,14 +23,14 @@ export class UpdateExerciseMedia implements Action {
     }) { }
 }
 export class UpdateExerciseMediaUsage implements Action {
-    readonly type = EExerciseMediaActions.UpdateExerciseMediaUsage;
+    readonly type = ExerciseMediaActionsTypes.UpdateExerciseMediaUsage;
     constructor(public payload: {
         ids: string[],
         mediaUsageCounterInc?: number
     }) { }
 }
 export class DeleteExerciseMedia implements Action {
-    readonly type = EExerciseMediaActions.DeleteExerciseMedia;
+    readonly type = ExerciseMediaActionsTypes.DeleteExerciseMedia;
     constructor (public payload: {
         id: string,
     }) { }
