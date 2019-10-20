@@ -83,15 +83,15 @@ export class SelectExercisePage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.store.select(getExercisesMedias)
-    .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(media => {
-      this.images = media.map((image) => {
-        return {
-          isSelected: false,
-          media: image,
-        };
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(media => {
+        this.images = media.map((image) => {
+          return {
+            isSelected: false,
+            media: image,
+          };
+        });
       });
-    });
 
     this.store.select(getHasDataBeenReset)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -187,7 +187,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
           this.lastSelectedWorkoutDayId,
           this.workoutId,
           image.media.id,
-          image.newName);
+          image.newName || image.media.name);
       });
     return newExercises;
   }
