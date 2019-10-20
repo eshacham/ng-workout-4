@@ -5,7 +5,7 @@ import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets
 import { ExerciseActions, EExerciseActions } from '../actions/exercises.actions';
 import { ExerciseSetBean } from 'src/app/models/ExerciseSet';
 import { EWorkoutsActions, WorkoutsActions } from '../actions/workouts.actions';
-import { removeItemFromMap, removeItemsFromMapByPredicate, newMapFromItems } from './utils';
+import { removeItemFromMap, filterMapByRecordPredicate, createMapFromBeanArray } from './utils';
 
 export const exerciseSetsReducers = (
     state = initialExerciseSetsState,
@@ -27,7 +27,7 @@ export const exerciseSetsReducers = (
                 ...state,
                 byId: {
                     ...state.byId,
-                    ...newMapFromItems<ExerciseSetBean>(action.payload.sets)
+                    ...createMapFromBeanArray<ExerciseSetBean>(action.payload.sets)
                 }
             };
         }
@@ -55,7 +55,7 @@ export const exerciseSetsReducers = (
             const dayId = action.payload.dayId;
             return {
                 ...state,
-                byId: removeItemsFromMapByPredicate(([key, val]) => val.dayId !== dayId, state),
+                byId: filterMapByRecordPredicate(([key, val]) => val.dayId !== dayId, state),
 
             };
         }
@@ -63,7 +63,7 @@ export const exerciseSetsReducers = (
             const workoutId = action.payload.id;
             return {
                 ...state,
-                byId: removeItemsFromMapByPredicate(([key, val]) => val.workoutId !== workoutId, state)
+                byId: filterMapByRecordPredicate(([key, val]) => val.workoutId !== workoutId, state)
             };
         }
         case EExerciseSetActions.SwitchExercisesInSet: {

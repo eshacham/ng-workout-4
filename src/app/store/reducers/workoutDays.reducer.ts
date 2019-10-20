@@ -3,7 +3,7 @@ import { initialWorkoutDaysState, IWorkoutDaysState } from '../state/workoutDays
 import { EDataActions, DataActions } from '../actions/data.actions';
 import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
 import { ExerciseSetActions, EExerciseSetActions } from '../actions/exerciseSets.actions';
-import { removeItemsFromMapByIds, removeItemFromMap } from './utils';
+import { filterMapByIds, removeItemFromMap } from './utils';
 import { DisplayMode } from 'src/app/models/enums';
 
 export const workoutDaysReducers = (state = initialWorkoutDaysState,
@@ -29,7 +29,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case EWorkoutsActions.DeleteWorkout: {
-            const newMap = removeItemsFromMapByIds(action.payload.days, state);
+            const newMap = filterMapByIds(action.payload.days, state);
             return {
                 ...state,
                 byId: newMap

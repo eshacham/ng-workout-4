@@ -6,7 +6,7 @@ import { ExerciseBean } from 'src/app/models/Exercise';
 import { Rep } from 'src/app/models/Rep';
 import { WorkoutsActions, EWorkoutsActions } from '../actions/workouts.actions';
 import { EWorkoutDaysActions, WorkoutDaysActions } from '../actions/workoutDays.actions';
-import { newMapFromItems, removeItemFromMap, removeItemsFromMapByPredicate } from './utils';
+import { createMapFromBeanArray, removeItemFromMap, filterMapByRecordPredicate } from './utils';
 
 export const exercisesReducers = (
     state = initialExercisesState,
@@ -93,7 +93,7 @@ export const exercisesReducers = (
                 ...state,
                 byId: {
                     ...state.byId,
-                    ...newMapFromItems<ExerciseBean>(action.payload.exes)
+                    ...createMapFromBeanArray<ExerciseBean>(action.payload.exes)
                 }
             };
         }
@@ -164,14 +164,14 @@ export const exercisesReducers = (
             const workoutId = action.payload.id;
             return {
                 ...state,
-                byId: removeItemsFromMapByPredicate(([key, val]) => val.workoutId !== workoutId, state)
+                byId: filterMapByRecordPredicate(([key, val]) => val.workoutId !== workoutId, state)
             };
         }
         case EWorkoutDaysActions.DeleteWorkoutDay: {
             const dayId = action.payload.dayId;
             return {
                 ...state,
-                byId: removeItemsFromMapByPredicate(([key, val]) => val.dayId !== dayId, state),
+                byId: filterMapByRecordPredicate(([key, val]) => val.dayId !== dayId, state),
             };
         }
         default: {
