@@ -175,11 +175,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.store.dispatch(new StartExercise({
             id: this.dayId,
             runningExerciseSetIndex: this.exerciseSetIndex,
-            displayMode: DisplayMode.Workout,
-            runningState: RunningState.Running,
-            exerciseSets: null,
-            name: null,
-            workoutId: null
         }));
     }
 

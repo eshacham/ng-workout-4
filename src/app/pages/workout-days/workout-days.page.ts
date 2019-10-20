@@ -107,9 +107,9 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
             this.store.select(getWorkoutDay(selectedDay))
               .pipe(take(1))
               .subscribe(state => {
-                if (state.displayMode) {
+                // if (state.displayMode) {
                   this.adjustDisplayMode(state);
-                }
+                // }
               });
           }
         }
@@ -147,7 +147,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   private adjustDisplayMode(state: WorkoutDayBean) {
-    console.log(`workout-days ${this.workoutId} adjusting Display mode to - ${state.displayMode}`);
+    console.log(`workout-days ${this.workoutId} adjusting Display mode to - ${DisplayMode[state.displayMode]}`);
     this.DisplayMode = state.displayMode;
     switch (this.DisplayMode) {
       case DisplayMode.Display:
@@ -276,11 +276,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         this.fabEdit.close();
         this.store.dispatch(new StartFirstExercise({
           id: this.activeDayId,
-          runningExerciseSetIndex: 0,
-          displayMode: DisplayMode.Workout,
-          runningState: RunningState.Running,
-          exerciseSets: null,
-          name: null
         }));
         this.days.filter(dayId => dayId !== this.activeDayId)
           .forEach(dayId => this.DispatchStopExercise(dayId));
@@ -295,21 +290,13 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   DispatchChangeDisplayMode(dayId: string = null) {
     this.store.dispatch(new ChangeDisplayMode({
       id: dayId || this.activeDayId,
-      runningExerciseSetIndex: null,
       displayMode: this.DisplayMode,
-      runningState: RunningState.NA,
-      exerciseSets: null,
-      name: null
     }));
   }
 
   DispatchStopExercise(dayId: string) {
     this.store.dispatch(new StopExercise({
       id: dayId,
-      runningExerciseSetIndex: null,
-      runningState: RunningState.NA,
-      exerciseSets: null,
-      name: null
     }));
   }
 

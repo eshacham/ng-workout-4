@@ -41,7 +41,7 @@ export class WorkoutDay extends WorkoutDayBase {
 export class WorkoutDayBean extends WorkoutDayBase {
     public exerciseSets: string[];
     runningExerciseSetIndex?: number;
-    displayMode?: DisplayMode;
+    displayMode: DisplayMode;
     runningState: RunningState;
     workoutId?: string;
 

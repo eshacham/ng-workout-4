@@ -66,22 +66,33 @@ export class AddWorkoutDay implements Action {
     }) { }
 }
 
+export interface ChangeWorkoutDayState {
+    id: string;
+    runningExerciseSetIndex?: number;
+    runningState?: RunningState;
+    exerciseSets?: string[];
+    displayMode?: DisplayMode;
+    name?: string;
+}
+
 export class StartFirstExercise implements Action {
     readonly type = EWorkoutDaysActions.StartFirstExercise;
-    constructor(public payload: WorkoutDayBean) {
+    constructor(public payload: ChangeWorkoutDayState) {
         payload.runningExerciseSetIndex = 0;
         payload.displayMode = DisplayMode.Workout;
+        payload.runningState = RunningState.Running;
     }
 }
 export class StartExercise implements Action {
     readonly type = EWorkoutDaysActions.StartExercise;
-    constructor(public payload: WorkoutDayBean) {
+    constructor(public payload: ChangeWorkoutDayState) {
         payload.displayMode = DisplayMode.Workout;
+        payload.runningState = RunningState.Running;
     }
 }
 export class StopExercise implements Action {
     readonly type = EWorkoutDaysActions.StopExercise;
-    constructor(public payload: WorkoutDayBean) {
+    constructor(public payload: ChangeWorkoutDayState) {
         payload.runningState = RunningState.NA;
         payload.displayMode = DisplayMode.Display;
     }
@@ -95,7 +106,8 @@ export class ExerciseCompleted implements Action {
 }
 export class ChangeDisplayMode implements Action {
     readonly type = EWorkoutDaysActions.ChangeDisplayMode;
-    constructor(public payload: WorkoutDayBean) {
+
+    constructor(public payload: ChangeWorkoutDayState) {
         payload.runningState = RunningState.NA;
         payload.runningExerciseSetIndex = null;
     }

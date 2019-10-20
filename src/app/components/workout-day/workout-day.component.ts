@@ -90,18 +90,10 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
         this.store.dispatch(new StartExercise({
           id: state.id,
           runningExerciseSetIndex: state.runningExerciseSetIndex + 1,
-          displayMode: DisplayMode.Workout,
-          runningState: RunningState.Running,
-          exerciseSets: null,
-          name: null,
         }));
       } else {
         this.store.dispatch(new StopExercise({
           id: this.dayId,
-          runningState: RunningState.NA,
-          displayMode: DisplayMode.Display,
-          exerciseSets: null,
-          name: null,
         }));
       }
     }
