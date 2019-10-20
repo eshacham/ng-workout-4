@@ -24,7 +24,6 @@ export class DeleteExercise implements Action {
 export class UpdateExercise implements Action {
     readonly type = EExerciseActions.UpdateExercise;
     constructor(public payload: {
-        exeId: string,
         exercise: ExerciseBean
     }) { }
 }

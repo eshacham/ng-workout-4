@@ -24,30 +24,18 @@ export class ExerciseVariationPopoverComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.exercise = this.navParams.data.exercise;
+    this.exercise = ExerciseBean.copy(this.navParams.data.exercise);
     this.gripTypes = Object.keys(GripType).map(key => GripType[key]);
     this.weightTypes = Object.keys(WeightType).map(key => WeightType[key]);
     this.gripWidths = Object.keys(GripWidth).map(key => GripWidth[key]);
     this.repSpeeds = Object.keys(RepetitionSpeed).map(key => RepetitionSpeed[key]);
   }
-  exerciseChanged(event, prop: string) {
-    const newExe = ExerciseBean.copy(this.exercise);
-    newExe[prop] = event.target.value;
-    this.store.dispatch(new UpdateExercise({
-      exeId: this.exercise.id,
-      exercise: newExe
-    }));
-  }
-  exerciseGripChanged(event, prop: string) {
-    const newExe = ExerciseBean.copy(this.exercise);
-    const newGrip = {...newExe.theGrip };
-    newGrip[prop] = event.target.value;
-    newExe.theGrip = newGrip;
-    this.store.dispatch(new UpdateExercise({
-      exeId: this.exercise.id,
-      exercise: newExe
-    }));
-  }
 
+  updateExercise() {
+    const exe = ExerciseBean.copy(this.exercise);
+    this.store.dispatch(new UpdateExercise({
+      exercise: exe
+    }));
+  }
 
 }

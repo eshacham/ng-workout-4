@@ -3,14 +3,14 @@
         <ion-label>Weight:</ion-label>
         <ion-input type="number"
             [(ngModel)]="rep.weight"
-            (change)="exerciseRepChanged($event, 'weight')"
+            (change)="UpdateRep()"
         ></ion-input>
     </ion-item>
     <ion-item>
         <ion-label>Weight Unit:</ion-label>
         <ion-select interface="popover"
             [(ngModel)]="rep.weightUnit"
-            (ionChange)="exerciseRepChanged($event, 'weightUnit')">
+            (ionChange)="UpdateRep()">
             <ion-select-option *ngFor="let weightUnit of weightUnits"
                 value={{weightUnit}}>
                 {{weightUnit}}
@@ -19,14 +19,15 @@
     </ion-item>
     <ion-item>
         <ion-label>Times:</ion-label>
-        <ion-input type="number" [(ngModel)]="rep.times"
-            (change)="exerciseRepChanged($event, 'times')">
+        <ion-input type="number"
+            [(ngModel)]="rep.times"
+            (change)="UpdateRep()">
     </ion-input>
     </ion-item>
     <ion-item>
         <ion-label>Seconds:</ion-label>
         <ion-input type="number" [(ngModel)]="rep.seconds"
-            (change)="exerciseRepChanged($event, 'seconds')">
+            (change)="UpdateRep()">
         </ion-input>
     </ion-item>
 </ion-list>

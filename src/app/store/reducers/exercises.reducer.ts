@@ -138,8 +138,8 @@ export const exercisesReducers = (
                 ...state,
                 byId: {
                     ...state.byId,
-                    [action.payload.exeId]: {
-                        ...state.byId[action.payload.exeId],
+                    [action.payload.exercise.id]: {
+                        ...state.byId[action.payload.exercise.id],
                         ...action.payload.exercise
                     }
                 }

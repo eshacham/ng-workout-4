@@ -23,18 +23,16 @@ export class ExerciseThumbnailPopoverComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rep = this.navParams.data.rep;
+    this.rep = Rep.copyRep(this.navParams.data.rep);
     this.exeId = this.navParams.data.exeId;
     this.repIndex = this.navParams.data.repIndex;
     this.weightUnits = Object.keys(WeightUnit).map(key => WeightUnit[key]);
   }
 
-  exerciseRepChanged(event, prop: string) {
-    const newRep = Rep.copyRep(this.rep);
-    newRep[prop] = event.target.value;
+  UpdateRep() {
     this.store.dispatch(new UpdateRep({
       exerciseId: this.exeId,
-      rep: newRep,
+      rep: Rep.copyRep(this.rep),
       repIndex: this.repIndex
     }));
   }

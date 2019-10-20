@@ -67,7 +67,9 @@ export class ExerciseVariationComponent {
     const popover = await this.popoverCtrl.create({
       component: ExerciseVariationPopoverComponent,
       event: event,
-      componentProps: { exercise: this.exercise }
+      componentProps: {
+        exercise: this.exercise
+      }
     });
     popover.present();
   }
