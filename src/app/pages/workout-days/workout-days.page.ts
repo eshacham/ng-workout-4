@@ -106,10 +106,8 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
           } else {
             this.store.select(getWorkoutDay(selectedDay))
               .pipe(take(1))
-              .subscribe(state => {
-                // if (state.displayMode) {
-                  this.adjustDisplayMode(state);
-                // }
+              .subscribe(workoutDayState => {
+                  this.adjustDisplayMode(workoutDayState);
               });
           }
         }
@@ -146,9 +144,9 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     }
   }
 
-  private adjustDisplayMode(state: WorkoutDayBean) {
-    console.log(`workout-days ${this.workoutId} adjusting Display mode to - ${DisplayMode[state.displayMode]}`);
-    this.DisplayMode = state.displayMode;
+  private adjustDisplayMode(workoutDayState: WorkoutDayBean) {
+    console.log(`workout-days ${this.workoutId} adjusting Display mode to - ${DisplayMode[workoutDayState.displayMode]}`);
+    this.DisplayMode = workoutDayState.displayMode;
     switch (this.DisplayMode) {
       case DisplayMode.Display:
         this.fabEdit.close();
