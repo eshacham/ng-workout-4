@@ -47,8 +47,8 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
     displayMode = DisplayMode;
     weightUnit = WeightUnit;
 
-    private exercises: ExerciseBean[];
-    private images: ExerciseMediaBean[];
+    exercises: ExerciseBean[];
+    images: ExerciseMediaBean[];
     private _isOpen = false;
     private _isRunning = false;
     private _isEditing = false;
