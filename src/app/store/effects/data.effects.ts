@@ -1,30 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { of } from 'rxjs';
-import { switchMap, map, withLatestFrom } from 'rxjs/operators';
+import { of, from } from 'rxjs';
+import { switchMap, map, withLatestFrom, mergeMap } from 'rxjs/operators';
 import { IAppState } from '../state/app.state';
 import {
     GetData,
     DataActionsTypes,
     GetDataSuccess,
     UpdateWorkouts,
-    WorkoutsUpdated,
+    WorkoutsSavedSuccess,
     UpdateImages,
-    ImagesUpdated} from '../actions/data.actions';
+    ImagesSavedSuccess,
+} from '../actions/data.actions';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { AllDataMaps } from 'src/app/models/interfaces';
 import { getWorkoutsData, getImagesData } from '../selectors/data.selectors';
 
 @Injectable()
 export class DataEffects {
+
+    constructor(
+        private _dataService: DataServiceProvider,
+        private _actions$: Actions,
+        private _store: Store<IAppState>
+    ) { }
+
     @Effect()
     getAllData$ = this._actions$.pipe(
-        ofType<GetData>(DataActionsTypes.GetData),
-        switchMap(async () => await this._dataService.getAllData()),
-        switchMap((allData: AllDataMaps) => {
-            return of(new GetDataSuccess(allData));
-        })
+        ofType(DataActionsTypes.GetData),
+        mergeMap((action: GetData) => from(this._dataService.getAllData()).pipe(
+            map((allData: AllDataMaps) => (new GetDataSuccess(allData)))
+        ))
     );
 
     @Effect()
@@ -34,7 +41,7 @@ export class DataEffects {
         withLatestFrom(this._store.pipe(select(getWorkoutsData))),
         switchMap(([action, workoutsData]) => {
             this._dataService.saveWorkouts(workoutsData);
-            return of(new WorkoutsUpdated());
+            return of(new WorkoutsSavedSuccess());
         })
     );
 
@@ -45,12 +52,8 @@ export class DataEffects {
         withLatestFrom(this._store.pipe(select(getImagesData))),
         switchMap(([action, imagessData]) => {
             this._dataService.saveImages(imagessData);
-            return of(new ImagesUpdated());
+            return of(new ImagesSavedSuccess());
         })
     );
-constructor(
-    private _dataService: DataServiceProvider,
-    private _actions$: Actions,
-    private _store: Store<IAppState>
-) {}
+
 }
