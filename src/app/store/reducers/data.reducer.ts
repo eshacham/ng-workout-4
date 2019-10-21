@@ -9,19 +9,28 @@ export const dataReducers =
             return {
                 ...state,
                 hasDataBeenLoaded: true,
+                error: null,
             };
         }
         case DataActionsTypes.DataReset: {
             return {
                 ...state,
-                hasDataBeenReset: true
+                hasDataBeenReset: true,
+                error: null,
             };
         }
         case DataActionsTypes.ImagesSavedSuccess:
         case DataActionsTypes.WorkoutsSavedSuccess: {
             return {
                 ...state,
-                hasDataBeenReset: false
+                hasDataBeenReset: false,
+                error: null,
+            };
+        }
+        case DataActionsTypes.GetDataError: {
+            return {
+                ...state,
+                error: action.payload
             };
         }
         default: {

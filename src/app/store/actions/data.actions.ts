@@ -23,7 +23,7 @@ export class GetDataSuccess implements Action {
 }
 export class GetDataError implements Action {
     public readonly type = DataActionsTypes.GetDataError;
-    constructor() { }
+    constructor(public payload: string) { }
 }
 
 export class DataReset implements Action {

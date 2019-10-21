@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { of, from } from 'rxjs';
-import { switchMap, map, withLatestFrom, mergeMap } from 'rxjs/operators';
+import { switchMap, map, withLatestFrom, mergeMap, catchError } from 'rxjs/operators';
 import { IAppState } from '../state/app.state';
 import {
     GetData,
@@ -12,6 +12,7 @@ import {
     WorkoutsSavedSuccess,
     UpdateImages,
     ImagesSavedSuccess,
+    GetDataError,
 } from '../actions/data.actions';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { AllDataMaps } from 'src/app/models/interfaces';
@@ -30,7 +31,11 @@ export class DataEffects {
     getAllData$ = this._actions$.pipe(
         ofType(DataActionsTypes.GetData),
         mergeMap((action: GetData) => from(this._dataService.getAllData()).pipe(
-            map((allData: AllDataMaps) => (new GetDataSuccess(allData)))
+            map((allData: AllDataMaps) => (new GetDataSuccess(allData))),
+            catchError(err => {
+                console.log('getAllData effect - got an error:', err);
+                return of(new GetDataError(err));
+            })
         ))
     );
 
