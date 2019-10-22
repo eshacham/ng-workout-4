@@ -13,6 +13,7 @@ import {
     UpdateImages,
     ImagesSavedSuccess,
     GetDataError,
+    WorkoutsSavedError,
 } from '../actions/data.actions';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { AllDataMaps } from 'src/app/models/interfaces';
@@ -42,23 +43,29 @@ export class DataEffects {
     @Effect()
     saveWorkouts$ = this._actions$.pipe(
         ofType<UpdateWorkouts>(DataActionsTypes.UpdateWorkouts),
-        map(action => action),
+        map((action: UpdateWorkouts) => action),
         withLatestFrom(this._store.pipe(select(getWorkoutsData))),
-        switchMap(([action, workoutsData]) => {
-            this._dataService.saveWorkouts(workoutsData);
-            return of(new WorkoutsSavedSuccess());
-        })
+        mergeMap(([action, workoutsData]) => from(this._dataService.saveWorkouts(workoutsData)).pipe(
+            map(() => (new WorkoutsSavedSuccess())),
+            catchError(err => {
+                console.log('saveWorkouts effect - got an error:', err);
+                return of(new WorkoutsSavedError(err));
+            })
+        ))
     );
 
     @Effect()
     saveImages$ = this._actions$.pipe(
         ofType<UpdateImages>(DataActionsTypes.UpdateImages),
-        map(action => action),
+        map((action: UpdateImages) => action),
         withLatestFrom(this._store.pipe(select(getImagesData))),
-        switchMap(([action, imagessData]) => {
-            this._dataService.saveImages(imagessData);
-            return of(new ImagesSavedSuccess());
-        })
+        mergeMap(([action, imagessData]) => from(this._dataService.saveImages(imagessData)).pipe(
+            map(() => (new ImagesSavedSuccess())),
+            catchError(err => {
+                console.log('saveWorkouts effect - got an error:', err);
+                return of(new WorkoutsSavedError(err));
+            })
+        ))
     );
 
 }

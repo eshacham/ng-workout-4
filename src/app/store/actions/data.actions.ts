@@ -42,7 +42,7 @@ export class WorkoutsSavedSuccess implements Action {
 }
 export class WorkoutsSavedError implements Action {
     readonly type = DataActionsTypes.WorkoutsSavedError;
-    constructor() { }
+    constructor(public payload: string) { }
 }
 
 export class UpdateImages implements Action {
@@ -55,7 +55,7 @@ export class ImagesSavedSuccess implements Action {
 }
 export class ImagesSavedError implements Action {
     readonly type = DataActionsTypes.ImagesSavedError;
-    constructor() { }
+    constructor(public payload: string) { }
 }
 
 export type DataActions =
