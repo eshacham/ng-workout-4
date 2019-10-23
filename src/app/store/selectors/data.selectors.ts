@@ -43,3 +43,8 @@ export const getHasDataBeenLoaded = createSelector(
     dataState,
     (state: IDataState) => state.hasDataBeenLoaded
 );
+
+export const getError = createSelector(
+    dataState,
+    (state: IDataState) => state.error
+);

@@ -12,7 +12,7 @@ import { ToastService } from '../providers/toast-service/toast.service';
 import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { getLibraryMusclesFilter } from '../store/selectors/musclesFilter.selectors';
 import { getExercisesMedias } from '../store/selectors/ExercisesMedia.selectors';
@@ -82,18 +82,18 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     this.store.select(getLibraryMusclesFilter)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((filter) => {
-        console.log('tab-library-page redux - LibraryMusclesFilterState:', filter);
+        console.log('tab-library-page redux - getLibraryMusclesFilter:', filter);
         this.musclesFilter = filter;
       });
-  }
 
-  ngOnDestroy() {
-    console.log('onDestroy - tab-library-page');
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
+    }
 
-  private async presentToast(text: string) {
+    ngOnDestroy() {
+      this.ngUnsubscribe.next();
+      this.ngUnsubscribe.complete();
+    }
+
+  private presentToast(text: string) {
     this.toastService.presentToast(text);
   }
 

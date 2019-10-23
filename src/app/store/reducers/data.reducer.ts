@@ -27,7 +27,9 @@ export const dataReducers =
                 error: null,
             };
         }
-        case DataActionsTypes.GetDataError: {
+        case DataActionsTypes.GetDataError:
+        case DataActionsTypes.WorkoutsSavedError:
+        case DataActionsTypes.ImagesSavedError: {
             return {
                 ...state,
                 error: action.payload

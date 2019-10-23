@@ -35,7 +35,7 @@ export class DataEffects {
             map((allData: AllDataMaps) => (new GetDataSuccess(allData))),
             catchError(err => {
                 console.log('getAllData effect - got an error:', err);
-                return of(new GetDataError(err));
+                return of(new GetDataError(err.message));
             })
         ))
     );
@@ -49,7 +49,7 @@ export class DataEffects {
             map(() => (new WorkoutsSavedSuccess())),
             catchError(err => {
                 console.log('saveWorkouts effect - got an error:', err);
-                return of(new WorkoutsSavedError(err));
+                return of(new WorkoutsSavedError(err.message));
             })
         ))
     );
@@ -63,7 +63,7 @@ export class DataEffects {
             map(() => (new ImagesSavedSuccess())),
             catchError(err => {
                 console.log('saveWorkouts effect - got an error:', err);
-                return of(new WorkoutsSavedError(err));
+                return of(new WorkoutsSavedError(err.message));
             })
         ))
     );
