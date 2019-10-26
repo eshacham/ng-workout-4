@@ -25,7 +25,9 @@ import {
     DeleteExerciseMedia,
     DeleteExerciseMediaSuccess,
     UpdateExerciseMedia,
-    UpdateExerciseMediaSuccess
+    UpdateExerciseMediaSuccess,
+    UpdateExerciseMediaUsage,
+    UpdateExerciseMediaUsageSuccess
 } from '../actions/exercisesMedia.actions';
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 
@@ -118,6 +120,19 @@ export class DataEffects {
         ])),
         catchError(err => {
             console.log('UpdateExerciseMedia effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+    );
+
+    @Effect()
+    updateImageUsage$ = this._actions$.pipe(
+        ofType(ExerciseMediaActionsTypes.UpdateExerciseMediaUsage),
+        mergeMap((action: UpdateExerciseMediaUsage) => ([
+            new UpdateExerciseMediaUsageSuccess(action.payload),
+            new UpdateImages()
+        ])),
+        catchError(err => {
+            console.log('UpdateExerciseMediaUsage effect - got an error:', err);
             return of(new GetDataError(err.message));
         })
     );

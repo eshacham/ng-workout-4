@@ -74,7 +74,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
       ids: mediaIds,
       mediaUsageCounterInc: -1
     }));
-    this.store.dispatch(new UpdateImages());
   }
 
   ngOnDestroy() {

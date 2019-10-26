@@ -7,6 +7,7 @@ export enum ExerciseMediaActionsTypes {
     UpdateExerciseMedia = '[ExerciseMedia] Update exercise media',
     UpdateExerciseMediaSuccess = '[ExerciseMedia] Exercise media has been updated',
     UpdateExerciseMediaUsage = '[ExerciseMedia] Update exercise medias usage',
+    UpdateExerciseMediaUsageSuccess = '[ExerciseMedia] xercise medias usage has been updated',
     DeleteExerciseMedia = '[ExerciseMedia] Delete exercise media',
     DeleteExerciseMediaSuccess = '[ExerciseMedia] Exercise media has been deleted',
 }
@@ -48,6 +49,13 @@ export class UpdateExerciseMediaUsage implements Action {
         mediaUsageCounterInc?: number
     }) { }
 }
+export class UpdateExerciseMediaUsageSuccess implements Action {
+    readonly type = ExerciseMediaActionsTypes.UpdateExerciseMediaUsageSuccess;
+    constructor(public payload: {
+        ids: string[],
+        mediaUsageCounterInc?: number
+    }) { }
+}
 export class DeleteExerciseMedia implements Action {
     readonly type = ExerciseMediaActionsTypes.DeleteExerciseMedia;
     constructor (public payload: {
@@ -67,6 +75,7 @@ export type ExerciseMediaActions =
     UpdateExerciseMedia |
     UpdateExerciseMediaSuccess |
     UpdateExerciseMediaUsage |
+    UpdateExerciseMediaUsageSuccess |
     DeleteExerciseMedia |
     DeleteExerciseMediaSuccess
     ;

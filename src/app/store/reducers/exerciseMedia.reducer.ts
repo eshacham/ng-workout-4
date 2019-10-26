@@ -64,7 +64,7 @@ export const exercisesMediaReducers = (
                 }
             };
         }
-        case ExerciseMediaActionsTypes.UpdateExerciseMediaUsage: {
+        case ExerciseMediaActionsTypes.UpdateExerciseMediaUsageSuccess: {
             const ids2Update = action.payload.ids;
             const incFactor = action.payload.mediaUsageCounterInc;
             const mediasArray = Object.entries(state.byId);

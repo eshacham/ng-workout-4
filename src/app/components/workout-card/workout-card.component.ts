@@ -81,7 +81,6 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
       ids: mediaIds,
       mediaUsageCounterInc: -1
     }));
-    this.store.dispatch(new UpdateImages());
   }
 
   workoutChanged() {

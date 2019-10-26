@@ -259,7 +259,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       ids: mediaIds,
       mediaUsageCounterInc: -1
     }));
-    this.store.dispatch(new UpdateImages());
   }
 
   getWorkoutDayIndexById(id: string) {

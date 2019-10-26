@@ -155,8 +155,8 @@ export class DataServiceProvider {
       const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
       console.log(`deleting image file ${path}/${name}`);
       await this.file.removeFile(path, name);
-      return image.id;
     }
+    return image.id;
   }
 
   getIonicPath(img: string) {

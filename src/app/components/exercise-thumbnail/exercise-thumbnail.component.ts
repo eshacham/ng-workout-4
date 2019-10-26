@@ -211,7 +211,6 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             ids: [exercise.mediaId],
             mediaUsageCounterInc: -1
         }));
-        this.store.dispatch(new UpdateImages());
     }
 
     exerciseChanged(index: number, value: string | number, prop: string) {
