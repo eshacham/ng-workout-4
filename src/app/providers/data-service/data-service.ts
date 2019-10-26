@@ -149,12 +149,13 @@ export class DataServiceProvider {
     return newEntry;
   }
 
-  async deleteImage(image: ExerciseMediaBean) {
+  async deleteImage(image: ExerciseMediaBean): Promise<string> {
     if (this.isMobile && !image.isDefault) {
       const path = image.nativePath.substr(0, image.nativePath.lastIndexOf('/') + 1);
       const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
       console.log(`deleting image file ${path}/${name}`);
       await this.file.removeFile(path, name);
+      return image.id;
     }
   }
 

@@ -93,10 +93,10 @@ export const exercisesMediaReducers = (
                 byId: newMap
             };
         }
-        case ExerciseMediaActionsTypes.DeleteExerciseMedia: {
+        case ExerciseMediaActionsTypes.DeleteExerciseMediaSuccess: {
             return {
                 ...state,
-                byId: removeItemFromMap(action.payload.id, state)
+                byId: removeItemFromMap(action.payload.imageId, state)
             };
         }
         case ExerciseMediaActionsTypes.AddExerciseMediaSuccess: {

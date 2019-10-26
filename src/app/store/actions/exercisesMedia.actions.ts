@@ -7,6 +7,7 @@ export enum ExerciseMediaActionsTypes {
     UpdateExerciseMedia = '[ExerciseMedia] Update exercise media',
     UpdateExerciseMediaUsage = '[ExerciseMedia] Update exercise medias usage',
     DeleteExerciseMedia = '[ExerciseMedia] Delete exercise media',
+    DeleteExerciseMediaSuccess = '[ExerciseMedia] Exercise media has been deleted',
 }
 
 export class AddExerciseMedia implements Action {
@@ -41,7 +42,13 @@ export class UpdateExerciseMediaUsage implements Action {
 export class DeleteExerciseMedia implements Action {
     readonly type = ExerciseMediaActionsTypes.DeleteExerciseMedia;
     constructor (public payload: {
-        id: string,
+        image: ExerciseMediaBean,
+    }) { }
+}
+export class DeleteExerciseMediaSuccess implements Action {
+    readonly type = ExerciseMediaActionsTypes.DeleteExerciseMediaSuccess;
+    constructor (public payload: {
+        imageId: string,
     }) { }
 }
 
@@ -50,5 +57,6 @@ export type ExerciseMediaActions =
     AddExerciseMediaSuccess |
     UpdateExerciseMedia |
     UpdateExerciseMediaUsage |
-    DeleteExerciseMedia
+    DeleteExerciseMedia |
+    DeleteExerciseMediaSuccess
     ;

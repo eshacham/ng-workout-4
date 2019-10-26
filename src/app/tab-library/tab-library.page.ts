@@ -12,7 +12,7 @@ import { ToastService } from '../providers/toast-service/toast.service';
 import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { getLibraryMusclesFilter } from '../store/selectors/musclesFilter.selectors';
 import { getExercisesMedias } from '../store/selectors/ExercisesMedia.selectors';
@@ -151,16 +151,13 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
 
   async deleteImage(imgEntry: ExerciseMediaBean) {
-    await this.dataService.deleteImage(imgEntry);
-    this.store.dispatch(new DeleteExerciseMedia({ id: imgEntry.id }));
-    this.store.dispatch(new UpdateImages());
+    this.store.dispatch(new DeleteExerciseMedia({ image: imgEntry }));
     this.presentToast('File removed.');
   }
 
   updateImage(value: string, image: ExerciseMediaBean) {
     console.log(`tab-library-page - updating image (id ${image.id}) name to ${value}`);
     this.store.dispatch(new UpdateExerciseMedia({ id: image.id, name: value }));
-    this.store.dispatch(new UpdateImages());
     this.presentToast('File updated.');
   }
 
@@ -203,7 +200,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
     });
     return images;
   }
-
   async startUpload(imgEntry: ExerciseMediaBean) {
     try {
       const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.nativePath);

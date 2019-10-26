@@ -18,7 +18,13 @@ import {
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { AllDataMaps } from 'src/app/models/interfaces';
 import { getWorkoutsData, getImagesData } from '../selectors/data.selectors';
-import { ExerciseMediaActionsTypes, AddExerciseMedia, AddExerciseMediaSuccess } from '../actions/exercisesMedia.actions';
+import {
+    ExerciseMediaActionsTypes,
+    AddExerciseMedia,
+    AddExerciseMediaSuccess,
+    DeleteExerciseMedia,
+    DeleteExerciseMediaSuccess
+} from '../actions/exercisesMedia.actions';
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 
 @Injectable()
@@ -84,5 +90,23 @@ export class DataEffects {
                 })
             ))
     );
+
+    @Effect()
+    deleteImage$ = this._actions$.pipe(
+        ofType(ExerciseMediaActionsTypes.DeleteExerciseMedia),
+        mergeMap((action: DeleteExerciseMedia) => from(this._dataService.deleteImage(
+            action.payload.image)).pipe(
+                switchMap((imageId: string) => [
+                    (new DeleteExerciseMediaSuccess({ imageId: imageId })),
+                    (new UpdateImages())
+                ]),
+                catchError(err => {
+                    console.log('DeleteExerciseMedia effect - got an error:', err);
+                    return of(new GetDataError(err.message));
+                })
+            ))
+    );
+
+
 
 }
