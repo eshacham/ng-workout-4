@@ -138,18 +138,16 @@ export class TabLibraryPage implements OnInit, OnDestroy {
       imageName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
       ImagePath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
     }
-    await this.copyFileToLocalDir(ImagePath, imageName, `${new Date().getTime()}.jpg`);
+    const newImageName = `${new Date().getTime()}.jpg`;
+    this.addNewImage(ImagePath, imageName, newImageName);
   }
 
-  private async copyFileToLocalDir(imagePath: string, imageName: string, newImageName: string) {
-    try {
-      const newImage = await this.dataService.addImage(imagePath, imageName, newImageName);
-      this.store.dispatch(new AddExerciseMedia({ exerciseMedia: newImage }));
-      this.store.dispatch(new UpdateImages());
-    } catch (error) {
-      console.log('Error storing new image:', error);
-      this.presentToast('Error storing new image');
-    }
+  private addNewImage(imagePath: string, imageName: string, newImageName: string) {
+      this.store.dispatch(new AddExerciseMedia({
+        origPath: imagePath,
+        origName: imageName,
+        newName: newImageName
+      }));
   }
 
   async deleteImage(imgEntry: ExerciseMediaBean) {

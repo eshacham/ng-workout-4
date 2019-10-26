@@ -18,6 +18,8 @@ import {
 import { DataServiceProvider } from '../../providers/data-service/data-service';
 import { AllDataMaps } from 'src/app/models/interfaces';
 import { getWorkoutsData, getImagesData } from '../selectors/data.selectors';
+import { ExerciseMediaActionsTypes, AddExerciseMedia, AddExerciseMediaSuccess } from '../actions/exercisesMedia.actions';
+import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 
 @Injectable()
 export class DataEffects {
@@ -62,10 +64,25 @@ export class DataEffects {
         mergeMap(([action, imagessData]) => from(this._dataService.saveImages(imagessData)).pipe(
             map(() => (new ImagesSavedSuccess())),
             catchError(err => {
-                console.log('saveWorkouts effect - got an error:', err);
+                console.log('UpdateImages effect - got an error:', err);
                 return of(new WorkoutsSavedError(err.message));
             })
         ))
+    );
+
+    @Effect()
+    addNewImage$ = this._actions$.pipe(
+        ofType(ExerciseMediaActionsTypes.AddExerciseMedia),
+        mergeMap((action: AddExerciseMedia) => from(this._dataService.addImage(
+            action.payload.origPath, action.payload.origName, action.payload.newName)).pipe(
+                switchMap((newImage: ExerciseMediaBean) => [
+                    (new AddExerciseMediaSuccess({ exerciseMedia: newImage })),
+                    (new UpdateImages())]),
+                catchError(err => {
+                    console.log('AddExerciseMedia effect - got an error:', err);
+                    return of(new GetDataError(err.message));
+                })
+            ))
     );
 
 }

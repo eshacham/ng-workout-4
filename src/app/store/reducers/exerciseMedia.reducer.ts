@@ -99,7 +99,7 @@ export const exercisesMediaReducers = (
                 byId: removeItemFromMap(action.payload.id, state)
             };
         }
-        case ExerciseMediaActionsTypes.AddExerciseMedia: {
+        case ExerciseMediaActionsTypes.AddExerciseMediaSuccess: {
             const newId = action.payload.exerciseMedia.id;
             return {
                 ...state,
