@@ -25,8 +25,9 @@ import {
     DeleteRep,
 } from 'src/app/store/actions/exercises.actions';
 import { DeleteExerciseSet, SwitchExercisesInSet } from 'src/app/store/actions/exerciseSets.actions';
-import { UpdateExerciseMedia } from 'src/app/store/actions/exercisesMedia.actions';
+import { UpdateExerciseMedia, UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
 import { StartExercise, ExerciseCompleted } from 'src/app/store/actions/workoutDays.actions';
+import { UpdateImages } from 'src/app/store/actions/data.actions';
 
 const MAXREPS = 5;
 const MINREPS = 1;
@@ -206,10 +207,11 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         if (!this.exercises.length) {
             this.deleteExerciseSet();
         }
-        this.store.dispatch(new UpdateExerciseMedia({
-            id: exercise.mediaId,
+        this.store.dispatch(new UpdateExerciseMediaUsage({
+            ids: [exercise.mediaId],
             mediaUsageCounterInc: -1
         }));
+        this.store.dispatch(new UpdateImages());
     }
 
     exerciseChanged(index: number, value: string | number, prop: string) {

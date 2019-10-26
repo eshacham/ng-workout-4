@@ -48,7 +48,7 @@ export const exercisesMediaReducers = (
                 }
             };
         }
-        case ExerciseMediaActionsTypes.UpdateExerciseMedia: {
+        case ExerciseMediaActionsTypes.UpdateExerciseMediaSuccess: {
             const mediaId = action.payload.id;
             const mediaUsageCounterUpdate = action.payload.mediaUsageCounterInc || 0;
             const mediaUsageCounter = state.byId[mediaId].mediaUsageCounter + mediaUsageCounterUpdate;
