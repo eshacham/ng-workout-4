@@ -198,12 +198,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
       }
     }
 
-    this.store.dispatch(new SelectWorkoutDay(
-      {
-        workoutId: this.workoutId,
-        dayId: newId
-      }));
-
     await this.saveChanges();
     event.stopPropagation();
 

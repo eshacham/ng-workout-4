@@ -84,6 +84,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
                     [action.payload.workoutId]: {
                         ...state.byId[action.payload.workoutId],
                         days: newDays,
+                        selectedWorkoutDayId: action.payload.day.id,
                     }
                 },
             };
