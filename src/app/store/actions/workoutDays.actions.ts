@@ -10,6 +10,7 @@ export enum Direction {
 export enum WorkoutDaysActionsTypes {
     SelectWorkoutDay = '[WorkoutDays] Select workout day',
     DeleteWorkoutDay = '[WorkoutDays] Delete workout day',
+    DeleteWorkoutDaySuccess = '[WorkoutDays] Workout day has been deleted',
     AddWorkoutDay = '[WorkoutDays] Add workout day',
     AddWorkoutDaySuccess = '[WorkoutDays] workout day has been added',
     MoveWorkoutDay = '[WorkoutDays] Move workout day',
@@ -45,6 +46,12 @@ export class SelectWorkoutDay implements Action {
 
 export class DeleteWorkoutDay implements Action {
     readonly type = WorkoutDaysActionsTypes.DeleteWorkoutDay;
+    constructor(public payload: {
+        dayId: string,
+    }) { }
+}
+export class DeleteWorkoutDaySuccess implements Action {
+    readonly type = WorkoutDaysActionsTypes.DeleteWorkoutDaySuccess;
     constructor(public payload: {
         dayId: string,
     }) { }
@@ -133,6 +140,7 @@ export class ReorderExerciseSets implements Action {
 export type WorkoutDaysActions =
     SelectWorkoutDay |
     DeleteWorkoutDay |
+    DeleteWorkoutDaySuccess |
     AddWorkoutDay |
     AddWorkoutDaySuccess |
     StartFirstExercise |

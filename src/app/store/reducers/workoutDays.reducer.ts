@@ -56,7 +56,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 },
             };
         }
-        case WorkoutDaysActionsTypes.DeleteWorkoutDay: {
+        case WorkoutDaysActionsTypes.DeleteWorkoutDaySuccess: {
             return {
                 ...state,
                 byId: removeItemFromMap(action.payload.dayId, state)

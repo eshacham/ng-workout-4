@@ -201,24 +201,12 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
   }
 
   async deleteWorkoutDay(event) {
-    let mediaIds2Delete: string[];
-    const dayId2Delete = this.activeDayId;
-    this.store.select(getMediaIdsByDay(dayId2Delete))
-      .pipe(take(1))
-      .subscribe(mediaIds => {
-        mediaIds2Delete = mediaIds;
-      });
     this.store.dispatch(new DeleteWorkoutDay({
-      dayId: dayId2Delete,
+      dayId: this.activeDayId,
     }));
     this.cdr.detectChanges();
     await this.slides.update();
 
-    if (mediaIds2Delete.length) {
-      this.decreseMediasUsage(mediaIds2Delete);
-    }
-
-    await this.saveChanges();
     event.stopPropagation();
   }
 

@@ -167,7 +167,7 @@ export const exercisesReducers = (
                 byId: filterMapByRecordPredicate(([key, val]) => val.workoutId !== workoutId, state)
             };
         }
-        case WorkoutDaysActionsTypes.DeleteWorkoutDay: {
+        case WorkoutDaysActionsTypes.DeleteWorkoutDaySuccess: {
             const dayId = action.payload.dayId;
             return {
                 ...state,

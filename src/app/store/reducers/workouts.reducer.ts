@@ -54,7 +54,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 },
             };
         }
-        case WorkoutDaysActionsTypes.DeleteWorkoutDay: {
+        case WorkoutDaysActionsTypes.DeleteWorkoutDaySuccess: {
             const dayId2Delete = action.payload.dayId;
             const oldDays = state.byId[state.selectedWorkoutId].days;
             const newDays = oldDays.filter(d => d !== dayId2Delete);

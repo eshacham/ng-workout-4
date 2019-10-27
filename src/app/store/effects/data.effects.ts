@@ -33,9 +33,23 @@ import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { ExerciseActionsTypes, DeleteExercise, DeleteExerciseInProgress } from '../actions/exercises.actions';
 import { DeleteExerciseSet } from '../actions/exerciseSets.actions';
 import { DeleteWorkout, WorkoutsActionsTypes, DeleteWorkoutInProgress } from '../actions/workouts.actions';
-import { getMediaIdsByWorkout } from '../selectors/exercises.selectors';
-import { MusclesFilterActionsTypes, AddExerciseMuscleFilter, AddExerciseMuscleFilterSuccess, DeleteExerciseMuscleFilter, DeleteExerciseMuscleFilterSuccess } from '../actions/musclesFilter.actions';
-import { WorkoutDaysActionsTypes, MoveWorkoutDay, MoveWorkoutDaySuccess, AddWorkoutDay, AddWorkoutDaySuccess } from '../actions/workoutDays.actions';
+import { getMediaIdsByWorkout, getMediaIdsByDay } from '../selectors/exercises.selectors';
+import {
+    MusclesFilterActionsTypes,
+    AddExerciseMuscleFilter,
+    AddExerciseMuscleFilterSuccess,
+    DeleteExerciseMuscleFilter,
+    DeleteExerciseMuscleFilterSuccess
+} from '../actions/musclesFilter.actions';
+import {
+    WorkoutDaysActionsTypes,
+    MoveWorkoutDay,
+    MoveWorkoutDaySuccess,
+    AddWorkoutDay,
+    AddWorkoutDaySuccess,
+    DeleteWorkoutDay,
+    DeleteWorkoutDaySuccess
+} from '../actions/workoutDays.actions';
 
 @Injectable()
 export class DataEffects {
@@ -172,7 +186,7 @@ export class DataEffects {
     deleteWorkout$ = this._actions$.pipe(
         ofType<DeleteWorkout>(WorkoutsActionsTypes.DeleteWorkout),
         map((action: DeleteWorkout) => action.payload),
-        mergeMap((payload: {id: string, days: string[]}) =>
+        mergeMap((payload: { id: string, days: string[] }) =>
             of(payload).pipe(
                 withLatestFrom(this._store.pipe(select(getMediaIdsByWorkout(payload.id)))),
             ),
@@ -194,6 +208,33 @@ export class DataEffects {
         }),
         catchError(err => {
             console.log('DeleteWorkout effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+    );
+
+    @Effect()
+    deleteWorkoutDay$ = this._actions$.pipe(
+        ofType<DeleteWorkoutDay>(WorkoutDaysActionsTypes.DeleteWorkoutDay),
+        map((action: DeleteWorkoutDay) => action.payload),
+        mergeMap((payload: { dayId: string }) =>
+            of(payload).pipe(
+                withLatestFrom(this._store.pipe(select(getMediaIdsByDay(payload.dayId)))),
+            ),
+        ),
+        switchMap(([payload, mediaIds]) => {
+            const actions: any[] = [];
+            if (mediaIds.length) {
+                actions.push(new UpdateExerciseMediaUsage({
+                    ids: mediaIds,
+                    mediaUsageCounterInc: -1
+                }));
+            }
+            actions.push(new DeleteWorkoutDaySuccess(payload));
+            actions.push(new UpdateWorkouts());
+            return actions;
+        }),
+        catchError(err => {
+            console.log('DeleteWorkoutDay effect - got an error:', err);
             return of(new GetDataError(err.message));
         })
     );
