@@ -197,10 +197,7 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         await this.slides.slideTo(this.days.length - 1);
       }
     }
-
-    await this.saveChanges();
     event.stopPropagation();
-
   }
 
   async deleteWorkoutDay(event) {

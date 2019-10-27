@@ -35,7 +35,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 byId: newMap
             };
         }
-        case WorkoutDaysActionsTypes.AddWorkoutDay: {
+        case WorkoutDaysActionsTypes.AddWorkoutDaySuccess: {
             return {
                 ...state,
                 byId: {

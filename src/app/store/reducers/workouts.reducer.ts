@@ -73,7 +73,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 },
             };
         }
-        case WorkoutDaysActionsTypes.AddWorkoutDay: {
+        case WorkoutDaysActionsTypes.AddWorkoutDaySuccess: {
             const oldDays = state.byId[action.payload.workoutId].days;
             const newDays = [...oldDays];
             newDays.splice(action.payload.index2AddFrom + 1, 0, action.payload.day.id);

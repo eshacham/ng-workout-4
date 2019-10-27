@@ -11,6 +11,7 @@ export enum WorkoutDaysActionsTypes {
     SelectWorkoutDay = '[WorkoutDays] Select workout day',
     DeleteWorkoutDay = '[WorkoutDays] Delete workout day',
     AddWorkoutDay = '[WorkoutDays] Add workout day',
+    AddWorkoutDaySuccess = '[WorkoutDays] workout day has been added',
     MoveWorkoutDay = '[WorkoutDays] Move workout day',
     MoveWorkoutDaySuccess = '[WorkoutDays] Workout day has been moved',
     UpdateWorkoutDay = '[WorkoutDays] Update Workout day',
@@ -59,6 +60,14 @@ export class UpdateWorkoutDay implements Action {
 
 export class AddWorkoutDay implements Action {
     readonly type = WorkoutDaysActionsTypes.AddWorkoutDay;
+    constructor(public payload: {
+        workoutId: string,
+        day: WorkoutDayBean,
+        index2AddFrom: number
+    }) { }
+}
+export class AddWorkoutDaySuccess implements Action {
+    readonly type = WorkoutDaysActionsTypes.AddWorkoutDaySuccess;
     constructor(public payload: {
         workoutId: string,
         day: WorkoutDayBean,
@@ -125,6 +134,7 @@ export type WorkoutDaysActions =
     SelectWorkoutDay |
     DeleteWorkoutDay |
     AddWorkoutDay |
+    AddWorkoutDaySuccess |
     StartFirstExercise |
     MoveWorkoutDay |
     MoveWorkoutDaySuccess |

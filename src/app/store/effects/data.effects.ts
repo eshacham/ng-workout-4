@@ -35,7 +35,7 @@ import { DeleteExerciseSet } from '../actions/exerciseSets.actions';
 import { DeleteWorkout, WorkoutsActionsTypes, DeleteWorkoutInProgress } from '../actions/workouts.actions';
 import { getMediaIdsByWorkout } from '../selectors/exercises.selectors';
 import { MusclesFilterActionsTypes, AddExerciseMuscleFilter, AddExerciseMuscleFilterSuccess, DeleteExerciseMuscleFilter, DeleteExerciseMuscleFilterSuccess } from '../actions/musclesFilter.actions';
-import { WorkoutDaysActionsTypes, MoveWorkoutDay, MoveWorkoutDaySuccess } from '../actions/workoutDays.actions';
+import { WorkoutDaysActionsTypes, MoveWorkoutDay, MoveWorkoutDaySuccess, AddWorkoutDay, AddWorkoutDaySuccess } from '../actions/workoutDays.actions';
 
 @Injectable()
 export class DataEffects {
@@ -233,6 +233,19 @@ export class DataEffects {
         ])),
         catchError(err => {
             console.log('DeleteExerciseMuscleFilter effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+    );
+
+    @Effect()
+    addWorkoutDay$ = this._actions$.pipe(
+        ofType(WorkoutDaysActionsTypes.AddWorkoutDay),
+        mergeMap((action: AddWorkoutDay) => ([
+            new AddWorkoutDaySuccess(action.payload),
+            new UpdateWorkouts()
+        ])),
+        catchError(err => {
+            console.log('AddWorkoutDay effect - got an error:', err);
             return of(new GetDataError(err.message));
         })
     );
