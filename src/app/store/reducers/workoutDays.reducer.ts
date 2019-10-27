@@ -19,7 +19,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 byId: action.payload.days.byId,
             };
         }
-        case WorkoutsActionsTypes.AddWorkout: {
+        case WorkoutsActionsTypes.AddWorkoutSuccess: {
             return {
                 ...state,
                 byId: {

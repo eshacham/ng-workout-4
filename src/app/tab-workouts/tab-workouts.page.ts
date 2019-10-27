@@ -76,10 +76,6 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     const workout = WorkoutBean.create({id: newWorkoutId, dayId: newDayId});
     const day = WorkoutDayBean.create({id: newDayId, workoutId: newWorkoutId});
     this.store.dispatch(new AddWorkout({workout, day}));
-    await new Promise(() => setTimeout(() => {
-      this.DisplayMode = DisplayMode.Edit;
-      this.store.dispatch(new UpdateWorkouts());
-    }, 1));
   }
 
 }

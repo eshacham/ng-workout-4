@@ -32,7 +32,7 @@ import {
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { ExerciseActionsTypes, DeleteExercise, DeleteExerciseInProgress } from '../actions/exercises.actions';
 import { DeleteExerciseSet } from '../actions/exerciseSets.actions';
-import { DeleteWorkout, WorkoutsActionsTypes, DeleteWorkoutInProgress } from '../actions/workouts.actions';
+import { DeleteWorkout, WorkoutsActionsTypes, DeleteWorkoutInProgress, AddWorkout, AddWorkoutSuccess } from '../actions/workouts.actions';
 import { getMediaIdsByWorkout, getMediaIdsByDay } from '../selectors/exercises.selectors';
 import {
     MusclesFilterActionsTypes,
@@ -289,6 +289,18 @@ export class DataEffects {
         ])),
         catchError(err => {
             console.log('AddWorkoutDay effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+    );
+    @Effect()
+    addWorkout$ = this._actions$.pipe(
+        ofType(WorkoutsActionsTypes.AddWorkout),
+        mergeMap((action: AddWorkout) => ([
+            new AddWorkoutSuccess(action.payload),
+            new UpdateWorkouts()
+        ])),
+        catchError(err => {
+            console.log('AddWorkout effect - got an error:', err);
             return of(new GetDataError(err.message));
         })
     );

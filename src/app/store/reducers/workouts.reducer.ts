@@ -14,7 +14,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 byId: action.payload.workouts.byId,
             };
         }
-        case WorkoutsActionsTypes.AddWorkout: {
+        case WorkoutsActionsTypes.AddWorkoutSuccess: {
             return {
                 ...state,
                 byId: {
