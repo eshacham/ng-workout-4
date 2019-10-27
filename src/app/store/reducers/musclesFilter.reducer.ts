@@ -10,7 +10,7 @@ export const musclesFilterReducers = (state = initialMusclesFilterState, action:
                 exerciseMusclesFilter: action.muscles
             };
         }
-        case MusclesFilterActionsTypes.AddExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.AddExerciseMuscleFilterSuccess: {
             return {
                 ...state,
                 exerciseMusclesFilter: [
@@ -28,7 +28,7 @@ export const musclesFilterReducers = (state = initialMusclesFilterState, action:
                 ]
             };
         }
-        case MusclesFilterActionsTypes.DeleteExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.DeleteExerciseMuscleFilterSuccess: {
             return {
                 ...state,
                 exerciseMusclesFilter: state.exerciseMusclesFilter

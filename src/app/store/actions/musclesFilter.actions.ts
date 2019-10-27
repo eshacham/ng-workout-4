@@ -4,7 +4,9 @@ import { Muscles } from '../../models/enums';
 export enum MusclesFilterActionsTypes {
     SetExerciseMuscleFilter = '[Muscle Filter] Set exercise\'s filter',
     AddExerciseMuscleFilter = '[Muscle Filter] Add muscle to exercise',
+    AddExerciseMuscleFilterSuccess = '[Muscle Filter] Muscle filter was added to exercise',
     DeleteExerciseMuscleFilter = '[Muscle Filter] Delete muscle from exercise',
+    DeleteExerciseMuscleFilterSuccess = '[Muscle Filter] Muscle filter was deleted from exercise',
     AddLibraryMuscleFilter = '[Muscle Filter] Add muscle to library',
     DeleteLibraryMuscleFilter = '[Muscle Filter] Delete muscle from library',
 }
@@ -17,8 +19,16 @@ export class AddExerciseMuscleFilter implements Action {
     readonly type = MusclesFilterActionsTypes.AddExerciseMuscleFilter;
     constructor (public payload: { muscle: Muscles, mediaId: string}) {}
 }
+export class AddExerciseMuscleFilterSuccess implements Action {
+    readonly type = MusclesFilterActionsTypes.AddExerciseMuscleFilterSuccess;
+    constructor (public payload: { muscle: Muscles, mediaId: string}) {}
+}
 export class DeleteExerciseMuscleFilter implements Action {
     readonly type = MusclesFilterActionsTypes.DeleteExerciseMuscleFilter;
+    constructor (public payload: { muscle: Muscles, mediaId: string}) {}
+}
+export class DeleteExerciseMuscleFilterSuccess implements Action {
+    readonly type = MusclesFilterActionsTypes.DeleteExerciseMuscleFilterSuccess;
     constructor (public payload: { muscle: Muscles, mediaId: string}) {}
 }
 
@@ -34,7 +44,9 @@ export class DeleteLibraryMuscleFilter implements Action {
 export type MusclesFilterActions =
 SetExerciseMuscleFilter |
 AddExerciseMuscleFilter |
+AddExerciseMuscleFilterSuccess |
 DeleteExerciseMuscleFilter |
+DeleteExerciseMuscleFilterSuccess |
 AddLibraryMuscleFilter |
 DeleteLibraryMuscleFilter
 ;

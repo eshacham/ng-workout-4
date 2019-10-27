@@ -20,7 +20,7 @@ export const exercisesMediaReducers = (
                 byId: action.payload.media ? action.payload.media.byId : null,
             };
         }
-        case MusclesFilterActionsTypes.AddExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.AddExerciseMuscleFilterSuccess: {
             const mediaId = action.payload.mediaId;
             return {
                 ...state,
@@ -33,7 +33,7 @@ export const exercisesMediaReducers = (
                 }
             };
         }
-        case MusclesFilterActionsTypes.DeleteExerciseMuscleFilter: {
+        case MusclesFilterActionsTypes.DeleteExerciseMuscleFilterSuccess: {
             const mediaId = action.payload.mediaId;
             const oldMuscles = state.byId[mediaId].muscles;
             const newMuscles = oldMuscles.filter(m => m !== action.payload.muscle);

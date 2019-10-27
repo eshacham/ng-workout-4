@@ -159,7 +159,6 @@ export class SelectMusclePage implements OnInit, OnDestroy {
       this.store.dispatch(new AddExerciseMuscleFilter({
         muscle: muscle, mediaId: this.muscleFilterUsage.mediaId
       }));
-      this.store.dispatch(new UpdateImages());
     }
   }
   deleteMuscleFromFilter(muscle: Muscles) {
@@ -169,7 +168,6 @@ export class SelectMusclePage implements OnInit, OnDestroy {
       this.store.dispatch(new DeleteExerciseMuscleFilter({
         muscle: muscle, mediaId: this.muscleFilterUsage.mediaId
       }));
-      this.store.dispatch(new UpdateImages());
     }
   }
 

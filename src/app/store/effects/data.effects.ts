@@ -34,6 +34,7 @@ import { ExerciseActionsTypes, DeleteExercise, DeleteExerciseInProgress } from '
 import { DeleteExerciseSet } from '../actions/exerciseSets.actions';
 import { DeleteWorkout, WorkoutsActionsTypes, DeleteWorkoutInProgress } from '../actions/workouts.actions';
 import { getMediaIdsByWorkout } from '../selectors/exercises.selectors';
+import { MusclesFilterActionsTypes, AddExerciseMuscleFilter, AddExerciseMuscleFilterSuccess, DeleteExerciseMuscleFilter, DeleteExerciseMuscleFilterSuccess } from '../actions/musclesFilter.actions';
 
 @Injectable()
 export class DataEffects {
@@ -192,6 +193,32 @@ export class DataEffects {
         }),
         catchError(err => {
             console.log('DeleteWorkout effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+    );
+
+    @Effect()
+    addExerciseMuscleFilter$ = this._actions$.pipe(
+        ofType(MusclesFilterActionsTypes.AddExerciseMuscleFilter),
+        mergeMap((action: AddExerciseMuscleFilter) => ([
+            new AddExerciseMuscleFilterSuccess(action.payload),
+            new UpdateImages()
+        ])),
+        catchError(err => {
+            console.log('AddExerciseMuscleFilter effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+    );
+
+    @Effect()
+    deleteExerciseMuscleFilter$ = this._actions$.pipe(
+        ofType(MusclesFilterActionsTypes.DeleteExerciseMuscleFilter),
+        mergeMap((action: DeleteExerciseMuscleFilter) => ([
+            new DeleteExerciseMuscleFilterSuccess(action.payload),
+            new UpdateImages()
+        ])),
+        catchError(err => {
+            console.log('DeleteExerciseMuscleFilter effect - got an error:', err);
             return of(new GetDataError(err.message));
         })
     );
