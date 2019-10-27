@@ -97,7 +97,7 @@ export const exercisesReducers = (
                 }
             };
         }
-        case ExerciseActionsTypes.DeleteExercise: {
+        case ExerciseActionsTypes.DeleteExerciseInProgress: {
             return {
                 ...state,
                 byId: removeItemFromMap(action.payload.exeId, state)

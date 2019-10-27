@@ -5,6 +5,7 @@ import { ExerciseBean } from 'src/app/models/Exercise';
 export enum ExerciseActionsTypes {
     UpdateExercise = '[Exercise] update exercise set',
     DeleteExercise = '[Exercise] Delete exercise',
+    DeleteExerciseInProgress = '[Exercise] Delete exercise is in progress',
     ResetReps = '[Exercise] Reset all reps',
     SetRepsActiveState = '[Exercise] Set reps active state',
     SetRepsCompleteState = '[Exercise] Set rep complete state',
@@ -18,7 +19,13 @@ export enum ExerciseActionsTypes {
 export class DeleteExercise implements Action {
     readonly type = ExerciseActionsTypes.DeleteExercise;
     constructor(public payload: {
-        setId: string, exeId: string
+        dayId: string, setId: string, exeId: string, mediaId: string, deleteSet: boolean
+    }) { }
+}
+export class DeleteExerciseInProgress implements Action {
+    readonly type = ExerciseActionsTypes.DeleteExerciseInProgress;
+    constructor(public payload: {
+        dayId: string, setId: string, exeId: string, mediaId: string, deleteSet: boolean
     }) { }
 }
 export class UpdateExercise implements Action {
@@ -88,6 +95,7 @@ export type ExerciseActions =
     AddRep |
     DeleteRep |
     DeleteExercise |
+    DeleteExerciseInProgress |
     UpdateExercise |
     UpdateRep
     ;

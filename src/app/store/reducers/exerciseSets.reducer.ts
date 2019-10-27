@@ -13,7 +13,7 @@ export const exerciseSetsReducers = (
             ExerciseSetActions |
             ExerciseActions |
             WorkoutDaysActions |
-            WorkoutsActions)
+            WorkoutsActions )
     : IExerciseSetsState => {
     switch (action.type) {
         case DataActionsTypes.GetDataSuccess: {
@@ -31,7 +31,7 @@ export const exerciseSetsReducers = (
                 }
             };
         }
-        case ExerciseActionsTypes.DeleteExercise: {
+        case ExerciseActionsTypes.DeleteExerciseInProgress: {
             const oldExes = state.byId[action.payload.setId].exercises;
             const newExes = oldExes.filter(exe => exe !== action.payload.exeId);
             return {

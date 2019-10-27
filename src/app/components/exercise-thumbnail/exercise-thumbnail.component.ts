@@ -192,24 +192,13 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         }));
     }
 
-    deleteExerciseSet() {
-        this.store.dispatch(new DeleteExerciseSet({
-            dayId: this.dayId,
-            setId: this.exerciseSetId
-        }));
-    }
-
     deleteExercise(exercise: ExerciseBean) {
         this.store.dispatch(new DeleteExercise({
+            dayId: this.dayId,
             setId: this.exerciseSetId,
-            exeId: exercise.id
-        }));
-        if (!this.exercises.length) {
-            this.deleteExerciseSet();
-        }
-        this.store.dispatch(new UpdateExerciseMediaUsage({
-            ids: [exercise.mediaId],
-            mediaUsageCounterInc: -1
+            exeId: exercise.id,
+            mediaId: exercise.mediaId,
+            deleteSet: this.exercises.length === 1
         }));
     }
 

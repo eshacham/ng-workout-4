@@ -30,6 +30,8 @@ import {
     UpdateExerciseMediaUsageSuccess
 } from '../actions/exercisesMedia.actions';
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
+import { ExerciseActionsTypes, DeleteExercise, DeleteExerciseInProgress } from '../actions/exercises.actions';
+import { DeleteExerciseSet } from '../actions/exerciseSets.actions';
 
 @Injectable()
 export class DataEffects {
@@ -131,6 +133,31 @@ export class DataEffects {
             new UpdateExerciseMediaUsageSuccess(action.payload),
             new UpdateImages()
         ])),
+        catchError(err => {
+            console.log('UpdateExerciseMediaUsage effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+    );
+
+    @Effect()
+    deleteExercise$ = this._actions$.pipe(
+        ofType(ExerciseActionsTypes.DeleteExercise),
+        mergeMap((action: DeleteExercise) => {
+            const actions: any[] = [
+                new DeleteExerciseInProgress(action.payload)
+            ];
+            if (action.payload.deleteSet) {
+                actions.push(new DeleteExerciseSet({
+                    dayId: action.payload.dayId,
+                    setId: action.payload.setId
+                }));
+            }
+            actions.push(new UpdateExerciseMediaUsage({
+                ids: [action.payload.mediaId],
+                mediaUsageCounterInc: -1
+            }));
+            return actions;
+        }),
         catchError(err => {
             console.log('UpdateExerciseMediaUsage effect - got an error:', err);
             return of(new GetDataError(err.message));
