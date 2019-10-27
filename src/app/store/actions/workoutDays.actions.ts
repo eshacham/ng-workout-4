@@ -12,7 +12,7 @@ export enum WorkoutDaysActionsTypes {
     DeleteWorkoutDay = '[WorkoutDays] Delete workout day',
     AddWorkoutDay = '[WorkoutDays] Add workout day',
     MoveWorkoutDay = '[WorkoutDays] Move workout day',
-    WorkoutDayMoved = '[WorkoutDays] Update Workout day has been moved',
+    MoveWorkoutDaySuccess = '[WorkoutDays] Workout day has been moved',
     UpdateWorkoutDay = '[WorkoutDays] Update Workout day',
 
     StartFirstExercise = '[WorkoutDays] Start first exercise',
@@ -29,9 +29,9 @@ export class MoveWorkoutDay implements Action {
     constructor(public payload: { direction: Direction }) { }
 }
 
-export class WorkoutDayMoved implements Action {
-    readonly type = WorkoutDaysActionsTypes.WorkoutDayMoved;
-    constructor() { }
+export class MoveWorkoutDaySuccess implements Action {
+    readonly type = WorkoutDaysActionsTypes.MoveWorkoutDaySuccess;
+    constructor(public payload: { direction: Direction }) { }
 }
 
 export class SelectWorkoutDay implements Action {
@@ -127,7 +127,7 @@ export type WorkoutDaysActions =
     AddWorkoutDay |
     StartFirstExercise |
     MoveWorkoutDay |
-    WorkoutDayMoved |
+    MoveWorkoutDaySuccess |
     UpdateWorkoutDay |
     StartExercise |
     StopExercise |

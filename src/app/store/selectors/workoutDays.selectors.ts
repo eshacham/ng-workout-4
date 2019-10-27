@@ -11,7 +11,3 @@ export const getWorkoutDay = (id: string) => createSelector(
   }
 );
 
-export const getWorkoutDayMoveDirection = createSelector(
-  daysState,
-  (workoutDays: IWorkoutDaysState) => workoutDays.workoutDayMoveState
-);

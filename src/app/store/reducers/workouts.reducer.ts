@@ -88,7 +88,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 },
             };
         }
-        case WorkoutDaysActionsTypes.MoveWorkoutDay: {
+        case WorkoutDaysActionsTypes.MoveWorkoutDaySuccess: {
             const newDays = [...state.byId[state.selectedWorkoutId].days];
             const idfDay2Move = state.byId[state.selectedWorkoutId].selectedWorkoutDayId ||
                                 state.byId[state.selectedWorkoutId].days[0];

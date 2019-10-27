@@ -44,18 +44,6 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 }
             };
         }
-        case WorkoutDaysActionsTypes.MoveWorkoutDay: {
-            return {
-                ...state,
-                workoutDayMoveState: action.payload.direction
-            };
-        }
-        case WorkoutDaysActionsTypes.WorkoutDayMoved: {
-            return {
-                ...state,
-                workoutDayMoveState: undefined
-            };
-        }
         case WorkoutDaysActionsTypes.UpdateWorkoutDay: {
             return {
                 ...state,

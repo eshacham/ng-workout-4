@@ -11,7 +11,6 @@ import {
   SelectWorkoutDay,
   AddWorkoutDay,
   Direction,
-  WorkoutDayMoved,
   StartFirstExercise,
   ChangeDisplayMode,
   DeleteWorkoutDay,
@@ -20,10 +19,9 @@ import {
 } from 'src/app/store/actions/workoutDays.actions';
 import { getCurrentWorkout } from 'src/app/store/selectors/workouts.selectors';
 import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
-import { getWorkoutDayMoveDirection } from 'src/app/store/selectors/workoutDays.selectors';
 import { Guid } from 'guid-typescript';
-import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
-import { DisplayMode, RunningState } from 'src/app/models/enums';
+import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
+import { DisplayMode } from 'src/app/models/enums';
 import { getMediaIdsByDay } from 'src/app/store/selectors/exercises.selectors';
 import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
 
@@ -110,17 +108,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
                   this.adjustDisplayMode(workoutDayState);
               });
           }
-        }
-      });
-
-    this.store.select(getWorkoutDayMoveDirection)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(async (direction) => {
-        console.log(`workout-days ${this.workoutId} - SelectworkoutDayMoveDirection ${direction}`);
-        if (direction) {
-          console.log(`workout-days ${this.workoutId} moving day ${Direction[direction]}`);
-          this.store.dispatch(new WorkoutDayMoved());
-          await this.saveChanges();
         }
       });
   }
