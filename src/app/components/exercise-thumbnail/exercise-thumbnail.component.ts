@@ -390,18 +390,12 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this._timedRepRemaining = 0;
         if (this.activeExerciseInSetIndex > 0 &&
             (this.hasCompleteTimedRepInActiveRep || this.hasIncompleteTimedRepInActiveRep)) {
-            this.store.dispatch(new SetRepsIncompleteState({
-                exerciseId: this.exercises[this.activeExerciseInSetIndex - 1].id,
-                incompleteIndex: this.activeRepIndex
-            }));
+            this.setRepsIncompleteState(this.exercises[this.activeExerciseInSetIndex - 1].id, this.activeRepIndex);
             this.activatePrevExercise();
         } else {
             if (this.activeRepIndex > 0) {
                 this.exercises.forEach(exercise => {
-                    this.store.dispatch(new SetRepsIncompleteState({
-                        exerciseId: exercise.id,
-                        incompleteIndex: this.activeRepIndex - 1
-                    }));
+                    this.setRepsIncompleteState(exercise.id, this.activeRepIndex - 1);
                 });
             }
             this.activatePrevRep();
@@ -409,6 +403,13 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this.stopRestTimer();
         this.stopRepTimer();
         this.startTimedRep();
+    }
+
+    private setRepsIncompleteState(exerciseId: string, incompleteIndex: number) {
+        this.store.dispatch(new SetRepsIncompleteState({
+            exerciseId: exerciseId,
+            incompleteIndex: incompleteIndex
+        }));
     }
 
     skipRest() {
@@ -447,10 +448,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         this._timedRepRemaining = 0;
         if (this.exercises.length > this.activeExerciseInSetIndex + 1 &&
             this.hasIncompleteTimedRepInActiveRep) {
-            this.store.dispatch(new SetRepsCompleteState({
-                exerciseId: this.activeExercise.id,
-                completeIndex: this.activeRepIndex
-            }));
+            this.setRepsCompleteState(this.activeExercise.id, this.activeRepIndex);
             // need to go to the next exercise with current rep
             if (shouldRest) {
                 this._timedToRestAfterCurrentRep = this.activeExercise.restBetweenReps;
@@ -461,15 +459,9 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
             }
         } else {
             this.exercises.forEach((exercise) => {
-                this.store.dispatch(new SetRepsCompleteState({
-                    exerciseId: exercise.id,
-                    completeIndex: this.activeRepIndex
-                }));
+                this.setRepsCompleteState(exercise.id, this.activeRepIndex);
             });
-            this.store.dispatch(new SetRepsCompleteState({
-                exerciseId: this.activeExercise.id,
-                completeIndex: this.activeRepIndex
-            }));
+            this.setRepsCompleteState(this.activeExercise.id, this.activeRepIndex);
             // if there are more reps, need to go to the next rep on the first exercise
             if (this.activeExercise.reps.length > this.activeRepIndex + 1) {
                 if (shouldRest) {
@@ -489,6 +481,13 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
                 }
             }
         }
+    }
+
+    private setRepsCompleteState(exerciseId: string, completeIndex: number) {
+        this.store.dispatch(new SetRepsCompleteState({
+            exerciseId: exerciseId,
+            completeIndex: completeIndex
+        }));
     }
 
     get isActiveRepCompleted(): boolean {
