@@ -156,7 +156,6 @@ export class SelectMusclePage implements OnInit, OnDestroy {
       this.store.dispatch(new AddLibraryMuscleFilter(muscle));
     } else {
       console.log('addMuscleToFilter - ', muscle);
-
       this.store.dispatch(new AddExerciseMuscleFilter({
         muscle: muscle, mediaId: this.muscleFilterUsage.mediaId
       }));

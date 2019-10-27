@@ -69,13 +69,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
       });
   }
 
-  decreseMediasUsage(mediaIds) {
-    this.store.dispatch(new UpdateExerciseMediaUsage({
-      ids: mediaIds,
-      mediaUsageCounterInc: -1
-    }));
-  }
-
   ngOnDestroy() {
     console.log(`workout-day ${this.dayId} onDestroy`);
     this.ngUnsubscribe.next();

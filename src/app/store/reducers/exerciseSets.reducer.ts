@@ -59,7 +59,7 @@ export const exerciseSetsReducers = (
 
             };
         }
-        case WorkoutsActionsTypes.DeleteWorkout: {
+        case WorkoutsActionsTypes.DeleteWorkoutInProgress: {
             const workoutId = action.payload.id;
             return {
                 ...state,

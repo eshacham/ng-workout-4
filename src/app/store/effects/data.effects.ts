@@ -32,6 +32,8 @@ import {
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { ExerciseActionsTypes, DeleteExercise, DeleteExerciseInProgress } from '../actions/exercises.actions';
 import { DeleteExerciseSet } from '../actions/exerciseSets.actions';
+import { DeleteWorkout, WorkoutsActionsTypes, DeleteWorkoutInProgress } from '../actions/workouts.actions';
+import { getMediaIdsByWorkout } from '../selectors/exercises.selectors';
 
 @Injectable()
 export class DataEffects {
@@ -159,7 +161,37 @@ export class DataEffects {
             return actions;
         }),
         catchError(err => {
-            console.log('UpdateExerciseMediaUsage effect - got an error:', err);
+            console.log('DeleteExercise effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+    );
+
+    @Effect()
+    deleteWorkout$ = this._actions$.pipe(
+        ofType<DeleteWorkout>(WorkoutsActionsTypes.DeleteWorkout),
+        map((action: DeleteWorkout) => action.payload),
+        mergeMap((payload: {id: string, days: string[]}) =>
+            of(payload).pipe(
+                withLatestFrom(this._store.pipe(select(getMediaIdsByWorkout(payload.id)))),
+            ),
+        ),
+        switchMap(([payload, mediaIds]) => {
+            const actions: any[] = [];
+            if (mediaIds.length) {
+                actions.push(new UpdateExerciseMediaUsage({
+                    ids: mediaIds,
+                    mediaUsageCounterInc: -1
+                }));
+            }
+            actions.push(new DeleteWorkoutInProgress({
+                id: payload.id,
+                days: payload.days
+            }));
+            actions.push(new UpdateWorkouts());
+            return actions;
+        }),
+        catchError(err => {
+            console.log('DeleteWorkout effect - got an error:', err);
             return of(new GetDataError(err.message));
         })
     );

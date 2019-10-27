@@ -6,6 +6,7 @@ export enum WorkoutsActionsTypes {
     SelectWorkout = '[Workouts] Select workout',
     UnselectWorkout = '[Workouts] Unselect workout',
     DeleteWorkout = '[Workouts] Delete workout',
+    DeleteWorkoutInProgress = '[Workouts] Delete workout in progress',
     WorkoutDeleted = '[Workouts] Workout has been deleted',
     AddWorkout = '[Workouts] Add workout',
     UpdateWorkout = '[Workouts] Update workout',
@@ -26,6 +27,12 @@ export class DeleteWorkout implements Action {
         id: string,
         days: string[] }) { }
 }
+export class DeleteWorkoutInProgress implements Action {
+    readonly type = WorkoutsActionsTypes.DeleteWorkoutInProgress;
+    constructor(public payload: {
+        id: string,
+        days: string[] }) { }
+}
 export class UpdateWorkout implements Action {
     readonly type = WorkoutsActionsTypes.UpdateWorkout;
     constructor(public payload: { workout: WorkoutBean }) { }
@@ -40,6 +47,7 @@ export type WorkoutsActions =
     SelectWorkout |
     UnselectWorkout |
     DeleteWorkout |
+    DeleteWorkoutInProgress |
     AddWorkout |
     UpdateWorkout
     ;

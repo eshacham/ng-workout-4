@@ -28,7 +28,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 }
             };
         }
-        case WorkoutsActionsTypes.DeleteWorkout: {
+        case WorkoutsActionsTypes.DeleteWorkoutInProgress: {
             const newMap = filterMapByIds(action.payload.days, state);
             return {
                 ...state,

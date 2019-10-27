@@ -6,10 +6,7 @@ import { WorkoutBean } from '../../models/Workout';
 import { DisplayMode } from 'src/app/models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
 import { DeleteWorkout, UpdateWorkout, SelectWorkout } from 'src/app/store/actions/workouts.actions';
-import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
 import { getWorkout } from 'src/app/store/selectors/workouts.selectors';
-import { getMediaIdsByWorkout } from 'src/app/store/selectors/exercises.selectors';
-import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
 
 @Component({
   selector: 'app-workout-card',
@@ -62,24 +59,9 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkout() {
-    this.store.select(getMediaIdsByWorkout(this.workoutId))
-      .pipe(take(1))
-      .subscribe(mediaIds => {
-        if (mediaIds.length) {
-          this.decreseMediasUsage(mediaIds);
-        }
-        this.store.dispatch(new DeleteWorkout({
-          id: this.workoutId,
-          days: this._workout.days
-        }));
-        this.store.dispatch(new UpdateWorkouts());
-      });
-  }
-
-  decreseMediasUsage(mediaIds) {
-    this.store.dispatch(new UpdateExerciseMediaUsage({
-      ids: mediaIds,
-      mediaUsageCounterInc: -1
+    this.store.dispatch(new DeleteWorkout({
+      id: this.workoutId,
+      days: this._workout.days
     }));
   }
 
