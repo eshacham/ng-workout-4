@@ -20,9 +20,7 @@ import {
 import { getCurrentWorkout } from 'src/app/store/selectors/workouts.selectors';
 import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { Guid } from 'guid-typescript';
-import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
 import { DisplayMode } from 'src/app/models/enums';
-import { getMediaIdsByDay } from 'src/app/store/selectors/exercises.selectors';
 import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
 
 @Component({
@@ -168,10 +166,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
     return this.days && this.days.length === 1;
   }
 
-  async saveChanges() {
-    this.store.dispatch(new UpdateWorkouts());
-  }
-
   private async addWorkoutDay(event) {
     const newId = Guid.raw();
     const newDay = new WorkoutDayBean({
@@ -284,7 +278,6 @@ export class WorkoutDaysPage implements OnInit, OnDestroy {
         break;
       case DisplayMode.Edit:
         this.DisplayMode = DisplayMode.Display;
-        await this.saveChanges();
         break;
     }
     this.DispatchChangeDisplayMode();

@@ -22,6 +22,7 @@ export enum WorkoutDaysActionsTypes {
     StopExercise = '[WorkoutDays] Exercise should stop',
     ExerciseCompleted = '[WorkoutDays] Exercise has completed',
     ChangeDisplayMode = '[WorkoutDays] Change workout day display mode',
+    ChangeDisplayModeSuccess = '[WorkoutDays] Workout day display mode has changed',
 
     ReorderExerciseSets = '[WorkoutDays] Reorder exercise sets',
 }
@@ -128,6 +129,11 @@ export class ChangeDisplayMode implements Action {
         payload.runningExerciseSetIndex = null;
     }
 }
+export class ChangeDisplayModeSuccess implements Action {
+    readonly type = WorkoutDaysActionsTypes.ChangeDisplayModeSuccess;
+
+    constructor(public payload: ChangeWorkoutDayState) { }
+}
 export class ReorderExerciseSets implements Action {
     readonly type = WorkoutDaysActionsTypes.ReorderExerciseSets;
     constructor(public payload: {
@@ -151,5 +157,6 @@ export type WorkoutDaysActions =
     StopExercise |
     ExerciseCompleted |
     ChangeDisplayMode |
+    ChangeDisplayModeSuccess |
     ReorderExerciseSets
     ;

@@ -48,7 +48,9 @@ import {
     AddWorkoutDay,
     AddWorkoutDaySuccess,
     DeleteWorkoutDay,
-    DeleteWorkoutDaySuccess
+    DeleteWorkoutDaySuccess,
+    ChangeDisplayModeSuccess,
+    ChangeDisplayMode
 } from '../actions/workoutDays.actions';
 
 @Injectable()
@@ -289,6 +291,20 @@ export class DataEffects {
             console.log('AddWorkoutDay effect - got an error:', err);
             return of(new GetDataError(err.message));
         })
+    );
+
+    @Effect()
+    changeDisplayMode$ = this._actions$.pipe(
+        ofType(WorkoutDaysActionsTypes.ChangeDisplayMode),
+        mergeMap((action: ChangeDisplayMode) => ([
+            new ChangeDisplayModeSuccess(action.payload),
+            new UpdateWorkouts()
+        ])),
+        catchError(err => {
+            console.log('ChangeDisplayMode effect - got an error:', err);
+            return of(new GetDataError(err.message));
+        })
+
     );
 
 }
