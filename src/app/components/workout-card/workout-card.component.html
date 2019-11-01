@@ -1,8 +1,8 @@
 <ion-card>
-  <ion-card-header class="ion-text-center">
-    <ion-label [hidden]="IsEditMode"
-       class="ion-text-center">{{ name }}
-    </ion-label>
+  <ion-card-header>
+    <ion-card-title [hidden]="IsEditMode" text-center>
+        {{ name }}
+    </ion-card-title>
     <ion-input [hidden]="IsDisplayMode" type="text"
       class="ion-text-center"
       [(ngModel)]="name"
@@ -28,7 +28,7 @@
           <ion-label >Workout Days...</ion-label>
           <ion-badge slot="end">{{ daysCount }}</ion-badge>
           <ion-button
-            fill="clear" bottom color="dark" slot="end"
+            fill="clear" bottom color="secondary" slot="end"
               (click)="deleteWorkout()">
               <ion-icon slot="icon-only" name="trash"></ion-icon>
           </ion-button>
