@@ -1,6 +1,7 @@
-// #workout-day-comp {
-//     // margin-bottom: 25px;
-// }
+#workout-day-comp {
+    // margin-bottom: 25px;
+    height: 100%
+}
 
 ion-item#workout-day-header {
     --background: var(--ion-color-tertiary);
@@ -12,11 +13,15 @@ ion-item#workout-day-header {
 }
 
 ion-list.ios {
-        height: calc(100vh - 183px);
+    // need to break based on size 6,7,8,10,11...
+    // 8
+    // height: calc(100vh - 183px);
+    height: calc(100% - 72px);
+    // 11 pro max - height: calc(100vh - 245);
 };
 
 ion-list.md {
-    height: calc(100vh - 208px);
+    height: calc(100% - 76px);
 };
 
 ion-list {
