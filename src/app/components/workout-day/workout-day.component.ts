@@ -13,8 +13,7 @@ import {
 } from 'src/app/store/actions/workoutDays.actions';
 import { getWorkoutDay } from 'src/app/store/selectors/workoutDays.selectors';
 import { takeUntil } from 'rxjs/operators';
-import { UpdateWorkouts, UpdateImages } from 'src/app/store/actions/data.actions';
-import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.actions';
+import { UpdateWorkouts } from 'src/app/store/actions/data.actions';
 
 @Component({
   selector: 'app-workout-day',
@@ -23,37 +22,20 @@ import { UpdateExerciseMediaUsage } from 'src/app/store/actions/exercisesMedia.a
 })
 export class WorkoutDayComponent implements OnInit, OnDestroy {
 
-  runningExerciseSetIndex?: number;
-  displayMode = DisplayMode;
-
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private exerciseSets: string[];
   private name: string;
 
   @Input() dayId: string;
-  @Input() isLastDayActive: boolean;
-  @Input() isFirstDayActive: boolean;
-  @Input() isOneDayOnly: boolean;
+  @Input() displayMode: DisplayMode;
 
   constructor(
     private store: Store<IAppState>) {
-    this.runningExerciseSetIndex = null;
   }
 
-  private _displayMode: DisplayMode = DisplayMode.Display;
-  get DisplayMode(): DisplayMode {
-    return this._displayMode;
-  }
-
-  set DisplayMode(val: DisplayMode) {
-    if (this._displayMode !== val) {
-      this._displayMode = val;
-    }
-  }
-
-  get IsEditMode() { return this._displayMode === DisplayMode.Edit; }
-  get IsDisplayMode() { return this._displayMode === DisplayMode.Display; }
-  get IsWorkoutMode() { return this._displayMode === DisplayMode.Workout; }
+  get IsEditMode() { return this.displayMode === DisplayMode.Edit; }
+  get IsDisplayMode() { return this.displayMode === DisplayMode.Display; }
+  get IsWorkoutMode() { return this.displayMode === DisplayMode.Workout; }
   get IsDisplayOrWorkout() { return this.IsWorkoutMode || this.IsDisplayMode; }
 
   ngOnInit() {
@@ -100,7 +82,6 @@ export class WorkoutDayComponent implements OnInit, OnDestroy {
 
   async saveChanges() {
     this.store.dispatch(new UpdateWorkouts());
-    // this.toastr.info('Saved!');
   }
 
   reorderItems(event: CustomEvent<ItemReorderEventDetail>) {
