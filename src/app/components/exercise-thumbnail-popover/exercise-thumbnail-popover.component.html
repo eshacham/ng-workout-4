@@ -1,7 +1,7 @@
 <ion-list>
     <ion-item>
         <ion-label>Weight:</ion-label>
-        <ion-input type="number"
+        <ion-input type="number" pattern="[0-9]*"
             [(ngModel)]="rep.weight"
             (change)="UpdateRep()"
         ></ion-input>
@@ -19,14 +19,15 @@
     </ion-item>
     <ion-item>
         <ion-label>Times:</ion-label>
-        <ion-input type="number"
+        <ion-input type="number" pattern="[0-9]*"
             [(ngModel)]="rep.times"
             (change)="UpdateRep()">
     </ion-input>
     </ion-item>
     <ion-item>
         <ion-label>Seconds:</ion-label>
-        <ion-input type="number" [(ngModel)]="rep.seconds"
+        <ion-input type="number" pattern="[0-9]*"
+            [(ngModel)]="rep.seconds"
             (change)="UpdateRep()">
         </ion-input>
     </ion-item>
