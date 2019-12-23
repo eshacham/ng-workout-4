@@ -3,9 +3,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
-import { File, FileEntry } from '@ionic-native/File/ngx';
+import { File as MobileFile, FileEntry } from '@ionic-native/File/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { LoadingOptions } from '@ionic/core';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { ExerciseMediaBean } from '../models/ExerciseMedia';
 import { ToastService } from '../providers/toast-service/toast.service';
@@ -13,11 +12,11 @@ import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { getLibraryMusclesFilter } from '../store/selectors/musclesFilter.selectors';
 import { getExercisesMedias } from '../store/selectors/ExercisesMedia.selectors';
-import { UpdateImages } from '../store/actions/data.actions';
 import { UpdateExerciseMedia, AddExerciseMedia, DeleteExerciseMedia } from '../store/actions/exercisesMedia.actions';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-tab-library',
@@ -30,11 +29,11 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    private http: HttpClient,
     private camera: Camera,
-    private file: File,
+    private mobileFile: MobileFile,
     private actionSheetController: ActionSheetController,
     private toastService: ToastService,
-    private loadingController: LoadingController,
     private filePath: FilePath,
     private router: Router,
     private route: ActivatedRoute,
@@ -202,46 +201,23 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
   async startUpload(imgEntry: ExerciseMediaBean) {
     try {
-      const entry = await this.file.resolveLocalFilesystemUrl(imgEntry.nativePath);
-      (<FileEntry>entry).file(file => this.readFile(file));
+      if (this.isMobile) {
+        const mobileFileEntry = <FileEntry>(await this.mobileFile.resolveLocalFilesystemUrl(imgEntry.nativePath));
+        console.log('mobileFileEntry.fullPath', mobileFileEntry.fullPath);
+        // upload the file
+      } else {
+        this.http.get(imgEntry.nativePath, { responseType: 'blob' })
+        .subscribe((data) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              console.log('onloadend reader.result', reader.result);
+            };
+            reader.readAsArrayBuffer(data);
+          });
+      }
     } catch (err) {
+      console.log('entry.fullPath error', err);
       this.presentToast('Error while reading file.');
     }
   }
-
-  readFile(file: any) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const formData = new FormData();
-      const imgBlob = new Blob([reader.result], {
-        type: file.type
-      });
-      formData.append('file', imgBlob, file.name);
-      this.uploadImageData(formData);
-    };
-    reader.readAsArrayBuffer(file);
-  }
-
-  async uploadImageData(formData: FormData) {
-    const options: LoadingOptions = {
-      message: 'Uploading image...'
-    };
-    const loading = await this.loadingController.create(options);
-    await loading.present();
-
-    // this.http.post("http://localhost:8888/upload.php", formData)
-    //     .pipe(
-    //         finalize(() => {
-    loading.dismiss();
-    //         })
-    //     )
-    //     .subscribe(res => {
-    //         if (res['success']) {
-    this.presentToast('File upload complete.');
-    //         } else {
-    //             this.presentToast('File upload failed.')
-    //         }
-    //     });
-  }
-
 }
