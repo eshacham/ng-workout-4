@@ -43,6 +43,10 @@
         <ion-icon slot="icon-only" name="trash"></ion-icon>
         <ion-badge>{{img.mediaUsageCounter}}</ion-badge>
       </ion-button>
+      <ion-button slot="end" fill="clear"
+        (click)="startUpload(img)">
+        <ion-icon slot="icon-only" name="play"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
