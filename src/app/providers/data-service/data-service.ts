@@ -1,7 +1,7 @@
-import { Store } from '@ngrx/store';
+import { Store, resultMemoize } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { File as MobileFile, FileEntry} from '@ionic-native/File/ngx';
+import { File as MobileFile, FileEntry } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
 import { ExerciseMediaBean } from '../../models/ExerciseMedia';
@@ -10,12 +10,13 @@ import { getDefaultWorkoutsMaps } from '../../constants/defaultWorkouts';
 import { getDefaultImages } from '../../constants/defaultExerciseMedia';
 import { AllDataMaps, WorkoutsDataMaps, MediaDataMaps } from 'src/app/models/interfaces';
 import { IAppState } from '../../store/state/app.state';
-import { DataReset, GetData} from 'src/app/store/actions/data.actions';
+import { DataReset, GetData } from 'src/app/store/actions/data.actions';
 import { Guid } from 'guid-typescript';
 import { HttpClient } from '@angular/common/http';
 import * as JSZip from 'jszip';
 import Auth from '@aws-amplify/auth';
 import S3 from '@aws-amplify/storage';
+import { resolve } from 'dns';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -33,7 +34,7 @@ export class DataServiceProvider {
     private storage: Storage,
     private store: Store<IAppState>,
     private http: HttpClient,
-    ) {
+  ) {
     console.log('data-service - constructor');
   }
 
@@ -54,14 +55,14 @@ export class DataServiceProvider {
 
     imagesData = await this.getImagesData();
     workoutsData = await this.getWorkoutsData();
-    if (!imagesData || !workoutsData ) {
+    if (!imagesData || !workoutsData) {
       workoutsData = await this.initDefaultWorkouts();
       imagesData = await this.initDefaultImages();
       this.store.dispatch(new DataReset());
     } else {
       if (this.isMobile) {
-          this.AssertImagesPath(imagesData);
-        }
+        this.AssertImagesPath(imagesData);
+      }
     }
 
     data = { ...workoutsData, ...imagesData };
@@ -141,7 +142,7 @@ export class DataServiceProvider {
   }
 
   async addImage(origImagePath: string, origImageName: string, newImageName: string):
-  Promise<ExerciseMediaBean> {
+    Promise<ExerciseMediaBean> {
     await this.mobileFile.copyFile(origImagePath, origImageName, this.mobileFile.dataDirectory, newImageName);
     const nativePath = this.mobileFile.dataDirectory + newImageName;
     console.log(`new image ${origImagePath}/${origImageName} has been copied to ${nativePath}`);
@@ -193,73 +194,97 @@ export class DataServiceProvider {
   }
 
   async exportWorkout(workoutId: string): Promise<string> {
-    const zip = new JSZip();
-    const workoutsData = await this.getWorkoutsData();
-    const imagesData = await this.getImagesData();
-    workoutsData.workouts.byId = { [workoutId]: workoutsData.workouts.byId[workoutId] };
-    const daysById = { };
-    Object.keys(workoutsData.days.byId).forEach(dayId => {
-      if (workoutsData.days.byId[dayId].workoutId === workoutId) {
-        daysById[dayId] = workoutsData.days.byId[dayId];
-      }
-    });
-    workoutsData.days.byId = daysById;
-    const setsById = { };
-    Object.keys(workoutsData.sets.byId).forEach(setId => {
-      if (workoutsData.sets.byId[setId].workoutId === workoutId) {
-        setsById[setId] = workoutsData.sets.byId[setId];
-      }
-    });
-    workoutsData.sets.byId = setsById;
-    const exercisesById = { };
-    const imagesbyId = { };
-    Object.keys(workoutsData.exercises.byId).forEach(async exerciseId => {
-      const exercise = workoutsData.exercises.byId[exerciseId];
-      if (exercise.workoutId === workoutId) {
-        exercisesById[exerciseId] = exercise;
-        const imgEntry = imagesData.media.byId[exercise.mediaId];
-        if (!imagesbyId[exercise.mediaId]) {
-          imagesbyId[exercise.mediaId] = imgEntry;
-          try {
-            if (!imgEntry.isDefault) {
-              const mobileFileEntry = <FileEntry>(await this.mobileFile.resolveLocalFilesystemUrl(imgEntry.nativePath));
-              mobileFileEntry.file(data => {
-                this.addImageToZip(imgEntry.name, data, zip);
-              });
-            } else {
-              this.http.get(imgEntry.nativePath, { responseType: 'blob' })
-              .subscribe((data) => {
-                this.addImageToZip(imgEntry.name, data, zip);
-              });
-            }
-          } catch (err) {
-            console.log('reading/zipping file error', err);
+    try {
+      const zip = new JSZip();
+      const workoutsData = await this.getWorkoutsData();
+      const imagesData = await this.getImagesData();
+      workoutsData.workouts.byId = { [workoutId]: workoutsData.workouts.byId[workoutId] };
+      const daysById = {};
+      Object.keys(workoutsData.days.byId).forEach(dayId => {
+        if (workoutsData.days.byId[dayId].workoutId === workoutId) {
+          daysById[dayId] = workoutsData.days.byId[dayId];
+        }
+      });
+      workoutsData.days.byId = daysById;
+      const setsById = {};
+      Object.keys(workoutsData.sets.byId).forEach(setId => {
+        if (workoutsData.sets.byId[setId].workoutId === workoutId) {
+          setsById[setId] = workoutsData.sets.byId[setId];
+        }
+      });
+      workoutsData.sets.byId = setsById;
+      const exercisesById = {};
+      const imagesbyId = {};
+      Object.keys(workoutsData.exercises.byId).forEach(exerciseId => {
+        const exercise = workoutsData.exercises.byId[exerciseId];
+        if (exercise.workoutId === workoutId) {
+          exercisesById[exerciseId] = exercise;
+          const imgEntry = imagesData.media.byId[exercise.mediaId];
+          if (!imagesbyId[exercise.mediaId]) {
+            imagesbyId[exercise.mediaId] = imgEntry;
           }
         }
-      }
-    });
-    workoutsData.exercises.byId = exercisesById;
-    imagesData.media.byId = imagesbyId;
-    zip.file(WORKOUTS_STORAGE_KEY, JSON.stringify(workoutsData));
-    zip.file(IMAGES_STORAGE_KEY, JSON.stringify(imagesData));
-    console.log('zip', zip);
-    const blob = await zip.generateAsync({ type: 'blob' });
-    console.log('blob', blob);
-    let test = await zip.loadAsync(blob);
-    console.log('test', test);
-    const putResult = await S3.put(Guid.raw(), blob, { contentType: 'application/zip' } );
-    const getResult = await S3.get(putResult.key, { download: true });
-    console.log('put file ok', getResult);
-    test = await zip.loadAsync(getResult.Body);
-    console.log('test', test);
-    return workoutId;
+      });
+      const imagesFiles = await Promise.all(Object.keys(imagesbyId).map(async imageId => {
+        const file = await this.getImageFile(imagesbyId[imageId]);
+        return { name: imageId, file: file };
+      }));
+      const images = await Promise.all(imagesFiles.map(imageFile => {
+        return this.readFileData(imageFile.name, imageFile.file);
+      }));
+      images.forEach(image => zip.file(`images/${image.name}`, image.data, { compression: 'STORE' }));
+      workoutsData.exercises.byId = exercisesById;
+      imagesData.media.byId = imagesbyId;
+      zip.file(WORKOUTS_STORAGE_KEY, JSON.stringify(workoutsData), { binary: false });
+      zip.file(IMAGES_STORAGE_KEY, JSON.stringify(imagesData), { binary: false });
+      console.log('zip', zip);
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 } });
+      const putResult = await S3.put(workoutId, blob, { contentType: 'application/zip' });
+      console.log('workout has been exported to s3', putResult);
+      return workoutId;
+    } catch (err) {
+      console.log('reading/zipping file error', err);
+    }
   }
 
-  private addImageToZip(imageName: string, imageData, zip: JSZip) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      zip.file(`images/${imageName}`, reader.result);
+
+  async importWorkout(workoutId: string): Promise<{ workoutData: WorkoutsDataMaps, imageData: MediaDataMaps }> {
+    const getResult = await S3.get(workoutId, { download: true });
+    const zip = new JSZip();
+    await zip.loadAsync(getResult.Body);
+    console.log('zip', zip);
+    const result = {
+      workoutData: JSON.parse(await zip.file(WORKOUTS_STORAGE_KEY).async('text')),
+      imageData: JSON.parse(await zip.file(IMAGES_STORAGE_KEY).async('text'))
     };
-    reader.readAsArrayBuffer(imageData);
+    console.log('export result', result);
+    zip.folder('images').forEach(async (relativePath, zipObject) => {
+      console.log(relativePath, zipObject);
+      const blob = await zipObject.async('blob');
+      console.log(relativePath, blob);
+    });
+    return result;
+  }
+
+  private getImageFile(image: ExerciseMediaBean): any {
+    return new Promise(async (resolve) => {
+      if (!image.isDefault) {
+        const mobileFileEntry = <FileEntry>(await this.mobileFile.resolveLocalFilesystemUrl(image.nativePath));
+        mobileFileEntry.file((data) => resolve(data));
+      } else {
+        this.http.get(image.nativePath, { responseType: 'blob' })
+        .subscribe((data) => resolve(data));
+      }
+    });
+  }
+
+  private readFileData(fileName: string, file: Blob): Promise<{ name: string, data: any }> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve({ name: fileName, data: reader.result });
+      };
+      reader.readAsArrayBuffer(file);
+    });
   }
 }

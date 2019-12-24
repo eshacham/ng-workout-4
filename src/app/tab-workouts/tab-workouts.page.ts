@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { WorkoutBean } from '../models/Workout';
 import { DisplayMode } from '../models/enums';
 import { IAppState } from '../store/state/app.state';
-import { AddWorkout } from '../store/actions/workouts.actions';
+import { AddWorkout, ImportWorkout } from '../store/actions/workouts.actions';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UpdateWorkouts } from '../store/actions/data.actions';
@@ -78,4 +78,8 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     this.store.dispatch(new AddWorkout({workout, day}));
   }
 
+  async importWorkout(event: any) {
+    event.stopPropagation();
+    this.store.dispatch(new ImportWorkout({workoutId: '0b2905f5-e645-c823-221e-351c55c49553'}));
+  }
 }

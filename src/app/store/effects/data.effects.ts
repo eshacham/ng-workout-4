@@ -16,7 +16,7 @@ import {
     WorkoutsSavedError,
 } from '../actions/data.actions';
 import { DataServiceProvider } from '../../providers/data-service/data-service';
-import { AllDataMaps } from 'src/app/models/interfaces';
+import { AllDataMaps, WorkoutsDataMaps, MediaDataMaps } from 'src/app/models/interfaces';
 import { getWorkoutsData, getImagesData } from '../selectors/data.selectors';
 import {
     ExerciseMediaActionsTypes,
@@ -39,7 +39,9 @@ import {
     AddWorkout,
     AddWorkoutSuccess,
     ExportWorkout,
-    ExportWorkoutSuccess} from '../actions/workouts.actions';
+    ExportWorkoutSuccess,
+    ImportWorkout,
+    ImportWorkoutSuccess} from '../actions/workouts.actions';
 import { getMediaIdsByWorkout, getMediaIdsByDay } from '../selectors/exercises.selectors';
 import {
     MusclesFilterActionsTypes,
@@ -113,9 +115,21 @@ export class DataEffects {
     exportWorkout$ = this._actions$.pipe(
         ofType(WorkoutsActionsTypes.ExportWorkout),
         mergeMap((action: ExportWorkout) => from(this._dataService.exportWorkout(action.payload.workoutId)).pipe(
-            map((exportId: string) => (new ExportWorkoutSuccess({ exportId }))),
+            map((exportId: string) => (new ExportWorkoutSuccess())),
             catchError(err => {
                 console.log('export workout effect - got an error:', err);
+                return of(new GetDataError(err.message));
+            })
+        ))
+    );
+
+    @Effect()
+    importWorkout$ = this._actions$.pipe(
+        ofType(WorkoutsActionsTypes.ImportWorkout),
+        mergeMap((action: ImportWorkout) => from(this._dataService.importWorkout(action.payload.workoutId)).pipe(
+            map((data: { workoutData: WorkoutsDataMaps, imageData: MediaDataMaps }) => (new ImportWorkoutSuccess())),
+            catchError(err => {
+                console.log('import workout effect - got an error:', err);
                 return of(new GetDataError(err.message));
             })
         ))

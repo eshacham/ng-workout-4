@@ -13,6 +13,8 @@ export enum WorkoutsActionsTypes {
     UpdateWorkout = '[Workouts] Update workout',
     ExportWorkout = '[Workouts] Export workout',
     ExportWorkoutSuccess = '[Workouts] Workout has been exported',
+    ImportWorkout = '[Workouts] Import workout',
+    ImportWorkoutSuccess = '[Workouts] Workout has been imported',
 }
 
 export class SelectWorkout implements Action {
@@ -47,9 +49,17 @@ export class ExportWorkout implements Action {
 }
 export class ExportWorkoutSuccess implements Action {
     readonly type = WorkoutsActionsTypes.ExportWorkoutSuccess;
-    constructor(public payload: { exportId: string }) { }
+    constructor() { }
 }
 
+export class ImportWorkout implements Action {
+    readonly type = WorkoutsActionsTypes.ImportWorkout;
+    constructor(public payload: { workoutId: string }) { }
+}
+export class ImportWorkoutSuccess implements Action {
+    readonly type = WorkoutsActionsTypes.ImportWorkoutSuccess;
+    constructor() { }
+}
 export class AddWorkout implements Action {
     readonly type = WorkoutsActionsTypes.AddWorkout;
     constructor(public payload: { workout: WorkoutBean, day: WorkoutDayBean }) { }
@@ -67,5 +77,8 @@ export type WorkoutsActions =
     AddWorkout |
     AddWorkoutSuccess |
     UpdateWorkout |
-    ExportWorkout
+    ExportWorkout |
+    ExportWorkoutSuccess |
+    ImportWorkout |
+    ImportWorkoutSuccess 
     ;
