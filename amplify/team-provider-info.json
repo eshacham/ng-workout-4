@@ -1,0 +1,20 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-ng-workout-4-test-103003-authRole",
+            "UnauthRoleArn": "arn:aws:iam::597896071728:role/amplify-ng-workout-4-test-103003-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::597896071728:role/amplify-ng-workout-4-test-103003-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-ng-workout-4-test-103003-deployment",
+            "UnauthRoleName": "amplify-ng-workout-4-test-103003-unauthRole",
+            "StackName": "amplify-ng-workout-4-test-103003",
+            "StackId": "arn:aws:cloudformation:us-east-1:597896071728:stack/amplify-ng-workout-4-test-103003/a46765d0-266a-11ea-b94f-12b6a099270b",
+            "AmplifyAppId": "d2m7wp0figeqta"
+        },
+        "categories": {
+            "auth": {
+                "ngworkout": {}
+            }
+        }
+    }
+}

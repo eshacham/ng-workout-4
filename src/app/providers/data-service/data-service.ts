@@ -14,6 +14,8 @@ import { DataReset, GetData} from 'src/app/store/actions/data.actions';
 import { Guid } from 'guid-typescript';
 import { HttpClient } from '@angular/common/http';
 import * as JSZip from 'jszip';
+import Auth from '@aws-amplify/auth';
+import S3 from '@aws-amplify/storage';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -22,6 +24,7 @@ const IMAGES_STORAGE_KEY = 'my_images';
 export class DataServiceProvider {
 
   private _images: ExerciseMediaBean[];
+  private _creds: any;
 
   constructor(
     private platform: Platform,
@@ -47,6 +50,7 @@ export class DataServiceProvider {
     let workoutsData: WorkoutsDataMaps;
 
     await this.displayPlatform();
+    await this.displayAuthCreds();
 
     imagesData = await this.getImagesData();
     workoutsData = await this.getWorkoutsData();
@@ -183,6 +187,10 @@ export class DataServiceProvider {
     const platformSource = await this.platform.ready();
     console.log(`this app runs on ${platformSource}`);
   }
+  async displayAuthCreds() {
+    this._creds = await Auth.currentCredentials();
+    console.log('currentCredentials', this._creds);
+  }
 
   async exportWorkout(workoutId: string): Promise<string> {
     const zip = new JSZip();
@@ -237,7 +245,13 @@ export class DataServiceProvider {
     console.log('zip', zip);
     const blob = await zip.generateAsync({ type: 'blob' });
     console.log('blob', blob);
-
+    let test = await zip.loadAsync(blob);
+    console.log('test', test);
+    const putResult = await S3.put(Guid.raw(), blob, { contentType: 'application/zip' } );
+    const getResult = await S3.get(putResult.key, { download: true });
+    console.log('put file ok', getResult);
+    test = await zip.loadAsync(getResult.Body);
+    console.log('test', test);
     return workoutId;
   }
 

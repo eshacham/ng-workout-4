@@ -1,0 +1,15 @@
+{
+	"auth": {
+		"ngworkout": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	},
+	"storage": {
+		"s3ngworkout": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
+	}
+}

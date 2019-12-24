@@ -10,6 +10,13 @@ import { StoreModule, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
+import {
+  AmplifyAngularModule,
+  AmplifyService,
+  AmplifyModules
+} from 'aws-amplify-angular';
+import Auth from '@aws-amplify/auth';
+import Storage from '@aws-amplify/storage';
 import { AppRoutingModule } from './app-routing.module';
 import { DataEffects } from './store/effects/data.effects';
 import { AppComponent } from './app.component';
@@ -39,11 +46,19 @@ export const metaReducers: MetaReducer<IAppState>[] = !environment.production
     }),
     EffectsModule.forRoot([DataEffects]),
     HttpClientModule,
+    AmplifyAngularModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: AmplifyService, useFactory: () => {
+        return AmplifyModules({
+          Auth,
+          Storage
+        });
+      }
+    },
     DataServiceProvider
   ],
   bootstrap: [AppComponent]
