@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
-import { ActionSheetController, LoadingController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 import { File as MobileFile, FileEntry } from '@ionic-native/File/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { DataServiceProvider } from '../providers/data-service/data-service';
@@ -12,11 +12,12 @@ import { Muscles } from '../models/enums';
 import { MuscleFilterFor } from '../pages/select-muscle/select-muscle.page';
 import { IAppState } from '../store/state/app.state';
 import { takeUntil } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { getLibraryMusclesFilter } from '../store/selectors/musclesFilter.selectors';
 import { getExercisesMedias } from '../store/selectors/ExercisesMedia.selectors';
 import { UpdateExerciseMedia, AddExerciseMedia, DeleteExerciseMedia } from '../store/actions/exercisesMedia.actions';
 import { HttpClient } from '@angular/common/http';
+import * as JSZip from 'jszip';
 
 @Component({
   selector: 'app-tab-library',
@@ -201,23 +202,32 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   }
   async startUpload(imgEntry: ExerciseMediaBean) {
     try {
-      if (this.isMobile) {
+      if (!imgEntry.isDefault) {
         const mobileFileEntry = <FileEntry>(await this.mobileFile.resolveLocalFilesystemUrl(imgEntry.nativePath));
-        console.log('mobileFileEntry.fullPath', mobileFileEntry.fullPath);
-        // upload the file
+        mobileFileEntry.file(data => {
+          this.zipFile(imgEntry.name, data);
+        });
       } else {
         this.http.get(imgEntry.nativePath, { responseType: 'blob' })
         .subscribe((data) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              console.log('onloadend reader.result', reader.result);
-            };
-            reader.readAsArrayBuffer(data);
-          });
+          this.zipFile(imgEntry.name, data);
+        });
       }
     } catch (err) {
-      console.log('entry.fullPath error', err);
+      console.log('reading/zipping file error', err);
       this.presentToast('Error while reading file.');
     }
   }
+
+  private zipFile(name: string, data) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      console.log('file name, data', [name, reader.result]);
+      const zip = new JSZip();
+      zip.file(`images/${name}`, reader.result);
+      console.log('zip', zip);
+    };
+    reader.readAsArrayBuffer(data);
+  }
+
 }
