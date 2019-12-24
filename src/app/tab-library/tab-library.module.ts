@@ -6,8 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { TabLibraryPage } from './tab-library.page';
 import { Camera } from '@ionic-native/camera/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { HttpClientModule } from '@angular/common/http';
-
 
 const routes: Routes = [
   {
@@ -17,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'select-muscle',
-    loadChildren:  '../pages/select-muscle/select-muscle.module#SelectMusclePageModule'
+    loadChildren: '../pages/select-muscle/select-muscle.module#SelectMusclePageModule'
   }
 ];
 @NgModule({
@@ -26,7 +24,6 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),
-    HttpClientModule,
   ],
   declarations: [TabLibraryPage],
   providers: [
@@ -34,4 +31,4 @@ const routes: Routes = [
     FilePath
   ]
 })
-export class TabLibraryPageModule {}
+export class TabLibraryPageModule { }

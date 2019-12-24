@@ -1,7 +1,7 @@
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { File } from '@ionic-native/File/ngx';
+import { File as MobileFile, FileEntry} from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Platform } from '@ionic/angular';
 import { ExerciseMediaBean } from '../../models/ExerciseMedia';
@@ -12,6 +12,8 @@ import { AllDataMaps, WorkoutsDataMaps, MediaDataMaps } from 'src/app/models/int
 import { IAppState } from '../../store/state/app.state';
 import { DataReset, GetData} from 'src/app/store/actions/data.actions';
 import { Guid } from 'guid-typescript';
+import { HttpClient } from '@angular/common/http';
+import * as JSZip from 'jszip';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -23,10 +25,12 @@ export class DataServiceProvider {
 
   constructor(
     private platform: Platform,
-    private file: File,
+    private mobileFile: MobileFile,
     private webview: WebView,
     private storage: Storage,
-    private store: Store<IAppState>) {
+    private store: Store<IAppState>,
+    private http: HttpClient,
+    ) {
     console.log('data-service - constructor');
   }
 
@@ -92,11 +96,11 @@ export class DataServiceProvider {
 
   private AssertImagesPath(mediaDataMaps: MediaDataMaps) {
     const imagesToUpdate = Object.values(mediaDataMaps.media.byId)
-      .filter(i => !i.isDefault && i.nativePath.indexOf(this.file.dataDirectory) < 0);
+      .filter(i => !i.isDefault && i.nativePath.indexOf(this.mobileFile.dataDirectory) < 0);
     for (const image of imagesToUpdate) {
       const oldPath = image.nativePath;
       const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
-      image.nativePath = this.file.dataDirectory + name;
+      image.nativePath = this.mobileFile.dataDirectory + name;
       image.ionicPath = this.getIonicPath(image.nativePath);
       console.log(`update images media path from ${oldPath} to ${image.nativePath}`);
     }
@@ -134,8 +138,8 @@ export class DataServiceProvider {
 
   async addImage(origImagePath: string, origImageName: string, newImageName: string):
   Promise<ExerciseMediaBean> {
-    await this.file.copyFile(origImagePath, origImageName, this.file.dataDirectory, newImageName);
-    const nativePath = this.file.dataDirectory + newImageName;
+    await this.mobileFile.copyFile(origImagePath, origImageName, this.mobileFile.dataDirectory, newImageName);
+    const nativePath = this.mobileFile.dataDirectory + newImageName;
     console.log(`new image ${origImagePath}/${origImageName} has been copied to ${nativePath}`);
 
     const newEntry: ExerciseMediaBean = new ExerciseMediaBean({
@@ -154,7 +158,7 @@ export class DataServiceProvider {
       const path = image.nativePath.substr(0, image.nativePath.lastIndexOf('/') + 1);
       const name = image.nativePath.substr(image.nativePath.lastIndexOf('/') + 1);
       console.log(`deleting image file ${path}/${name}`);
-      await this.file.removeFile(path, name);
+      await this.mobileFile.removeFile(path, name);
     }
     return image.id;
   }
@@ -178,5 +182,70 @@ export class DataServiceProvider {
   async displayPlatform() {
     const platformSource = await this.platform.ready();
     console.log(`this app runs on ${platformSource}`);
+  }
+
+  async exportWorkout(workoutId: string): Promise<string> {
+    const zip = new JSZip();
+    const workoutsData = await this.getWorkoutsData();
+    const imagesData = await this.getImagesData();
+    workoutsData.workouts.byId = { [workoutId]: workoutsData.workouts.byId[workoutId] };
+    const daysById = { };
+    Object.keys(workoutsData.days.byId).forEach(dayId => {
+      if (workoutsData.days.byId[dayId].workoutId === workoutId) {
+        daysById[dayId] = workoutsData.days.byId[dayId];
+      }
+    });
+    workoutsData.days.byId = daysById;
+    const setsById = { };
+    Object.keys(workoutsData.sets.byId).forEach(setId => {
+      if (workoutsData.sets.byId[setId].workoutId === workoutId) {
+        setsById[setId] = workoutsData.sets.byId[setId];
+      }
+    });
+    workoutsData.sets.byId = setsById;
+    const exercisesById = { };
+    const imagesbyId = { };
+    Object.keys(workoutsData.exercises.byId).forEach(async exerciseId => {
+      const exercise = workoutsData.exercises.byId[exerciseId];
+      if (exercise.workoutId === workoutId) {
+        exercisesById[exerciseId] = exercise;
+        const imgEntry = imagesData.media.byId[exercise.mediaId];
+        if (!imagesbyId[exercise.mediaId]) {
+          imagesbyId[exercise.mediaId] = imgEntry;
+          try {
+            if (!imgEntry.isDefault) {
+              const mobileFileEntry = <FileEntry>(await this.mobileFile.resolveLocalFilesystemUrl(imgEntry.nativePath));
+              mobileFileEntry.file(data => {
+                this.addImageToZip(imgEntry.name, data, zip);
+              });
+            } else {
+              this.http.get(imgEntry.nativePath, { responseType: 'blob' })
+              .subscribe((data) => {
+                this.addImageToZip(imgEntry.name, data, zip);
+              });
+            }
+          } catch (err) {
+            console.log('reading/zipping file error', err);
+          }
+        }
+      }
+    });
+    workoutsData.exercises.byId = exercisesById;
+    imagesData.media.byId = imagesbyId;
+    zip.file(WORKOUTS_STORAGE_KEY, JSON.stringify(workoutsData));
+    zip.file(IMAGES_STORAGE_KEY, JSON.stringify(imagesData));
+    console.log('zip', zip);
+    const blob = await zip.generateAsync({ type: 'blob' });
+    console.log('blob', blob);
+
+    return workoutId;
+  }
+
+  private addImageToZip(imageName: string, imageData, zip: JSZip) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      zip.file(`images/${imageName}`, reader.result);
+    };
+    reader.readAsArrayBuffer(imageData);
   }
 }

@@ -5,6 +5,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicStorageModule } from '@ionic/storage';
+import { HttpClientModule } from '@angular/common/http';
 import { StoreModule, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -37,6 +38,7 @@ export const metaReducers: MetaReducer<IAppState>[] = !environment.production
       logOnly: environment.production
     }),
     EffectsModule.forRoot([DataEffects]),
+    HttpClientModule,
   ],
   providers: [
     StatusBar,

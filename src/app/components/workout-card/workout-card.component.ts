@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { WorkoutBean } from '../../models/Workout';
 import { DisplayMode } from 'src/app/models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
-import { DeleteWorkout, UpdateWorkout, SelectWorkout } from 'src/app/store/actions/workouts.actions';
+import { DeleteWorkout, UpdateWorkout, SelectWorkout, ExportWorkout } from 'src/app/store/actions/workouts.actions';
 import { getWorkout } from 'src/app/store/selectors/workouts.selectors';
 
 @Component({
@@ -62,6 +62,12 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
     this.store.dispatch(new DeleteWorkout({
       id: this.workoutId,
       days: this._workout.days
+    }));
+  }
+
+  exportWorkout() {
+    this.store.dispatch(new ExportWorkout({
+      workoutId: this.workoutId,
     }));
   }
 

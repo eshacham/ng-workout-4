@@ -32,7 +32,14 @@ import {
 import { ExerciseMediaBean } from 'src/app/models/ExerciseMedia';
 import { ExerciseActionsTypes, DeleteExercise, DeleteExerciseInProgress } from '../actions/exercises.actions';
 import { DeleteExerciseSet } from '../actions/exerciseSets.actions';
-import { DeleteWorkout, WorkoutsActionsTypes, DeleteWorkoutInProgress, AddWorkout, AddWorkoutSuccess } from '../actions/workouts.actions';
+import {
+    DeleteWorkout,
+    WorkoutsActionsTypes,
+    DeleteWorkoutInProgress,
+    AddWorkout,
+    AddWorkoutSuccess,
+    ExportWorkout,
+    ExportWorkoutSuccess} from '../actions/workouts.actions';
 import { getMediaIdsByWorkout, getMediaIdsByDay } from '../selectors/exercises.selectors';
 import {
     MusclesFilterActionsTypes,
@@ -98,6 +105,18 @@ export class DataEffects {
             catchError(err => {
                 console.log('UpdateImages effect - got an error:', err);
                 return of(new WorkoutsSavedError(err.message));
+            })
+        ))
+    );
+
+    @Effect()
+    exportWorkout$ = this._actions$.pipe(
+        ofType(WorkoutsActionsTypes.ExportWorkout),
+        mergeMap((action: ExportWorkout) => from(this._dataService.exportWorkout(action.payload.workoutId)).pipe(
+            map((exportId: string) => (new ExportWorkoutSuccess({ exportId }))),
+            catchError(err => {
+                console.log('export workout effect - got an error:', err);
+                return of(new GetDataError(err.message));
             })
         ))
     );

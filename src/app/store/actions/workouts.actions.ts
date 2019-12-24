@@ -11,6 +11,8 @@ export enum WorkoutsActionsTypes {
     AddWorkout = '[Workouts] Add workout',
     AddWorkoutSuccess = '[Workouts] Workout has been added',
     UpdateWorkout = '[Workouts] Update workout',
+    ExportWorkout = '[Workouts] Export workout',
+    ExportWorkoutSuccess = '[Workouts] Workout has been exported',
 }
 
 export class SelectWorkout implements Action {
@@ -39,6 +41,15 @@ export class UpdateWorkout implements Action {
     constructor(public payload: { workout: WorkoutBean }) { }
 }
 
+export class ExportWorkout implements Action {
+    readonly type = WorkoutsActionsTypes.ExportWorkout;
+    constructor(public payload: { workoutId: string }) { }
+}
+export class ExportWorkoutSuccess implements Action {
+    readonly type = WorkoutsActionsTypes.ExportWorkoutSuccess;
+    constructor(public payload: { exportId: string }) { }
+}
+
 export class AddWorkout implements Action {
     readonly type = WorkoutsActionsTypes.AddWorkout;
     constructor(public payload: { workout: WorkoutBean, day: WorkoutDayBean }) { }
@@ -55,5 +66,6 @@ export type WorkoutsActions =
     DeleteWorkoutInProgress |
     AddWorkout |
     AddWorkoutSuccess |
-    UpdateWorkout
+    UpdateWorkout |
+    ExportWorkout
     ;

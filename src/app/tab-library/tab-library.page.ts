@@ -3,7 +3,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { ActionSheetController } from '@ionic/angular';
-import { File as MobileFile, FileEntry } from '@ionic-native/File/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { DataServiceProvider } from '../providers/data-service/data-service';
 import { ExerciseMediaBean } from '../models/ExerciseMedia';
@@ -16,8 +15,6 @@ import { Subject } from 'rxjs';
 import { getLibraryMusclesFilter } from '../store/selectors/musclesFilter.selectors';
 import { getExercisesMedias } from '../store/selectors/ExercisesMedia.selectors';
 import { UpdateExerciseMedia, AddExerciseMedia, DeleteExerciseMedia } from '../store/actions/exercisesMedia.actions';
-import { HttpClient } from '@angular/common/http';
-import * as JSZip from 'jszip';
 
 @Component({
   selector: 'app-tab-library',
@@ -30,9 +27,7 @@ export class TabLibraryPage implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private http: HttpClient,
     private camera: Camera,
-    private mobileFile: MobileFile,
     private actionSheetController: ActionSheetController,
     private toastService: ToastService,
     private filePath: FilePath,
@@ -199,35 +194,6 @@ export class TabLibraryPage implements OnInit, OnDestroy {
       return (intersection.length > 0);
     });
     return images;
-  }
-  async startUpload(imgEntry: ExerciseMediaBean) {
-    try {
-      if (!imgEntry.isDefault) {
-        const mobileFileEntry = <FileEntry>(await this.mobileFile.resolveLocalFilesystemUrl(imgEntry.nativePath));
-        mobileFileEntry.file(data => {
-          this.zipFile(imgEntry.name, data);
-        });
-      } else {
-        this.http.get(imgEntry.nativePath, { responseType: 'blob' })
-        .subscribe((data) => {
-          this.zipFile(imgEntry.name, data);
-        });
-      }
-    } catch (err) {
-      console.log('reading/zipping file error', err);
-      this.presentToast('Error while reading file.');
-    }
-  }
-
-  private zipFile(name: string, data) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      console.log('file name, data', [name, reader.result]);
-      const zip = new JSZip();
-      zip.file(`images/${name}`, reader.result);
-      console.log('zip', zip);
-    };
-    reader.readAsArrayBuffer(data);
   }
 
 }
