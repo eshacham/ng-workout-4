@@ -4,6 +4,7 @@ import { MusclesFilterActionsTypes, MusclesFilterActions } from '../actions/musc
 import { ExerciseMediaActionsTypes, ExerciseMediaActions } from '../actions/exercisesMedia.actions';
 import { ExerciseSetActionsTypes, ExerciseSetActions } from '../actions/exerciseSets.actions';
 import { removeItemFromMap } from './utils';
+import { WorkoutsActions, WorkoutsActionsTypes } from '../actions/workouts.actions';
 
 export const exercisesMediaReducers = (
     state = initialExercisesMediaState,
@@ -11,7 +12,8 @@ export const exercisesMediaReducers = (
         DataActions |
         MusclesFilterActions |
         ExerciseMediaActions |
-        ExerciseSetActions)
+        ExerciseSetActions |
+        WorkoutsActions)
     : IExercisesMediaState => {
     switch (action.type) {
         case DataActionsTypes.GetDataSuccess: {
@@ -107,6 +109,15 @@ export const exercisesMediaReducers = (
                     ...state.byId,
                     [newId]: action.payload.exerciseMedia
                 }
+            };
+        }
+        case WorkoutsActionsTypes.ImportWorkoutSuccess: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    ...action.payload.imagesData.media.byId,
+                },
             };
         }
         default: {

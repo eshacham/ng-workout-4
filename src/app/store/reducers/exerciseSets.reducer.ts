@@ -66,6 +66,15 @@ export const exerciseSetsReducers = (
                 byId: filterMapByRecordPredicate(([key, val]) => val.workoutId !== workoutId, state)
             };
         }
+        case WorkoutsActionsTypes.ImportWorkoutSuccess: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    ...action.payload.workoutsData.sets.byId,
+                },
+            };
+        }
         case ExerciseSetActionsTypes.SwitchExercisesInSet: {
             const oldExes = state.byId[action.payload.setId].exercises;
             const from = action.payload.lowIndex;

@@ -92,7 +92,7 @@ export const workoutsReducers = (state = initialWorkoutsState,
         case WorkoutDaysActionsTypes.MoveWorkoutDaySuccess: {
             const newDays = [...state.byId[state.selectedWorkoutId].days];
             const idfDay2Move = state.byId[state.selectedWorkoutId].selectedWorkoutDayId ||
-                                state.byId[state.selectedWorkoutId].days[0];
+                state.byId[state.selectedWorkoutId].days[0];
             const indexOfDay2Move = newDays.indexOf(idfDay2Move);
             const offset = action.payload.direction === Direction.Forward ? 1 : -1;
             moveItemInArray(newDays, indexOfDay2Move, offset);
@@ -116,8 +116,17 @@ export const workoutsReducers = (state = initialWorkoutsState,
                 },
             };
         }
-        default: {
-            return state;
+        case WorkoutsActionsTypes.ImportWorkoutSuccess: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    ...action.payload.workoutsData.workouts.byId,
+                },
+            };
         }
+        default: {
+    return state;
+}
     }
 };

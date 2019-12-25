@@ -127,7 +127,7 @@ export class DataEffects {
     importWorkout$ = this._actions$.pipe(
         ofType(WorkoutsActionsTypes.ImportWorkout),
         mergeMap((action: ImportWorkout) => from(this._dataService.importWorkout(action.payload.workoutId)).pipe(
-            map((data: { workoutData: WorkoutsDataMaps, imageData: MediaDataMaps }) => (new ImportWorkoutSuccess())),
+            map((data: { workoutsData: WorkoutsDataMaps, imagesData: MediaDataMaps }) => (new ImportWorkoutSuccess(data))),
             catchError(err => {
                 console.log('import workout effect - got an error:', err);
                 return of(new GetDataError(err.message));

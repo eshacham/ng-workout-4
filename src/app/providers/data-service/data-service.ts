@@ -246,23 +246,30 @@ export class DataServiceProvider {
     }
   }
 
-
-  async importWorkout(workoutId: string): Promise<{ workoutData: WorkoutsDataMaps, imageData: MediaDataMaps }> {
+  async importWorkout(workoutId: string): Promise<{ workoutsData: WorkoutsDataMaps, imagesData: MediaDataMaps }> {
     const getResult = await S3.get(workoutId, { download: true });
     const zip = new JSZip();
     await zip.loadAsync(getResult['Body']);
     console.log('zip', zip);
     const result = {
-      workoutData: JSON.parse(await zip.file(WORKOUTS_STORAGE_KEY).async('text')),
-      imageData: JSON.parse(await zip.file(IMAGES_STORAGE_KEY).async('text'))
+      workoutsData: <WorkoutsDataMaps>(JSON.parse(await zip.file(WORKOUTS_STORAGE_KEY).async('text'))),
+      imagesData: <MediaDataMaps>(JSON.parse(await zip.file(IMAGES_STORAGE_KEY).async('text')))
     };
-    console.log('export result', result);
-    zip.folder('images').forEach(async (relativePath, zipObject) => {
-      console.log(relativePath, zipObject);
-      const blob = await zipObject.async('blob');
-      console.log(relativePath, blob);
-    });
+    if (this.isMobile) {
+      await Promise.all(Object.keys(result.imagesData.media.byId).map(async (imageId) => {
+        const image = result.imagesData.media.byId[imageId];
+        const blob = await zip.file(`images/${imageId}`).async('blob');
+        await this.updateAndCreateNewImage(image, blob);
+      }));
+    }
+    console.log('imported and updated result', result);
     return result;
+  }
+  async updateAndCreateNewImage(image: any, blob: any) {
+    const file = await this.mobileFile.writeFile(this.mobileFile.dataDirectory, image.name, blob, { replace: true});
+    image.nativePath = this.mobileFile.dataDirectory + image.name;
+    image.ionicPath = this.getIonicPath(image.nativePath),
+    console.log(`image id ${image.id}, name ${image.name} imported`, blob, file);
   }
 
   private getImageFile(image: ExerciseMediaBean): any {
@@ -272,7 +279,7 @@ export class DataServiceProvider {
         mobileFileEntry.file((data) => resolve(data));
       } else {
         this.http.get(image.nativePath, { responseType: 'blob' })
-        .subscribe((data) => resolve(data));
+          .subscribe((data) => resolve(data));
       }
     });
   }

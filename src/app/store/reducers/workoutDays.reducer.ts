@@ -35,6 +35,15 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
                 byId: newMap
             };
         }
+        case WorkoutsActionsTypes.ImportWorkoutSuccess: {
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    ...action.payload.workoutsData.days.byId,
+                },
+            };
+        }
         case WorkoutDaysActionsTypes.AddWorkoutDaySuccess: {
             return {
                 ...state,
