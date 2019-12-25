@@ -16,7 +16,6 @@ import { HttpClient } from '@angular/common/http';
 import * as JSZip from 'jszip';
 import Auth from '@aws-amplify/auth';
 import S3 from '@aws-amplify/storage';
-import { resolve } from 'dns';
 
 const WORKOUTS_STORAGE_KEY = 'my_workouts';
 const IMAGES_STORAGE_KEY = 'my_images';
@@ -251,7 +250,7 @@ export class DataServiceProvider {
   async importWorkout(workoutId: string): Promise<{ workoutData: WorkoutsDataMaps, imageData: MediaDataMaps }> {
     const getResult = await S3.get(workoutId, { download: true });
     const zip = new JSZip();
-    await zip.loadAsync(getResult.Body);
+    await zip.loadAsync(getResult['Body']);
     console.log('zip', zip);
     const result = {
       workoutData: JSON.parse(await zip.file(WORKOUTS_STORAGE_KEY).async('text')),

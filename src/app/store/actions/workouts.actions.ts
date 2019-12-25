@@ -80,5 +80,5 @@ export type WorkoutsActions =
     ExportWorkout |
     ExportWorkoutSuccess |
     ImportWorkout |
-    ImportWorkoutSuccess 
+    ImportWorkoutSuccess
     ;
