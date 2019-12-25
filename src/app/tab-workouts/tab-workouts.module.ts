@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TabWorkoutsPage } from './tab-workouts.page';
 import { WorkoutCardComponent } from '../components/workout-card/workout-card.component';
+import { WorkoutSelectionPopoverComponent } from '../components/workout-selection-popover/workout-selection-popover.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,11 @@ const routes: Routes = [
   ],
   declarations: [
     TabWorkoutsPage,
-    WorkoutCardComponent
+    WorkoutCardComponent,
+    WorkoutSelectionPopoverComponent
+  ],
+  entryComponents: [
+    WorkoutSelectionPopoverComponent,
   ],
   providers: [
   ]

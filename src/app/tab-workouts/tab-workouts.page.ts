@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { IonFab } from '@ionic/angular';
+import { IonFab, PopoverController } from '@ionic/angular';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { WorkoutBean } from '../models/Workout';
 import { DisplayMode } from '../models/enums';
@@ -11,6 +11,7 @@ import { UpdateWorkouts } from '../store/actions/data.actions';
 import { getWorkouts } from '../store/selectors/workouts.selectors';
 import { Guid } from 'guid-typescript';
 import { WorkoutDayBean } from '../models/WorkoutDay';
+import { WorkoutSelectionPopoverComponent } from '../components/workout-selection-popover/workout-selection-popover.component';
 
 @Component({
   selector: 'app-tab-workouts',
@@ -28,7 +29,8 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private store: Store<IAppState>) {
+    private store: Store<IAppState>,
+    private popoverCtrl: PopoverController) {
   }
 
   ngOnInit() {
@@ -73,13 +75,24 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
     event.stopPropagation();
     const newWorkoutId = Guid.raw();
     const newDayId = Guid.raw();
-    const workout = WorkoutBean.create({id: newWorkoutId, dayId: newDayId});
-    const day = WorkoutDayBean.create({id: newDayId, workoutId: newWorkoutId});
-    this.store.dispatch(new AddWorkout({workout, day}));
+    const workout = WorkoutBean.create({ id: newWorkoutId, dayId: newDayId });
+    const day = WorkoutDayBean.create({ id: newDayId, workoutId: newWorkoutId });
+    this.store.dispatch(new AddWorkout({ workout, day }));
   }
 
   async importWorkout(event: any) {
     event.stopPropagation();
-    this.store.dispatch(new ImportWorkout({workoutId: '0b2905f5-e645-c823-221e-351c55c49553'}));
+    await this.presentPopover(event);
+  }
+
+  async presentPopover(event: Event) {
+    const popover = await this.popoverCtrl.create({
+      component: WorkoutSelectionPopoverComponent,
+      event: event,
+      componentProps: {
+        workouts: this.workouts
+      }
+    });
+    popover.present();
   }
 }

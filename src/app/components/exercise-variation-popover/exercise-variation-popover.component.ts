@@ -24,7 +24,7 @@ export class ExerciseVariationPopoverComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.exercise = ExerciseBean.copy(this.navParams.data.exercise);
+    this.exercise = ExerciseBean.copy(this.navParams.data['exercise']);
     this.gripTypes = Object.keys(GripType).map(key => GripType[key]);
     this.weightTypes = Object.keys(WeightType).map(key => WeightType[key]);
     this.gripWidths = Object.keys(GripWidth).map(key => GripWidth[key]);
