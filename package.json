@@ -73,7 +73,7 @@
     "@ionic/angular-toolkit": "~1.5.1",
     "@ionic/lab": "1.0.24",
     "@types/jasmine": "~2.8.8",
-    "@types/jasminewd2": "~2.0.6",
+    "@types/jasminewd2": "^2.0.8",
     "@types/jszip": "^3.1.6",
     "@types/node": "^13.1.1",
     "codelyzer": "~4.5.0",
