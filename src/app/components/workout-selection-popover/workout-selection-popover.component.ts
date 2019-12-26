@@ -12,8 +12,10 @@ import { ImportWorkout } from 'src/app/store/actions/workouts.actions';
 })
 export class WorkoutSelectionPopoverComponent implements OnInit {
 
-  constructor(private navParams: NavParams,
-    private store: Store<IAppState>) { }
+  constructor(
+    private navParams: NavParams,
+    private store: Store<IAppState>,
+    ) { }
   workouts: WorkoutBean[];
   selectedWorkout: string;
 

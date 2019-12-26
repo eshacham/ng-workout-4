@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ThemeServiceProvider } from '../providers/theme-service/theme-service';
-import { getHasDataBeenLoaded, getError } from '../store/selectors/data.selectors';
+import { getHasDataBeenLoaded, getError, getWorkoutExportInProgress, getWorkoutImportInProgress } from '../store/selectors/data.selectors';
 import { take, takeUntil } from 'rxjs/operators';
 import { GetData } from '../store/actions/data.actions';
 import { Store } from '@ngrx/store';
@@ -16,6 +16,8 @@ import { Subject } from 'rxjs';
 export class TabsPage implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private exportHasStarted = false;
+  private importHasStarted = false;
 
   constructor(
     private themeService: ThemeServiceProvider,
@@ -38,17 +40,33 @@ export class TabsPage implements OnInit, OnDestroy {
       .subscribe((error) => {
         if (error) {
           console.log('tab-page redux - getError:', error);
-          this.presentToast(error);
+          this.toastService.presentToast(error, 'danger');
         }
+      });
+
+      this.store.select(getWorkoutExportInProgress)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((exportInProgress) => {
+        if (this.exportHasStarted && !exportInProgress) {
+          console.log('tab-page redux - export has finished:');
+          this.toastService.presentToast('Export workout has completed!');
+        }
+        this.exportHasStarted = exportInProgress;
+      });
+
+      this.store.select(getWorkoutImportInProgress)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((importInProgress) => {
+        if (this.importHasStarted && !importInProgress) {
+          console.log('tab-page redux - import has finished:');
+          this.toastService.presentToast('Import workout has completed!');
+        }
+        this.importHasStarted = importInProgress;
       });
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  private presentToast(text: string) {
-    this.toastService.presentToast(text);
   }
 }

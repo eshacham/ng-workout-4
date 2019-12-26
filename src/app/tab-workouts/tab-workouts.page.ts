@@ -30,7 +30,8 @@ export class TabWorkoutsPage implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<IAppState>,
-    private popoverCtrl: PopoverController) {
+    private popoverCtrl: PopoverController,
+    ) {
   }
 
   ngOnInit() {

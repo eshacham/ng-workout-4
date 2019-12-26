@@ -44,6 +44,16 @@ export const getHasDataBeenLoaded = createSelector(
     (state: IDataState) => state.hasDataBeenLoaded
 );
 
+export const getWorkoutExportInProgress = createSelector(
+    dataState,
+    (state: IDataState) => state.workoutExportInProgress
+);
+
+export const getWorkoutImportInProgress = createSelector(
+    dataState,
+    (state: IDataState) => state.workoutImportInProgress
+);
+
 export const getError = createSelector(
     dataState,
     (state: IDataState) => state.error

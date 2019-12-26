@@ -29,7 +29,7 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<IAppState>,
     private clipboard: Clipboard,
-    private dataService: DataServiceProvider
+    private dataService: DataServiceProvider,
     ) {
   }
 

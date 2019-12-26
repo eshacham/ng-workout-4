@@ -1,8 +1,9 @@
 import { DataActions, DataActionsTypes } from '../actions/data.actions';
 import { IDataState, initialDataState } from '../state/data.state';
+import { WorkoutsActions, WorkoutsActionsTypes, } from '../actions/workouts.actions';
 
 export const dataReducers =
-(state = initialDataState, action: DataActions)
+(state = initialDataState, action: DataActions | WorkoutsActions)
 : IDataState => {
     switch (action.type) {
         case DataActionsTypes.GetDataSuccess: {
@@ -33,6 +34,30 @@ export const dataReducers =
             return {
                 ...state,
                 error: action.payload
+            };
+        }
+        case WorkoutsActionsTypes.ImportWorkout: {
+            return  {
+                ...state,
+                workoutImportInProgress: true
+            };
+        }
+        case WorkoutsActionsTypes.ImportWorkoutSuccess: {
+            return  {
+                ...state,
+                workoutImportInProgress: false
+            };
+        }
+        case WorkoutsActionsTypes.ExportWorkout: {
+            return  {
+                ...state,
+                workoutExportInProgress: true
+            };
+        }
+        case WorkoutsActionsTypes.ExportWorkoutSuccess: {
+            return  {
+                ...state,
+                workoutExportInProgress: false
             };
         }
         default: {
