@@ -2,11 +2,13 @@ import { take } from 'rxjs/operators';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { WorkoutBean } from '../../models/Workout';
 import { DisplayMode } from 'src/app/models/enums';
 import { IAppState } from 'src/app/store/state/app.state';
 import { DeleteWorkout, UpdateWorkout, SelectWorkout, ExportWorkout } from 'src/app/store/actions/workouts.actions';
 import { getWorkout } from 'src/app/store/selectors/workouts.selectors';
+import { DataServiceProvider } from 'src/app/providers/data-service/data-service';
 
 @Component({
   selector: 'app-workout-card',
@@ -23,8 +25,12 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
   private description: string;
 
   constructor(
-    private router: Router, private route: ActivatedRoute,
-    private store: Store<IAppState>) {
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store<IAppState>,
+    private clipboard: Clipboard,
+    private dataService: DataServiceProvider
+    ) {
   }
 
   ngOnInit() {
@@ -76,6 +82,12 @@ export class WorkoutCardComponent implements OnInit, OnDestroy {
     workout.name = this.name;
     workout.description = this.description;
     this.store.dispatch(new UpdateWorkout({ workout: workout }));
+  }
+
+  copyWorkoutId () {
+    if (this.dataService.isMobile) {
+      this.clipboard.copy(this.workoutId);
+    }
   }
 
 }

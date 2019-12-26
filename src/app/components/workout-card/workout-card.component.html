@@ -25,22 +25,25 @@
         <ion-badge slot="start">{{ daysCount }}</ion-badge>
       </ion-item>
       <ion-item *ngIf="IsEditMode">
-          <ion-label>Days...</ion-label>
-          <ion-badge slot="start">{{ daysCount }}</ion-badge>
-          <ion-button
+        <ion-badge slot="start">{{ daysCount }}</ion-badge>
+        <ion-label>Days...</ion-label>
+        <ion-button fill="clear" bottom color="secondary" slot="end"
+            (click)="deleteWorkout()">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" bottom color="secondary" slot="end"
+            (click)="exportWorkout()">
+            <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item *ngIf="IsEditMode">
+          <ion-label><small>{{workoutId}}</small></ion-label>
+          <ion-button *ngIf="dataService.isMobile"
             fill="clear" bottom color="secondary" slot="end"
-              (click)="deleteWorkout()">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
-          </ion-button>
-        <ion-button
-            fill="clear" bottom color="secondary" slot="end"
-              (click)="exportWorkout()">
-              <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
-          </ion-button>
-        </ion-item>
-        <ion-item *ngIf="IsEditMode">
-          <h4>{{workoutId}}</h4>
-        </ion-item>
+            (click)="copyWorkoutId()">
+          <ion-icon slot="icon-only" name="copy"></ion-icon>
+        </ion-button>
+      </ion-item>
     </div>
 
   </ion-card-content>
