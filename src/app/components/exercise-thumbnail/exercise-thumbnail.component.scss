@@ -13,7 +13,7 @@ ion-item#item-with-image-and-button {
         top: calc(100% - 29px);
     }
 };
-ion-col[col-with-image-and-button] {
+ion-col.col-with-image-and-button {
     height: 94px;
     text-align: center;
     ion-button[up] {

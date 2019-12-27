@@ -12,7 +12,8 @@
                         #variationComponent
                         [exercise]="exercise" >
                     </app-exercise-variation>
-                    <ion-button fill="clear" float-right *ngIf="isLastSet(exercise)"
+                    <ion-button *ngIf="isLastSet(exercise)"
+                        class="ion-float-right" fill="clear"
                         (click)="runExercise()" color="danger">
                         <ion-icon slot="icon-only" name="play"></ion-icon>
                     </ion-button>
@@ -30,7 +31,8 @@
                   </ion-col>
               </ion-row>
               <ion-row class="ion-justify-content-around">
-                  <ion-col *ngFor="let exercise of exercises; let i = index" text-center>
+                  <ion-col *ngFor="let exercise of exercises; let i = index"
+                        class="ion-text-center">
                     <img [src]="safeImage(images[i])" />
                   </ion-col>
               </ion-row>
@@ -60,14 +62,14 @@
                   </ion-col>
               </ion-row>
               <ion-row class="ion-justify-content-center">
-                  <ion-col *ngIf="isResting" text-center>
+                  <ion-col *ngIf="isResting" class="ion-text-center">
                       <ion-button expand="full" class="et-button"
                           (click)="skipRest()">
                           Rest {{timedRestRemaining}} Seconds or Skip
                       </ion-button>
                   </ion-col>
                   <ion-buttons *ngIf="!isResting">
-                       <ion-col text-center>
+                       <ion-col class="ion-text-center">
                             <ion-button fill="clear" color="tertiary"
                                 [disabled]="!isPrevRepAvailable" (click)="prevRep()">
                                 <ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon>
@@ -79,7 +81,7 @@
                                 Done!
                             </ion-button>
                         </ion-col>
-                        <ion-col text-center>
+                        <ion-col class="ion-text-center">
                             <ion-button fill="clear" color="tertiary"
                                 (click)="nextRep(false)">
                                 <ion-icon slot="icon-only" name="arrow-dropright"></ion-icon>
@@ -94,7 +96,8 @@
   <div *ngSwitchCase="displayMode.Edit">
       <ion-grid>
         <ion-row class="ion-justify-content-around">
-              <ion-col *ngFor="let exercise of exercises; let i = index" no-padding>
+              <ion-col *ngFor="let exercise of exercises; let i = index"
+                    class="ion-no-padding">
                 <ion-item>
                     <ion-input type="text"
                         [(ngModel)]="exercise.name"
@@ -107,7 +110,7 @@
         </ion-row>
         <ion-row class="ion-justify-content-around">
             <ion-col *ngFor="let exercise of exercises; let i = index"
-                no-padding col-with-image-and-button>
+                class="ion-no-padding col-with-image-and-button">
                 <ion-item id="item-with-image-and-button">
                     <img [src]="safeImage(images[i])"/>
                     <ion-button fill="clear" bottom color="dark"
@@ -123,7 +126,7 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col *ngFor="let exercise of exercises; let i = index" no-padding>
+            <ion-col *ngFor="let exercise of exercises; let i = index" class="ion-no-padding">
                 <app-exercise-variation class="ion-text-wrap ion-text-center"
                     [exercise]="exercise"
                     [inEditMode]="true">
@@ -142,8 +145,7 @@
             class="ion-justify-content-center ion-no-margin ion-padding-bottom">
             <ion-col *ngFor="let rep of exercise.reps; let i = index"
                 class="ion-no-padding editRep">
-                    <div
-                        (click)="presentPopover($event, rep, i, exercise.id)">
+                    <div (click)="presentPopover($event, rep, i, exercise.id)">
                         <h4 *ngIf='rep.weight' class="ion-text-center">
                             {{rep.weight}}
                             <small>{{' ' + weightUnit[rep.weightUnit]}}</small>

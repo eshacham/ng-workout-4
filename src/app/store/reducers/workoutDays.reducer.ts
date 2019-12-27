@@ -118,7 +118,7 @@ export const workoutDaysReducers = (state = initialWorkoutDaysState,
             };
         }
         case ExerciseSetActionsTypes.AddExerciseSets: {
-            const oldSets = state.byId[action.payload.dayId].exerciseSets;
+            const oldSets = state.byId[action.payload.dayId].exerciseSets || [];
             const newSets = action.payload.sets.map(s => s.id);
             return {
                 ...state,

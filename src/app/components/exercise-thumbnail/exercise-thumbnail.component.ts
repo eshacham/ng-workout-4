@@ -161,7 +161,7 @@ export class ExerciseThumbnailComponent implements OnInit, OnDestroy {
         let state: string;
         if (day.runningState === RunningState.NA ||
             day.runningExerciseSetIndex !== this.exerciseSetIndex) {
-            state = 'soping';
+            state = 'stoping';
             this.IsRunning = false;
             this.stopRepTimer();
             this.stopRestTimer();

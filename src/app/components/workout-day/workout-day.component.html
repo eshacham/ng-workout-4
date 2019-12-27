@@ -1,11 +1,11 @@
 <div id="workout-day-comp">
 
-  <ion-item no-padding lines="none" id="workout-day-header">
-    <ion-label [hidden]="IsEditMode" no-margin>
+  <ion-item class="ion-no-padding" lines="none" id="workout-day-header">
+    <ion-label [hidden]="IsEditMode" class="ion-no-margin">
       <h2 class="ion-text-center">{{ name }}</h2>
     </ion-label>
     <ion-input [hidden]="IsDisplayOrWorkout"
-      type="text" no-margin class="ion-text-center" [(ngModel)]="name"
+      type="text" class=" no-margin ion-text-center" [(ngModel)]="name"
       (change)="workoutDayChanged()">
     </ion-input>
   </ion-item>

@@ -110,7 +110,7 @@ export class SelectExercisePage implements OnInit, OnDestroy {
     this.store.select(getCurrentWorkout)
       .pipe(take(1))
       .subscribe(async (currentWorkout) => {
-        if (currentWorkout && this.workoutId === currentWorkout.workout.id) {
+        if (currentWorkout && currentWorkout.workout && this.workoutId === currentWorkout.workout.id) {
           const dayId = currentWorkout.selectedDayId;
           this.lastSelectedWorkoutDayId = dayId;
           console.log('select-exercise - getCurrentWorkout:', dayId);

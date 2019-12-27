@@ -31,7 +31,7 @@
   </ion-list>
 
   <ion-list *ngIf="selectedSegment==='themes'"
-    (ionChange)="themeSelected($event)" no-padding>
+    (ionChange)="themeSelected($event)" class="ion-no-padding">>
     <ion-radio-group>
       <ion-item *ngFor='let theme of themes' >
         <ion-label>{{theme.name}}</ion-label>
@@ -44,10 +44,10 @@
 
   <ion-grid *ngIf="selectedSegment==='themes'">
     <ion-row >
-      <ion-col text-center>
+      <ion-col class="ion-text-center">
         <img src={{getSelectedThemeImage(1)}} >
       </ion-col>
-      <ion-col text-center>
+      <ion-col class="ion-text-center">
         <img src={{getSelectedThemeImage(2)}}>
       </ion-col>
     </ion-row>

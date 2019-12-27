@@ -24,13 +24,13 @@
 </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="ion-padding">
   <ion-list>
     <ion-item *ngFor="let img of getFilteredImages()" class="ion-text-wrap">
       <ion-thumbnail slot="start">
         <ion-img [src]="img.ionicPath"></ion-img>
       </ion-thumbnail>
-      <ion-input type='text' [(ngModel)]="img.name"
+      <ion-input type='text' value={{img.name}}
                  placeholder="Exercise Name"
                  (ionChange)="updateImage($event.target.value, img)">
       </ion-input>
